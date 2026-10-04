@@ -21,43 +21,45 @@
     --accent: #2f6f62;
     --accent-ink: #ffffff;
     --danger: #b3261e;
-    --today: #fff6d6;
+    --warn: #c07a12;
+    --focus: #fff1c2;
     --row-hover: #f1ede6;
+    --bar-h: 64px;
+    color-scheme: light;
   }
   @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #1b1a18;
-      --card: #252421;
-      --ink: #ece8e1;
-      --muted: #9a9489;
-      --line: #3a3833;
-      --accent: #6fbfa9;
-      --accent-ink: #10201c;
-      --danger: #f2948c;
-      --today: #3a3420;
-      --row-hover: #2e2c28;
+    :root:not([data-theme="light"]) {
+      --bg: #1b1a18; --card: #252421; --ink: #ece8e1; --muted: #9a9489; --line: #3a3833;
+      --accent: #6fbfa9; --accent-ink: #10201c; --danger: #f2948c; --warn: #e2a64b;
+      --focus: #45391a; --row-hover: #2e2c28; color-scheme: dark;
     }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1b1a18; --card: #252421; --ink: #ece8e1; --muted: #9a9489; --line: #3a3833;
+    --accent: #6fbfa9; --accent-ink: #10201c; --danger: #f2948c; --warn: #e2a64b;
+    --focus: #45391a; --row-hover: #2e2c28; color-scheme: dark;
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; background: var(--bg); color: var(--ink); }
   body {
     font: 17px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    padding: env(safe-area-inset-top) max(16px, env(safe-area-inset-right)) 40px max(16px, env(safe-area-inset-left));
+    padding: 0 max(16px, env(safe-area-inset-right)) 100px max(16px, env(safe-area-inset-left));
     -webkit-text-size-adjust: 100%;
   }
-  h1 { font-size: 30px; margin: 12px 0 6px; }
+  h1 { font-size: 28px; margin: 12px 0 6px; }
   h2 { font-size: 20px; margin: 28px 0 8px; }
   a { color: var(--accent); }
   button, input, textarea { font: inherit; color: inherit; }
   button {
     border: 1px solid var(--line); background: var(--card); border-radius: 10px;
-    padding: 9px 14px; cursor: pointer; min-height: 44px;
+    padding: 8px 12px; cursor: pointer; min-height: 44px;
   }
   button:disabled { opacity: .4; cursor: default; }
   button.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
   button.link { border: none; background: none; color: var(--accent); padding: 6px 8px; }
   button.danger { color: var(--danger); }
-  input[type=text], input[type=date], input[type=number], textarea {
+  button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  input[type=text], input[type=search], input[type=date], input[type=number], textarea {
     width: 100%; border: 1px solid var(--line); border-radius: 10px; background: var(--card);
     padding: 10px 12px; min-height: 44px;
   }
@@ -65,30 +67,52 @@
   textarea { resize: vertical; min-height: 96px; }
   label { display: block; font-weight: 600; margin: 0 0 6px; }
   .muted { color: var(--muted); }
-  .toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 12px 0; }
   .spacer { flex: 1; }
 
-  .meta { display: grid; grid-template-columns: max-content 1fr; gap: 2px 14px; margin: 4px 0 12px; }
+  /* Fixierte Aktionsleiste */
+  .bar {
+    position: sticky; top: 0; z-index: 5; background: var(--bg);
+    display: flex; gap: 8px; flex-wrap: wrap; align-items: center;
+    padding: calc(env(safe-area-inset-top) + 10px) 0 10px; border-bottom: 1px solid var(--line);
+  }
+  .bar input[type=search] { width: 220px; flex: 0 1 220px; }
+  .bar .hits { font-size: 14px; }
+
+  .meta { display: grid; grid-template-columns: max-content 1fr; gap: 2px 14px; margin: 4px 0 6px; }
   .meta dt { font-weight: 600; }
   .meta dd { margin: 0; }
+  .progress { font-size: 14px; color: var(--muted); margin: 0 0 12px; }
 
-  .table-wrap { overflow-x: auto; background: var(--card); border: 1px solid var(--line); border-radius: 12px; }
-  table { border-collapse: collapse; width: 100%; min-width: 760px; }
-  th, td { border-bottom: 1px solid var(--line); padding: 10px 12px; vertical-align: top; text-align: left; }
-  th { position: sticky; top: 0; background: var(--card); font-size: 15px; z-index: 1; }
-  td { white-space: pre-line; }
-  tbody tr { cursor: pointer; }
-  tbody tr:hover { background: var(--row-hover); }
-  tbody tr.today { background: var(--today); }
+  /* Tabelle */
+  .table-wrap { background: var(--card); border: 1px solid var(--line); border-radius: 12px; }
+  table.days { border-collapse: separate; border-spacing: 0; width: 100%; }
+  table.days th, table.days td { border-bottom: 1px solid var(--line); padding: 10px 12px; vertical-align: top; text-align: left; }
+  table.days th { position: sticky; top: var(--bar-h); background: var(--card); font-size: 15px; z-index: 2; }
+  table.days tbody tr { cursor: pointer; }
+  table.days tbody tr:hover { background: var(--row-hover); }
+  table.days tbody tr.gap { background: var(--focus); box-shadow: inset 4px 0 0 var(--accent); }
   td.day { white-space: nowrap; width: 1%; }
   td.day .wx { display: block; font-size: 18px; }
   td.day .wx.empty { opacity: .25; }
-  td.quarter { width: 22%; }
+  .tag { display: inline-block; font-size: 12px; border-radius: 6px; padding: 0 6px; margin-left: 4px; vertical-align: 1px; }
+  .tag.today { background: var(--accent); color: var(--accent-ink); }
+  .tag.miss { color: var(--warn); border: 1px solid var(--warn); }
   td.quarter a { text-decoration: none; }
-  .col-program { width: 30%; }
+  .empty-note { padding: 20px; text-align: center; color: var(--muted); }
+
+  /* Hängender Einzug: Folgezeilen beginnen unter dem Text, nicht unter dem Zeichen */
+  .ln { display: flex; gap: .35em; }
+  .ln + .ln { margin-top: 2px; }
+  .ln .m { flex: none; }
+  .ln .t { min-width: 0; overflow-wrap: anywhere; }
+
   .kosten { display: flex; align-items: center; gap: 10px; max-width: 260px; }
   .kosten span { font-size: 20px; }
 
+  .fab { position: fixed; right: max(16px, env(safe-area-inset-right)); bottom: calc(16px + env(safe-area-inset-bottom)); display: flex; flex-direction: column; gap: 8px; z-index: 4; }
+  .fab button { width: 48px; height: 48px; border-radius: 50%; padding: 0; font-size: 20px; box-shadow: 0 4px 14px rgba(0,0,0,.18); }
+
+  /* Dialoge */
   dialog {
     border: none; border-radius: 18px; padding: 0; width: min(720px, 100vw - 24px);
     max-height: calc(100vh - 40px); background: var(--bg); color: var(--ink);
@@ -99,36 +123,49 @@
   .dlg-head { display: flex; align-items: center; gap: 8px; padding: 12px 16px; border-bottom: 1px solid var(--line); }
   .dlg-head h3 { margin: 0; flex: 1; text-align: center; font-size: 19px; }
   .dlg-body { padding: 8px 16px 20px; overflow-y: auto; flex: 1; }
-  .dlg-foot { display: flex; gap: 8px; padding: 12px 16px; border-top: 1px solid var(--line); }
+  .dlg-foot { display: flex; gap: 8px; align-items: center; padding: 12px 16px; border-top: 1px solid var(--line); }
   .step { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px; margin-top: 12px; }
+  .step-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .step-head label { margin: 0; flex: 1; }
   .step-num {
     display: inline-flex; width: 26px; height: 26px; border-radius: 50%; background: var(--accent); color: var(--accent-ink);
     align-items: center; justify-content: center; font-size: 14px; margin-right: 8px;
   }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+  .chips button { font-size: 15px; padding: 6px 10px; min-height: 38px; }
   .emoji-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
-  .emoji-row button { font-size: 24px; padding: 4px 8px; min-width: 48px; }
-  .emoji-row button[aria-pressed=true] { background: var(--accent); border-color: var(--accent); }
+  .emoji-row button {
+    font-size: 24px; padding: 4px 8px; min-width: 48px;
+    -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; touch-action: manipulation;
+  }
+  .emoji-row button.reset { font-size: 20px; color: var(--muted); }
+  .mic { font-size: 18px; padding: 4px 10px; min-height: 38px; }
+  .mic[aria-pressed="true"] { animation: pulse 1s infinite; }
+  @keyframes pulse { 50% { opacity: .5; } }
   .hint { font-size: 14px; color: var(--muted); margin-top: 6px; }
   .warn { font-size: 15px; color: var(--danger); margin-top: 10px; }
   .check { display: flex; align-items: center; gap: 10px; font-weight: 400; margin: 0 0 10px; min-height: 44px; cursor: pointer; }
   .check input { width: 24px; height: 24px; accent-color: var(--accent); }
   .choice { display: block; width: 100%; text-align: left; margin-top: 10px; padding: 14px 16px; }
   .choice strong { display: block; font-size: 18px; }
-  .trip-item { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
-  .trip-item .choice { margin: 0; flex: 1; }
-  .trip-item .choice.current { border-color: var(--accent); border-width: 2px; }
+  .choice.current { border-color: var(--accent); border-width: 2px; }
+  .saved { font-size: 13px; color: var(--muted); }
 
   #printout { display: none; }
   @media print {
     @page { size: A4 landscape; margin: 12mm; }
     body { background: #fff; color: #000; padding: 0; }
-    #app, dialog { display: none !important; }
+    #app, dialog, .fab { display: none !important; }
     #printout { display: block; }
   }
 </style>
 </head>
 <body>
 <main id="app"></main>
+<div class="fab" id="fab" hidden>
+  <button id="toTop" aria-label="Nach oben">⬆︎</button>
+  <button id="toEnd" aria-label="Ans Ende">⬇︎</button>
+</div>
 <div id="printout"></div>
 <dialog id="dlg"></dialog>
 <input type="file" id="importFile" accept="application/json,.json" hidden>
@@ -138,40 +175,71 @@
 
 const app = document.getElementById('app');
 const dlg = document.getElementById('dlg');
+const fab = document.getElementById('fab');
 const printout = document.getElementById('printout');
 const importFile = document.getElementById('importFile');
 
 const STORAGE_KEY = 'reisetagebuch.v1';
 const WEEKDAYS = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+const WEEKDAYS_LONG = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
 const WEATHER = ['☀️', '🌤', '🌦', '🌧', '☁️', '⛈', '❄️'];
+const TRANSPORT = [
+  { id: 'pkw', icon: '🚗', name: 'PKW' },
+  { id: 'zug', icon: '🚆', name: 'Zug' },
+  { id: 'rad', icon: '🚲', name: 'Fahrrad' },
+  { id: 'flug', icon: '✈️', name: 'Flugzeug' },
+  { id: 'schiff', icon: '🚢', name: 'Schiff' },
+  { id: 'wohnmobil', icon: '🚐', name: 'Wohnmobil' },
+  { id: 'fuss', icon: '🚶', name: 'Fuß' },
+];
 const DEFAULT_MOODS = ['🙂', '😊', '😉', '👍', '😋', '😌', '😏', '😳', '🤪', '🥶', '🤷🏻‍♂️', '☹️', '🤮'];
-const QUICK_MOODS = 14;
+const PROGRAM_SUGGESTIONS = [
+  { label: 'Weiterfahrt nach …', text: 'Weiterfahrt nach ' },
+  { label: 'Rundgang durch …', text: 'Rundgang durch ' },
+  { label: 'Besichtigung …', text: 'Besichtigung ' },
+  { label: 'Freetour', text: 'Freetour' },
+];
+const AUTOSAVE_MS = 10000;
+const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
 
 /* ---------- Speicher ---------- */
+
+function normalize(data) {
+  data.trips ||= [];
+  data.moodUsage ||= {};
+  data.hiddenMoods ||= [];
+  data.settings = { theme: 'auto', hideEmpty: false, ...(data.settings || {}) };
+  for (const t of data.trips) {
+    t.days ||= {};
+    t.transport ||= [];
+    t.quarterList ??= false;
+    t.outputCounter ||= 0;
+  }
+  return data;
+}
 
 function load() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) {
-      const data = JSON.parse(raw);
-      data.trips ||= [];
-      data.moodUsage ||= {};
-      return data;
-    }
+    if (raw) return normalize(JSON.parse(raw));
   } catch (e) { /* leer starten */ }
-  return { trips: [], moodUsage: {} };
+  return normalize({});
 }
 
 function save() {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
+    return true;
   } catch (e) {
     alert('Speichern fehlgeschlagen. Bitte ein Backup sichern.');
+    return false;
   }
 }
 
 let db = load();
 let currentTripId = null;
+let searchTerm = '';
+let autosaveTimer = null;
 
 /* ---------- Datum ---------- */
 
@@ -190,20 +258,35 @@ function addDays(iso, n) {
   d.setUTCDate(d.getUTCDate() + n);
   return toISO(d);
 }
-const pad = n => String(n).padStart(2, '0');
+const pad = (n, len = 2) => String(n).padStart(len, '0');
 function dayLabel(iso) {
   const d = parseISO(iso);
   return `${WEEKDAYS[d.getUTCDay()]}, ${pad(d.getUTCDate())}.${pad(d.getUTCMonth() + 1)}.`;
 }
+function longDayLabel(iso) {
+  return `${WEEKDAYS_LONG[parseISO(iso).getUTCDay()]}, ${fullDate(iso)}`;
+}
 function fullDate(iso) {
   const [y, m, d] = iso.split('-');
   return `${d}.${m}.${y}`;
+}
+function shortDate(iso) {
+  const [, m, d] = iso.split('-');
+  return `${d}.${m}.`;
 }
 function tripDays(trip) {
   const days = [];
   if (!trip.start || !trip.end || trip.end < trip.start) return days;
   for (let d = trip.start; d <= trip.end; d = addDays(d, 1)) days.push(d);
   return days;
+}
+function nowStamp() {
+  const n = new Date();
+  return {
+    date: `${pad(n.getDate())}.${pad(n.getMonth() + 1)}.${n.getFullYear()}`,
+    time: `${pad(n.getHours())}:${pad(n.getMinutes())}`,
+    file: `${n.getFullYear()}.${pad(n.getMonth() + 1)}.${pad(n.getDate())} ${pad(n.getHours())}.${pad(n.getMinutes())}`,
+  };
 }
 
 /* ---------- Reisen ---------- */
@@ -226,51 +309,95 @@ function overlappingTrip(start, end, ignoreId) {
   return db.trips.find(t => t.id !== ignoreId && start <= t.end && t.start <= end);
 }
 
+function transportText(trip) {
+  return TRANSPORT.filter(t => trip.transport.includes(t.id)).map(t => `${t.icon} ${t.name}`).join(', ');
+}
+
 /* ---------- Tage ---------- */
 
 function rawEntry(trip, iso) { return trip.days[iso] || {}; }
 
-// Quartier eines Tages; mit Häkchen "wie Vortag" wird es (auch über mehrere Tage) vom Vortag übernommen.
-function quarterOf(trip, iso, depth = 0) {
-  const e = rawEntry(trip, iso);
-  if (!e.sameQuarter) return e.quarter || '';
-  if (iso <= trip.start || depth > 400) return '';
-  return quarterOf(trip, addDays(iso, -1), depth + 1);
+// Quartier (Name + Ort) eines Tages; mit Häkchen "wie Vortag" wird es vom Vortag übernommen, auch über mehrere Tage.
+function quarterOf(trip, iso) {
+  for (let d = iso, i = 0; i < 1000; d = addDays(d, -1), i++) {
+    const e = rawEntry(trip, d);
+    if (!e.sameQuarter) return { name: e.quarter || '', place: e.place || '' };
+    if (d <= trip.start) break;
+  }
+  return { name: '', place: '' };
 }
 
 function isRecorded(trip, iso) {
   const e = rawEntry(trip, iso);
-  return Boolean(e.weather || e.program || e.comment || quarterOf(trip, iso));
+  return Boolean(e.weather || e.program || e.comment || quarterOf(trip, iso).name);
 }
 
-// Mehrzeiliges Programm bekommt ▫️-Aufzählungszeichen, eine einzelne Zeile bleibt schlicht.
-function formatProgram(text) {
-  const lines = (text || '').split('\n').map(l => l.trim()).filter(Boolean);
-  if (lines.length <= 1) return lines.join('');
-  return lines.map(l => (/^(▫️|▫|-|•)/.test(l) ? l : '▫️' + l)).join('\n');
+function firstGap(trip) {
+  return tripDays(trip).find(d => !isRecorded(trip, d)) || null;
+}
+
+function matchesSearch(trip, iso, term) {
+  const e = rawEntry(trip, iso);
+  const q = quarterOf(trip, iso);
+  return [e.program, e.comment, q.name, q.place].join('\n').toLocaleLowerCase('de').includes(term);
+}
+
+/* ---------- Text-Formatierung mit hängendem Einzug ---------- */
+
+const segmenter = new Intl.Segmenter();
+const EMOJI_RE = /\p{Extended_Pictographic}/u;
+const graphemes = text => Array.from(segmenter.segment(text || ''), s => s.segment);
+
+function emojisIn(text) {
+  return graphemes(text).filter(s => EMOJI_RE.test(s));
+}
+
+function splitLines(text) {
+  return (text || '').split('\n').map(l => l.trim()).filter(Boolean);
+}
+
+// Programm: bei mehreren Zeilen jede mit ▫️, bei einer Zeile ohne Zeichen.
+function programItems(text) {
+  const lines = splitLines(text).map(l => l.replace(/^(▫️|▫|-|•)\s*/u, ''));
+  return lines.map(t => ({ m: lines.length > 1 ? '▫️' : '', t }));
+}
+
+// Kommentar: ein führender Smiley wird zum Zeichen, der Text rückt daneben ein.
+function commentItems(text) {
+  return splitLines(text).map(line => {
+    const g = graphemes(line);
+    if (g.length > 1 && EMOJI_RE.test(g[0])) return { m: g[0], t: g.slice(1).join('').trim() };
+    return { m: '', t: line };
+  });
+}
+
+function linesHtml(items) {
+  return items.map(({ m, t }) =>
+    `<div class="ln">${m ? `<span class="m">${esc(m)}</span>` : ''}<span class="t">${esc(t)}</span></div>`).join('');
 }
 
 /* ---------- Smileys ---------- */
 
-const segmenter = new Intl.Segmenter();
-const EMOJI_RE = /\p{Extended_Pictographic}/u;
-
-function emojisIn(text) {
-  return Array.from(segmenter.segment(text || ''), s => s.segment).filter(s => EMOJI_RE.test(s));
-}
-
-// Häufig verwendete Smileys zuerst, dann die Standardauswahl.
+// Nach Häufigkeit sortiert, noch nie benutzte in Standardreihenfolge dahinter; entfernte ausgeblendet.
 function quickMoods() {
-  const used = Object.entries(db.moodUsage).sort((a, b) => b[1] - a[1]).map(([m]) => m);
-  return [...new Set([...used, ...DEFAULT_MOODS])].slice(0, QUICK_MOODS);
+  const hidden = new Set(db.hiddenMoods);
+  const order = m => { const i = DEFAULT_MOODS.indexOf(m); return i < 0 ? 999 : i; };
+  const all = [...new Set([...Object.keys(db.moodUsage), ...DEFAULT_MOODS])].filter(m => !hidden.has(m));
+  return all
+    .filter(m => DEFAULT_MOODS.includes(m) || db.moodUsage[m] > 0)
+    .sort((a, b) => (db.moodUsage[b] || 0) - (db.moodUsage[a] || 0) || order(a) - order(b));
 }
 
+// Zähler an die Änderung eines Kommentars anpassen; wieder verwendete Smileys kommen zurück.
 function countMoods(before, after) {
   const diff = {};
   emojisIn(after).forEach(m => diff[m] = (diff[m] || 0) + 1);
   emojisIn(before).forEach(m => diff[m] = (diff[m] || 0) - 1);
   for (const [m, n] of Object.entries(diff)) {
-    if (n > 0) db.moodUsage[m] = (db.moodUsage[m] || 0) + n;
+    if (!n) continue;
+    db.moodUsage[m] = Math.max(0, (db.moodUsage[m] || 0) + n);
+    if (!db.moodUsage[m]) delete db.moodUsage[m];
+    if (n > 0) db.hiddenMoods = db.hiddenMoods.filter(h => h !== m);
   }
 }
 
@@ -279,55 +406,128 @@ function countMoods(before, after) {
 function esc(s) {
   return String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
-function mapsUrl(place) {
-  return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(place.trim());
+function mapsUrl({ name, place }) {
+  const query = [name, place].map(s => (s || '').trim()).filter(Boolean).join(', ');
+  return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(query);
 }
 function formatEuro(value) {
-  const n = Math.round(Number(value) || 0);
-  return '€ ' + n.toLocaleString('de-DE') + ',-';
+  return '€ ' + Math.round(Number(value) || 0).toLocaleString('de-DE') + ',-';
+}
+
+function insertAtCursor(ta, text, ownLine) {
+  const v = ta.value;
+  const pos = ta.selectionStart ?? v.length;
+  const before = v.slice(0, pos);
+  const prefix = ownLine && before && !before.endsWith('\n') ? '\n' : '';
+  const ins = prefix + text;
+  ta.value = before + ins + v.slice(pos);
+  ta.focus();
+  ta.selectionStart = ta.selectionEnd = pos + ins.length;
+}
+
+function onLongPress(btn, onLong, onTap) {
+  let timer = null;
+  let fired = false;
+  btn.addEventListener('pointerdown', () => {
+    fired = false;
+    timer = setTimeout(() => { fired = true; onLong(); }, 600);
+  });
+  ['pointerup', 'pointerleave', 'pointercancel'].forEach(ev => btn.addEventListener(ev, () => clearTimeout(timer)));
+  btn.addEventListener('contextmenu', e => e.preventDefault());
+  btn.addEventListener('click', e => {
+    e.preventDefault();
+    if (fired) { fired = false; return; }
+    onTap();
+  });
+}
+
+/* ---------- Darstellung ---------- */
+
+const THEMES = { auto: { icon: '🌓', label: 'Automatisch' }, light: { icon: '☀️', label: 'Hell' }, dark: { icon: '🌙', label: 'Dunkel' } };
+
+function applyTheme() {
+  const t = db.settings.theme;
+  if (t === 'auto') document.documentElement.removeAttribute('data-theme');
+  else document.documentElement.setAttribute('data-theme', t);
+}
+
+function cycleTheme() {
+  const order = ['auto', 'light', 'dark'];
+  db.settings.theme = order[(order.indexOf(db.settings.theme) + 1) % order.length];
+  save();
+  applyTheme();
+  render();
 }
 
 /* ---------- Hauptansicht ---------- */
 
-function render() {
+function render({ scrollToGap = false } = {}) {
   const trip = getTrip(currentTripId);
   if (!trip) return renderEmpty();
   const today = todayISO();
+  const days = tripDays(trip);
+  const gap = firstGap(trip);
+  const term = searchTerm.trim().toLocaleLowerCase('de');
+  const recorded = days.filter(d => isRecorded(trip, d)).length;
 
-  const rows = tripDays(trip).map(iso => {
+  const visible = days.filter(iso => {
+    if (term) return matchesSearch(trip, iso, term);
+    return !db.settings.hideEmpty || isRecorded(trip, iso);
+  });
+
+  const rows = visible.map(iso => {
     const e = rawEntry(trip, iso);
     const q = quarterOf(trip, iso);
+    const rec = isRecorded(trip, iso);
+    const tags = (iso === today ? '<span class="tag today">heute</span>' : '')
+      + (!rec && iso < today ? '<span class="tag miss">fehlt</span>' : '');
     const wx = e.weather
       ? `<span class="wx">${esc(e.weather)}</span>`
       : `<span class="wx empty">☀️🌤🌦🌧</span>`;
-    const link = q
-      ? `<a href="${mapsUrl(q)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">📍 ${esc(q)}</a>`
+    const link = q.name
+      ? `<a href="${mapsUrl(q)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${linesHtml([{ m: '📍', t: q.name }])}</a>`
       : '';
-    return `<tr data-day="${iso}" class="${iso === today ? 'today' : ''}">
-      <td class="day">${dayLabel(iso)}${wx}</td>
-      <td>${esc(formatProgram(e.program))}</td>
-      <td>${esc(e.comment || '')}</td>
+    return `<tr data-day="${iso}" class="${iso === gap ? 'gap' : ''}">
+      <td class="day">${dayLabel(iso)}${tags}${wx}</td>
+      <td>${linesHtml(programItems(e.program))}</td>
+      <td>${linesHtml(commentItems(e.comment))}</td>
       <td class="quarter">${link}</td>
     </tr>`;
   }).join('');
 
+  let progress;
+  if (today < trip.start) progress = `Reise beginnt in ${Math.round((parseISO(trip.start) - parseISO(today)) / 864e5)} Tagen`;
+  else if (today > trip.end) progress = `Reise beendet · ${days.length} Tage`;
+  else progress = `Tag ${days.indexOf(today) + 1} von ${days.length}`;
+  progress += ` · ${recorded} erfasst`;
+
+  const theme = THEMES[db.settings.theme];
+  const transport = transportText(trip);
+
   app.innerHTML = `
-    <div class="toolbar">
+    <div class="bar" id="bar">
       <button id="trips">🧳 Reisen</button>
+      <input type="search" id="search" placeholder="🔎 Suchen" value="${esc(searchTerm)}" autocomplete="off">
+      ${term ? `<span class="hits muted">${visible.length} Treffer</span>` : ''}
       <span class="spacer"></span>
-      <button id="editTrip">✏️ Reise bearbeiten</button>
+      <button id="toggleEmpty" aria-pressed="${db.settings.hideEmpty}" title="Leere Tage aus-/einblenden">${db.settings.hideEmpty ? '◻︎ Leere ausgeblendet' : '◻︎ Leere Tage'}</button>
+      <button id="theme" title="Darstellung: ${theme.label}" aria-label="Darstellung: ${theme.label}">${theme.icon}</button>
+      <button id="editTrip">✏️ Reise</button>
       <button class="primary" id="output">📤 Ausgabe</button>
     </div>
     <h1>Reisetagebuch – ${esc(trip.title)}</h1>
     <dl class="meta">
       <dt>Reiseteilnehmer:</dt><dd>${esc(trip.participants)}</dd>
       <dt>Reisezeitraum:</dt><dd>${fullDate(trip.start)} - ${fullDate(trip.end)}</dd>
+      ${transport ? `<dt>Reisemittel:</dt><dd>${esc(transport)}</dd>` : ''}
     </dl>
+    <p class="progress">${progress}</p>
     <div class="table-wrap">
-      <table>
-        <thead><tr><th>Tag</th><th class="col-program">Programm</th><th>🙂☹️😉</th><th>😴💤</th></tr></thead>
+      <table class="days">
+        <thead><tr><th>Tag</th><th>Programm</th><th>🙂☹️😉</th><th>😴💤</th></tr></thead>
         <tbody>${rows}</tbody>
       </table>
+      ${visible.length ? '' : `<div class="empty-note">${term ? 'Keine Treffer.' : 'Noch keine Tage erfasst.'}</div>`}
     </div>
 
     <h2>Fazit</h2>
@@ -340,9 +540,27 @@ function render() {
       <span>,-</span>
     </div>`;
 
+  fab.hidden = false;
+  const bar = app.querySelector('#bar');
+  document.documentElement.style.setProperty('--bar-h', bar.offsetHeight + 'px');
+
   app.querySelector('#trips').onclick = openTripsDialog;
   app.querySelector('#editTrip').onclick = () => openTripDialog(trip);
   app.querySelector('#output').onclick = () => openOutputDialog(trip);
+  app.querySelector('#theme').onclick = cycleTheme;
+  app.querySelector('#toggleEmpty').onclick = () => {
+    db.settings.hideEmpty = !db.settings.hideEmpty;
+    save();
+    render();
+  };
+  const search = app.querySelector('#search');
+  search.oninput = () => {
+    searchTerm = search.value;
+    render();
+    const s = app.querySelector('#search');
+    s.focus();
+    s.selectionStart = s.selectionEnd = s.value.length;
+  };
   app.querySelectorAll('tbody tr').forEach(tr => tr.onclick = () => openDayDialog(trip, tr.dataset.day));
   app.querySelector('#fazit').oninput = e => { trip.fazit = e.target.value; save(); };
   app.querySelector('#kosten').oninput = e => {
@@ -352,15 +570,18 @@ function render() {
   };
   app.querySelector('#kosten').onblur = e => { e.target.value = trip.kosten ?? ''; };
 
-  const todayRow = app.querySelector('tr.today');
-  if (todayRow) todayRow.scrollIntoView({ block: 'center' });
+  if (scrollToGap) {
+    const row = app.querySelector('tr.gap');
+    if (row) row.scrollIntoView({ block: 'center' });
+  }
 }
 
 function renderEmpty() {
+  fab.hidden = true;
   app.innerHTML = `
-    <h1>Reisetagebuch</h1>
+    <h1 style="margin-top:calc(env(safe-area-inset-top) + 20px)">Reisetagebuch</h1>
     <p class="muted">Noch keine Reise angelegt.</p>
-    <div class="toolbar">
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
       <button class="primary" id="newTrip">＋ Neue Reise anlegen</button>
       <button id="importAll">Backup laden</button>
     </div>`;
@@ -370,12 +591,17 @@ function renderEmpty() {
 
 function showTrip(id) {
   currentTripId = id;
-  render();
+  searchTerm = '';
+  render({ scrollToGap: true });
 }
+
+document.getElementById('toTop').onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+document.getElementById('toEnd').onclick = () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
 
 /* ---------- Dialoge ---------- */
 
 function openDialog(html) {
+  clearInterval(autosaveTimer);
   dlg.onclose = null;
   if (dlg.open) dlg.close();
   dlg.innerHTML = html;
@@ -399,30 +625,33 @@ function openTripsDialog() {
         <button type="button" class="choice primary" id="newTrip"><strong>＋ Neue Reise anlegen</strong></button>
         ${trips.map(t => {
           const state = t.start <= today && today <= t.end ? 'läuft gerade' : t.end < today ? 'beendet' : 'geplant';
-          return `<div class="trip-item">
-            <button type="button" class="choice ${t.id === currentTripId ? 'current' : ''}" data-id="${t.id}">
+          return `<button type="button" class="choice ${t.id === currentTripId ? 'current' : ''}" data-id="${t.id}">
               <strong>${esc(t.title)}</strong>
               <span class="muted">${fullDate(t.start)} - ${fullDate(t.end)} · ${state}</span>
-            </button>
-          </div>`;
+            </button>`;
         }).join('')}
-        <div class="toolbar" style="margin-top:24px">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:24px">
           <button type="button" id="exportAll">💾 Backup sichern</button>
           <button type="button" id="importAll">Backup laden</button>
         </div>
-        <div class="hint">Das Backup enthält alle Reisen. Am besten regelmäßig in der Dateien-App oder iCloud Drive sichern.</div>
+        <div class="hint">Das Backup enthält alle Reisen und wird in der Dateien-App unter „Downloads“ gespeichert.
+          Bei jeder Ausgabe wird zusätzlich automatisch ein Backup gesichert.</div>
       </div>
     </form>`);
   dlg.querySelector('#newTrip').onclick = () => openTripDialog(null);
   dlg.querySelectorAll('[data-id]').forEach(b => b.onclick = () => { dlg.close(); showTrip(b.dataset.id); });
-  dlg.querySelector('#exportAll').onclick = exportBackup;
+  dlg.querySelector('#exportAll').onclick = () => {
+    const name = exportBackup();
+    alert(`Backup gespeichert:\n${name}\n\nZu finden in der Dateien-App unter „Downloads“.`);
+  };
   dlg.querySelector('#importAll').onclick = () => importFile.click();
 }
 
 // Reise anlegen oder bearbeiten; überschneidende Zeiträume werden verhindert.
 function openTripDialog(trip) {
   const isNew = !trip;
-  const t = trip || { title: '', participants: '', start: todayISO(), end: addDays(todayISO(), 14) };
+  const t = trip || { title: '', participants: '', start: todayISO(), end: addDays(todayISO(), 14), transport: [], quarterList: false };
+  const transport = new Set(t.transport);
   openDialog(`
     <form method="dialog">
       <div class="dlg-head">
@@ -442,7 +671,16 @@ function openTripDialog(trip) {
           </div>
           <div class="warn" id="tripWarn"></div>
         </div>
-        ${isNew ? '' : `<div class="toolbar" style="margin-top:24px">
+        <div class="step"><label>Reisemittel</label>
+          <div class="chips" id="transport">
+            ${TRANSPORT.map(x => `<button type="button" data-t="${x.id}" aria-pressed="${transport.has(x.id)}">${x.icon} ${x.name}</button>`).join('')}
+          </div>
+        </div>
+        <div class="step">
+          <label class="check"><input type="checkbox" id="fQuarterList" ${t.quarterList ? 'checked' : ''}> Quartierliste in der Ausgabe</label>
+          <div class="hint">Am Ende der Ausgabe: alle Quartiere mit Zeitraum, Anzahl Nächte und Maps-Link.</div>
+        </div>
+        ${isNew ? '' : `<div style="display:flex;margin-top:24px">
           <span class="spacer"></span>
           <button type="button" class="link danger" id="deleteTrip">Reise löschen</button>
         </div>`}
@@ -454,6 +692,12 @@ function openTripDialog(trip) {
   const fEnd = dlg.querySelector('#fEnd');
   const warn = dlg.querySelector('#tripWarn');
   const ok = dlg.querySelector('#okTrip');
+
+  dlg.querySelectorAll('#transport button').forEach(b => b.onclick = () => {
+    const on = b.getAttribute('aria-pressed') !== 'true';
+    b.setAttribute('aria-pressed', on);
+    on ? transport.add(b.dataset.t) : transport.delete(b.dataset.t);
+  });
 
   const validate = () => {
     const start = fStart.value, end = fEnd.value;
@@ -474,7 +718,7 @@ function openTripDialog(trip) {
 
   const del = dlg.querySelector('#deleteTrip');
   if (del) del.onclick = () => {
-    if (!confirm(`„${trip.title}“ mit allen Einträgen wirklich löschen?\n\nDas kann nicht rückgängig gemacht werden.`)) return;
+    if (!confirm(`„${trip.title}“ mit allen Einträgen wirklich löschen?\n\nTipp: Vorher ein Backup sichern.\nDas Löschen kann nicht rückgängig gemacht werden.`)) return;
     db.trips = db.trips.filter(x => x.id !== trip.id);
     save();
     dlg.close();
@@ -483,187 +727,325 @@ function openTripDialog(trip) {
 
   dlg.onclose = () => {
     if (dlg.returnValue !== 'ok' || !validate()) return;
-    const target = trip || { id: uid(), days: {}, fazit: '', kosten: null };
+    const target = trip || { id: uid(), days: {}, fazit: '', kosten: null, outputCounter: 0 };
     target.title = fTitle.value.trim();
     target.participants = dlg.querySelector('#fPeople').value.trim();
     target.start = fStart.value;
     target.end = fEnd.value;
+    target.transport = TRANSPORT.map(x => x.id).filter(id => transport.has(id));
+    target.quarterList = dlg.querySelector('#fQuarterList').checked;
     if (isNew) db.trips.push(target);
     save();
-    showTrip(target.id);
+    if (isNew) showTrip(target.id); else render();
   };
 }
 
-// Einen Tag in 4 Schritten erfassen.
+// Einen Tag in 4 Schritten erfassen; speichert automatisch alle 10 Sekunden.
 function openDayDialog(trip, iso) {
-  const e = rawEntry(trip, iso);
   const days = tripDays(trip);
   const idx = days.indexOf(iso);
   const isFirst = idx <= 0;
-  const weather = new Set(Array.from(segmenter.segment(e.weather || ''), s => s.segment));
-  const knownQuarters = [...new Set(days.map(d => quarterOf(trip, d)).filter(Boolean))];
-  const prevQuarter = isFirst ? '' : quarterOf(trip, days[idx - 1]);
+  const original = trip.days[iso] ? { ...trip.days[iso] } : null;
+  const e = original || {};
+  const weather = new Set(graphemes(e.weather));
+  const knownQuarters = [...new Set(days.map(d => quarterOf(trip, d).name).filter(Boolean))];
+  const prev = isFirst ? { name: '', place: '' } : quarterOf(trip, days[idx - 1]);
   const same = Boolean(e.sameQuarter) && !isFirst;
+  const mic = id => SpeechRec ? `<button type="button" class="mic" data-mic="${id}" aria-pressed="false" aria-label="Diktieren">🎤</button>` : '';
 
   openDialog(`
     <form method="dialog">
       <div class="dlg-head">
         <button type="button" class="link" data-nav="-1" ${isFirst ? 'disabled' : ''}>‹ Vortag</button>
-        <h3>${dayLabel(iso)}</h3>
+        <h3>${longDayLabel(iso)}</h3>
         <button type="button" class="link" data-nav="1" ${idx >= days.length - 1 ? 'disabled' : ''}>Nächster ›</button>
       </div>
       <div class="dlg-body">
         <div class="step">
-          <label><span class="step-num">1</span>Wetter</label>
+          <div class="step-head"><label><span class="step-num">1</span>Wetter</label></div>
           <div class="emoji-row" id="wx">
             ${WEATHER.map(w => `<button type="button" aria-pressed="${weather.has(w)}" data-w="${w}">${w}</button>`).join('')}
           </div>
         </div>
         <div class="step">
-          <label for="fProgram"><span class="step-num">2</span>Programm</label>
-          <textarea id="fProgram" placeholder="Was habt ihr gemacht? Eine Zeile pro Punkt.">${esc(e.program || '')}</textarea>
-          <div class="hint">Mehrere Zeilen bekommen automatisch ▫️ davor.</div>
-        </div>
-        <div class="step">
-          <label for="fComment"><span class="step-num">3</span>Wie war's?</label>
-          <div class="emoji-row" id="moods">
-            ${quickMoods().map(m => `<button type="button" data-m="${m}">${m}</button>`).join('')}
+          <div class="step-head"><label for="fProgram"><span class="step-num">2</span>Programm</label>${mic('fProgram')}</div>
+          <div class="chips" id="suggest">
+            ${PROGRAM_SUGGESTIONS.map((s, i) => `<button type="button" data-s="${i}">${esc(s.label)}</button>`).join('')}
           </div>
-          <textarea id="fComment" placeholder="Smiley antippen, dann ein paar Worte dazu.">${esc(e.comment || '')}</textarea>
-          <div class="hint">Weitere Smileys über die Emoji-Taste der Tastatur. Häufig benutzte rücken in der Leiste nach vorne.</div>
+          <textarea id="fProgram" placeholder="Was habt ihr gemacht? Eine Zeile pro Punkt.">${esc(e.program || '')}</textarea>
         </div>
         <div class="step">
-          <label for="fQuarter"><span class="step-num">4</span>Quartier</label>
+          <div class="step-head"><label for="fComment"><span class="step-num">3</span>Wie war's?</label>${mic('fComment')}</div>
+          <div class="emoji-row" id="moods"></div>
+          <textarea id="fComment" placeholder="Smiley antippen, dann ein paar Worte dazu.">${esc(e.comment || '')}</textarea>
+          <div class="hint">Lange drücken entfernt einen Smiley aus der Leiste. ↺ stellt die Standard-Smileys wieder her.
+            Weitere Smileys über die Emoji-Taste der Tastatur.</div>
+        </div>
+        <div class="step">
+          <div class="step-head"><label for="fQuarter"><span class="step-num">4</span>Quartier</label></div>
           ${isFirst ? '' : `<label class="check"><input type="checkbox" id="fSame" ${same ? 'checked' : ''}> Quartier wie Vortag</label>`}
           <input type="text" id="fQuarter" list="quarterList" placeholder="z. B. Oaks Townsville Hotel">
           <datalist id="quarterList">${knownQuarters.map(q => `<option value="${esc(q)}">`).join('')}</datalist>
+          <input type="text" id="fPlace" placeholder="Ort für Google Maps (optional, z. B. Cairns, Australien)" style="margin-top:8px">
           <div class="hint" id="qHint"></div>
         </div>
+        ${SpeechRec ? '' : '<div class="hint" style="margin-top:12px">🎤 Zum Diktieren die Mikrofon-Taste auf der Tastatur verwenden.</div>'}
       </div>
       <div class="dlg-foot">
         <button type="button" data-act="cancel">Abbrechen</button>
+        <span class="saved" id="savedInfo"></span>
         <span class="spacer"></span>
-        <button class="primary" value="ok">Speichern</button>
+        <button class="primary" value="ok">Fertig</button>
       </div>
     </form>`);
 
+  const fProgram = dlg.querySelector('#fProgram');
   const fComment = dlg.querySelector('#fComment');
   const fQuarter = dlg.querySelector('#fQuarter');
+  const fPlace = dlg.querySelector('#fPlace');
   const fSame = dlg.querySelector('#fSame');
   const qHint = dlg.querySelector('#qHint');
-  let ownQuarter = same ? '' : (e.quarter || '');
+  const savedInfo = dlg.querySelector('#savedInfo');
+  let own = { name: same ? '' : (e.quarter || ''), place: same ? '' : (e.place || '') };
+  let lastComment = e.comment || '';
+  let lastSnapshot = JSON.stringify(original);
 
+  // Schritt 1: Wetter
   dlg.querySelectorAll('#wx button').forEach(b => b.onclick = () => {
     const on = b.getAttribute('aria-pressed') !== 'true';
     b.setAttribute('aria-pressed', on);
     on ? weather.add(b.dataset.w) : weather.delete(b.dataset.w);
   });
 
-  // Smiley an der Cursorposition einfügen; mitten im Text beginnt eine neue Zeile.
-  dlg.querySelectorAll('#moods button').forEach(b => b.onclick = () => {
-    const v = fComment.value;
-    const pos = fComment.selectionStart ?? v.length;
-    const before = v.slice(0, pos);
-    const prefix = before && !before.endsWith('\n') ? '\n' : '';
-    const ins = prefix + b.dataset.m + ' ';
-    fComment.value = before + ins + v.slice(pos);
-    fComment.focus();
-    fComment.selectionStart = fComment.selectionEnd = pos + ins.length;
+  // Schritt 2: Vorschläge als neue Zeile einfügen
+  dlg.querySelectorAll('#suggest button').forEach(b => b.onclick = () => {
+    insertAtCursor(fProgram, PROGRAM_SUGGESTIONS[b.dataset.s].text, true);
   });
 
-  const updateQuarter = () => {
-    const useSame = fSame?.checked;
-    fQuarter.disabled = Boolean(useSame);
-    fQuarter.value = useSame ? prevQuarter : ownQuarter;
-    const q = fQuarter.value.trim();
-    if (useSame && !prevQuarter) qHint.textContent = 'Am Vortag ist noch kein Quartier eingetragen.';
-    else qHint.innerHTML = q ? `<a href="${mapsUrl(q)}" target="_blank" rel="noopener">📍 In Google Maps prüfen</a>` : '';
+  // Schritt 3: Smiley-Schnellauswahl
+  const renderMoods = () => {
+    const row = dlg.querySelector('#moods');
+    row.innerHTML = quickMoods().map(m => `<button type="button" data-m="${m}">${m}</button>`).join('')
+      + '<button type="button" class="reset" id="moodReset" aria-label="Standard-Smileys wiederherstellen">↺</button>';
+    row.querySelectorAll('[data-m]').forEach(b => onLongPress(b,
+      () => {
+        if (!confirm(`${b.dataset.m} aus der Schnellauswahl entfernen?`)) return;
+        db.hiddenMoods.push(b.dataset.m);
+        delete db.moodUsage[b.dataset.m];
+        save();
+        renderMoods();
+      },
+      () => insertAtCursor(fComment, b.dataset.m + ' ', true)));
+    row.querySelector('#moodReset').onclick = () => {
+      if (!confirm('Standard-Smileys wiederherstellen und alle Zähler auf null setzen?')) return;
+      db.moodUsage = {};
+      db.hiddenMoods = [];
+      lastComment = fComment.value.trim();
+      save();
+      renderMoods();
+    };
   };
-  fQuarter.oninput = () => { ownQuarter = fQuarter.value; updateQuarter(); };
+  renderMoods();
+
+  // Schritt 4: Quartier
+  const updateQuarter = () => {
+    const useSame = Boolean(fSame?.checked);
+    fQuarter.disabled = fPlace.disabled = useSame;
+    const q = useSame ? prev : own;
+    fQuarter.value = q.name;
+    fPlace.value = q.place;
+    if (useSame && !prev.name) qHint.textContent = 'Am Vortag ist noch kein Quartier eingetragen.';
+    else qHint.innerHTML = q.name ? `<a href="${mapsUrl(q)}" target="_blank" rel="noopener">📍 In Google Maps prüfen</a>` : '';
+  };
+  fQuarter.oninput = () => { own.name = fQuarter.value; updateQuarter(); };
+  fPlace.oninput = () => { own.place = fPlace.value; updateQuarter(); };
   if (fSame) fSame.onchange = updateQuarter;
   updateQuarter();
 
-  const persist = () => {
-    const comment = fComment.value.trim();
-    countMoods(e.comment, comment);
+  // Diktieren
+  let recognition = null;
+  dlg.querySelectorAll('[data-mic]').forEach(b => b.onclick = () => {
+    if (recognition) { recognition.stop(); return; }
+    const ta = dlg.querySelector('#' + b.dataset.mic);
+    recognition = new SpeechRec();
+    recognition.lang = 'de-DE';
+    recognition.interimResults = false;
+    recognition.onresult = ev => {
+      const text = Array.from(ev.results, r => r[0].transcript).join(' ').trim();
+      if (text) insertAtCursor(ta, text + ' ', false);
+    };
+    recognition.onerror = ev => {
+      if (ev.error === 'not-allowed') alert('Bitte den Mikrofon-Zugriff erlauben oder die Mikrofon-Taste der Tastatur verwenden.');
+    };
+    recognition.onend = () => { b.setAttribute('aria-pressed', 'false'); recognition = null; };
+    b.setAttribute('aria-pressed', 'true');
+    recognition.start();
+  });
+
+  const collect = () => {
+    const useSame = Boolean(fSame?.checked);
     const next = {
       weather: WEATHER.filter(w => weather.has(w)).join(''),
-      program: dlg.querySelector('#fProgram').value.trim(),
-      comment,
-      sameQuarter: Boolean(fSame?.checked),
-      quarter: fSame?.checked ? '' : ownQuarter.trim(),
+      program: fProgram.value.trim(),
+      comment: fComment.value.trim(),
+      sameQuarter: useSame,
+      quarter: useSame ? '' : own.name.trim(),
+      place: useSame ? '' : own.place.trim(),
     };
-    if (next.weather || next.program || next.comment || next.sameQuarter || next.quarter) trip.days[iso] = next;
-    else delete trip.days[iso];
+    return (next.weather || next.program || next.comment || next.sameQuarter || next.quarter || next.place) ? next : null;
+  };
+
+  const persist = () => {
+    const next = collect();
+    const snapshot = JSON.stringify(next);
+    if (snapshot === lastSnapshot) return;
+    countMoods(lastComment, next?.comment || '');
+    lastComment = next?.comment || '';
+    if (next) trip.days[iso] = next; else delete trip.days[iso];
+    if (save()) {
+      lastSnapshot = snapshot;
+      savedInfo.textContent = `Gespeichert ${nowStamp().time}`;
+    }
+  };
+
+  const restore = () => {
+    countMoods(lastComment, original?.comment || '');
+    if (original) trip.days[iso] = original; else delete trip.days[iso];
     save();
   };
 
+  autosaveTimer = setInterval(persist, AUTOSAVE_MS);
+
   dlg.querySelectorAll('[data-nav]').forEach(b => b.onclick = () => {
+    recognition?.stop();
     persist();
     openDayDialog(trip, days[idx + Number(b.dataset.nav)]);
   });
   dlg.onclose = () => {
-    if (dlg.returnValue === 'ok') persist();
+    clearInterval(autosaveTimer);
+    recognition?.stop();
+    if (dlg.returnValue === 'ok') persist(); else restore();
     render();
   };
 }
 
 /* ---------- Ausgabe ---------- */
 
-function outputFileName(trip) {
-  const n = new Date();
-  const created = `${pad(n.getDate())}.${pad(n.getMonth() + 1)}.${n.getFullYear()} ${pad(n.getHours())}.${pad(n.getMinutes())}`;
+function outputName(trip, version) {
   const title = trip.title.replace(/[\\/:*?"<>|]/g, '-');
-  return `${trip.start.replace(/-/g, '.')}-${trip.end.replace(/-/g, '.')} ${title} (erstellt ${created})`;
+  return `${trip.start.replace(/-/g, '.')}-${trip.end.replace(/-/g, '.')} ${title} V${pad(version, 3)}`;
 }
 
 const OUTPUT_CSS = `
   body { font: 11pt/1.4 -apple-system, "Segoe UI", Roboto, Arial, sans-serif; color: #000; background: #fff; margin: 24px; }
   h1 { font-size: 20pt; margin: 0 0 8px; }
-  h2 { font-size: 14pt; margin: 20px 0 6px; }
-  .meta td { border: none; padding: 1px 16px 1px 0; }
-  table.diary { border-collapse: collapse; width: 100%; margin-top: 12px; }
-  table.diary th, table.diary td { border: 1px solid #999; padding: 6px 8px; vertical-align: top; text-align: left; }
-  table.diary th { background: #eee; }
-  table.diary td { white-space: pre-line; }
-  table.diary td.day { white-space: nowrap; }
-  table.diary tr { break-inside: avoid; }
+  h2 { font-size: 14pt; margin: 20px 0 6px; break-after: avoid; page-break-after: avoid; }
+  table { border-collapse: collapse; }
+  table.grid.fit { width: auto; }
+  .meta td { border: none; padding: 1px 16px 1px 0; vertical-align: top; }
+  table.grid { width: 100%; margin-top: 12px; table-layout: auto; }
+  table.grid th, table.grid td { border: 1px solid #999; padding: 6px 8px; vertical-align: top; text-align: left; }
+  table.grid th { background: #eee; }
+  table.grid td.nw { white-space: nowrap; }
+  table.grid td.num { text-align: right; white-space: nowrap; }
+  table.grid tr { break-inside: avoid; }
+  .ln { display: flex; gap: .35em; }
+  .ln + .ln { margin-top: 2px; }
+  .ln .m { flex: none; }
+  .ln .t { min-width: 0; overflow-wrap: anywhere; }
+  .stats td { border: none; padding: 1px 16px 1px 0; }
   a { color: #1a5fb4; }
   p { white-space: pre-line; }
+  .created { margin-top: 28px; font-size: 9pt; color: #777; }
   @media print { body { margin: 0; } }
 `;
 
+function tripStats(trip) {
+  const days = tripDays(trip);
+  const rec = days.filter(d => isRecorded(trip, d));
+  const quarters = new Set(rec.map(d => quarterOf(trip, d).name).filter(Boolean));
+  const count = (list) => {
+    const c = {};
+    list.forEach(x => c[x] = (c[x] || 0) + 1);
+    return Object.entries(c).sort((a, b) => b[1] - a[1]);
+  };
+  const weather = count(rec.flatMap(d => graphemes(rawEntry(trip, d).weather)));
+  const moods = count(rec.flatMap(d => emojisIn(rawEntry(trip, d).comment))).slice(0, 3);
+  const fmt = list => list.map(([e, n]) => `${e} ${n}×`).join(' · ') || '–';
+  return [
+    ['Reisetage', `${days.length}, davon erfasst ${rec.length}`],
+    ['Quartiere', String(quarters.size)],
+    ['Wetter', fmt(weather)],
+    ['Häufigste Smileys', fmt(moods)],
+  ];
+}
+
+// Aufeinanderfolgende Nächte im selben Quartier werden zu einem Aufenthalt zusammengefasst.
+function quarterStays(trip) {
+  const stays = [];
+  for (const d of tripDays(trip)) {
+    const q = quarterOf(trip, d);
+    if (!q.name) continue;
+    const last = stays[stays.length - 1];
+    if (last && last.q.name === q.name && last.lastNight === addDays(d, -1)) {
+      last.lastNight = d;
+      last.nights++;
+    } else {
+      stays.push({ q, firstNight: d, lastNight: d, nights: 1 });
+    }
+  }
+  return stays;
+}
+
 // Inhalt der Ausgabe: nur erfasste Tage, ohne Wetter-Platzhalter.
-function outputBody(trip) {
-  const cell = s => esc(s);
+function outputBody(trip, version, stamp) {
   const rows = tripDays(trip).filter(iso => isRecorded(trip, iso)).map(iso => {
     const e = rawEntry(trip, iso);
     const q = quarterOf(trip, iso);
     return `<tr>
-      <td class="day">${dayLabel(iso)} ${esc(e.weather || '')}</td>
-      <td>${cell(formatProgram(e.program))}</td>
-      <td>${cell(e.comment)}</td>
-      <td>${q ? `<a href="${mapsUrl(q)}">${esc(q)}</a>` : ''}</td>
+      <td class="nw">${dayLabel(iso)} ${esc(e.weather || '')}</td>
+      <td>${linesHtml(programItems(e.program))}</td>
+      <td>${linesHtml(commentItems(e.comment))}</td>
+      <td>${q.name ? `<a href="${mapsUrl(q)}">${esc(q.name)}</a>` : ''}</td>
     </tr>`;
   }).join('');
+  const transport = transportText(trip);
+  const stays = trip.quarterList ? quarterStays(trip) : [];
   return `
     <h1>Reisetagebuch – ${esc(trip.title)}</h1>
     <table class="meta">
       <tr><td><b>Reiseteilnehmer:</b></td><td>${esc(trip.participants)}</td></tr>
       <tr><td><b>Reisezeitraum:</b></td><td>${fullDate(trip.start)} - ${fullDate(trip.end)}</td></tr>
+      ${transport ? `<tr><td><b>Reisemittel:</b></td><td>${esc(transport)}</td></tr>` : ''}
     </table>
-    <table class="diary">
+    <table class="grid">
       <thead><tr><th>Tag</th><th>Programm</th><th>🙂☹️😉</th><th>😴💤</th></tr></thead>
       <tbody>${rows || '<tr><td colspan="4">Noch keine Tage erfasst.</td></tr>'}</tbody>
     </table>
     <h2>Fazit</h2>
-    <p>${cell(trip.fazit || '')}</p>
+    <p>${esc(trip.fazit || '')}</p>
     <h2>Gesamtkosten</h2>
-    <p>${formatEuro(trip.kosten)}</p>`;
+    <p>${formatEuro(trip.kosten)}</p>
+    <h2>Statistik</h2>
+    <table class="stats">
+      ${tripStats(trip).map(([k, v]) => `<tr><td><b>${k}:</b></td><td>${esc(v)}</td></tr>`).join('')}
+    </table>
+    ${stays.length ? `
+      <h2>Quartierliste</h2>
+      <table class="grid fit">
+        <thead><tr><th>Quartier</th><th>Zeitraum</th><th>Nächte</th></tr></thead>
+        <tbody>${stays.map(s => `<tr>
+          <td><a href="${mapsUrl(s.q)}">${esc(s.q.name)}</a></td>
+          <td class="nw">${shortDate(s.firstNight)} - ${fullDate(addDays(s.lastNight, 1))}</td>
+          <td class="num">${s.nights}</td>
+        </tr>`).join('')}</tbody>
+      </table>` : ''}
+    <p class="created">Ausgabe V${pad(version, 3)} erstellt am ${stamp.date} um ${stamp.time}</p>`;
 }
 
 function openOutputDialog(trip) {
   const count = tripDays(trip).filter(iso => isRecorded(trip, iso)).length;
+  const nextVersion = (trip.outputCounter || 0) + 1;
   openDialog(`
     <form method="dialog">
       <div class="dlg-head">
@@ -675,17 +1057,24 @@ function openOutputDialog(trip) {
         <p class="muted">${count} erfasste${count === 1 ? 'r Tag' : ' Tage'} · Stand jetzt</p>
         <button type="button" class="choice" id="outHtml">
           <strong>🌐 HTML-Datei</strong>
-          <span class="muted">Wird direkt gespeichert, z. B. in der Dateien-App.</span>
+          <span class="muted">Wird direkt in der Dateien-App unter „Downloads“ gespeichert.</span>
         </button>
         <button type="button" class="choice" id="outPdf">
           <strong>📄 PDF</strong>
-          <span class="muted">Öffnet das Drucken-Menü. Dort über „Teilen“ → „In Dateien sichern“ als PDF ablegen.</span>
+          <span class="muted">Über das Drucken-Menü: dort „Teilen“ → „In Dateien sichern“.</span>
         </button>
-        <div class="hint" style="margin-top:14px">Dateiname: ${esc(outputFileName(trip))}</div>
+        <div class="hint" style="margin-top:14px">Dateiname: ${esc(outputName(trip, nextVersion))}<br>
+          Zusätzlich wird automatisch ein Backup gespeichert.</div>
       </div>
     </form>`);
-  dlg.querySelector('#outHtml').onclick = () => { dlg.close(); exportHtml(trip); };
-  dlg.querySelector('#outPdf').onclick = () => { dlg.close(); exportPdf(trip); };
+  dlg.querySelector('#outHtml').onclick = () => exportHtml(trip);
+  dlg.querySelector('#outPdf').onclick = () => exportPdf(trip);
+}
+
+function nextOutput(trip) {
+  trip.outputCounter = (trip.outputCounter || 0) + 1;
+  save();
+  return { version: trip.outputCounter, stamp: nowStamp() };
 }
 
 function downloadFile(name, content, type) {
@@ -696,36 +1085,85 @@ function downloadFile(name, content, type) {
   document.body.appendChild(a);
   a.click();
   a.remove();
-  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+}
+
+function backupInfo(name) {
+  return `<div class="step">
+      <strong>💾 Backup gespeichert</strong><br>
+      <span class="muted">${esc(name)}</span>
+      <div class="hint">Zu finden in der Dateien-App unter „Downloads“
+        (welcher Ordner das ist, steht unter Einstellungen → Apps → Safari → Downloads).</div>
+      <button type="button" class="link" id="againBackup" style="padding-left:0">Backup fehlt? Erneut sichern</button>
+    </div>`;
 }
 
 function exportHtml(trip) {
-  const name = outputFileName(trip);
+  const { version, stamp } = nextOutput(trip);
+  const name = outputName(trip, version) + '.html';
   const html = `<!doctype html>
 <html lang="de"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${esc(name)}</title>
+<title>${esc(outputName(trip, version))}</title>
 <style>${OUTPUT_CSS}</style></head>
-<body>${outputBody(trip)}</body></html>`;
-  downloadFile(name + '.html', html, 'text/html');
+<body>${outputBody(trip, version, stamp)}</body></html>`;
+  downloadFile(name, html, 'text/html');
+  // Das Backup folgt kurz danach, damit Safari beide Dateien annimmt.
+  setTimeout(() => {
+    const backupName = exportBackup();
+    showResult(`
+      <div class="step">
+        <strong>🌐 Ausgabe V${pad(version, 3)} gespeichert</strong><br>
+        <span class="muted">${esc(name)}</span>
+      </div>
+      ${backupInfo(backupName)}`);
+  }, 800);
 }
 
-// PDF über das Drucken-Menü; der Seitentitel wird von Safari als Dateiname vorgeschlagen.
+// PDF: zuerst das Backup sichern, dann über das Drucken-Menü (Seitentitel = Dateiname).
 function exportPdf(trip) {
-  const oldTitle = document.title;
-  printout.innerHTML = `<style>${OUTPUT_CSS.replace(/\bbody\b/g, '#printout')}</style>${outputBody(trip)}`;
-  document.title = outputFileName(trip);
-  const restore = () => { document.title = oldTitle; window.removeEventListener('afterprint', restore); };
-  window.addEventListener('afterprint', restore);
-  setTimeout(() => window.print(), 50);
+  const { version, stamp } = nextOutput(trip);
+  const backupName = exportBackup();
+  showResult(`
+    ${backupInfo(backupName)}
+    <button type="button" class="choice primary" id="openPrint">
+      <strong>📄 Weiter zum PDF</strong>
+      <span>Öffnet das Drucken-Menü für Ausgabe V${pad(version, 3)}.</span>
+    </button>`);
+  dlg.querySelector('#openPrint').onclick = () => {
+    dlg.close();
+    const oldTitle = document.title;
+    printout.innerHTML = `<style>${OUTPUT_CSS.replace(/\bbody\b/g, '#printout')}</style>${outputBody(trip, version, stamp)}`;
+    document.title = outputName(trip, version);
+    const restore = () => { document.title = oldTitle; window.removeEventListener('afterprint', restore); };
+    window.addEventListener('afterprint', restore);
+    setTimeout(() => window.print(), 50);
+  };
+}
+
+function showResult(html) {
+  openDialog(`
+    <form method="dialog">
+      <div class="dlg-head">
+        <span style="width:60px"></span>
+        <h3>Ausgabe</h3>
+        <button class="link" value="ok" style="width:60px"><b>Fertig</b></button>
+      </div>
+      <div class="dlg-body">${html}</div>
+    </form>`);
+  const again = dlg.querySelector('#againBackup');
+  if (again) again.onclick = () => {
+    const name = exportBackup();
+    alert(`Backup gespeichert:\n${name}`);
+  };
 }
 
 /* ---------- Backup ---------- */
 
 function exportBackup() {
-  const n = new Date();
-  const stamp = `${n.getFullYear()}.${pad(n.getMonth() + 1)}.${pad(n.getDate())} ${pad(n.getHours())}.${pad(n.getMinutes())}`;
-  downloadFile(`Reisetagebuch Backup ${stamp}.json`, JSON.stringify(db, null, 2), 'application/json');
+  const name = `Ω Backup Reisetagebuch ${nowStamp().file}.json`;
+  downloadFile(name, JSON.stringify(db, null, 2), 'application/json');
+  return name;
 }
 
 importFile.onchange = async () => {
@@ -736,9 +1174,9 @@ importFile.onchange = async () => {
     const data = JSON.parse(await file.text());
     if (!Array.isArray(data.trips)) throw new Error('Kein Reisetagebuch-Backup.');
     if (!confirm(`Backup mit ${data.trips.length} Reise(n) laden?\n\nDie aktuellen Daten auf diesem iPad werden ersetzt.`)) return;
-    data.moodUsage ||= {};
-    db = data;
+    db = normalize(data);
     save();
+    applyTheme();
     if (dlg.open) dlg.close();
     showTrip(pickStartTrip()?.id);
   } catch (e) {
@@ -748,7 +1186,12 @@ importFile.onchange = async () => {
 
 /* ---------- Start ---------- */
 
+applyTheme();
 showTrip(pickStartTrip()?.id);
+window.addEventListener('resize', () => {
+  const bar = document.getElementById('bar');
+  if (bar) document.documentElement.style.setProperty('--bar-h', bar.offsetHeight + 'px');
+});
 
 if ('serviceWorker' in navigator && location.protocol === 'https:') {
   navigator.serviceWorker.register('sw.js').catch(() => {});

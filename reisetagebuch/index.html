@@ -110,7 +110,10 @@
   .kosten span { font-size: 20px; }
 
   .fab { position: fixed; right: max(16px, env(safe-area-inset-right)); bottom: calc(16px + env(safe-area-inset-bottom)); display: flex; flex-direction: column; gap: 8px; z-index: 4; }
-  .fab button { width: 48px; height: 48px; border-radius: 50%; padding: 0; font-size: 20px; box-shadow: 0 4px 14px rgba(0,0,0,.18); }
+  .fab button { width: 48px; padding: 0; font-size: 20px; }
+  .files { margin: 8px 0 0; padding-left: 20px; }
+  .help p { margin: 12px 0 0; }
+  .help .ln { margin-top: 6px; }
 
   /* Dialoge */
   dialog {
@@ -163,8 +166,8 @@
 <body>
 <main id="app"></main>
 <div class="fab" id="fab" hidden>
-  <button id="toTop" aria-label="Nach oben">⬆︎</button>
-  <button id="toEnd" aria-label="Ans Ende">⬇︎</button>
+  <button id="toTop" aria-label="Nach oben">⬆️</button>
+  <button id="toEnd" aria-label="Ans Ende">⬇️</button>
 </div>
 <div id="printout"></div>
 <dialog id="dlg"></dialog>
@@ -188,6 +191,7 @@ const TRANSPORT = [
   { id: 'zug', icon: '🚆', name: 'Zug' },
   { id: 'rad', icon: '🚲', name: 'Fahrrad' },
   { id: 'flug', icon: '✈️', name: 'Flugzeug' },
+  { id: 'leihwagen', icon: '🚙', name: 'Leihwagen' },
   { id: 'schiff', icon: '🚢', name: 'Schiff' },
   { id: 'wohnmobil', icon: '🚐', name: 'Wohnmobil' },
   { id: 'fuss', icon: '🚶', name: 'Fuß' },
@@ -197,7 +201,7 @@ const PROGRAM_SUGGESTIONS = [
   { label: 'Weiterfahrt nach …', text: 'Weiterfahrt nach ' },
   { label: 'Rundgang durch …', text: 'Rundgang durch ' },
   { label: 'Besichtigung …', text: 'Besichtigung ' },
-  { label: 'Freetour', text: 'Freetour' },
+  { label: 'Freetour …', text: 'Freetour ' },
 ];
 const AUTOSAVE_MS = 10000;
 const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -410,8 +414,12 @@ function mapsUrl({ name, place }) {
   const query = [name, place].map(s => (s || '').trim()).filter(Boolean).join(', ');
   return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(query);
 }
+// Ganze Zahl mit Tausenderpunkt, z. B. 4850 → "4.850".
+function thousands(n) {
+  return String(Math.round(Number(n) || 0)).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+}
 function formatEuro(value) {
-  return '€ ' + Math.round(Number(value) || 0).toLocaleString('de-DE') + ',-';
+  return '€ ' + thousands(value) + ',-';
 }
 
 function insertAtCursor(ta, text, ownLine) {
@@ -536,7 +544,7 @@ function render({ scrollToGap = false } = {}) {
     <h2>Gesamtkosten</h2>
     <div class="kosten">
       <span>€</span>
-      <input type="number" id="kosten" inputmode="numeric" min="0" step="1" placeholder="0" value="${trip.kosten ?? ''}">
+      <input type="text" id="kosten" inputmode="numeric" placeholder="0" value="${trip.kosten == null ? '' : thousands(trip.kosten)}">
       <span>,-</span>
     </div>`;
 
@@ -564,11 +572,11 @@ function render({ scrollToGap = false } = {}) {
   app.querySelectorAll('tbody tr').forEach(tr => tr.onclick = () => openDayDialog(trip, tr.dataset.day));
   app.querySelector('#fazit').oninput = e => { trip.fazit = e.target.value; save(); };
   app.querySelector('#kosten').oninput = e => {
-    const v = e.target.value.trim();
-    trip.kosten = v === '' ? null : Math.max(0, Math.round(Number(v) || 0));
+    const digits = e.target.value.replace(/\D/g, '').replace(/^0+(?=\d)/, '').slice(0, 9);
+    trip.kosten = digits ? Number(digits) : null;
+    e.target.value = digits ? thousands(trip.kosten) : '';
     save();
   };
-  app.querySelector('#kosten').onblur = e => { e.target.value = trip.kosten ?? ''; };
 
   if (scrollToGap) {
     const row = app.querySelector('tr.gap');
@@ -633,17 +641,16 @@ function openTripsDialog() {
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:24px">
           <button type="button" id="exportAll">💾 Backup sichern</button>
           <button type="button" id="importAll">Backup laden</button>
+          <button type="button" id="openHelp">❓ Hilfe</button>
         </div>
-        <div class="hint">Das Backup enthält alle Reisen und wird in der Dateien-App unter „Downloads“ gespeichert.
+        <div class="hint">Das Backup enthält alle Reisen und wird über den Kurzbefehl in ${SHORTCUT_FOLDER} gespeichert.
           Bei jeder Ausgabe wird zusätzlich automatisch ein Backup gesichert.</div>
       </div>
     </form>`);
   dlg.querySelector('#newTrip').onclick = () => openTripDialog(null);
   dlg.querySelectorAll('[data-id]').forEach(b => b.onclick = () => { dlg.close(); showTrip(b.dataset.id); });
-  dlg.querySelector('#exportAll').onclick = () => {
-    const name = exportBackup();
-    alert(`Backup gespeichert:\n${name}\n\nZu finden in der Dateien-App unter „Downloads“.`);
-  };
+  dlg.querySelector('#exportAll').onclick = saveBackup;
+  dlg.querySelector('#openHelp').onclick = openHelpDialog;
   dlg.querySelector('#importAll').onclick = () => importFile.click();
 }
 
@@ -1043,6 +1050,26 @@ function outputBody(trip, version, stamp) {
     <p class="created">Ausgabe V${pad(version, 3)} erstellt am ${stamp.date} um ${stamp.time}</p>`;
 }
 
+/* ---------- Speichern über Kurzbefehl ---------- */
+
+// Die App legt die Dateien als JSON in die Zwischenablage und startet den Kurzbefehl,
+// der sie ohne Rückfrage im Ordner "Reisetagebuch" in iCloud Drive sichert.
+const SHORTCUT_NAME = 'Reisetagebuch speichern';
+const SHORTCUT_FOLDER = 'iCloud Drive → Reisetagebuch';
+
+function outputDocument(trip, version, stamp) {
+  return `<!doctype html>
+<html lang="de"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${esc(outputName(trip, version))}</title>
+<style>${OUTPUT_CSS}</style></head>
+<body>${outputBody(trip, version, stamp)}</body></html>`;
+}
+
+function backupFile() {
+  return { name: `Ω Backup Reisetagebuch ${nowStamp().file}.json`, type: 'json', content: JSON.stringify(db, null, 2) };
+}
+
 function openOutputDialog(trip) {
   const count = tripDays(trip).filter(iso => isRecorded(trip, iso)).length;
   const nextVersion = (trip.outputCounter || 0) + 1;
@@ -1057,24 +1084,98 @@ function openOutputDialog(trip) {
         <p class="muted">${count} erfasste${count === 1 ? 'r Tag' : ' Tage'} · Stand jetzt</p>
         <button type="button" class="choice" id="outHtml">
           <strong>🌐 HTML-Datei</strong>
-          <span class="muted">Wird direkt in der Dateien-App unter „Downloads“ gespeichert.</span>
+          <span class="muted">${esc(outputName(trip, nextVersion))}.html</span>
         </button>
         <button type="button" class="choice" id="outPdf">
           <strong>📄 PDF</strong>
-          <span class="muted">Über das Drucken-Menü: dort „Teilen“ → „In Dateien sichern“.</span>
+          <span class="muted">${esc(outputName(trip, nextVersion))}.pdf</span>
         </button>
-        <div class="hint" style="margin-top:14px">Dateiname: ${esc(outputName(trip, nextVersion))}<br>
-          Zusätzlich wird automatisch ein Backup gespeichert.</div>
+        <div class="hint" style="margin-top:14px">Gespeichert wird über den Kurzbefehl „${SHORTCUT_NAME}“
+          in ${SHORTCUT_FOLDER}, zusammen mit einem Backup.</div>
       </div>
     </form>`);
-  dlg.querySelector('#outHtml').onclick = () => exportHtml(trip);
-  dlg.querySelector('#outPdf').onclick = () => exportPdf(trip);
+  dlg.querySelector('#outHtml').onclick = () => createOutput(trip, 'html');
+  dlg.querySelector('#outPdf').onclick = () => createOutput(trip, 'pdf');
 }
 
 function nextOutput(trip) {
   trip.outputCounter = (trip.outputCounter || 0) + 1;
   save();
   return { version: trip.outputCounter, stamp: nowStamp() };
+}
+
+function createOutput(trip, kind) {
+  const { version, stamp } = nextOutput(trip);
+  const files = [
+    { name: `${outputName(trip, version)}.${kind}`, type: kind, content: outputDocument(trip, version, stamp) },
+    backupFile(),
+  ];
+  saveFiles(files, `Ausgabe V${pad(version, 3)}`, kind === 'pdf' ? { trip, version, stamp } : null);
+}
+
+function saveBackup() {
+  saveFiles([backupFile()], 'Backup', null);
+}
+
+// Muss direkt aus einem Antippen heraus aufgerufen werden (Zwischenablage).
+async function saveFiles(files, title, pdf) {
+  let started = false;
+  try {
+    await navigator.clipboard.writeText(JSON.stringify({ app: 'Reisetagebuch', files }));
+    started = true;
+  } catch (e) { /* Zwischenablage nicht verfügbar → nur Notlösung anbieten */ }
+  showSaveResult(files, title, started, pdf);
+  if (started) window.location.href = 'shortcuts://run-shortcut?name=' + encodeURIComponent(SHORTCUT_NAME);
+}
+
+function showSaveResult(files, title, started, pdf) {
+  openDialog(`
+    <form method="dialog">
+      <div class="dlg-head">
+        <span style="width:60px"></span>
+        <h3>${esc(title)}</h3>
+        <button class="link" value="ok" style="width:60px"><b>Fertig</b></button>
+      </div>
+      <div class="dlg-body">
+        <div class="step">
+          ${started
+            ? `<strong>▶️ Kurzbefehl „${SHORTCUT_NAME}“ gestartet</strong>
+               <div class="hint">Er speichert in ${SHORTCUT_FOLDER}:</div>`
+            : `<strong>⚠️ Der Kurzbefehl konnte nicht gestartet werden.</strong>
+               <div class="hint">Bitte die Notlösung unten verwenden. Diese Dateien sind vorbereitet:</div>`}
+          <ul class="files">${files.map(f => `<li>${esc(f.name)}</li>`).join('')}</ul>
+          ${started ? '<div class="hint">Danach über den App-Umschalter zurück ins Reisetagebuch wechseln.</div>' : ''}
+        </div>
+        <div class="step">
+          <strong>Kurzbefehl nicht installiert oder hat nicht reagiert?</strong>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
+            <button type="button" id="shareFiles">📤 Über Teilen-Menü speichern</button>
+            ${pdf ? '<button type="button" id="printPdf">🖨 PDF über Drucken-Menü</button>' : ''}
+            <button type="button" id="openHelp">❓ Kurzbefehl einrichten</button>
+          </div>
+          <div class="hint">Im Teilen-Menü „In Dateien sichern“ wählen.${pdf ? ' Das PDF selbst geht als Notlösung nur über das Drucken-Menü.' : ''}</div>
+        </div>
+      </div>
+    </form>`);
+  dlg.querySelector('#shareFiles').onclick = () => shareFiles(files.filter(f => f.type !== 'pdf'));
+  dlg.querySelector('#openHelp').onclick = openHelpDialog;
+  const print = dlg.querySelector('#printPdf');
+  if (print) print.onclick = () => { dlg.close(); printPdf(pdf); };
+}
+
+const MIME = { json: 'application/json', html: 'text/html', txt: 'text/plain' };
+
+async function shareFiles(files) {
+  const list = files.map(f => new File([f.content], f.name, { type: MIME[f.type] || 'application/octet-stream' }));
+  if (navigator.canShare && navigator.canShare({ files: list })) {
+    try {
+      await navigator.share({ files: list });
+    } catch (e) {
+      if (e.name !== 'AbortError') alert('Teilen fehlgeschlagen: ' + e.message);
+    }
+    return;
+  }
+  files.forEach(f => downloadFile(f.name, f.content, MIME[f.type]));
 }
 
 function downloadFile(name, content, type) {
@@ -1088,83 +1189,67 @@ function downloadFile(name, content, type) {
   setTimeout(() => URL.revokeObjectURL(a.href), 5000);
 }
 
-function backupInfo(name) {
-  return `<div class="step">
-      <strong>💾 Backup gespeichert</strong><br>
-      <span class="muted">${esc(name)}</span>
-      <div class="hint">Zu finden in der Dateien-App unter „Downloads“
-        (welcher Ordner das ist, steht unter Einstellungen → Apps → Safari → Downloads).</div>
-      <button type="button" class="link" id="againBackup" style="padding-left:0">Backup fehlt? Erneut sichern</button>
-    </div>`;
+// Notlösung für das PDF: Drucken-Menü, der Seitentitel wird als Dateiname vorgeschlagen.
+function printPdf({ trip, version, stamp }) {
+  const oldTitle = document.title;
+  printout.innerHTML = `<style>${OUTPUT_CSS.replace(/\bbody\b/g, '#printout')}</style>${outputBody(trip, version, stamp)}`;
+  document.title = outputName(trip, version);
+  const restore = () => { document.title = oldTitle; window.removeEventListener('afterprint', restore); };
+  window.addEventListener('afterprint', restore);
+  setTimeout(() => window.print(), 50);
 }
 
-function exportHtml(trip) {
-  const { version, stamp } = nextOutput(trip);
-  const name = outputName(trip, version) + '.html';
-  const html = `<!doctype html>
-<html lang="de"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${esc(outputName(trip, version))}</title>
-<style>${OUTPUT_CSS}</style></head>
-<body>${outputBody(trip, version, stamp)}</body></html>`;
-  downloadFile(name, html, 'text/html');
-  // Das Backup folgt kurz danach, damit Safari beide Dateien annimmt.
-  setTimeout(() => {
-    const backupName = exportBackup();
-    showResult(`
-      <div class="step">
-        <strong>🌐 Ausgabe V${pad(version, 3)} gespeichert</strong><br>
-        <span class="muted">${esc(name)}</span>
-      </div>
-      ${backupInfo(backupName)}`);
-  }, 800);
-}
-
-// PDF: zuerst das Backup sichern, dann über das Drucken-Menü (Seitentitel = Dateiname).
-function exportPdf(trip) {
-  const { version, stamp } = nextOutput(trip);
-  const backupName = exportBackup();
-  showResult(`
-    ${backupInfo(backupName)}
-    <button type="button" class="choice primary" id="openPrint">
-      <strong>📄 Weiter zum PDF</strong>
-      <span>Öffnet das Drucken-Menü für Ausgabe V${pad(version, 3)}.</span>
-    </button>`);
-  dlg.querySelector('#openPrint').onclick = () => {
-    dlg.close();
-    const oldTitle = document.title;
-    printout.innerHTML = `<style>${OUTPUT_CSS.replace(/\bbody\b/g, '#printout')}</style>${outputBody(trip, version, stamp)}`;
-    document.title = outputName(trip, version);
-    const restore = () => { document.title = oldTitle; window.removeEventListener('afterprint', restore); };
-    window.addEventListener('afterprint', restore);
-    setTimeout(() => window.print(), 50);
-  };
-}
-
-function showResult(html) {
+function openHelpDialog() {
+  const step = (n, html) => `<div class="ln"><span class="m"><b>${n}.</b></span><span class="t">${html}</span></div>`;
   openDialog(`
     <form method="dialog">
       <div class="dlg-head">
         <span style="width:60px"></span>
-        <h3>Ausgabe</h3>
+        <h3>Hilfe: Kurzbefehl</h3>
         <button class="link" value="ok" style="width:60px"><b>Fertig</b></button>
       </div>
-      <div class="dlg-body">${html}</div>
+      <div class="dlg-body help">
+        <p>Mit dem Kurzbefehl werden Ausgabe (HTML oder PDF) und Backup ohne Rückfrage in
+          <b>${SHORTCUT_FOLDER}</b> gespeichert. Einmalig einrichten, ca. 10 Minuten.</p>
+
+        <div class="step"><strong>A) Ordner anlegen</strong>
+          ${step(1, 'App <b>Dateien</b> öffnen → <b>iCloud Drive</b>.')}
+          ${step(2, 'Oben rechts <b>…</b> → <b>Neuer Ordner</b> → Name <b>Reisetagebuch</b>.')}
+        </div>
+
+        <div class="step"><strong>B) Kurzbefehl anlegen</strong>
+          ${step(1, 'App <b>Kurzbefehle</b> öffnen → oben rechts <b>＋</b>.')}
+          ${step(2, `Oben auf den Namen tippen → <b>Umbenennen</b> → genau <b>${SHORTCUT_NAME}</b>.`)}
+          ${step(3, 'Aktion <b>Zwischenablage abrufen</b> hinzufügen.')}
+          ${step(4, 'Aktion <b>Wörterbuchwert abrufen</b>: „<b>Wert</b> für <b>files</b> in <b>Zwischenablage</b> abrufen“.')}
+          ${step(5, 'Aktion <b>Wiederholen mit jedem</b> → Objekte in <b>Wörterbuchwert</b>.')}
+          <div class="hint" style="margin:6px 0">Die folgenden Schritte 6–14 innerhalb von „Wiederholen“:</div>
+          ${step(6, 'Aktion <b>Wörterbuchwert abrufen</b>: Wert für <b>content</b> in <b>Wiederholungsobjekt</b>. Ergebnis antippen → <b>Umbenennen</b> → <b>Inhalt</b>.')}
+          ${step(7, 'Aktion <b>Wörterbuchwert abrufen</b>: Wert für <b>name</b> in <b>Wiederholungsobjekt</b>. Umbenennen → <b>Dateiname</b>.')}
+          ${step(8, 'Aktion <b>Wörterbuchwert abrufen</b>: Wert für <b>type</b> in <b>Wiederholungsobjekt</b>. Umbenennen → <b>Typ</b>.')}
+          ${step(9, 'Aktion <b>Wenn</b>: <b>Typ</b> <b>ist</b> <b>pdf</b>.')}
+          ${step(10, 'Unter „Wenn“: <b>Rich Text aus HTML erstellen</b> aus <b>Inhalt</b>, danach <b>PDF erstellen</b> aus <b>Rich Text aus HTML</b>, danach <b>Name festlegen</b> von <b>PDF</b> auf <b>Dateiname</b>.')}
+          ${step(11, 'Darunter <b>Datei sichern</b>: <b>Umbenannte Datei</b> sichern, „Fragen, wo gesichert werden soll“ <b>aus</b>, Ziel <b>Reisetagebuch</b>, „Überschreiben, falls Datei existiert“ <b>ein</b>.')}
+          ${step(12, 'Unter „Sonst“: <b>Name festlegen</b> von <b>Inhalt</b> auf <b>Dateiname</b>.')}
+          ${step(13, 'Darunter wieder <b>Datei sichern</b> mit denselben Einstellungen wie in Schritt 11.')}
+          ${step(14, '„Ende Wenn“ und „Ende Wiederholen“ bleiben stehen, wie sie sind.')}
+          ${step(15, 'Ganz am Ende (nach „Ende Wiederholen“): <b>Mitteilung anzeigen</b> → Text <b>Reisetagebuch gespeichert ✅</b>.')}
+          ${step(16, 'Oben auf <b>Fertig</b> tippen.')}
+        </div>
+
+        <div class="step"><strong>C) Testen</strong>
+          <div class="hint">Speichert eine kleine Testdatei „Reisetagebuch Test.txt“ im Ordner.
+            Beim ersten Mal fragt das iPad nach Erlaubnis → <b>Immer erlauben</b>.</div>
+          <button type="button" id="testShortcut" style="margin-top:8px">🧪 Kurzbefehl testen</button>
+        </div>
+      </div>
     </form>`);
-  const again = dlg.querySelector('#againBackup');
-  if (again) again.onclick = () => {
-    const name = exportBackup();
-    alert(`Backup gespeichert:\n${name}`);
-  };
+  dlg.querySelector('#testShortcut').onclick = () => saveFiles(
+    [{ name: 'Reisetagebuch Test.txt', type: 'txt', content: `Test vom ${nowStamp().date} um ${nowStamp().time} – der Kurzbefehl funktioniert.` }],
+    'Test', null);
 }
 
 /* ---------- Backup ---------- */
-
-function exportBackup() {
-  const name = `Ω Backup Reisetagebuch ${nowStamp().file}.json`;
-  downloadFile(name, JSON.stringify(db, null, 2), 'application/json');
-  return name;
-}
 
 importFile.onchange = async () => {
   const file = importFile.files[0];

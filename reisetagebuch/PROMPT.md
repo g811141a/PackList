@@ -1,4 +1,4 @@
-# Reisetagebuch – Prompt (Stand 04.10.2026)
+# Reisetagebuch – Prompt (Stand 04.10.2026, Version 4)
 
 ```text
 Baue mir ein einfaches Reisetagebuch als Web-App für das iPad.
@@ -39,7 +39,7 @@ REISEN
 - Allgemeine Reisedaten: Titel, Reiseteilnehmer, Reisezeitraum,
   darunter Reisemittel per Antippen, Mehrfachauswahl möglich,
   in dieser Reihenfolge:
-  🚗 PKW · 🚆 Zug · 🚲 Fahrrad · ✈️ Flugzeug · 🚢 Schiff · 🚐 Wohnmobil · 🚶 Fuß
+  🚗 PKW · 🚆 Zug · 🚲 Fahrrad · ✈️ Flugzeug · 🚙 Leihwagen · 🚢 Schiff · 🚐 Wohnmobil · 🚶 Fuß
   Die gewählten Reisemittel werden mit Icons ausgegeben.
 - Option "Quartierliste in der Ausgabe": beim Anlegen der Reise
   wählbar und nachträglich änderbar.
@@ -55,7 +55,8 @@ HAUPTANSICHT (TABELLE)
   (die erste Lücke, auch wenn spätere Tage schon erfasst sind) und
   markiert diese Zeile.
 - Die obere Leiste mit den Schaltflächen bleibt beim Scrollen fixiert.
-- Unten rechts Icons zum schnellen Scrollen ans Ende und nach oben.
+- Unten rechts übereinander die Schaltflächen ⬆️ (nach oben) und ⬇️ (ans
+  Ende), im gleichen Aussehen wie die Dunkel-Schaltfläche, ohne Schatten.
 - Schaltfläche zum Aus-/Einblenden der leeren Tage; die letzte
   Einstellung wird gemerkt.
 - Dezente Fortschrittsanzeige, z. B. "Tag 42 von 80 · 38 erfasst".
@@ -76,7 +77,7 @@ ERFASSUNG – wenig eingeben, in ganz einfachen Schritten
   2. Programm: eine Zeile pro Punkt; mehrere Zeilen bekommen in Tabelle
      und Ausgabe ▫️ davor.
      Vorschläge zum Antippen: "Weiterfahrt nach …", "Rundgang durch …",
-     "Besichtigung …", "Freetour". Angetippt wird der Text als neue
+     "Besichtigung …", "Freetour …". Angetippt wird der Text als neue
      Zeile eingefügt; die "…" sind nur Platzhalter und werden nicht
      übernommen.
   3. Wie war's: Smiley + kurzer Text; mehrere Smiley-Zeilen möglich.
@@ -105,13 +106,20 @@ QUARTIER-SPALTE
 
 ABSCHLUSS
 - Freitextfeld "Fazit".
-- Ein Feld "Gesamtkosten" in Euro, immer ganze Euro,
-  Ausgabe z. B. als "€ 4.850,-".
+- Ein Feld "Gesamtkosten" in Euro, immer ganze Euro. Der Tausenderpunkt
+  erscheint schon beim Tippen ("4.850"), Ausgabe z. B. als "€ 4.850,-".
 
 AUSGABE
 - Ein Knopf "Ausgabe", danach Wahl zwischen HTML oder PDF.
-  - HTML: Datei wird direkt gespeichert (Dateien-App → Downloads).
-  - PDF: über das Drucken-Menü von Safari ("Als PDF sichern").
+- Gespeichert wird über einen iOS-Kurzbefehl "Reisetagebuch speichern":
+  Die App legt Ausgabe + Backup in die Zwischenablage und startet den
+  Kurzbefehl. Er speichert ohne Rückfrage in iCloud Drive → Reisetagebuch
+  (alles in einem Ordner) und erzeugt das PDF direkt (ohne Drucken-Menü).
+  Danach manuell über den App-Umschalter zurück zur App.
+- Notlösung, falls der Kurzbefehl fehlt oder nicht reagiert: Speichern
+  über das Teilen-Menü ("In Dateien sichern"), PDF über das Drucken-Menü.
+- Anleitung zum Einrichten des Kurzbefehls als Hilfe in der App
+  (Reisen → Hilfe), inkl. Testknopf.
 - Jederzeit möglich, auch mitten in der Reise (Zwischenstand).
 - Überschrift "Reisetagebuch – <Titel>".
 - Nur erfasste Tage, keine leeren Tage, keine Wetter-Platzhalter.
@@ -135,8 +143,10 @@ AUSGABE
 
 SICHERHEIT
 - Backup als Datei exportieren/importieren, enthält alle Reisen.
-- Bei jeder Ausgabe wird automatisch auch ein Backup gespeichert, mit
-  Hinweis, wo es abgelegt wurde (Dateien-App → Downloads).
+- Bei jeder Ausgabe wird automatisch auch ein Backup gespeichert
+  (über den Kurzbefehl im selben Ordner), mit Hinweis, wo es liegt.
+- Die App meldet ehrlich, dass der Kurzbefehl gestartet wurde – ob er
+  wirklich gespeichert hat, kann sie nicht prüfen.
 - Der Knopf "Backup sichern" bleibt zusätzlich bestehen.
 - Backup-Dateiname (ohne Versionszähler):
   "Ω Backup Reisetagebuch JJJJ.MM.TT hh.mm"

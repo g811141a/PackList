@@ -1,4 +1,4 @@
-# Reisetagebuch – Prompt (Stand 04.10.2026, Version 4)
+# Reisetagebuch – Prompt (Stand 04.10.2026, Version 5)
 
 ```text
 Baue mir ein einfaches Reisetagebuch als Web-App für das iPad.
@@ -111,15 +111,14 @@ ABSCHLUSS
 
 AUSGABE
 - Ein Knopf "Ausgabe", danach Wahl zwischen HTML oder PDF.
-- Gespeichert wird über einen iOS-Kurzbefehl "Reisetagebuch speichern":
-  Die App legt Ausgabe + Backup in die Zwischenablage und startet den
-  Kurzbefehl. Er speichert ohne Rückfrage in iCloud Drive → Reisetagebuch
-  (alles in einem Ordner) und erzeugt das PDF direkt (ohne Drucken-Menü).
-  Danach manuell über den App-Umschalter zurück zur App.
-- Notlösung, falls der Kurzbefehl fehlt oder nicht reagiert: Speichern
-  über das Teilen-Menü ("In Dateien sichern"), PDF über das Drucken-Menü.
-- Anleitung zum Einrichten des Kurzbefehls als Hilfe in der App
-  (Reisen → Hilfe), inkl. Testknopf.
+- HTML: Speichern über das Teilen-Menü ("In Dateien sichern", Ordner
+  frei wählbar).
+- PDF: direkt über das Drucken-Menü von Safari (dort Teilen → "In Dateien
+  sichern"); der Dateiname wird als Seitentitel vorgeschlagen.
+- Die App meldet ehrlich, dass sie das Teilen- bzw. Drucken-Menü geöffnet
+  hat (bzw. dass es abgebrochen wurde) – ob wirklich gespeichert wurde,
+  kann sie nicht prüfen.
+- Keine Hilfeseite.
 - Jederzeit möglich, auch mitten in der Reise (Zwischenstand).
 - Überschrift "Reisetagebuch – <Titel>".
 - Nur erfasste Tage, keine leeren Tage, keine Wetter-Platzhalter.
@@ -130,8 +129,9 @@ AUSGABE
   1. Fazit
   2. Gesamtkosten
   3. Statistik: Reisetage gesamt und davon erfasst, Anzahl der
-     Quartiere, Wetter-Verteilung (z. B. "🌤 40× · ☀️ 12× · 🌧 5×"),
-     die drei häufigsten Smileys
+     Quartiere, Wetter-Verteilung (z. B. "40×🌤 · 12×☀️ · 5×🌧"),
+     die drei häufigsten Smileys (z. B. "5×😊 · 3×😉 · 2×☹️") –
+     Anzahl vor dem Symbol, ohne Leerzeichen
   4. Quartierliste (Quartier, Zeitraum, Anzahl Nächte, Maps-Link),
      falls bei der Reise aktiviert
   5. Dezent als letzte Zeile:
@@ -143,11 +143,14 @@ AUSGABE
 
 SICHERHEIT
 - Backup als Datei exportieren/importieren, enthält alle Reisen.
-- Bei jeder Ausgabe wird automatisch auch ein Backup gespeichert
-  (über den Kurzbefehl im selben Ordner), mit Hinweis, wo es liegt.
-- Die App meldet ehrlich, dass der Kurzbefehl gestartet wurde – ob er
-  wirklich gespeichert hat, kann sie nicht prüfen.
-- Der Knopf "Backup sichern" bleibt zusätzlich bestehen.
+- Backup über den Knopf "Backup sichern" (Reisen), ebenfalls über das
+  Teilen-Menü ("In Dateien sichern").
+- Kein automatisches Backup bei der Ausgabe. Stattdessen erscheint nach
+  der Ausgabe eine Erinnerung mit Knopf "Backup jetzt sichern", aber nur,
+  wenn das letzte Backup mehr als 24 Stunden zurückliegt (beim PDF nach
+  dem Schließen des Drucken-Menüs).
+- Als Backup-Zeitpunkt zählt nur ein abgeschlossenes Teilen-Menü, ein
+  Abbruch zählt nicht.
 - Backup-Dateiname (ohne Versionszähler):
   "Ω Backup Reisetagebuch JJJJ.MM.TT hh.mm"
   z. B. "Ω Backup Reisetagebuch 2026.10.04 14.35.json"

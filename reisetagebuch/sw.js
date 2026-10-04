@@ -1,5 +1,5 @@
 // Offline-Cache: App-Dateien zuerst aus dem Netz holen, ohne Netz aus dem Cache.
-const CACHE = 'reisetagebuch-v4';
+const CACHE = 'reisetagebuch-v5';
 const FILES = ['./', 'index.html', 'manifest.json', 'icon-180.png', 'icon-512.png'];
 
 self.addEventListener('install', e => {

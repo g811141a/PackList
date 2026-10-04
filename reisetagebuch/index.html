@@ -1,0 +1,551 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Reisetagebuch">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#f6f3ee">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-180.png">
+<title>Reisetagebuch</title>
+<style>
+  :root {
+    --bg: #f6f3ee;
+    --card: #ffffff;
+    --ink: #22201c;
+    --muted: #8a847a;
+    --line: #e2ddd4;
+    --accent: #2f6f62;
+    --accent-ink: #ffffff;
+    --today: #fff6d6;
+    --row-hover: #f1ede6;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1b1a18;
+      --card: #252421;
+      --ink: #ece8e1;
+      --muted: #9a9489;
+      --line: #3a3833;
+      --accent: #6fbfa9;
+      --accent-ink: #10201c;
+      --today: #3a3420;
+      --row-hover: #2e2c28;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--ink); }
+  body {
+    font: 17px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    padding: env(safe-area-inset-top) max(16px, env(safe-area-inset-right)) 40px max(16px, env(safe-area-inset-left));
+    -webkit-text-size-adjust: 100%;
+  }
+  h1 { font-size: 30px; margin: 20px 0 6px; }
+  h2 { font-size: 20px; margin: 28px 0 8px; }
+  a { color: var(--accent); }
+  button, input, textarea, select { font: inherit; color: inherit; }
+  button {
+    border: 1px solid var(--line); background: var(--card); border-radius: 10px;
+    padding: 9px 14px; cursor: pointer; min-height: 44px;
+  }
+  button.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+  button.link { border: none; background: none; color: var(--accent); padding: 6px 8px; }
+  input[type=text], input[type=date], input[type=number], textarea {
+    width: 100%; border: 1px solid var(--line); border-radius: 10px; background: var(--card);
+    padding: 10px 12px; min-height: 44px;
+  }
+  textarea { resize: vertical; min-height: 96px; }
+  label { display: block; font-weight: 600; margin: 0 0 6px; }
+  .muted { color: var(--muted); }
+  .toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 12px 0; }
+  .spacer { flex: 1; }
+
+  /* Reiseliste */
+  .trips { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; margin-top: 16px; }
+  .trip-card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px;
+    text-align: left; min-height: 100px;
+  }
+  .trip-card strong { display: block; font-size: 19px; margin-bottom: 4px; }
+
+  /* Kopf einer Reise */
+  .meta { display: grid; grid-template-columns: max-content 1fr; gap: 2px 14px; margin: 4px 0 8px; }
+  .meta dt { font-weight: 600; }
+  .meta dd { margin: 0; }
+
+  /* Tabelle */
+  .table-wrap { overflow-x: auto; background: var(--card); border: 1px solid var(--line); border-radius: 12px; }
+  table { border-collapse: collapse; width: 100%; min-width: 760px; }
+  th, td { border-bottom: 1px solid var(--line); padding: 10px 12px; vertical-align: top; text-align: left; }
+  th { position: sticky; top: 0; background: var(--card); font-size: 15px; z-index: 1; }
+  td { white-space: pre-line; }
+  tbody tr { cursor: pointer; }
+  tbody tr:hover { background: var(--row-hover); }
+  tbody tr.today { background: var(--today); }
+  td.day { white-space: nowrap; width: 1%; }
+  td.day .wx { display: block; font-size: 18px; }
+  td.day .wx.empty { opacity: .25; }
+  td.quarter { width: 22%; }
+  td.quarter a { text-decoration: none; }
+  td.quarter a:hover { text-decoration: underline; }
+  .col-program { width: 30%; }
+
+  /* Bearbeiten-Dialog */
+  dialog {
+    border: none; border-radius: 18px; padding: 0; width: min(720px, 100vw - 24px);
+    max-height: calc(100vh - 40px); background: var(--bg); color: var(--ink);
+    box-shadow: 0 20px 60px rgba(0,0,0,.3);
+  }
+  dialog::backdrop { background: rgba(0,0,0,.35); }
+  .dlg-head { display: flex; align-items: center; gap: 8px; padding: 12px 16px; border-bottom: 1px solid var(--line); position: sticky; top: 0; background: var(--bg); z-index: 2; }
+  .dlg-head h3 { margin: 0; flex: 1; text-align: center; font-size: 19px; }
+  .dlg-body { padding: 8px 16px 20px; overflow-y: auto; }
+  .step { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px; margin-top: 12px; }
+  .step-num {
+    display: inline-flex; width: 26px; height: 26px; border-radius: 50%; background: var(--accent); color: var(--accent-ink);
+    align-items: center; justify-content: center; font-size: 14px; margin-right: 8px;
+  }
+  .emoji-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+  .emoji-row button { font-size: 24px; padding: 4px 8px; min-width: 48px; }
+  .emoji-row button[aria-pressed=true] { background: var(--accent); border-color: var(--accent); }
+  .hint { font-size: 14px; color: var(--muted); margin-top: 6px; }
+  .dlg-foot { display: flex; gap: 8px; padding: 12px 16px; border-top: 1px solid var(--line); position: sticky; bottom: 0; background: var(--bg); }
+
+  @media print {
+    @page { size: A4 landscape; margin: 12mm; }
+    body { background: #fff; color: #000; padding: 0; font-size: 11pt; }
+    .no-print, .toolbar, dialog { display: none !important; }
+    .table-wrap { border: none; overflow: visible; }
+    table { min-width: 0; }
+    th { position: static; }
+    tbody tr.today { background: none; }
+    td.day .wx.empty { display: none; }
+    tr { break-inside: avoid; }
+    a { color: #000; }
+  }
+</style>
+</head>
+<body>
+<main id="app"></main>
+
+<dialog id="dlg"></dialog>
+<input type="file" id="importFile" accept="application/json,.json" hidden>
+
+<script>
+'use strict';
+
+const app = document.getElementById('app');
+const dlg = document.getElementById('dlg');
+const importFile = document.getElementById('importFile');
+
+const STORAGE_KEY = 'reisetagebuch.v1';
+const WEEKDAYS = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+const WEATHER = ['☀️', '🌤', '⛅', '☁️', '🌦', '🌧', '⛈', '🌬', '❄️'];
+const MOODS = ['🙂', '😊', '😉', '👍', '😋', '😌', '😏', '😳', '🤪', '🥶', '🥵', '🤷🏻‍♂️', '☹️', '🤮'];
+
+/* ---------- Speicher ---------- */
+
+function load() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch (e) { /* leer starten */ }
+  return { trips: [] };
+}
+
+function save() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
+  } catch (e) {
+    alert('Speichern fehlgeschlagen. Bitte ein Backup exportieren.');
+  }
+}
+
+let db = load();
+let currentTripId = null;
+
+/* ---------- Datum ---------- */
+
+// Datumsangaben immer als 'YYYY-MM-DD', gerechnet in UTC, damit Sommerzeit nicht stört.
+function parseISO(iso) {
+  const [y, m, d] = iso.split('-').map(Number);
+  return new Date(Date.UTC(y, m - 1, d));
+}
+function toISO(date) { return date.toISOString().slice(0, 10); }
+function todayISO() {
+  const n = new Date();
+  return toISO(new Date(Date.UTC(n.getFullYear(), n.getMonth(), n.getDate())));
+}
+function addDays(iso, n) {
+  const d = parseISO(iso);
+  d.setUTCDate(d.getUTCDate() + n);
+  return toISO(d);
+}
+function dayLabel(iso) {
+  const d = parseISO(iso);
+  const dd = String(d.getUTCDate()).padStart(2, '0');
+  const mm = String(d.getUTCMonth() + 1).padStart(2, '0');
+  return `${WEEKDAYS[d.getUTCDay()]}, ${dd}.${mm}.`;
+}
+function fullDate(iso) {
+  const d = parseISO(iso);
+  return `${String(d.getUTCDate()).padStart(2, '0')}.${String(d.getUTCMonth() + 1).padStart(2, '0')}.${d.getUTCFullYear()}`;
+}
+function tripDays(trip) {
+  const days = [];
+  if (!trip.start || !trip.end || trip.end < trip.start) return days;
+  for (let d = trip.start; d <= trip.end; d = addDays(d, 1)) days.push(d);
+  return days;
+}
+
+/* ---------- Hilfen ---------- */
+
+function esc(s) {
+  return String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+function mapsUrl(place) {
+  return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(place.trim());
+}
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+function getTrip(id) { return db.trips.find(t => t.id === id); }
+function entry(trip, iso) { return trip.days[iso] || {}; }
+
+// Mehrzeiliges Programm bekommt ▫️-Aufzählungszeichen, eine einzelne Zeile bleibt schlicht.
+function formatProgram(text) {
+  const lines = (text || '').split('\n').map(l => l.trim()).filter(Boolean);
+  if (lines.length <= 1) return lines.join('');
+  return lines.map(l => (/^(▫️|▫|-|•)/.test(l) ? l : '▫️' + l)).join('\n');
+}
+
+// Letztes Quartier vor diesem Tag – wird beim Erfassen automatisch vorgeschlagen.
+function previousQuarter(trip, iso) {
+  const days = tripDays(trip).filter(d => d < iso).reverse();
+  for (const d of days) if (trip.days[d]?.quarter) return trip.days[d].quarter;
+  return '';
+}
+
+/* ---------- Ansicht: Reiseliste ---------- */
+
+function renderHome() {
+  currentTripId = null;
+  const trips = [...db.trips].sort((a, b) => (b.start || '').localeCompare(a.start || ''));
+  app.innerHTML = `
+    <h1>Reisetagebuch</h1>
+    <div class="toolbar">
+      <button class="primary" id="newTrip">＋ Neue Reise</button>
+      <span class="spacer"></span>
+      <button id="exportAll">Backup sichern</button>
+      <button id="importAll">Backup laden</button>
+    </div>
+    ${trips.length ? '' : '<p class="muted">Noch keine Reise angelegt.</p>'}
+    <div class="trips">
+      ${trips.map(t => `
+        <button class="trip-card" data-id="${t.id}">
+          <strong>${esc(t.title || 'Reise')}</strong>
+          <span class="muted">${t.start ? fullDate(t.start) : ''} – ${t.end ? fullDate(t.end) : ''}</span><br>
+          <span class="muted">${esc(t.participants)}</span>
+        </button>`).join('')}
+    </div>`;
+  app.querySelector('#newTrip').onclick = () => openTripDialog(null);
+  app.querySelector('#exportAll').onclick = exportBackup;
+  app.querySelector('#importAll').onclick = () => importFile.click();
+  app.querySelectorAll('.trip-card').forEach(b => b.onclick = () => renderTrip(b.dataset.id));
+}
+
+/* ---------- Ansicht: eine Reise ---------- */
+
+function renderTrip(id) {
+  const trip = getTrip(id);
+  if (!trip) return renderHome();
+  currentTripId = id;
+  const today = todayISO();
+
+  const rows = tripDays(trip).map(iso => {
+    const e = entry(trip, iso);
+    const wx = e.weather
+      ? `<span class="wx">${esc(e.weather)}</span>`
+      : `<span class="wx empty">☀️🌤🌦🌧</span>`;
+    const q = e.quarter
+      ? `<a href="${mapsUrl(e.quarter)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">📍 ${esc(e.quarter)}</a>`
+      : '';
+    return `<tr data-day="${iso}" class="${iso === today ? 'today' : ''}">
+      <td class="day">${dayLabel(iso)}${wx}</td>
+      <td>${esc(formatProgram(e.program))}</td>
+      <td>${esc(e.comment || '')}</td>
+      <td class="quarter">${q}</td>
+    </tr>`;
+  }).join('');
+
+  app.innerHTML = `
+    <div class="toolbar no-print">
+      <button class="link" id="back">‹ Alle Reisen</button>
+      <span class="spacer"></span>
+      <button id="editTrip">✏️ Reise</button>
+      <button id="copyTable">📋 Kopieren</button>
+      <button id="print">🖨 PDF / Drucken</button>
+    </div>
+    <h1>${esc(trip.title || 'Reisetagebuch')}</h1>
+    <dl class="meta">
+      <dt>Reiseteilnehmer:</dt><dd>${esc(trip.participants)}</dd>
+      <dt>Reisezeitraum:</dt><dd>${fullDate(trip.start)} – ${fullDate(trip.end)}</dd>
+    </dl>
+    <div class="table-wrap">
+      <table id="diary">
+        <thead><tr>
+          <th>Tag</th><th class="col-program">Programm</th><th>🙂☹️😉</th><th>😴💤</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+
+    <h2>Fazit</h2>
+    <textarea id="fazit" placeholder="Was bleibt von dieser Reise?">${esc(trip.fazit || '')}</textarea>
+
+    <h2>Gesamtkosten</h2>
+    <input type="text" id="kosten" inputmode="decimal" placeholder="€ 0,-" value="${esc(trip.kosten || '')}">
+    <div class="toolbar no-print" style="margin-top:28px">
+      <span class="spacer"></span>
+      <button class="link" id="deleteTrip" style="color:#b33">Reise löschen</button>
+    </div>`;
+
+  app.querySelector('#back').onclick = renderHome;
+  app.querySelector('#editTrip').onclick = () => openTripDialog(trip);
+  app.querySelector('#print').onclick = () => window.print();
+  app.querySelector('#copyTable').onclick = () => copyTable(trip);
+  app.querySelector('#deleteTrip').onclick = () => {
+    if (confirm(`„${trip.title}“ wirklich löschen? Das kann nicht rückgängig gemacht werden.`)) {
+      db.trips = db.trips.filter(t => t.id !== trip.id);
+      save(); renderHome();
+    }
+  };
+  app.querySelectorAll('tbody tr').forEach(tr => tr.onclick = () => openDayDialog(trip, tr.dataset.day));
+  app.querySelector('#fazit').oninput = e => { trip.fazit = e.target.value; save(); };
+  app.querySelector('#kosten').oninput = e => { trip.kosten = e.target.value; save(); };
+
+  const todayRow = app.querySelector('tr.today');
+  if (todayRow) todayRow.scrollIntoView({ block: 'center' });
+}
+
+/* ---------- Dialog: Reise anlegen / bearbeiten ---------- */
+
+function openTripDialog(trip) {
+  const isNew = !trip;
+  const t = trip || { title: '', participants: '', start: todayISO(), end: addDays(todayISO(), 14) };
+  dlg.innerHTML = `
+    <form method="dialog">
+      <div class="dlg-head">
+        <button type="button" class="link" data-act="cancel">Abbrechen</button>
+        <h3>${isNew ? 'Neue Reise' : 'Reise bearbeiten'}</h3>
+        <button class="link" value="ok"><b>Fertig</b></button>
+      </div>
+      <div class="dlg-body">
+        <div class="step"><label for="fTitle">Titel</label>
+          <input type="text" id="fTitle" value="${esc(t.title)}" placeholder="z. B. Australien 2026"></div>
+        <div class="step"><label for="fPeople">Reiseteilnehmer</label>
+          <input type="text" id="fPeople" value="${esc(t.participants)}" placeholder="z. B. Gerhild & Arnold"></div>
+        <div class="step"><label>Reisezeitraum</label>
+          <div style="display:flex;gap:10px">
+            <input type="date" id="fStart" value="${t.start}">
+            <input type="date" id="fEnd" value="${t.end}">
+          </div></div>
+      </div>
+    </form>`;
+  dlg.querySelector('[data-act=cancel]').onclick = () => dlg.close('cancel');
+  dlg.onclose = () => {
+    if (dlg.returnValue !== 'ok') return;
+    const start = dlg.querySelector('#fStart').value;
+    const end = dlg.querySelector('#fEnd').value;
+    if (!start || !end || end < start) { alert('Bitte einen gültigen Zeitraum wählen.'); return; }
+    const target = trip || { id: uid(), days: {} };
+    target.title = dlg.querySelector('#fTitle').value.trim() || 'Reise';
+    target.participants = dlg.querySelector('#fPeople').value.trim();
+    target.start = start;
+    target.end = end;
+    if (isNew) db.trips.push(target);
+    save();
+    renderTrip(target.id);
+  };
+  dlg.returnValue = '';
+  dlg.showModal();
+}
+
+/* ---------- Dialog: einen Tag erfassen ---------- */
+
+function openDayDialog(trip, iso) {
+  const e = entry(trip, iso);
+  const days = tripDays(trip);
+  const idx = days.indexOf(iso);
+  const weather = new Set(Array.from(new Intl.Segmenter().segment(e.weather || '')).map(s => s.segment));
+  const suggested = e.quarter || previousQuarter(trip, iso);
+  const knownQuarters = [...new Set(Object.values(trip.days).map(d => d.quarter).filter(Boolean))];
+
+  dlg.innerHTML = `
+    <form method="dialog">
+      <div class="dlg-head">
+        <button type="button" class="link" data-nav="-1" ${idx <= 0 ? 'disabled' : ''}>‹ Vortag</button>
+        <h3>${dayLabel(iso)}</h3>
+        <button type="button" class="link" data-nav="1" ${idx >= days.length - 1 ? 'disabled' : ''}>Nächster ›</button>
+      </div>
+      <div class="dlg-body">
+        <div class="step">
+          <label><span class="step-num">1</span>Wetter</label>
+          <div class="emoji-row" id="wx">
+            ${WEATHER.map(w => `<button type="button" aria-pressed="${weather.has(w)}" data-w="${w}">${w}</button>`).join('')}
+          </div>
+        </div>
+        <div class="step">
+          <label for="fProgram"><span class="step-num">2</span>Programm</label>
+          <textarea id="fProgram" placeholder="Was habt ihr gemacht? Eine Zeile pro Punkt.">${esc(e.program || '')}</textarea>
+          <div class="hint">Mehrere Zeilen werden automatisch zu ▫️-Punkten.</div>
+        </div>
+        <div class="step">
+          <label for="fComment"><span class="step-num">3</span>Wie war's?</label>
+          <div class="emoji-row" id="moods">
+            ${MOODS.map(m => `<button type="button" data-m="${m}">${m}</button>`).join('')}
+          </div>
+          <textarea id="fComment" placeholder="Smiley antippen, dann ein paar Worte dazu.">${esc(e.comment || '')}</textarea>
+        </div>
+        <div class="step">
+          <label for="fQuarter"><span class="step-num">4</span>Quartier</label>
+          <input type="text" id="fQuarter" list="quarterList" value="${esc(suggested)}" placeholder="z. B. Oaks Townsville Hotel">
+          <datalist id="quarterList">${knownQuarters.map(q => `<option value="${esc(q)}">`).join('')}</datalist>
+          <div class="hint" id="qHint"></div>
+        </div>
+      </div>
+      <div class="dlg-foot">
+        <button type="button" data-act="cancel">Abbrechen</button>
+        <span class="spacer"></span>
+        <button class="primary" value="ok">Speichern</button>
+      </div>
+    </form>`;
+
+  const fComment = dlg.querySelector('#fComment');
+  const fQuarter = dlg.querySelector('#fQuarter');
+  const qHint = dlg.querySelector('#qHint');
+
+  dlg.querySelectorAll('#wx button').forEach(b => b.onclick = () => {
+    const on = b.getAttribute('aria-pressed') !== 'true';
+    b.setAttribute('aria-pressed', on);
+    on ? weather.add(b.dataset.w) : weather.delete(b.dataset.w);
+  });
+
+  // Smiley an der Cursorposition einfügen; steht der Cursor mitten in Text, beginnt eine neue Zeile.
+  dlg.querySelectorAll('#moods button').forEach(b => b.onclick = () => {
+    const v = fComment.value;
+    const pos = fComment.selectionStart ?? v.length;
+    const before = v.slice(0, pos);
+    const prefix = before && !before.endsWith('\n') ? '\n' : '';
+    const ins = prefix + b.dataset.m + ' ';
+    fComment.value = before + ins + v.slice(pos);
+    fComment.focus();
+    fComment.selectionStart = fComment.selectionEnd = pos + ins.length;
+  });
+
+  const updateHint = () => {
+    const q = fQuarter.value.trim();
+    qHint.innerHTML = q
+      ? `<a href="${mapsUrl(q)}" target="_blank" rel="noopener">📍 In Google Maps prüfen</a>`
+      : 'Wird vom Vortag übernommen, sobald dort ein Quartier steht.';
+  };
+  fQuarter.oninput = updateHint;
+  updateHint();
+
+  const persist = () => {
+    trip.days[iso] = {
+      weather: WEATHER.filter(w => weather.has(w)).join(''),
+      program: dlg.querySelector('#fProgram').value.trim(),
+      comment: fComment.value.trim(),
+      quarter: fQuarter.value.trim(),
+    };
+    save();
+  };
+
+  dlg.querySelectorAll('[data-nav]').forEach(b => b.onclick = () => {
+    persist();
+    dlg.onclose = null;
+    dlg.close();
+    openDayDialog(trip, days[idx + Number(b.dataset.nav)]);
+  });
+  dlg.querySelector('[data-act=cancel]').onclick = () => dlg.close('cancel');
+  dlg.onclose = () => {
+    if (dlg.returnValue === 'ok') persist();
+    renderTrip(trip.id);
+  };
+  dlg.returnValue = '';
+  dlg.showModal();
+}
+
+/* ---------- Kopieren als Tabelle (für Word, Pages, Mail) ---------- */
+
+async function copyTable(trip) {
+  const cell = s => esc(s).replace(/\n/g, '<br>');
+  const rows = tripDays(trip).map(iso => {
+    const e = entry(trip, iso);
+    const q = e.quarter ? `<a href="${mapsUrl(e.quarter)}">${esc(e.quarter)}</a>` : '';
+    return `<tr><td>${dayLabel(iso)} ${esc(e.weather || '')}</td><td>${cell(formatProgram(e.program))}</td><td>${cell(e.comment)}</td><td>${q}</td></tr>`;
+  }).join('');
+  const html = `<h1>${esc(trip.title)}</h1>
+    <p>Reiseteilnehmer: ${esc(trip.participants)}<br>Reisezeitraum: ${fullDate(trip.start)} - ${fullDate(trip.end)}</p>
+    <table border="1" cellpadding="4" style="border-collapse:collapse">
+      <tr><th>Tag</th><th>Programm</th><th>🙂☹️😉</th><th>😴💤</th></tr>${rows}
+    </table>
+    <h2>Fazit</h2><p>${cell(trip.fazit)}</p>
+    <h2>Gesamtkosten</h2><p>${esc(trip.kosten || '€ 0,-')}</p>`;
+  const text = tripDays(trip).map(iso => {
+    const e = entry(trip, iso);
+    return [dayLabel(iso) + ' ' + (e.weather || ''), formatProgram(e.program), e.comment || '', e.quarter || ''].join('\t');
+  }).join('\n');
+  try {
+    await navigator.clipboard.write([new ClipboardItem({
+      'text/html': new Blob([html], { type: 'text/html' }),
+      'text/plain': new Blob([text], { type: 'text/plain' }),
+    })]);
+    alert('Tabelle kopiert – jetzt z. B. in Word, Pages oder eine Mail einfügen.');
+  } catch (err) {
+    alert('Kopieren wird hier nicht unterstützt. Alternativ „PDF / Drucken“ verwenden.');
+  }
+}
+
+/* ---------- Backup ---------- */
+
+function exportBackup() {
+  const blob = new Blob([JSON.stringify(db, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `reisetagebuch-backup-${todayISO()}.json`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+
+importFile.onchange = async () => {
+  const file = importFile.files[0];
+  importFile.value = '';
+  if (!file) return;
+  try {
+    const data = JSON.parse(await file.text());
+    if (!Array.isArray(data.trips)) throw new Error('Kein Reisetagebuch-Backup');
+    if (!confirm(`Backup mit ${data.trips.length} Reise(n) laden? Die aktuellen Daten werden ersetzt.`)) return;
+    db = data;
+    save();
+    renderHome();
+  } catch (e) {
+    alert('Die Datei konnte nicht gelesen werden: ' + e.message);
+  }
+};
+
+/* ---------- Start ---------- */
+
+
+if (db.trips.length === 1) renderTrip(db.trips[0].id); else renderHome();
+
+if ('serviceWorker' in navigator && location.protocol === 'https:') {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+</script>
+</body>
+</html>

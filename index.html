@@ -463,8 +463,9 @@ function foodItems(text, place) {
 
 function foodHtml(items, term = '', inApp = false) {
   return items.map(({ m, name, rest, maps }) =>
-    `<div class="ln">${m ? `<span class="m">${esc(m)}</span>` : ''}<span class="t">${maps
-      ? `📍<a href="${maps}"${linkAttrs(inApp)}>${highlight(name, term)}</a>${highlight(rest, term)}`
+    // Smileys und 📍 bilden gemeinsam die linke Spalte, damit Folgezeilen unter dem Namen beginnen.
+    `<div class="ln">${m || maps ? `<span class="m">${esc(m)}${maps ? '📍' : ''}</span>` : ''}<span class="t">${maps
+      ? `<a href="${maps}"${linkAttrs(inApp)}>${highlight(name, term)}</a>${highlight(rest, term)}`
       : highlight(name + rest, term)}</span></div>`).join('');
 }
 

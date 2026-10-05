@@ -1,4 +1,4 @@
-# Reiselogbuch – Prompt (Stand 05.10.2026, Version 13)
+# Reiselogbuch – Prompt (Stand 05.10.2026, Version 14)
 
 ```text
 Baue mir ein einfaches Reiselogbuch als Web-App für das iPad.
@@ -140,6 +140,8 @@ ERFASSUNG – wenig eingeben, in ganz einfachen Schritten
      Darstellung "🕛😋 📍Hard Rock Café – Steak war super": 📍 ist nur
      Zeichen, nur der Name des Lokals (bis einschließlich letztem
      Buchstaben) ist der Link, ab dem Bindestrich normaler Text.
+     Smileys und 📍 bilden gemeinsam die linke Spalte: bei einem Umbruch
+     beginnt die Folgezeile genau unter dem Namen (wie beim Quartier).
      Checkbox "keinen Google-Maps Link" rechts in der Kopfzeile des
      Schritts: zeigt den Zustand der Zeile mit dem Cursor und setzt bzw.
      entfernt dort ein "⊘" am Zeilenanfang; diese Zeile erscheint ohne 📍

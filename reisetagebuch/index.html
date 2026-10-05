@@ -23,7 +23,10 @@
     --danger: #b3261e;
     --warn: #c07a12;
     --focus: #fff1c2;
-    --row-hover: #f1ede6;
+    --row-hover: #ebe7e0;
+    --th-bg: #d9d9d9;
+    --th-line: #a5a5a5;
+    --zebra: #f5f5f5;
     --bar-h: 64px;
     color-scheme: light;
   }
@@ -31,13 +34,15 @@
     :root:not([data-theme="light"]) {
       --bg: #1b1a18; --card: #252421; --ink: #ece8e1; --muted: #9a9489; --line: #3a3833;
       --accent: #6fbfa9; --accent-ink: #10201c; --danger: #f2948c; --warn: #e2a64b;
-      --focus: #45391a; --row-hover: #2e2c28; color-scheme: dark;
+      --focus: #45391a; --row-hover: #34322e; color-scheme: dark;
+      --th-bg: #3b3a37; --th-line: #625f5a; --zebra: #2e2d2a;
     }
   }
   :root[data-theme="dark"] {
     --bg: #1b1a18; --card: #252421; --ink: #ece8e1; --muted: #9a9489; --line: #3a3833;
     --accent: #6fbfa9; --accent-ink: #10201c; --danger: #f2948c; --warn: #e2a64b;
-    --focus: #45391a; --row-hover: #2e2c28; color-scheme: dark;
+    --focus: #45391a; --row-hover: #34322e; color-scheme: dark;
+    --th-bg: #3b3a37; --th-line: #625f5a; --zebra: #2e2d2a;
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; background: var(--bg); color: var(--ink); }
@@ -57,7 +62,8 @@
   button:disabled { opacity: .4; cursor: default; }
   button.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
   button.link { border: none; background: none; color: var(--accent); padding: 6px 8px; }
-  button.danger { color: var(--danger); }
+  button.danger { color: var(--danger); border-color: var(--danger); }
+  button.primary.danger { background: var(--danger); color: #fff; }
   button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
   input[type=text], input[type=search], input[type=date], input[type=number], textarea {
     width: 100%; border: 1px solid var(--line); border-radius: 10px; background: var(--card);
@@ -75,7 +81,7 @@
     display: flex; gap: 8px; flex-wrap: wrap; align-items: center;
     padding: calc(env(safe-area-inset-top) + 10px) 0 10px; border-bottom: 1px solid var(--line);
   }
-  .bar input[type=search] { width: 220px; flex: 0 1 220px; }
+  .bar input[type=search] { width: 200px; flex: 0 1 200px; }
   .bar .hits { font-size: 14px; }
 
   .meta { display: grid; grid-template-columns: max-content 1fr; gap: 2px 14px; margin: 4px 0 6px; }
@@ -84,11 +90,15 @@
   .progress { font-size: 14px; color: var(--muted); margin: 0 0 12px; }
 
   /* Tabelle */
-  .table-wrap { background: var(--card); border: 1px solid var(--line); border-radius: 12px; }
+  .table-wrap { background: var(--card); border: 1px solid var(--th-line); border-radius: 12px; overflow: clip; }
   table.days { border-collapse: separate; border-spacing: 0; width: 100%; }
   table.days th, table.days td { border-bottom: 1px solid var(--line); padding: 10px 12px; vertical-align: top; text-align: left; }
-  table.days th { position: sticky; top: var(--bar-h); background: var(--card); font-size: 15px; z-index: 2; }
+  table.days td + td { border-left: 1px solid var(--line); }
+  table.days th { position: sticky; top: var(--bar-h); background: var(--th-bg); border-bottom-color: var(--th-line); font-size: 15px; z-index: 2; }
+  table.days th + th { border-left: 1px solid var(--th-line); }
+  table.days tbody tr:last-child td { border-bottom: none; }
   table.days tbody tr { cursor: pointer; }
+  table.days tbody tr.alt { background: var(--zebra); }
   table.days tbody tr:hover { background: var(--row-hover); }
   table.days tbody tr.gap { background: var(--focus); box-shadow: inset 4px 0 0 var(--accent); }
   td.day { white-space: nowrap; width: 1%; }
@@ -106,6 +116,12 @@
   .ln .m { flex: none; }
   .ln .t { min-width: 0; overflow-wrap: anywhere; }
 
+  .fazit-box { display: block; width: 100%; text-align: left; padding: 12px 14px; min-height: 60px; border-radius: 12px; }
+  .trip-row { display: flex; gap: 8px; margin-top: 10px; }
+  .trip-row .choice { margin: 0; flex: 1; }
+  .trip-row .edit { width: 56px; font-size: 20px; flex: none; }
+  #msg { width: min(480px, 100vw - 32px); }
+  .msg-text { padding: 8px 2px; }
   .kosten { display: flex; align-items: center; gap: 10px; max-width: 260px; }
   .kosten span { font-size: 20px; }
 
@@ -121,7 +137,7 @@
   dialog::backdrop { background: rgba(0,0,0,.35); }
   dialog form { display: flex; flex-direction: column; max-height: calc(100vh - 40px); }
   .dlg-head { display: flex; align-items: center; gap: 8px; padding: 12px 16px; border-bottom: 1px solid var(--line); }
-  .dlg-head h3 { margin: 0; flex: 1; text-align: center; font-size: 19px; }
+  .dlg-head h3 { margin: 0; flex: 1; text-align: center; font-size: 19px; min-height: 28px; line-height: 28px; }
   .dlg-body { padding: 8px 16px 20px; overflow-y: auto; flex: 1; }
   .dlg-foot { display: flex; gap: 8px; align-items: center; padding: 12px 16px; border-top: 1px solid var(--line); }
   .step { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px; margin-top: 12px; }
@@ -168,6 +184,7 @@
 </div>
 <div id="printout"></div>
 <dialog id="dlg"></dialog>
+<dialog id="msg"></dialog>
 <input type="file" id="importFile" accept="application/json,.json" hidden>
 
 <script>
@@ -175,6 +192,7 @@
 
 const app = document.getElementById('app');
 const dlg = document.getElementById('dlg');
+const msg = document.getElementById('msg');
 const fab = document.getElementById('fab');
 const printout = document.getElementById('printout');
 const importFile = document.getElementById('importFile');
@@ -232,7 +250,7 @@ function save() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
     return true;
   } catch (e) {
-    alert('Speichern fehlgeschlagen. Bitte ein Backup sichern.');
+    inform('Speichern fehlgeschlagen', 'Der Speicher ist voll oder nicht verfügbar. Bitte ein Backup sichern.');
     return false;
   }
 }
@@ -480,7 +498,8 @@ function render({ scrollToGap = false } = {}) {
     return !db.settings.hideEmpty || isRecorded(trip, iso);
   });
 
-  const rows = visible.map(iso => {
+  // Zebrastreifen nach sichtbaren Zeilen, damit das Muster auch bei Filter und Suche abwechselt.
+  const rows = visible.map((iso, i) => {
     const e = rawEntry(trip, iso);
     const q = quarterOf(trip, iso);
     const rec = isRecorded(trip, iso);
@@ -492,7 +511,8 @@ function render({ scrollToGap = false } = {}) {
     const link = q.name
       ? `<a href="${mapsUrl(q)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${linesHtml([{ m: '📍', t: q.name }])}</a>`
       : '';
-    return `<tr data-day="${iso}" class="${iso === gap ? 'gap' : ''}">
+    const cls = [i % 2 ? 'alt' : '', iso === gap ? 'gap' : ''].join(' ').trim();
+    return `<tr data-day="${iso}" class="${cls}">
       <td class="day">${dayLabel(iso)}${tags}${wx}</td>
       <td>${linesHtml(programItems(e.program))}</td>
       <td>${linesHtml(commentItems(e.comment))}</td>
@@ -512,13 +532,12 @@ function render({ scrollToGap = false } = {}) {
   app.innerHTML = `
     <div class="bar" id="bar">
       <button id="trips">🧳 Reisen</button>
+      <span class="spacer"></span>
+      <button id="toggleEmpty">${db.settings.hideEmpty ? '⤵️ Leere Tage ein' : '⤴️ Leere Tage aus'}</button>
+      <button id="theme" title="Darstellung: ${theme.label}" aria-label="Darstellung: ${theme.label}">${theme.icon}</button>
+      <button class="primary" id="output">📤 Ausgabe</button>
       <input type="search" id="search" placeholder="🔎 Suchen" value="${esc(searchTerm)}" autocomplete="off">
       ${term ? `<span class="hits muted">${visible.length} Treffer</span>` : ''}
-      <span class="spacer"></span>
-      <button id="toggleEmpty" aria-pressed="${db.settings.hideEmpty}" title="Leere Tage aus-/einblenden">${db.settings.hideEmpty ? '◻︎ Leere ausgeblendet' : '◻︎ Leere Tage'}</button>
-      <button id="theme" title="Darstellung: ${theme.label}" aria-label="Darstellung: ${theme.label}">${theme.icon}</button>
-      <button id="editTrip">✏️ Reise</button>
-      <button class="primary" id="output">📤 Ausgabe</button>
     </div>
     <h1>Reisetagebuch – ${esc(trip.title)}</h1>
     <dl class="meta">
@@ -536,7 +555,9 @@ function render({ scrollToGap = false } = {}) {
     </div>
 
     <h2>Fazit</h2>
-    <textarea id="fazit" placeholder="Was bleibt von dieser Reise?">${esc(trip.fazit || '')}</textarea>
+    <button type="button" class="fazit-box" id="fazit">${trip.fazit
+      ? linesHtml(commentItems(trip.fazit))
+      : '<span class="muted">✏️ Antippen, um das Fazit zu schreiben.</span>'}</button>
 
     <h2>Gesamtkosten</h2>
     <div class="kosten">
@@ -550,7 +571,6 @@ function render({ scrollToGap = false } = {}) {
   document.documentElement.style.setProperty('--bar-h', bar.offsetHeight + 'px');
 
   app.querySelector('#trips').onclick = openTripsDialog;
-  app.querySelector('#editTrip').onclick = () => openTripDialog(trip);
   app.querySelector('#output').onclick = () => openOutputDialog(trip);
   app.querySelector('#theme').onclick = cycleTheme;
   app.querySelector('#toggleEmpty').onclick = () => {
@@ -567,7 +587,7 @@ function render({ scrollToGap = false } = {}) {
     s.selectionStart = s.selectionEnd = s.value.length;
   };
   app.querySelectorAll('tbody tr').forEach(tr => tr.onclick = () => openDayDialog(trip, tr.dataset.day));
-  app.querySelector('#fazit').oninput = e => { trip.fazit = e.target.value; save(); };
+  app.querySelector('#fazit').onclick = () => openFazitDialog(trip);
   app.querySelector('#kosten').oninput = e => {
     const digits = e.target.value.replace(/\D/g, '').replace(/^0+(?=\d)/, '').slice(0, 9);
     trip.kosten = digits ? Number(digits) : null;
@@ -588,7 +608,7 @@ function renderEmpty() {
     <p class="muted">Noch keine Reise angelegt.</p>
     <div style="display:flex;gap:8px;flex-wrap:wrap">
       <button class="primary" id="newTrip">＋ Neue Reise anlegen</button>
-      <button id="importAll">Backup laden</button>
+      <button id="importAll">📂 Backup laden</button>
     </div>`;
   app.querySelector('#newTrip').onclick = () => openTripDialog(null);
   app.querySelector('#importAll').onclick = () => importFile.click();
@@ -603,48 +623,138 @@ function showTrip(id) {
 document.getElementById('toTop').onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 document.getElementById('toEnd').onclick = () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
 
+/* ---------- Meldungen und Sicherheitsabfragen ---------- */
+
+// Eigene Fenster statt alert/confirm, damit die Schaltflächen deutsch beschriftet sind.
+function messageBox(title, html, buttons) {
+  return new Promise(resolve => {
+    msg.innerHTML = `
+      <form method="dialog">
+        <div class="dlg-head"><h3>${esc(title)}</h3></div>
+        <div class="dlg-body"><div class="msg-text">${html}</div></div>
+        <div class="dlg-foot">
+          ${buttons.map((b, i) => `${i === buttons.length - 1 ? '<span class="spacer"></span>' : ''}
+            <button type="button" class="${b.cls || ''}" data-v="${b.value}">${esc(b.label)}</button>`).join('')}
+        </div>
+      </form>`;
+    const done = value => { if (msg.open) msg.close(); resolve(value); };
+    msg.querySelectorAll('[data-v]').forEach(b => b.onclick = () => done(b.dataset.v === 'yes'));
+    msg.oncancel = e => { e.preventDefault(); done(false); };
+    msg.showModal();
+  });
+}
+
+const ask = (title, html, label, danger = false) =>
+  messageBox(title, html, [{ label: 'Abbrechen', value: 'no' }, { label, value: 'yes', cls: danger ? 'danger' : 'primary' }]);
+const inform = (title, html) => messageBox(title, html, [{ label: 'Schließen', value: 'no' }]);
+
 /* ---------- Dialoge ---------- */
 
+// Der Dialog bleibt offen und bekommt nur neuen Inhalt; so kommt kein verspätetes Schließ-Ereignis an.
 function openDialog(html) {
   clearInterval(autosaveTimer);
   dlg.onclose = null;
-  if (dlg.open) dlg.close();
   dlg.innerHTML = html;
   dlg.returnValue = '';
-  dlg.showModal();
+  if (!dlg.open) dlg.showModal();
+  dlg.querySelector('.dlg-body')?.scrollTo(0, 0);
   dlg.querySelectorAll('[data-act=cancel]').forEach(b => b.onclick = () => dlg.close('cancel'));
 }
 
-// Reiseliste: wechseln, neu anlegen, Backup.
+const MOOD_HINT = 'Lange drücken entfernt einen Smiley aus der Leiste. ↺ stellt die Standard-Smileys wieder her. Weitere Smileys über die Emoji-Taste der Tastatur.';
+const micButton = id => SpeechRec ? `<button type="button" class="mic" data-mic="${id}" aria-pressed="false" aria-label="Diktieren">🎤</button>` : '';
+const micHint = () => SpeechRec ? '' : '<div class="hint" style="margin-top:12px">🎤 Zum Diktieren die Mikrofon-Taste auf der Tastatur verwenden.</div>';
+const autosaveFoot = `
+      <div class="dlg-foot">
+        <button type="button" data-act="cancel">Abbrechen</button>
+        <span class="saved" id="savedInfo"></span>
+        <span class="spacer"></span>
+        <button class="primary" value="ok">Fertig</button>
+      </div>`;
+
+// Smiley-Schnellauswahl: Antippen fügt ein, lange drücken entfernt, ↺ setzt zurück.
+function mountMoodRow(row, ta, onReset) {
+  const draw = () => {
+    row.innerHTML = quickMoods().map(m => `<button type="button" data-m="${m}">${m}</button>`).join('')
+      + '<button type="button" class="reset" aria-label="Standard-Smileys wiederherstellen">↺</button>';
+    row.querySelectorAll('[data-m]').forEach(b => onLongPress(b,
+      async () => {
+        if (!await ask('Smiley entfernen', `${b.dataset.m} aus der Schnellauswahl entfernen?`, 'Entfernen')) return;
+        db.hiddenMoods.push(b.dataset.m);
+        delete db.moodUsage[b.dataset.m];
+        save();
+        draw();
+      },
+      () => insertAtCursor(ta, b.dataset.m + ' ', true)));
+    row.querySelector('.reset').onclick = async () => {
+      if (!await ask('Smileys zurücksetzen', 'Standard-Smileys wiederherstellen und alle Zähler auf null setzen?', 'Zurücksetzen')) return;
+      db.moodUsage = {};
+      db.hiddenMoods = [];
+      onReset();
+      save();
+      draw();
+    };
+  };
+  draw();
+}
+
+// Diktieren über die Web Speech API; liefert eine Funktion zum Stoppen.
+function mountMics() {
+  let recognition = null;
+  dlg.querySelectorAll('[data-mic]').forEach(b => b.onclick = () => {
+    if (recognition) { recognition.stop(); return; }
+    const ta = dlg.querySelector('#' + b.dataset.mic);
+    recognition = new SpeechRec();
+    recognition.lang = 'de-DE';
+    recognition.interimResults = false;
+    recognition.onresult = ev => {
+      const text = Array.from(ev.results, r => r[0].transcript).join(' ').trim();
+      if (text) insertAtCursor(ta, text + ' ', false);
+    };
+    recognition.onerror = ev => {
+      if (ev.error === 'not-allowed') inform('Diktieren', 'Bitte den Mikrofon-Zugriff erlauben oder die Mikrofon-Taste der Tastatur verwenden.');
+    };
+    recognition.onend = () => { b.setAttribute('aria-pressed', 'false'); recognition = null; };
+    b.setAttribute('aria-pressed', 'true');
+    recognition.start();
+  });
+  return () => recognition?.stop();
+}
+
+// Reiseliste: öffnen, bearbeiten (✏️), neu anlegen, Backup.
 function openTripsDialog() {
   const today = todayISO();
   const trips = [...db.trips].sort((a, b) => b.start.localeCompare(a.start));
   openDialog(`
     <form method="dialog">
-      <div class="dlg-head">
-        <span style="width:90px"></span>
-        <h3>Reisen</h3>
-        <button type="button" class="link" data-act="cancel" style="width:90px">Schließen</button>
-      </div>
+      <div class="dlg-head"><h3>Reisen</h3></div>
       <div class="dlg-body">
         <button type="button" class="choice primary" id="newTrip"><strong>＋ Neue Reise anlegen</strong></button>
         ${trips.map(t => {
           const state = t.start <= today && today <= t.end ? 'läuft gerade' : t.end < today ? 'beendet' : 'geplant';
-          return `<button type="button" class="choice ${t.id === currentTripId ? 'current' : ''}" data-id="${t.id}">
-              <strong>${esc(t.title)}</strong>
-              <span class="muted">${fullDate(t.start)} - ${fullDate(t.end)} · ${state}</span>
-            </button>`;
+          return `<div class="trip-row">
+              <button type="button" class="choice ${t.id === currentTripId ? 'current' : ''}" data-id="${t.id}">
+                <strong>${esc(t.title)}</strong>
+                <span class="muted">${fullDate(t.start)} - ${fullDate(t.end)} · ${state}</span>
+              </button>
+              <button type="button" class="edit" data-edit="${t.id}" aria-label="Reise bearbeiten">✏️</button>
+            </div>`;
         }).join('')}
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:24px">
           <button type="button" id="exportAll">💾 Backup sichern</button>
-          <button type="button" id="importAll">Backup laden</button>
+          <button type="button" id="importAll">📂 Backup laden</button>
         </div>
         <div class="hint">Das Backup enthält alle Reisen. Im Teilen-Menü „In Dateien sichern“ wählen.
           ${db.settings.lastBackup ? `Letztes Backup: ${new Date(db.settings.lastBackup).toLocaleString('de-DE', { dateStyle: 'medium', timeStyle: 'short' })}` : 'Noch kein Backup gesichert.'}</div>
       </div>
+      <div class="dlg-foot">
+        <span class="spacer"></span>
+        <button type="button" data-act="cancel">Schließen</button>
+      </div>
     </form>`);
   dlg.querySelector('#newTrip').onclick = () => openTripDialog(null);
   dlg.querySelectorAll('[data-id]').forEach(b => b.onclick = () => { dlg.close(); showTrip(b.dataset.id); });
+  dlg.querySelectorAll('[data-edit]').forEach(b => b.onclick = () => openTripDialog(getTrip(b.dataset.edit)));
   dlg.querySelector('#exportAll').onclick = saveBackup;
   dlg.querySelector('#importAll').onclick = () => importFile.click();
 }
@@ -656,11 +766,7 @@ function openTripDialog(trip) {
   const transport = new Set(t.transport);
   openDialog(`
     <form method="dialog">
-      <div class="dlg-head">
-        <button type="button" class="link" data-act="cancel">Abbrechen</button>
-        <h3>${isNew ? 'Neue Reise' : 'Reise bearbeiten'}</h3>
-        <button class="link" value="ok" id="okTrip"><b>Fertig</b></button>
-      </div>
+      <div class="dlg-head"><h3>${isNew ? 'Neue Reise' : 'Reise bearbeiten'}</h3></div>
       <div class="dlg-body">
         <div class="step"><label for="fTitle">Reisetitel</label>
           <input type="text" id="fTitle" value="${esc(t.title)}" placeholder="z. B. Australien"></div>
@@ -682,10 +788,14 @@ function openTripDialog(trip) {
           <label class="check"><input type="checkbox" id="fQuarterList" ${t.quarterList ? 'checked' : ''}> Quartierliste in der Ausgabe</label>
           <div class="hint">Am Ende der Ausgabe: alle Quartiere mit Zeitraum, Anzahl Nächte und Maps-Link.</div>
         </div>
-        ${isNew ? '' : `<div style="display:flex;margin-top:24px">
-          <span class="spacer"></span>
-          <button type="button" class="link danger" id="deleteTrip">Reise löschen</button>
+        ${isNew ? '' : `<div style="margin-top:24px">
+          <button type="button" class="danger" id="deleteTrip">🗑 Reise löschen</button>
         </div>`}
+      </div>
+      <div class="dlg-foot">
+        <button type="button" data-act="cancel">Abbrechen</button>
+        <span class="spacer"></span>
+        <button class="primary" value="ok" id="okTrip">Fertig</button>
       </div>
     </form>`);
 
@@ -703,28 +813,33 @@ function openTripDialog(trip) {
 
   const validate = () => {
     const start = fStart.value, end = fEnd.value;
-    let msg = '';
-    if (!fTitle.value.trim()) msg = 'Bitte einen Reisetitel eingeben.';
-    else if (!start || !end) msg = 'Bitte Beginn und Ende der Reise wählen.';
-    else if (end < start) msg = 'Das Ende liegt vor dem Beginn.';
+    let text = '';
+    if (!fTitle.value.trim()) text = 'Bitte einen Reisetitel eingeben.';
+    else if (!start || !end) text = 'Bitte Beginn und Ende der Reise wählen.';
     else {
       const other = overlappingTrip(start, end, trip?.id);
-      if (other) msg = `Der Zeitraum überschneidet sich mit „${other.title}“ (${fullDate(other.start)} - ${fullDate(other.end)}). Bitte korrigieren.`;
+      if (other) text = `Der Zeitraum überschneidet sich mit „${other.title}“ (${fullDate(other.start)} - ${fullDate(other.end)}). Bitte korrigieren.`;
     }
-    warn.textContent = msg;
-    ok.disabled = Boolean(msg);
-    return !msg;
+    warn.textContent = text;
+    ok.disabled = Boolean(text);
+    return !text;
   };
-  [fTitle, fStart, fEnd].forEach(el => el.oninput = validate);
+  // Von und Bis gleichen sich an, damit das Ende nie vor dem Beginn liegt.
+  fStart.oninput = () => { if (fStart.value && fEnd.value < fStart.value) fEnd.value = fStart.value; validate(); };
+  fEnd.oninput = () => { if (fEnd.value && fStart.value > fEnd.value) fStart.value = fEnd.value; validate(); };
+  fTitle.oninput = validate;
   validate();
 
   const del = dlg.querySelector('#deleteTrip');
-  if (del) del.onclick = () => {
-    if (!confirm(`„${trip.title}“ mit allen Einträgen wirklich löschen?\n\nTipp: Vorher ein Backup sichern.\nDas Löschen kann nicht rückgängig gemacht werden.`)) return;
+  if (del) del.onclick = async () => {
+    const yes = await ask('Reise löschen',
+      `„${esc(trip.title)}“ mit allen Einträgen wirklich löschen?<div class="hint">Tipp: Vorher ein Backup sichern. Das Löschen kann nicht rückgängig gemacht werden.</div>`,
+      'Löschen', true);
+    if (!yes) return;
     db.trips = db.trips.filter(x => x.id !== trip.id);
     save();
     dlg.close();
-    showTrip(pickStartTrip()?.id);
+    showTrip(currentTripId === trip.id ? pickStartTrip()?.id : currentTripId);
   };
 
   dlg.onclose = () => {
@@ -753,14 +868,13 @@ function openDayDialog(trip, iso) {
   const knownQuarters = [...new Set(days.map(d => quarterOf(trip, d).name).filter(Boolean))];
   const prev = isFirst ? { name: '', place: '' } : quarterOf(trip, days[idx - 1]);
   const same = Boolean(e.sameQuarter) && !isFirst;
-  const mic = id => SpeechRec ? `<button type="button" class="mic" data-mic="${id}" aria-pressed="false" aria-label="Diktieren">🎤</button>` : '';
 
   openDialog(`
     <form method="dialog">
       <div class="dlg-head">
-        <button type="button" class="link" data-nav="-1" ${isFirst ? 'disabled' : ''}>‹ Vortag</button>
+        <button type="button" data-nav="-1" ${isFirst ? 'disabled' : ''}>‹ Vortag</button>
         <h3>${longDayLabel(iso)}</h3>
-        <button type="button" class="link" data-nav="1" ${idx >= days.length - 1 ? 'disabled' : ''}>Nächster ›</button>
+        <button type="button" data-nav="1" ${idx >= days.length - 1 ? 'disabled' : ''}>Folgetag ›</button>
       </div>
       <div class="dlg-body">
         <div class="step">
@@ -770,18 +884,17 @@ function openDayDialog(trip, iso) {
           </div>
         </div>
         <div class="step">
-          <div class="step-head"><label for="fProgram"><span class="step-num">2</span>Programm</label>${mic('fProgram')}</div>
+          <div class="step-head"><label for="fProgram"><span class="step-num">2</span>Programm</label>${micButton('fProgram')}</div>
           <div class="chips" id="suggest">
             ${PROGRAM_SUGGESTIONS.map((s, i) => `<button type="button" data-s="${i}">${esc(s.label)}</button>`).join('')}
           </div>
           <textarea id="fProgram" placeholder="Was habt ihr gemacht? Eine Zeile pro Punkt.">${esc(e.program || '')}</textarea>
         </div>
         <div class="step">
-          <div class="step-head"><label for="fComment"><span class="step-num">3</span>Wie war's?</label>${mic('fComment')}</div>
+          <div class="step-head"><label for="fComment"><span class="step-num">3</span>Wie war's?</label>${micButton('fComment')}</div>
           <div class="emoji-row" id="moods"></div>
           <textarea id="fComment" placeholder="Smiley antippen, dann ein paar Worte dazu.">${esc(e.comment || '')}</textarea>
-          <div class="hint">Lange drücken entfernt einen Smiley aus der Leiste. ↺ stellt die Standard-Smileys wieder her.
-            Weitere Smileys über die Emoji-Taste der Tastatur.</div>
+          <div class="hint">${MOOD_HINT}</div>
         </div>
         <div class="step">
           <div class="step-head"><label for="fQuarter"><span class="step-num">4</span>Quartier</label></div>
@@ -791,14 +904,9 @@ function openDayDialog(trip, iso) {
           <input type="text" id="fPlace" placeholder="Ort für Google Maps (optional, z. B. Cairns, Australien)" style="margin-top:8px">
           <div class="hint" id="qHint"></div>
         </div>
-        ${SpeechRec ? '' : '<div class="hint" style="margin-top:12px">🎤 Zum Diktieren die Mikrofon-Taste auf der Tastatur verwenden.</div>'}
+        ${micHint()}
       </div>
-      <div class="dlg-foot">
-        <button type="button" data-act="cancel">Abbrechen</button>
-        <span class="saved" id="savedInfo"></span>
-        <span class="spacer"></span>
-        <button class="primary" value="ok">Fertig</button>
-      </div>
+      ${autosaveFoot}
     </form>`);
 
   const fProgram = dlg.querySelector('#fProgram');
@@ -825,29 +933,7 @@ function openDayDialog(trip, iso) {
   });
 
   // Schritt 3: Smiley-Schnellauswahl
-  const renderMoods = () => {
-    const row = dlg.querySelector('#moods');
-    row.innerHTML = quickMoods().map(m => `<button type="button" data-m="${m}">${m}</button>`).join('')
-      + '<button type="button" class="reset" id="moodReset" aria-label="Standard-Smileys wiederherstellen">↺</button>';
-    row.querySelectorAll('[data-m]').forEach(b => onLongPress(b,
-      () => {
-        if (!confirm(`${b.dataset.m} aus der Schnellauswahl entfernen?`)) return;
-        db.hiddenMoods.push(b.dataset.m);
-        delete db.moodUsage[b.dataset.m];
-        save();
-        renderMoods();
-      },
-      () => insertAtCursor(fComment, b.dataset.m + ' ', true)));
-    row.querySelector('#moodReset').onclick = () => {
-      if (!confirm('Standard-Smileys wiederherstellen und alle Zähler auf null setzen?')) return;
-      db.moodUsage = {};
-      db.hiddenMoods = [];
-      lastComment = fComment.value.trim();
-      save();
-      renderMoods();
-    };
-  };
-  renderMoods();
+  mountMoodRow(dlg.querySelector('#moods'), fComment, () => { lastComment = fComment.value.trim(); });
 
   // Schritt 4: Quartier
   const updateQuarter = () => {
@@ -864,25 +950,7 @@ function openDayDialog(trip, iso) {
   if (fSame) fSame.onchange = updateQuarter;
   updateQuarter();
 
-  // Diktieren
-  let recognition = null;
-  dlg.querySelectorAll('[data-mic]').forEach(b => b.onclick = () => {
-    if (recognition) { recognition.stop(); return; }
-    const ta = dlg.querySelector('#' + b.dataset.mic);
-    recognition = new SpeechRec();
-    recognition.lang = 'de-DE';
-    recognition.interimResults = false;
-    recognition.onresult = ev => {
-      const text = Array.from(ev.results, r => r[0].transcript).join(' ').trim();
-      if (text) insertAtCursor(ta, text + ' ', false);
-    };
-    recognition.onerror = ev => {
-      if (ev.error === 'not-allowed') alert('Bitte den Mikrofon-Zugriff erlauben oder die Mikrofon-Taste der Tastatur verwenden.');
-    };
-    recognition.onend = () => { b.setAttribute('aria-pressed', 'false'); recognition = null; };
-    b.setAttribute('aria-pressed', 'true');
-    recognition.start();
-  });
+  const stopMic = mountMics();
 
   const collect = () => {
     const useSame = Boolean(fSame?.checked);
@@ -919,13 +987,61 @@ function openDayDialog(trip, iso) {
   autosaveTimer = setInterval(persist, AUTOSAVE_MS);
 
   dlg.querySelectorAll('[data-nav]').forEach(b => b.onclick = () => {
-    recognition?.stop();
+    stopMic();
     persist();
+    render();
     openDayDialog(trip, days[idx + Number(b.dataset.nav)]);
   });
   dlg.onclose = () => {
     clearInterval(autosaveTimer);
-    recognition?.stop();
+    stopMic();
+    if (dlg.returnValue === 'ok') persist(); else restore();
+    render();
+  };
+}
+
+// Fazit wie "Wie war's?": Smiley-Leiste, Diktieren, automatisches Speichern.
+function openFazitDialog(trip) {
+  const original = trip.fazit || '';
+  openDialog(`
+    <form method="dialog">
+      <div class="dlg-head"><h3>Fazit</h3></div>
+      <div class="dlg-body">
+        <div class="step">
+          <div class="step-head"><label for="fFazit">Was bleibt von dieser Reise?</label>${micButton('fFazit')}</div>
+          <div class="emoji-row" id="moods"></div>
+          <textarea id="fFazit" rows="8" placeholder="Smiley antippen, dann ein paar Worte dazu.">${esc(original)}</textarea>
+          <div class="hint">${MOOD_HINT}</div>
+        </div>
+        ${micHint()}
+      </div>
+      ${autosaveFoot}
+    </form>`);
+
+  const ta = dlg.querySelector('#fFazit');
+  const savedInfo = dlg.querySelector('#savedInfo');
+  let lastSaved = original;
+  mountMoodRow(dlg.querySelector('#moods'), ta, () => { lastSaved = ta.value.trim(); });
+  const stopMic = mountMics();
+
+  const persist = () => {
+    const value = ta.value.trim();
+    if (value === (trip.fazit || '') && value === lastSaved) return;
+    countMoods(lastSaved, value);
+    lastSaved = value;
+    trip.fazit = value;
+    if (save()) savedInfo.textContent = `Gespeichert ${nowStamp().time}`;
+  };
+  const restore = () => {
+    countMoods(lastSaved, original);
+    trip.fazit = original;
+    save();
+  };
+
+  autosaveTimer = setInterval(persist, AUTOSAVE_MS);
+  dlg.onclose = () => {
+    clearInterval(autosaveTimer);
+    stopMic();
     if (dlg.returnValue === 'ok') persist(); else restore();
     render();
   };
@@ -938,27 +1054,34 @@ function outputName(trip, version) {
   return `${trip.start.replace(/-/g, '.')}-${trip.end.replace(/-/g, '.')} ${title} V${pad(version, 3)}`;
 }
 
+// Alle Regeln gelten nur innerhalb von .rt, damit sie beim Drucken nicht in die App durchschlagen.
 const OUTPUT_CSS = `
   body { font: 11pt/1.4 -apple-system, "Segoe UI", Roboto, Arial, sans-serif; color: #000; background: #fff; margin: 24px; }
-  h1 { font-size: 20pt; margin: 0 0 8px; }
-  h2 { font-size: 14pt; margin: 20px 0 6px; break-after: avoid; page-break-after: avoid; }
-  table { border-collapse: collapse; }
-  table.grid.fit { width: auto; }
-  .meta td { border: none; padding: 1px 16px 1px 0; vertical-align: top; }
-  table.grid { width: 100%; margin-top: 12px; table-layout: auto; }
-  table.grid th, table.grid td { border: 1px solid #999; padding: 6px 8px; vertical-align: top; text-align: left; }
-  table.grid th { background: #eee; }
-  table.grid td.nw { white-space: nowrap; }
-  table.grid td.num { text-align: right; white-space: nowrap; }
-  table.grid tr { break-inside: avoid; }
-  .ln { display: flex; gap: .35em; }
-  .ln + .ln { margin-top: 2px; }
-  .ln .m { flex: none; }
-  .ln .t { min-width: 0; overflow-wrap: anywhere; }
-  .stats td { border: none; padding: 1px 16px 1px 0; }
-  a { color: #1a5fb4; }
-  p { white-space: pre-line; }
-  .created { margin-top: 28px; font-size: 9pt; color: #777; }
+  .rt, .rt * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .rt { font: 11pt/1.4 -apple-system, "Segoe UI", Roboto, Arial, sans-serif; color: #000; }
+  .rt h1 { font-size: 20pt; margin: 0 0 8px; }
+  .rt h2 { font-size: 14pt; margin: 20px 0 6px; break-after: avoid; page-break-after: avoid; }
+  .rt table { border-collapse: collapse; }
+  .rt .meta td { border: none; padding: 1px 16px 1px 0; vertical-align: top; }
+  .rt table.grid { width: 100%; margin-top: 12px; table-layout: auto; }
+  .rt table.grid.fit { width: auto; }
+  .rt table.grid th, .rt table.grid td { border: 1px solid #999; padding: 6px 8px; vertical-align: top; text-align: left; }
+  .rt table.grid th { background: #d9d9d9; border-color: #a5a5a5; }
+  .rt table.grid tr > :first-child { border-left-color: #a5a5a5; }
+  .rt table.grid tr > :last-child { border-right-color: #a5a5a5; }
+  .rt table.grid tbody tr:last-child td { border-bottom-color: #a5a5a5; }
+  .rt table.grid tbody tr:nth-child(even) { background: #f5f5f5; }
+  .rt table.grid td.nw { white-space: nowrap; }
+  .rt table.grid td.num { text-align: right; white-space: nowrap; }
+  .rt table.grid tr { break-inside: avoid; }
+  .rt .ln { display: flex; gap: .35em; }
+  .rt .ln + .ln { margin-top: 2px; }
+  .rt .ln .m { flex: none; }
+  .rt .ln .t { min-width: 0; overflow-wrap: anywhere; }
+  .rt .stats td { border: none; padding: 1px 16px 1px 0; }
+  .rt a { color: #1a5fb4; }
+  .rt p { white-space: pre-line; }
+  .rt .created { margin-top: 28px; font-size: 9pt; color: #777; }
   @media print { body { margin: 0; } }
 `;
 
@@ -1013,7 +1136,7 @@ function outputBody(trip, version, stamp) {
   }).join('');
   const transport = transportText(trip);
   const stays = trip.quarterList ? quarterStays(trip) : [];
-  return `
+  return `<div class="rt">
     <h1>Reisetagebuch – ${esc(trip.title)}</h1>
     <table class="meta">
       <tr><td><b>Reiseteilnehmer:</b></td><td>${esc(trip.participants)}</td></tr>
@@ -1025,7 +1148,7 @@ function outputBody(trip, version, stamp) {
       <tbody>${rows || '<tr><td colspan="4">Noch keine Tage erfasst.</td></tr>'}</tbody>
     </table>
     <h2>Fazit</h2>
-    <p>${esc(trip.fazit || '')}</p>
+    <div>${linesHtml(commentItems(trip.fazit))}</div>
     <h2>Gesamtkosten</h2>
     <p>${formatEuro(trip.kosten)}</p>
     <h2>Statistik</h2>
@@ -1042,7 +1165,8 @@ function outputBody(trip, version, stamp) {
           <td class="num">${s.nights}</td>
         </tr>`).join('')}</tbody>
       </table>` : ''}
-    <p class="created">Ausgabe V${pad(version, 3)} erstellt am ${stamp.date} um ${stamp.time}</p>`;
+    <p class="created">Ausgabe V${pad(version, 3)} erstellt am ${stamp.date} um ${stamp.time}</p>
+  </div>`;
 }
 
 /* ---------- Speichern über das Teilen-Menü ---------- */
@@ -1072,11 +1196,7 @@ function openOutputDialog(trip) {
   const nextVersion = (trip.outputCounter || 0) + 1;
   openDialog(`
     <form method="dialog">
-      <div class="dlg-head">
-        <span style="width:90px"></span>
-        <h3>Ausgabe</h3>
-        <button type="button" class="link" data-act="cancel" style="width:90px">Abbrechen</button>
-      </div>
+      <div class="dlg-head"><h3>Ausgabe</h3></div>
       <div class="dlg-body">
         <p class="muted">${count} erfasste${count === 1 ? 'r Tag' : ' Tage'} · Stand jetzt</p>
         <button type="button" class="choice" id="outHtml">
@@ -1088,6 +1208,10 @@ function openOutputDialog(trip) {
           <span class="muted">Drucken-Menü → Teilen → „In Dateien sichern“</span>
         </button>
         <div class="hint" style="margin-top:14px">Dateiname: ${esc(outputName(trip, nextVersion))}</div>
+      </div>
+      <div class="dlg-foot">
+        <button type="button" data-act="cancel">Abbrechen</button>
+        <span class="spacer"></span>
       </div>
     </form>`);
   dlg.querySelector('#outHtml').onclick = () => exportHtml(trip);
@@ -1118,12 +1242,10 @@ function exportPdf(trip) {
   printout.innerHTML = `<style>${OUTPUT_CSS.replace(/\bbody\b/g, '#printout')}</style>${outputBody(trip, version, stamp)}`;
   document.title = name;
   const restore = () => { document.title = oldTitle; window.removeEventListener('afterprint', restore); };
+  dlg.addEventListener('close', () => { printout.innerHTML = ''; }, { once: true });
   window.addEventListener('afterprint', restore);
-  // Erst nach dem Öffnen anmelden: das Schließ-Ereignis des vorigen Dialogs kommt verzögert an.
-  setTimeout(() => {
-    dlg.addEventListener('close', restore, { once: true });
-    window.print();
-  }, 50);
+  dlg.addEventListener('close', restore, { once: true });
+  setTimeout(() => window.print(), 50);
 }
 
 const RESULT_TEXT = {
@@ -1138,14 +1260,14 @@ function showOutputResult(title, name, result) {
   const remind = backupIsOld() && result !== 'aborted' && result !== 'error';
   openDialog(`
     <form method="dialog">
-      <div class="dlg-head">
-        <span style="width:60px"></span>
-        <h3>${esc(title)}</h3>
-        <button class="link" value="ok" style="width:60px"><b>Fertig</b></button>
-      </div>
+      <div class="dlg-head"><h3>${esc(title)}</h3></div>
       <div class="dlg-body">
         <div class="step">${result === 'aborted' || result === 'error' ? '⚠️' : '✅'} ${RESULT_TEXT[result](name)}</div>
         ${remind ? backupReminderHtml() : ''}
+      </div>
+      <div class="dlg-foot">
+        <span class="spacer"></span>
+        <button type="button" data-act="cancel">Schließen</button>
       </div>
     </form>`);
   bindBackupReminder();
@@ -1158,8 +1280,7 @@ function backupReminderHtml() {
       <strong>💾 Denk daran, auch ein Backup zu sichern.</strong>
       <div class="hint">${since}</div>
       <div style="display:flex;gap:8px;margin-top:10px">
-        <button type="button" class="primary" id="backupNow">💾 Backup jetzt sichern</button>
-        <button type="button" data-act="cancel">Später</button>
+        <button type="button" class="primary" id="backupNow">💾 Backup sichern</button>
       </div>
     </div>`;
 }
@@ -1183,7 +1304,7 @@ async function saveBackup() {
     save();
   }
   const text = `${result === 'aborted' || result === 'error' ? '⚠️' : '✅'} ${RESULT_TEXT[result](file.name)}`;
-  if (!dlg.querySelector('#reminder')) alert(text.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim());
+  if (!dlg.querySelector('#reminder')) inform('Backup', text);
   return text;
 }
 
@@ -1223,14 +1344,16 @@ importFile.onchange = async () => {
   try {
     const data = JSON.parse(await file.text());
     if (!Array.isArray(data.trips)) throw new Error('Kein Reisetagebuch-Backup.');
-    if (!confirm(`Backup mit ${data.trips.length} Reise(n) laden?\n\nDie aktuellen Daten auf diesem iPad werden ersetzt.`)) return;
+    const yes = await ask('Backup laden',
+      `Backup mit ${data.trips.length} Reise(n) laden?<div class="hint">Die aktuellen Daten auf diesem iPad werden ersetzt.</div>`, 'Ersetzen', true);
+    if (!yes) return;
     db = normalize(data);
     save();
     applyTheme();
     if (dlg.open) dlg.close();
     showTrip(pickStartTrip()?.id);
   } catch (e) {
-    alert('Die Datei konnte nicht gelesen werden: ' + e.message);
+    inform('Backup laden', 'Die Datei konnte nicht gelesen werden: ' + esc(e.message));
   }
 };
 

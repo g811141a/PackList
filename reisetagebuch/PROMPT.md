@@ -1,4 +1,4 @@
-# Reisetagebuch – Prompt (Stand 04.10.2026, Version 5)
+# Reisetagebuch – Prompt (Stand 05.10.2026, Version 6)
 
 ```text
 Baue mir ein einfaches Reisetagebuch als Web-App für das iPad.
@@ -28,6 +28,19 @@ RAHMEN
   bleiben trotzdem nur auf dem iPad).
 - Dunkelmodus manuell umschaltbar, 3 Stufen: Automatisch / Hell / Dunkel.
   Die letzte Einstellung wird gemerkt.
+- Alle Meldungen und Sicherheitsabfragen in eigenen Fenstern mit deutschen
+  Schaltflächen (keine iPad-Systemfenster mit "Close"/"OK").
+- Alle Aktionen sind echte Schaltflächen (kein reiner Text als Link).
+- Einheitliche Bezeichnungen:
+  - "Fertig" = Eingaben übernehmen und schließen
+  - "Abbrechen" = ohne Änderung schließen / Vorgang nicht ausführen
+  - "Schließen" = Fenster ohne Eingaben schließen (Info, Liste, Meldung)
+  - Bestätigung immer mit dem Verb der Aktion: "Löschen", "Entfernen",
+    "Zurücksetzen", "Ersetzen"
+  - "💾 Backup sichern", "📂 Backup laden", "‹ Vortag" / "Folgetag ›"
+- Einheitliche Fußleiste in allen Fenstern: links "Abbrechen", rechts
+  "Fertig" bzw. "Schließen"; "Löschen" separat in Rot. Oben nur Titel
+  (bei der Tageserfassung zusätzlich "‹ Vortag" / "Folgetag ›").
 
 REISEN
 - Es wird immer an einer Reise gearbeitet.
@@ -36,6 +49,11 @@ REISEN
 - Fällt heute in keine Reise, öffnet die App die zuletzt beendete Reise.
   Gibt es noch keine beendete Reise, öffnet die nächste geplante Reise.
 - Eine neue Reise wird bewusst neu angelegt.
+- Reisen-Liste (🧳 Reisen): Antippen öffnet die Reise, ✏️ in derselben
+  Zeile öffnet "Reise bearbeiten". "🗑 Reise löschen" als rote
+  Schaltfläche in der Bearbeiten-Maske.
+- Reisezeitraum: Liegt das Bis-Datum vor dem Von-Datum, wird es auf das
+  Von-Datum gesetzt – und umgekehrt.
 - Allgemeine Reisedaten: Titel, Reiseteilnehmer, Reisezeitraum,
   darunter Reisemittel per Antippen, Mehrfachauswahl möglich,
   in dieser Reihenfolge:
@@ -55,14 +73,25 @@ HAUPTANSICHT (TABELLE)
   (die erste Lücke, auch wenn spätere Tage schon erfasst sind) und
   markiert diese Zeile.
 - Die obere Leiste mit den Schaltflächen bleibt beim Scrollen fixiert.
+  Reihenfolge: 🧳 Reisen · Leere Tage · Darstellung · 📤 Ausgabe · Suche.
 - Unten rechts übereinander die Schaltflächen ⬆️ (nach oben) und ⬇️ (ans
   Ende), im gleichen Aussehen wie die Dunkel-Schaltfläche, ohne Schatten.
-- Schaltfläche zum Aus-/Einblenden der leeren Tage; die letzte
-  Einstellung wird gemerkt.
+- Schaltfläche zum Aus-/Einblenden der leeren Tage, zeigt die Aktion:
+  "⤴️ Leere Tage aus" bzw. "⤵️ Leere Tage ein"; die letzte Einstellung
+  wird gemerkt.
 - Dezente Fortschrittsanzeige, z. B. "Tag 42 von 80 · 38 erfasst".
 - Vergangene Tage ohne Eintrag werden dezent markiert.
 - Suche über die Einträge (Programm, Kommentar, Quartier), nur innerhalb
   der aktuellen Reise.
+- Tabellendesign (gilt für alle Tabellen in App, HTML und PDF):
+  - Kopfzeile leicht grau hinterlegt (#d9d9d9), Zellenränder darin zwei
+    Stufen dunkler (#a5a5a5); im Dunkelmodus Kopfzeile #3b3a37 mit
+    helleren Rändern (#625f5a), damit sie sichtbar sind
+  - jede 2. Tageszeile heller grau (#f5f5f5, dunkel #2e2d2a); gezählt
+    werden nur die sichtbaren Zeilen; die markierte Lücke bleibt gelb
+  - Trennlinien zwischen allen Spalten
+  - äußere Tabellenumrandung in der Farbe der Kopfzeilen-Ränder
+  - die Statistik bleibt eine schlichte Liste
 - Mehrzeilige Einträge mit hängendem Einzug: Bricht eine Zeile um,
   beginnt die Fortsetzung genau unter dem Text, nicht unter dem ▫️
   bzw. dem Smiley.
@@ -97,7 +126,7 @@ ERFASSUNG – wenig eingeben, in ganz einfachen Schritten
 - Diktieren: eigenes 🎤-Symbol an den Textfeldern, wenn das iPad es
   unterstützt; sonst ein Hinweis auf die Mikrofon-Taste der Tastatur.
 - Automatisches Speichern alle 10 Sekunden während der Erfassung.
-- Mit "Vortag / Nächster" direkt zum nächsten Tag blättern.
+- Mit "‹ Vortag" / "Folgetag ›" direkt weiterblättern.
 - Ein Tag gilt als erfasst, sobald mindestens ein Feld ausgefüllt ist.
 
 QUARTIER-SPALTE
@@ -105,7 +134,10 @@ QUARTIER-SPALTE
   Google-Maps-Link (Name + ggf. Ort).
 
 ABSCHLUSS
-- Freitextfeld "Fazit".
+- Fazit: Antippen öffnet eine eigene Erfassungsmaske wie "Wie war's?"
+  (Smiley-Schnellauswahl mit gemeinsamer Häufigkeits-Sortierung, lange
+  drücken/Reset, 🎤 Diktieren, automatisches Speichern alle 10 Sekunden).
+  Darstellung in App und Ausgabe mit hängendem Einzug.
 - Ein Feld "Gesamtkosten" in Euro, immer ganze Euro. Der Tausenderpunkt
   erscheint schon beim Tippen ("4.850"), Ausgabe z. B. als "€ 4.850,-".
 

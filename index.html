@@ -146,6 +146,7 @@
 
   .fab { position: fixed; right: max(16px, env(safe-area-inset-right)); bottom: calc(16px + env(safe-area-inset-bottom)); display: flex; flex-direction: column; gap: 8px; z-index: 4; }
   .fab button { padding: 0; font-size: 20px; }
+  .fab[hidden] { display: none; }
 
   /* Dialoge */
   dialog {
@@ -257,8 +258,8 @@ const ICONS = {
 const ic = (name, cls = '') => `<svg class="ic ${cls}" viewBox="0 0 24 24" aria-hidden="true">${ICONS[name]}</svg>`;
 
 // Version und Erstellungszeitpunkt, werden bei jeder neuen Version angepasst.
-const APP_VERSION = 20;
-const APP_BUILT = '05.10.2026 um 22:53';
+const APP_VERSION = 21;
+const APP_BUILT = '05.10.2026 um 23:33';
 
 const app = document.getElementById('app');
 const dlg = document.getElementById('dlg');
@@ -796,17 +797,11 @@ function render({ scrollToGap = false } = {}) {
   }
 }
 
+// Ohne Reiselogbuch: leere Seite, darüber die Maske "Reiselogbücher" mit leerer Liste (nicht schließbar).
 function renderEmpty() {
   fab.hidden = true;
-  app.innerHTML = `
-    <h1 style="margin-top:calc(env(safe-area-inset-top) + 20px)">Reiselogbuch</h1>
-    <p class="muted">Noch kein Reiselogbuch angelegt.</p>
-    <div style="display:flex;gap:8px;flex-wrap:wrap">
-      <button class="primary" id="newTrip">${ic('plus')}Neues Reiselogbuch anlegen</button>
-      <button id="importAll">${ic('folder-open')}Backup laden</button>
-    </div>`;
-  app.querySelector('#newTrip').onclick = () => openTripDialog(null);
-  app.querySelector('#importAll').onclick = () => importFile.click();
+  app.innerHTML = '';
+  if (!dlg.open) openTripsDialog();
 }
 
 function showTrip(id) {
@@ -939,6 +934,7 @@ function openTripsDialog() {
     <form method="dialog">
       <div class="dlg-head"><h3>Reiselogbücher</h3></div>
       <div class="dlg-body">
+        ${trips.length ? '' : '<p class="muted" style="margin:14px 0 0">Noch kein Reiselogbuch angelegt.</p>'}
         ${trips.map(t => {
           const state = t.start <= today && today <= t.end ? 'läuft gerade' : t.end < today ? 'beendet' : 'geplant';
           return `<div class="trip-row">
@@ -951,7 +947,7 @@ function openTripsDialog() {
             </div>`;
         }).join('')}
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:24px">
-          <button type="button" id="exportAll">${ic('save')}Backup sichern</button>
+          <button type="button" id="exportAll" ${trips.length ? '' : 'disabled'}>${ic('save')}Backup sichern</button>
           <button type="button" id="importAll">${ic('folder-open')}Backup laden</button>
           <span class="spacer"></span>
           <button type="button" class="primary" id="newTrip">${ic('plus')}Neues Reiselogbuch anlegen</button>
@@ -963,7 +959,7 @@ function openTripsDialog() {
         <button type="button" class="iconbtn" id="appInfo" aria-label="Version anzeigen" aria-expanded="false">${ic('info')}</button>
         <span class="hint" id="appVer" style="margin:0" hidden>Reiselogbuch · Version ${APP_VERSION} · erstellt am ${APP_BUILT}</span>
         <span class="spacer"></span>
-        <button type="button" data-act="cancel">${ic('x')}Schließen</button>
+        <button type="button" data-act="cancel" ${trips.length ? '' : 'disabled'}>${ic('x')}Schließen</button>
       </div>
     </form>`);
   dlg.querySelector('#newTrip').onclick = () => openTripDialog(null);
@@ -1649,6 +1645,11 @@ importFile.onchange = async () => {
 };
 
 /* ---------- Start ---------- */
+
+// Ohne Reiselogbuch lässt sich die Maske "Reiselogbücher" nicht schließen (auch nicht mit Escape);
+// wird ein anderes Fenster geschlossen (z. B. "Neues Reiselogbuch" mit Abbrechen), kommt sie wieder.
+dlg.addEventListener('cancel', e => { if (!db.trips.length) e.preventDefault(); });
+dlg.addEventListener('close', () => setTimeout(() => { if (!db.trips.length && !dlg.open) renderEmpty(); }));
 
 applyTheme();
 showTrip(pickStartTrip()?.id);

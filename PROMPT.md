@@ -1,4 +1,4 @@
-# Reiselogbuch – Prompt (Stand 05.10.2026, Version 20)
+# Reiselogbuch – Prompt (Stand 05.10.2026, Version 21)
 
 ```text
 Baue mir ein einfaches Reiselogbuch als Web-App für das iPad.
@@ -89,6 +89,12 @@ REISEN
   das heutige Datum fällt.
 - Fällt heute in keine Reise, öffnet die App die zuletzt beendete Reise.
   Gibt es noch keine beendete Reise, öffnet die nächste geplante Reise.
+- Gibt es noch kein Reiselogbuch (erster Start oder letztes gelöscht),
+  zeigt die App eine leere Seite und darüber die Maske "Reiselogbücher"
+  mit dem grauen Hinweis "Noch kein Reiselogbuch angelegt.". "Schließen"
+  und "Backup sichern" sind ausgegraut, die Maske lässt sich auch nicht
+  mit Escape schließen. "Abbrechen" beim Anlegen führt zurück zur leeren
+  Liste, "Fertig" öffnet das neue Reiselogbuch.
 - Eine neue Reise wird bewusst neu angelegt.
 - Reisen-Liste (🧳 Reisen): Antippen öffnet die Reise, ✏️ in derselben
   Zeile öffnet "Reise bearbeiten". "🗑 Reise löschen" als rote

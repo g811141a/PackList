@@ -135,6 +135,7 @@
   table.days td.num, table.days th.num { text-align: right; }
   table.days td.nw { white-space: nowrap; }
   table.days.static td.quarter a, table.days.static a { text-decoration: none; }
+  a.maps { white-space: nowrap; text-decoration: none; font-size: .9em; }
 
   .fab { position: fixed; right: max(16px, env(safe-area-inset-right)); bottom: calc(16px + env(safe-area-inset-bottom)); display: flex; flex-direction: column; gap: 8px; z-index: 4; }
   .fab button { width: 48px; padding: 0; font-size: 20px; }
@@ -223,6 +224,12 @@ const TRANSPORT = [
   { id: 'fuss', icon: '🚶', name: 'Fuß' },
 ];
 const DEFAULT_MOODS = ['🙂', '😊', '😉', '👍', '😋', '😌', '😏', '😳', '🤪', '🥶', '🤷🏻‍♂️', '☹️', '🤮'];
+const DEFAULT_FOOD = ['🕗', '🕙', '🕛', '🕒', '🕕', '😋', '👌', '👍', '😕', '🤮', '👎', '⭐️', '🍕', '🍔', '🥩', '🍷', '🍺', '☕️'];
+// Zwei getrennte Schnellauswahl-Leisten: Stimmung (Wie war's?/Fazit) und Essen.
+const EMOJI_SETS = {
+  mood: { defaults: DEFAULT_MOODS, usage: 'moodUsage', hidden: 'hiddenMoods' },
+  food: { defaults: DEFAULT_FOOD, usage: 'foodUsage', hidden: 'hiddenFood' },
+};
 const PROGRAM_SUGGESTIONS = [
   { label: 'Weiterfahrt nach …', text: 'Weiterfahrt nach ' },
   { label: 'Rundgang durch …', text: 'Rundgang durch ' },
@@ -238,11 +245,14 @@ function normalize(data) {
   data.trips ||= [];
   data.moodUsage ||= {};
   data.hiddenMoods ||= [];
+  data.foodUsage ||= {};
+  data.hiddenFood ||= [];
   data.settings = { theme: 'auto', hideEmpty: false, ...(data.settings || {}) };
   for (const t of data.trips) {
     t.days ||= {};
     t.transport ||= [];
     t.quarterList ??= false;
+    t.foodColumn ??= false;
     t.outputCounter ||= 0;
   }
   return data;
@@ -369,7 +379,7 @@ function firstGap(trip) {
 function matchesSearch(trip, iso, term) {
   const e = rawEntry(trip, iso);
   const q = quarterOf(trip, iso);
-  return [e.program, e.comment, q.name, q.place].join('\n').toLocaleLowerCase('de').includes(term);
+  return [e.program, e.comment, e.food, q.name, q.place].join('\n').toLocaleLowerCase('de').includes(term);
 }
 
 /* ---------- Text-Formatierung mit hängendem Einzug ---------- */
@@ -392,13 +402,38 @@ function programItems(text) {
   return lines.map(t => ({ m: lines.length > 1 ? '▫️' : '', t }));
 }
 
-// Kommentar: ein führender Smiley wird zum Zeichen, der Text rückt daneben ein.
+// Führende Smileys (auch mehrere) einer Zeile abtrennen: "🕛 😋 Text" → { m: "🕛😋", t: "Text" }.
+function splitLeadingEmojis(line) {
+  const g = graphemes(line);
+  const marks = [];
+  let i = 0;
+  while (i < g.length && (EMOJI_RE.test(g[i]) || /^\s+$/.test(g[i]))) {
+    if (EMOJI_RE.test(g[i])) marks.push(g[i]);
+    i++;
+  }
+  const rest = g.slice(i).join('').trim();
+  return marks.length && rest ? { m: marks.join(''), t: rest } : { m: '', t: line };
+}
+
+// Kommentar: führende Smileys werden zum Zeichen, der Text rückt daneben ein.
 function commentItems(text) {
+  return splitLines(text).map(splitLeadingEmojis);
+}
+
+// Essen: "Smileys Name – Kommentar"; der Name (plus Ort des Quartiers) ergibt den Maps-Link.
+function foodItems(text, place) {
   return splitLines(text).map(line => {
-    const g = graphemes(line);
-    if (g.length > 1 && EMOJI_RE.test(g[0])) return { m: g[0], t: g.slice(1).join('').trim() };
-    return { m: '', t: line };
+    const { m, t } = splitLeadingEmojis(line);
+    const name = t.split(/\s+[–—-]\s+/)[0].trim();
+    return { m, t, maps: name ? mapsUrl({ name, place }) : '' };
   });
+}
+
+function foodHtml(items, term = '', inApp = false) {
+  const attrs = inApp ? ' target="_blank" rel="noopener" onclick="event.stopPropagation()"' : '';
+  return items.map(({ m, t, maps }) =>
+    `<div class="ln">${m ? `<span class="m">${esc(m)}</span>` : ''}<span class="t">${highlight(t, term)}${maps
+      ? ` <a class="maps" href="${maps}"${attrs}>📍&nbsp;Maps</a>` : ''}</span></div>`).join('');
 }
 
 // Optional werden Suchtreffer im (bereits maskierten) Text gelb markiert.
@@ -417,25 +452,29 @@ function linesHtml(items, term = '') {
 /* ---------- Smileys ---------- */
 
 // Nach Häufigkeit sortiert, noch nie benutzte in Standardreihenfolge dahinter; entfernte ausgeblendet.
-function quickMoods() {
-  const hidden = new Set(db.hiddenMoods);
-  const order = m => { const i = DEFAULT_MOODS.indexOf(m); return i < 0 ? 999 : i; };
-  const all = [...new Set([...Object.keys(db.moodUsage), ...DEFAULT_MOODS])].filter(m => !hidden.has(m));
+function quickMoods(kind = 'mood') {
+  const set = EMOJI_SETS[kind];
+  const usage = db[set.usage];
+  const hidden = new Set(db[set.hidden]);
+  const order = m => { const i = set.defaults.indexOf(m); return i < 0 ? 999 : i; };
+  const all = [...new Set([...Object.keys(usage), ...set.defaults])].filter(m => !hidden.has(m));
   return all
-    .filter(m => DEFAULT_MOODS.includes(m) || db.moodUsage[m] > 0)
-    .sort((a, b) => (db.moodUsage[b] || 0) - (db.moodUsage[a] || 0) || order(a) - order(b));
+    .filter(m => set.defaults.includes(m) || usage[m] > 0)
+    .sort((a, b) => (usage[b] || 0) - (usage[a] || 0) || order(a) - order(b));
 }
 
 // Zähler an die Änderung eines Kommentars anpassen; wieder verwendete Smileys kommen zurück.
-function countMoods(before, after) {
+function countMoods(before, after, kind = 'mood') {
+  const set = EMOJI_SETS[kind];
+  const usage = db[set.usage];
   const diff = {};
   emojisIn(after).forEach(m => diff[m] = (diff[m] || 0) + 1);
   emojisIn(before).forEach(m => diff[m] = (diff[m] || 0) - 1);
   for (const [m, n] of Object.entries(diff)) {
     if (!n) continue;
-    db.moodUsage[m] = Math.max(0, (db.moodUsage[m] || 0) + n);
-    if (!db.moodUsage[m]) delete db.moodUsage[m];
-    if (n > 0) db.hiddenMoods = db.hiddenMoods.filter(h => h !== m);
+    usage[m] = Math.max(0, (usage[m] || 0) + n);
+    if (!usage[m]) delete usage[m];
+    if (n > 0) db[set.hidden] = db[set.hidden].filter(h => h !== m);
   }
 }
 
@@ -465,6 +504,25 @@ function insertAtCursor(ta, text, ownLine) {
   ta.value = before + ins + v.slice(pos);
   ta.focus();
   ta.selectionStart = ta.selectionEnd = pos + ins.length;
+}
+
+function insertEmoji(ta, emoji) {
+  const v = ta.value;
+  const pos = ta.selectionStart ?? v.length;
+  const lineStart = v.lastIndexOf('\n', pos - 1) + 1;
+  const head = v.slice(lineStart, pos);
+  const onlyEmojis = graphemes(head).every(g => EMOJI_RE.test(g) || /^\s+$/.test(g));
+  let before, ins;
+  if (onlyEmojis) {
+    before = v.slice(0, lineStart) + head.trimEnd();
+    ins = emoji + ' ';
+  } else {
+    before = v.slice(0, pos);
+    ins = '\n' + emoji + ' ';
+  }
+  ta.value = before + ins + v.slice(pos);
+  ta.focus();
+  ta.selectionStart = ta.selectionEnd = before.length + ins.length;
 }
 
 function onLongPress(btn, onLong, onTap) {
@@ -535,6 +593,7 @@ function render({ scrollToGap = false } = {}) {
       <td class="day">${dayLabel(iso)}${tags}${wx}</td>
       <td>${linesHtml(programItems(e.program), term)}</td>
       <td>${linesHtml(commentItems(e.comment), term)}</td>
+      ${trip.foodColumn ? `<td>${foodHtml(foodItems(e.food, q.place), term, true)}</td>` : ''}
       <td class="quarter">${link}</td>
     </tr>`;
   }).join('');
@@ -568,7 +627,7 @@ function render({ scrollToGap = false } = {}) {
     <p class="progress">${progress}</p>
     <div class="table-wrap">
       <table class="days">
-        <thead><tr><th>Tag</th><th>Programm</th><th>🙂☹️😉</th><th>😴💤</th></tr></thead>
+        <thead><tr><th>Tag</th><th>Programm</th><th>🙂☹️😉</th>${trip.foodColumn ? '<th>🍽️</th>' : ''}<th>😴💤</th></tr></thead>
         <tbody>${rows}</tbody>
       </table>
       ${visible.length ? '' : `<div class="empty-note">${term ? 'Keine Treffer.' : 'Noch keine Tage erfasst.'}</div>`}
@@ -586,8 +645,6 @@ function render({ scrollToGap = false } = {}) {
       <span>,-</span>
     </div>
 
-    <h2>Statistik</h2>
-    <dl class="meta">${tripStats(trip).map(([k, v]) => `<dt>${k}:</dt><dd>${esc(v)}</dd>`).join('')}</dl>
     ${stays.length ? `
       <h2>Quartierliste</h2>
       <div class="table-wrap fit">
@@ -599,7 +656,10 @@ function render({ scrollToGap = false } = {}) {
             <td class="num">${st.nights}</td>
           </tr>`).join('')}</tbody>
         </table>
-      </div>` : ''}`;
+      </div>` : ''}
+
+    <h2>Statistik</h2>
+    <dl class="meta">${tripStats(trip).map(([k, v]) => `<dt>${k}:</dt><dd>${esc(v)}</dd>`).join('')}</dl>`;
 
   fab.hidden = false;
   const bar = app.querySelector('#bar');
@@ -708,23 +768,24 @@ const autosaveFoot = `
       </div>`;
 
 // Smiley-Schnellauswahl: Antippen fügt ein, lange drücken entfernt, ↺ setzt zurück.
-function mountMoodRow(row, ta, onReset) {
+function mountMoodRow(row, ta, onReset, kind = 'mood') {
+  const set = EMOJI_SETS[kind];
   const draw = () => {
-    row.innerHTML = quickMoods().map(m => `<button type="button" data-m="${m}">${m}</button>`).join('')
+    row.innerHTML = quickMoods(kind).map(m => `<button type="button" data-m="${m}">${m}</button>`).join('')
       + '<button type="button" class="reset" aria-label="Standard-Smileys wiederherstellen">↺</button>';
     row.querySelectorAll('[data-m]').forEach(b => onLongPress(b,
       async () => {
         if (!await ask('Smiley entfernen', `${b.dataset.m} aus der Schnellauswahl entfernen?`, 'Entfernen')) return;
-        db.hiddenMoods.push(b.dataset.m);
-        delete db.moodUsage[b.dataset.m];
+        db[set.hidden].push(b.dataset.m);
+        delete db[set.usage][b.dataset.m];
         save();
         draw();
       },
-      () => insertAtCursor(ta, b.dataset.m + ' ', true)));
+      () => insertEmoji(ta, b.dataset.m)));
     row.querySelector('.reset').onclick = async () => {
       if (!await ask('Smileys zurücksetzen', 'Standard-Smileys wiederherstellen und alle Zähler auf null setzen?', 'Zurücksetzen')) return;
-      db.moodUsage = {};
-      db.hiddenMoods = [];
+      db[set.usage] = {};
+      db[set.hidden] = [];
       onReset();
       save();
       draw();
@@ -797,7 +858,7 @@ function openTripsDialog() {
 // Reise anlegen oder bearbeiten; überschneidende Zeiträume werden verhindert.
 function openTripDialog(trip) {
   const isNew = !trip;
-  const t = trip || { title: '', participants: '', start: todayISO(), end: addDays(todayISO(), 14), transport: [], quarterList: false };
+  const t = trip || { title: '', participants: '', start: todayISO(), end: addDays(todayISO(), 14), transport: [], quarterList: false, foodColumn: false };
   const transport = new Set(t.transport);
   openDialog(`
     <form method="dialog">
@@ -822,6 +883,10 @@ function openTripDialog(trip) {
         <div class="step">
           <label class="check"><input type="checkbox" id="fQuarterList" ${t.quarterList ? 'checked' : ''}> Quartierliste in der Ausgabe</label>
           <div class="hint">Am Ende der Ausgabe: alle Quartiere mit Zeitraum, Anzahl Nächte und Maps-Link.</div>
+        </div>
+        <div class="step">
+          <label class="check"><input type="checkbox" id="fFood" ${t.foodColumn ? 'checked' : ''}> 🍽️ Spalte Essen (Restaurants)</label>
+          <div class="hint">Zusätzliche Spalte vor dem Quartier für Lokale und Essen, mit Maps-Link.</div>
         </div>
         ${isNew ? '' : `<div style="margin-top:24px">
           <button type="button" class="danger" id="deleteTrip">🗑 Reiselogbuch löschen</button>
@@ -886,6 +951,7 @@ function openTripDialog(trip) {
     target.end = fEnd.value;
     target.transport = TRANSPORT.map(x => x.id).filter(id => transport.has(id));
     target.quarterList = dlg.querySelector('#fQuarterList').checked;
+    target.foodColumn = dlg.querySelector('#fFood').checked;
     if (isNew) db.trips.push(target);
     save();
     if (isNew) showTrip(target.id); else render();
@@ -931,8 +997,14 @@ function openDayDialog(trip, iso) {
           <textarea id="fComment" placeholder="Smiley antippen, dann ein paar Worte dazu.">${esc(e.comment || '')}</textarea>
           <div class="hint">${MOOD_HINT}</div>
         </div>
+        ${trip.foodColumn ? `<div class="step">
+          <div class="step-head"><label for="fFoodText"><span class="step-num">4</span>Essen</label>${micButton('fFoodText')}</div>
+          <div class="emoji-row" id="foodMoods"></div>
+          <textarea id="fFoodText" placeholder="Eine Zeile pro Lokal: Smileys, Name – Kommentar">${esc(e.food || '')}</textarea>
+          <div class="hint">Format: „🕛😋 Hard Rock Café – Steak war super“. Der Name wird zum Maps-Link (mit dem Ort des Quartiers).</div>
+        </div>` : ''}
         <div class="step">
-          <div class="step-head"><label for="fQuarter"><span class="step-num">4</span>Quartier</label></div>
+          <div class="step-head"><label for="fQuarter"><span class="step-num">${trip.foodColumn ? 5 : 4}</span>Quartier</label></div>
           ${isFirst ? '' : `<label class="check"><input type="checkbox" id="fSame" ${same ? 'checked' : ''}> Quartier wie Vortag</label>`}
           <input type="text" id="fQuarter" list="quarterList" placeholder="z. B. Oaks Townsville Hotel">
           <datalist id="quarterList">${knownQuarters.map(q => `<option value="${esc(q)}">`).join('')}</datalist>
@@ -952,7 +1024,9 @@ function openDayDialog(trip, iso) {
   const qHint = dlg.querySelector('#qHint');
   const savedInfo = dlg.querySelector('#savedInfo');
   let own = { name: same ? '' : (e.quarter || ''), place: same ? '' : (e.place || '') };
+  const fFood = dlg.querySelector('#fFoodText');
   let lastComment = e.comment || '';
+  let lastFood = e.food || '';
   let lastSnapshot = JSON.stringify(original);
 
   // Schritt 1: Wetter
@@ -969,6 +1043,7 @@ function openDayDialog(trip, iso) {
 
   // Schritt 3: Smiley-Schnellauswahl
   mountMoodRow(dlg.querySelector('#moods'), fComment, () => { lastComment = fComment.value.trim(); });
+  if (fFood) mountMoodRow(dlg.querySelector('#foodMoods'), fFood, () => { lastFood = fFood.value.trim(); }, 'food');
 
   // Schritt 4: Quartier
   const updateQuarter = () => {
@@ -996,8 +1071,10 @@ function openDayDialog(trip, iso) {
       sameQuarter: useSame,
       quarter: useSame ? '' : own.name.trim(),
       place: useSame ? '' : own.place.trim(),
+      // Bei ausgeblendeter Essen-Spalte bleiben vorhandene Einträge erhalten.
+      food: fFood ? fFood.value.trim() : (e.food || ''),
     };
-    return (next.weather || next.program || next.comment || next.sameQuarter || next.quarter || next.place) ? next : null;
+    return (next.weather || next.program || next.comment || next.sameQuarter || next.quarter || next.place || next.food) ? next : null;
   };
 
   const persist = () => {
@@ -1006,6 +1083,8 @@ function openDayDialog(trip, iso) {
     if (snapshot === lastSnapshot) return;
     countMoods(lastComment, next?.comment || '');
     lastComment = next?.comment || '';
+    countMoods(lastFood, next?.food || '', 'food');
+    lastFood = next?.food || '';
     if (next) trip.days[iso] = next; else delete trip.days[iso];
     if (save()) {
       lastSnapshot = snapshot;
@@ -1015,6 +1094,7 @@ function openDayDialog(trip, iso) {
 
   const restore = () => {
     countMoods(lastComment, original?.comment || '');
+    countMoods(lastFood, original?.food || '', 'food');
     if (original) trip.days[iso] = original; else delete trip.days[iso];
     save();
   };
@@ -1117,6 +1197,7 @@ const OUTPUT_CSS = `
   .rt .ln .t { min-width: 0; overflow-wrap: anywhere; }
   .rt .stats td { border: none; padding: 1px 16px 1px 0; }
   .rt a { color: #1a5fb4; }
+  .rt a.maps { white-space: nowrap; font-size: .9em; }
   .rt p { white-space: pre-line; }
   .rt .created { margin-top: 28px; font-size: 9pt; color: #777; }
   @media print { body { margin: 0; } }
@@ -1175,6 +1256,7 @@ function outputBody(trip, version, stamp) {
       <td class="nw">${dayLabel(iso)} ${esc(e.weather || '')}</td>
       <td>${linesHtml(programItems(e.program))}</td>
       <td>${linesHtml(commentItems(e.comment))}</td>
+      ${trip.foodColumn ? `<td>${foodHtml(foodItems(e.food, q.place))}</td>` : ''}
       <td>${q.name ? `<a href="${mapsUrl(q)}">${esc(q.name)}</a>` : ''}</td>
     </tr>`;
   }).join('');
@@ -1188,17 +1270,13 @@ function outputBody(trip, version, stamp) {
       ${transport ? `<tr><td><b>Reisemittel:</b></td><td>${esc(transport)}</td></tr>` : ''}
     </table>
     <table class="grid">
-      <thead><tr><th>Tag</th><th>Programm</th><th>🙂☹️😉</th><th>😴💤</th></tr></thead>
-      <tbody>${rows || '<tr><td colspan="4">Noch keine Tage erfasst.</td></tr>'}</tbody>
+      <thead><tr><th>Tag</th><th>Programm</th><th>🙂☹️😉</th>${trip.foodColumn ? '<th>🍽️</th>' : ''}<th>😴💤</th></tr></thead>
+      <tbody>${rows || `<tr><td colspan="${trip.foodColumn ? 5 : 4}">Noch keine Tage erfasst.</td></tr>`}</tbody>
     </table>
     <h2>Fazit</h2>
     <div>${linesHtml(commentItems(trip.fazit))}</div>
     <h2>Gesamtkosten</h2>
     <p>${formatEuro(trip.kosten)}</p>
-    <h2>Statistik</h2>
-    <table class="stats">
-      ${tripStats(trip).map(([k, v]) => `<tr><td><b>${k}:</b></td><td>${esc(v)}</td></tr>`).join('')}
-    </table>
     ${stays.length ? `
       <h2>Quartierliste</h2>
       <table class="grid fit">
@@ -1209,6 +1287,10 @@ function outputBody(trip, version, stamp) {
           <td class="num">${s.nights}</td>
         </tr>`).join('')}</tbody>
       </table>` : ''}
+    <h2>Statistik</h2>
+    <table class="stats">
+      ${tripStats(trip).map(([k, v]) => `<tr><td><b>${k}:</b></td><td>${esc(v)}</td></tr>`).join('')}
+    </table>
     <p class="created">Ausgabe V${pad(version, 3)} erstellt am ${stamp.date} um ${stamp.time}</p>
   </div>`;
 }

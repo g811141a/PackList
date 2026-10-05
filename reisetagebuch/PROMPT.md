@@ -1,4 +1,4 @@
-# Reisetagebuch – Prompt (Stand 05.10.2026, Version 8)
+# Reisetagebuch – Prompt (Stand 05.10.2026, Version 9)
 
 ```text
 Baue mir ein einfaches Reisetagebuch als Web-App für das iPad.
@@ -68,6 +68,9 @@ REISEN
   Die gewählten Reisemittel werden mit Icons ausgegeben.
 - Option "Quartierliste in der Ausgabe": beim Anlegen der Reise
   wählbar und nachträglich änderbar.
+- Option "🍽️ Spalte Essen (Restaurants)": beim Anlegen/Bearbeiten ein- und
+  ausschaltbar, Standard aus. Die Spalte steht vor dem Quartier (App und
+  Ausgabe). Beim Ausschalten bleiben vorhandene Einträge erhalten.
 - Reisezeiträume dürfen sich nicht überschneiden (Hinweis, Speichern
   erst nach Korrektur möglich).
 - Frühere Reisen bleiben gespeichert und können jederzeit wieder
@@ -128,11 +131,25 @@ ERFASSUNG – wenig eingeben, in ganz einfachen Schritten
        Wird er später wieder verwendet, kommt er automatisch zurück.
      - Reset-Icon (nur Symbol) stellt die Standard-Smileys wieder her
        und setzt alle Zähler auf null (mit Sicherheitsabfrage).
-  4. Quartier: Name eintragen.
+  4. Essen (nur wenn die Spalte aktiviert ist): wie "Wie war's?", eine
+     Zeile pro Lokal im Format "Smiley(s) Name – Kommentar", z. B.
+     "🕛😋 Hard Rock Café – Steak war super". Eigene Smiley-Leiste mit
+     eigener Häufigkeit, Entfernen (lange drücken) und ↺, Standard:
+     🕗 🕙 🕛 🕒 🕕 😋 👌 👍 😕 🤮 👎 ⭐️ 🍕 🍔 🥩 🍷 🍺 ☕️
+     Hinter jedem Lokal ein Link "📍 Maps" (Suche: Name + Ort des
+     Quartiers, ohne Ort nur der Name), mit bedingtem Zeilenumbruch.
+     Essen wird bei der Suche gefunden, zählt nicht als "erfasst" und
+     erscheint nicht in der Statistik. Keine Restaurantliste.
+  5. Quartier: Name eintragen.
      Häkchen "Quartier wie Vortag": nur wenn gesetzt, wird das Quartier
      vom Vortag übernommen. Sonst bleibt das Feld leer.
      Optionales Feld "Ort für Google Maps" (z. B. "Cairns, Australien"),
      macht den Maps-Link treffsicherer, wird nicht ausgegeben.
+- Mehrere Smileys pro Zeile (Wie war's?, Essen, Fazit): Ein angetippter
+  Smiley wird angehängt, wenn der Cursor in einer leeren Zeile oder direkt
+  hinter Smileys steht; steht er hinter Text, beginnt eine neue Zeile.
+  Alle führenden Smileys stehen in Tabelle und Ausgabe zusammen vorne,
+  der Text rückt daneben ein.
 - Diktieren: eigenes 🎤-Symbol an den Textfeldern, wenn das iPad es
   unterstützt; sonst ein Hinweis auf die Mikrofon-Taste der Tastatur.
 - Automatisches Speichern alle 10 Sekunden während der Erfassung.
@@ -148,8 +165,9 @@ ABSCHLUSS
   (Smiley-Schnellauswahl mit gemeinsamer Häufigkeits-Sortierung, lange
   drücken/Reset, 🎤 Diktieren, automatisches Speichern alle 10 Sekunden).
   Darstellung in App und Ausgabe mit hängendem Einzug.
-- Unter Fazit und Gesamtkosten zeigt auch die App die Statistik und die
-  Quartierliste (in der App immer, in der Ausgabe nur mit Häkchen).
+- Unter Fazit und Gesamtkosten zeigt auch die App die Quartierliste und
+  danach die Statistik (Quartierliste in der App immer, in der Ausgabe nur
+  mit Häkchen).
 - Der Fazit-Kasten in der App passt sich in der Breite dem Inhalt an.
 - Ein Feld "Gesamtkosten" in Euro (rechtsbündig, schmal – "99.999" muss
   sichtbar sein), immer ganze Euro. Der Tausenderpunkt
@@ -174,13 +192,13 @@ AUSGABE
 - Reihenfolge am Ende:
   1. Fazit
   2. Gesamtkosten
-  3. Statistik: Reisetage gesamt und davon erfasst, Anzahl der
+  3. Quartierliste (Quartier, Zeitraum, Anzahl Nächte, Maps-Link),
+     falls bei der Reise aktiviert
+  4. Statistik: Reisetage gesamt und davon erfasst, Anzahl der
      Quartiere, Wetter-Verteilung (z. B. "40×🌤 · 12×☀️ · 5×🌧"),
      Smileys: alle verwendeten aus Tagen und Fazit, absteigend nach
      Anzahl (z. B. "5×😊 · 3×😉 · 2×☹️"); Varianten wie ☹️/☹ zählen
      gemeinsam – Anzahl vor dem Symbol, ohne Leerzeichen
-  4. Quartierliste (Quartier, Zeitraum, Anzahl Nächte, Maps-Link),
-     falls bei der Reise aktiviert
   5. Dezent als letzte Zeile:
      "Ausgabe V003 erstellt am TT.MM.JJJJ um hh:mm"
 - Dateiname mit fortlaufender Versionsnummer (ein gemeinsamer Zähler

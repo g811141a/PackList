@@ -1,4 +1,4 @@
-# Reisetagebuch – Prompt (Stand 05.10.2026, Version 7)
+# Reisetagebuch – Prompt (Stand 05.10.2026, Version 8)
 
 ```text
 Baue mir ein einfaches Reisetagebuch als Web-App für das iPad.
@@ -41,8 +41,10 @@ RAHMEN
   - Icons: "✅ Fertig", "↩️ Abbrechen", "✖️ Schließen"
 - Begriffe: "🧳 Reiselogbücher" (Liste, Fenstertitel "Reiselogbücher"),
   "＋ Neues Reiselogbuch anlegen", "Reiselogbuch bearbeiten",
-  "🗑 Reiselogbuch löschen". (App-Name, Überschrift und Backup-Name werden
-  erst umbenannt, wenn die App fertig ist.)
+  "🗑 Reiselogbuch löschen", Überschrift "Reiselogbuch – <Titel>" (App und
+  Ausgabe). (App-Name und Backup-Name werden erst umbenannt, wenn die App
+  fertig ist.)
+- Die "Reset"-Schaltfläche der iPad-Datumsauswahl bleibt (Systembeschriftung).
 - Einheitliche Fußleiste in allen Fenstern: links "Abbrechen", rechts
   "Fertig" bzw. "Schließen"; "Löschen" separat in Rot. Oben nur Titel
   (bei der Tageserfassung zusätzlich "‹ Vortag" / "Folgetag ›").
@@ -97,6 +99,9 @@ HAUPTANSICHT (TABELLE)
   - Trennlinien zwischen allen Spalten
   - äußere Tabellenumrandung in der Farbe der Kopfzeilen-Ränder
   - die Statistik bleibt eine schlichte Liste
+  - Quartierliste kompakt (Breite passt sich dem Inhalt an), "Nächte"
+    rechtsbündig (Überschrift und Werte)
+  - keine Hover-Farbe auf dem iPad (bleibt sonst nach dem Antippen hängen)
 - Mehrzeilige Einträge mit hängendem Einzug: Bricht eine Zeile um,
   beginnt die Fortsetzung genau unter dem Text, nicht unter dem ▫️
   bzw. dem Smiley.
@@ -145,7 +150,9 @@ ABSCHLUSS
   Darstellung in App und Ausgabe mit hängendem Einzug.
 - Unter Fazit und Gesamtkosten zeigt auch die App die Statistik und die
   Quartierliste (in der App immer, in der Ausgabe nur mit Häkchen).
-- Ein Feld "Gesamtkosten" in Euro (rechtsbündig), immer ganze Euro. Der Tausenderpunkt
+- Der Fazit-Kasten in der App passt sich in der Breite dem Inhalt an.
+- Ein Feld "Gesamtkosten" in Euro (rechtsbündig, schmal – "99.999" muss
+  sichtbar sein), immer ganze Euro. Der Tausenderpunkt
   erscheint schon beim Tippen ("4.850"), Ausgabe z. B. als "€ 4.850,-".
 
 AUSGABE

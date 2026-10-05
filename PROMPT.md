@@ -1,4 +1,4 @@
-# Reiselogbuch – Prompt (Stand 05.10.2026, Version 11)
+# Reiselogbuch – Prompt (Stand 05.10.2026, Version 12)
 
 ```text
 Baue mir ein einfaches Reiselogbuch als Web-App für das iPad.
@@ -27,8 +27,8 @@ RAHMEN
 - Bereitstellung über GitHub Pages aus dem Repo "ReiseLogBuch" (Branch
   main, Hauptordner): https://g811141a.github.io/ReiseLogBuch/
   (Repo öffentlich, die Einträge bleiben trotzdem nur auf dem iPad).
-- Dunkelmodus manuell umschaltbar, 3 Stufen: Automatisch / Hell / Dunkel.
-  Die letzte Einstellung wird gemerkt.
+- Darstellung Hell / Dunkel (2 Stufen), die Schaltfläche zeigt die Aktion
+  (🌙 bei Hell, ☀️ bei Dunkel). Die letzte Einstellung wird gemerkt.
 - Alle Meldungen und Sicherheitsabfragen in eigenen Fenstern mit deutschen
   Schaltflächen (keine iPad-Systemfenster mit "Close"/"OK").
 - Alle Aktionen sind echte Schaltflächen (kein reiner Text als Link).
@@ -39,7 +39,7 @@ RAHMEN
   - Bestätigung immer mit dem Verb der Aktion: "Löschen", "Entfernen",
     "Zurücksetzen", "Ersetzen"
   - "💾 Backup sichern", "📂 Backup laden", "‹ Vortag" / "Folgetag ›"
-  - Icons: "✅ Fertig", "↩️ Abbrechen", "✖️ Schließen"
+  - Icons: "✅ Fertig", "🚫 Abbrechen", "✖️ Schließen"
 - Begriffe: "🧳 Reiselogbücher" (Liste, Fenstertitel "Reiselogbücher"),
   "＋ Neues Reiselogbuch anlegen", "Reiselogbuch bearbeiten",
   "🗑 Reiselogbuch löschen", Überschrift "Reiselogbuch – <Titel>" (App und
@@ -137,15 +137,19 @@ ERFASSUNG – wenig eingeben, in ganz einfachen Schritten
      "🕛😋 Hard Rock Café – Steak war super". Eigene Smiley-Leiste mit
      eigener Häufigkeit, Entfernen (lange drücken) und ↺, Standard:
      🕗 🕙 🕛 🕒 🕕 😋 👌 👍 😕 🤮 👎 ⭐️ 🍕 🍔 🥩 🍷 🍺 ☕️
-     Darstellung "🕛😋 📍Hard Rock Café – Steak war super": 📍 und der
-     Name des Lokals (bis einschließlich letztem Buchstaben) sind der
-     Link, ab dem Bindestrich normaler Text. Suche: Name + Ort des
+     Darstellung "🕛😋 📍Hard Rock Café – Steak war super": 📍 ist nur
+     Zeichen, nur der Name des Lokals (bis einschließlich letztem
+     Buchstaben) ist der Link, ab dem Bindestrich normaler Text.
+     Schaltfläche "⊘ ohne Link": setzt/entfernt "⊘" am Anfang der Zeile
+     mit dem Cursor; diese Zeile erscheint ohne 📍 und ohne Link. Suche: Name + Ort des
      Quartiers, ohne Ort nur der Name.
      Essen wird bei der Suche gefunden, zählt nicht als "erfasst" und
      erscheint nicht in der Statistik. Keine Restaurantliste.
   5. Quartier: Name eintragen.
      Häkchen "Quartier wie Vortag": nur wenn gesetzt, wird das Quartier
      vom Vortag übernommen. Sonst bleibt das Feld leer.
+     Häkchen "Kein Maps-Link": Name ohne 📍 und ohne Link (wird bei
+     "Quartier wie Vortag" mit übernommen).
      Optionales Feld "Ort für Google Maps" (z. B. "Cairns, Australien"),
      macht den Maps-Link treffsicherer, wird nicht ausgegeben.
 - Mehrere Smileys pro Zeile (Wie war's?, Essen, Fazit): Ein angetippter
@@ -161,7 +165,7 @@ ERFASSUNG – wenig eingeben, in ganz einfachen Schritten
 
 QUARTIER-SPALTE
 - Der Quartiersname wird automatisch zu einem funktionierenden
-  Google-Maps-Link. Link sind nur 📍 und der Hotelname bis vor den ersten
+  Google-Maps-Link. 📍 ist nur Zeichen, Link ist nur der Hotelname bis vor den ersten
   Bindestrich oder das erste Komma ("📍Santai Resort - Kingscliff",
   "📍Cascade Gardens, Cairns"); gesucht wird mit dem ganzen Eintrag plus
   optionalem Ort.

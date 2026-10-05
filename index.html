@@ -249,6 +249,10 @@ function normalize(data) {
   data.foodUsage ||= {};
   data.hiddenFood ||= [];
   data.settings = { theme: 'auto', hideEmpty: false, ...(data.settings || {}) };
+  // Früher gab es "Automatisch": einmalig die aktuelle iPad-Einstellung übernehmen.
+  if (!['light', 'dark'].includes(data.settings.theme)) {
+    data.settings.theme = window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
   for (const t of data.trips) {
     t.days ||= {};
     t.transport ||= [];
@@ -362,10 +366,10 @@ function rawEntry(trip, iso) { return trip.days[iso] || {}; }
 function quarterOf(trip, iso) {
   for (let d = iso, i = 0; i < 1000; d = addDays(d, -1), i++) {
     const e = rawEntry(trip, d);
-    if (!e.sameQuarter) return { name: e.quarter || '', place: e.place || '' };
+    if (!e.sameQuarter) return { name: e.quarter || '', place: e.place || '', noMap: Boolean(e.noMap) };
     if (d <= trip.start) break;
   }
-  return { name: '', place: '' };
+  return { name: '', place: '', noMap: false };
 }
 
 function isRecorded(trip, iso) {
@@ -431,29 +435,46 @@ function splitName(text, withComma) {
 
 const linkAttrs = inApp => inApp ? ' target="_blank" rel="noopener" onclick="event.stopPropagation()"' : '';
 
-// Quartier: 📍 und Hotelname sind der Link, Ort danach ist normaler Text; gesucht wird mit dem ganzen Eintrag.
+// Quartier: 📍 als Zeichen, nur der Hotelname ist der Link; Ort danach ist normaler Text.
+// Gesucht wird mit dem ganzen Eintrag. Mit "Kein Maps-Link" weder 📍 noch Link.
 function quarterHtml(q, term = '', inApp = false) {
   if (!q.name) return '';
+  if (q.noMap) return `<div class="ln"><span class="t">${highlight(q.name, term)}</span></div>`;
   const [name, rest] = splitName(q.name, true);
-  const url = mapsUrl(q);
-  const at = linkAttrs(inApp);
-  return `<div class="ln"><a class="m pin" href="${url}"${at}>📍</a><span class="t"><a href="${url}"${at}>${highlight(name, term)}</a>${highlight(rest, term)}</span></div>`;
+  return `<div class="ln"><span class="m">📍</span><span class="t"><a href="${mapsUrl(q)}"${linkAttrs(inApp)}>${highlight(name, term)}</a>${highlight(rest, term)}</span></div>`;
 }
 
-// Essen: "Smileys Name – Kommentar"; 📍 und Name sind der Link (Suche: Name + Ort des Quartiers).
+// Essen: "Smileys Name – Kommentar"; 📍 als Zeichen, nur der Name ist der Link (Suche: Name + Ort des Quartiers).
+// Ein "⊘" am Zeilenanfang schaltet den Maps-Link für dieses Lokal aus.
+const NO_LINK = '⊘';
 function foodItems(text, place) {
   return splitLines(text).map(line => {
-    const { m, t } = splitLeadingEmojis(line);
+    const noLink = line.startsWith(NO_LINK);
+    const { m, t } = splitLeadingEmojis(noLink ? line.slice(NO_LINK.length).trim() : line);
     const [name, rest] = splitName(t, false);
-    return { m, name, rest, maps: name.trim() ? mapsUrl({ name, place }) : '' };
+    return { m, name, rest, maps: !noLink && name.trim() ? mapsUrl({ name, place }) : '' };
   });
 }
 
 function foodHtml(items, term = '', inApp = false) {
   return items.map(({ m, name, rest, maps }) =>
     `<div class="ln">${m ? `<span class="m">${esc(m)}</span>` : ''}<span class="t">${maps
-      ? `<a class="pin" href="${maps}"${linkAttrs(inApp)}>📍${highlight(name, term)}</a>${highlight(rest, term)}`
+      ? `📍<a href="${maps}"${linkAttrs(inApp)}>${highlight(name, term)}</a>${highlight(rest, term)}`
       : highlight(name + rest, term)}</span></div>`).join('');
+}
+
+// "⊘" am Anfang der Zeile mit dem Cursor setzen oder wieder entfernen.
+function toggleNoLink(ta) {
+  const v = ta.value;
+  const pos = ta.selectionStart ?? v.length;
+  const start = v.lastIndexOf('\n', pos - 1) + 1;
+  const line = v.slice(start);
+  const on = line.startsWith(NO_LINK);
+  const cut = on ? NO_LINK.length + (line[NO_LINK.length] === ' ' ? 1 : 0) : 0;
+  const ins = on ? '' : NO_LINK + ' ';
+  ta.value = v.slice(0, start) + ins + v.slice(start + cut);
+  ta.focus();
+  ta.selectionStart = ta.selectionEnd = Math.max(start, pos + ins.length - cut);
 }
 
 // Optional werden Suchtreffer im (bereits maskierten) Text gelb markiert.
@@ -563,17 +584,15 @@ function onLongPress(btn, onLong, onTap) {
 
 /* ---------- Darstellung ---------- */
 
-const THEMES = { auto: { icon: '🌓', label: 'Automatisch' }, light: { icon: '☀️', label: 'Hell' }, dark: { icon: '🌙', label: 'Dunkel' } };
+// Die Schaltfläche zeigt die Aktion: bei Hell 🌙 (dunkel schalten), bei Dunkel ☀️.
+const THEMES = { light: { icon: '🌙', label: 'Dunkel einschalten' }, dark: { icon: '☀️', label: 'Hell einschalten' } };
 
 function applyTheme() {
-  const t = db.settings.theme;
-  if (t === 'auto') document.documentElement.removeAttribute('data-theme');
-  else document.documentElement.setAttribute('data-theme', t);
+  document.documentElement.setAttribute('data-theme', db.settings.theme);
 }
 
 function cycleTheme() {
-  const order = ['auto', 'light', 'dark'];
-  db.settings.theme = order[(order.indexOf(db.settings.theme) + 1) % order.length];
+  db.settings.theme = db.settings.theme === 'dark' ? 'light' : 'dark';
   save();
   applyTheme();
   render();
@@ -631,7 +650,7 @@ function render({ scrollToGap = false } = {}) {
       <button id="trips">🧳 Reiselogbücher</button>
       <span class="spacer"></span>
       <button id="toggleEmpty">${db.settings.hideEmpty ? '⤵️ Leere Tage ein' : '⤴️ Leere Tage aus'}</button>
-      <button id="theme" title="Darstellung: ${theme.label}" aria-label="Darstellung: ${theme.label}">${theme.icon}</button>
+      <button id="theme" title="${theme.label}" aria-label="${theme.label}">${theme.icon}</button>
       <button class="primary" id="output">📤 Ausgabe</button>
       <input type="search" id="search" placeholder="🔎 Suchen" value="${esc(searchTerm)}" autocomplete="off">
       ${term ? `<span class="hits muted">${visible.length} Treffer</span>` : ''}
@@ -758,7 +777,7 @@ function messageBox(title, html, buttons) {
 }
 
 const ask = (title, html, label, danger = false) =>
-  messageBox(title, html, [{ label: '↩️ Abbrechen', value: 'no' }, { label, value: 'yes', cls: danger ? 'danger' : 'primary' }]);
+  messageBox(title, html, [{ label: '🚫 Abbrechen', value: 'no' }, { label, value: 'yes', cls: danger ? 'danger' : 'primary' }]);
 const inform = (title, html) => messageBox(title, html, [{ label: '✖️ Schließen', value: 'no' }]);
 
 /* ---------- Dialoge ---------- */
@@ -779,7 +798,7 @@ const micButton = id => SpeechRec ? `<button type="button" class="mic" data-mic=
 const micHint = () => SpeechRec ? '' : '<div class="hint" style="margin-top:12px">🎤 Zum Diktieren die Mikrofon-Taste auf der Tastatur verwenden.</div>';
 const autosaveFoot = `
       <div class="dlg-foot">
-        <button type="button" data-act="cancel">↩️ Abbrechen</button>
+        <button type="button" data-act="cancel">🚫 Abbrechen</button>
         <span class="saved" id="savedInfo"></span>
         <span class="spacer"></span>
         <button class="primary" value="ok">✅ Fertig</button>
@@ -911,7 +930,7 @@ function openTripDialog(trip) {
         </div>`}
       </div>
       <div class="dlg-foot">
-        <button type="button" data-act="cancel">↩️ Abbrechen</button>
+        <button type="button" data-act="cancel">🚫 Abbrechen</button>
         <span class="spacer"></span>
         <button class="primary" value="ok" id="okTrip">✅ Fertig</button>
       </div>
@@ -1016,10 +1035,10 @@ function openDayDialog(trip, iso) {
           <div class="hint">${MOOD_HINT}</div>
         </div>
         ${trip.foodColumn ? `<div class="step">
-          <div class="step-head"><label for="fFoodText"><span class="step-num">4</span>Essen</label>${micButton('fFoodText')}</div>
+          <div class="step-head"><label for="fFoodText"><span class="step-num">4</span>Essen</label><button type="button" class="mic" id="noLink" title="Maps-Link für das Lokal in der aktuellen Zeile aus- oder einschalten">⊘ ohne Link</button>${micButton('fFoodText')}</div>
           <div class="emoji-row" id="foodMoods"></div>
           <textarea id="fFoodText" placeholder="Eine Zeile pro Lokal: Smileys, Name – Kommentar">${esc(e.food || '')}</textarea>
-          <div class="hint">Format: „🕛😋 Hard Rock Café – Steak war super“. Der Name wird zum Maps-Link (mit dem Ort des Quartiers).</div>
+          <div class="hint">Format: „🕛😋 Hard Rock Café – Steak war super“. Der Name wird zum Maps-Link (mit dem Ort des Quartiers). „⊘ ohne Link“ schaltet ihn für die Zeile mit dem Cursor aus.</div>
         </div>` : ''}
         <div class="step">
           <div class="step-head"><label for="fQuarter"><span class="step-num">${trip.foodColumn ? 5 : 4}</span>Quartier</label></div>
@@ -1027,6 +1046,7 @@ function openDayDialog(trip, iso) {
           <input type="text" id="fQuarter" list="quarterList" placeholder="z. B. Oaks Townsville Hotel">
           <datalist id="quarterList">${knownQuarters.map(q => `<option value="${esc(q)}">`).join('')}</datalist>
           <input type="text" id="fPlace" placeholder="Ort für Google Maps (optional, z. B. Cairns, Australien)" style="margin-top:8px">
+          <label class="check" style="margin:8px 0 0"><input type="checkbox" id="fNoMap" ${e.noMap && !same ? 'checked' : ''}> Kein Maps-Link</label>
           <div class="hint" id="qHint"></div>
         </div>
         ${micHint()}
@@ -1062,17 +1082,22 @@ function openDayDialog(trip, iso) {
   // Schritt 3: Smiley-Schnellauswahl
   mountMoodRow(dlg.querySelector('#moods'), fComment, () => { lastComment = fComment.value.trim(); });
   if (fFood) mountMoodRow(dlg.querySelector('#foodMoods'), fFood, () => { lastFood = fFood.value.trim(); }, 'food');
+  if (fFood) dlg.querySelector('#noLink').onclick = () => toggleNoLink(fFood);
 
   // Schritt 4: Quartier
+  const fNoMap = dlg.querySelector('#fNoMap');
+  let ownNoMap = fNoMap.checked;
   const updateQuarter = () => {
     const useSame = Boolean(fSame?.checked);
-    fQuarter.disabled = fPlace.disabled = useSame;
-    const q = useSame ? prev : own;
+    fQuarter.disabled = fPlace.disabled = fNoMap.disabled = useSame;
+    const q = useSame ? prev : { ...own, noMap: ownNoMap };
     fQuarter.value = q.name;
     fPlace.value = q.place;
+    fNoMap.checked = Boolean(q.noMap);
     if (useSame && !prev.name) qHint.textContent = 'Am Vortag ist noch kein Quartier eingetragen.';
-    else qHint.innerHTML = q.name ? `<a href="${mapsUrl(q)}" target="_blank" rel="noopener">📍 In Google Maps prüfen</a>` : '';
+    else qHint.innerHTML = q.name && !q.noMap ? `<a href="${mapsUrl(q)}" target="_blank" rel="noopener">📍 In Google Maps prüfen</a>` : '';
   };
+  fNoMap.onchange = () => { ownNoMap = fNoMap.checked; updateQuarter(); };
   fQuarter.oninput = () => { own.name = fQuarter.value; updateQuarter(); };
   fPlace.oninput = () => { own.place = fPlace.value; updateQuarter(); };
   if (fSame) fSame.onchange = updateQuarter;
@@ -1089,6 +1114,7 @@ function openDayDialog(trip, iso) {
       sameQuarter: useSame,
       quarter: useSame ? '' : own.name.trim(),
       place: useSame ? '' : own.place.trim(),
+      noMap: useSame ? false : ownNoMap,
       // Bei ausgeblendeter Essen-Spalte bleiben vorhandene Einträge erhalten.
       food: fFood ? fFood.value.trim() : (e.food || ''),
     };
@@ -1354,7 +1380,7 @@ function openOutputDialog(trip) {
         <div class="hint" style="margin-top:14px">Dateiname: ${esc(outputName(trip, nextVersion))}</div>
       </div>
       <div class="dlg-foot">
-        <button type="button" data-act="cancel">↩️ Abbrechen</button>
+        <button type="button" data-act="cancel">🚫 Abbrechen</button>
         <span class="spacer"></span>
       </div>
     </form>`);

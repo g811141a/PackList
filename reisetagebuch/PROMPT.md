@@ -1,4 +1,4 @@
-# Reisetagebuch – Prompt (Stand 05.10.2026, Version 6)
+# Reisetagebuch – Prompt (Stand 05.10.2026, Version 7)
 
 ```text
 Baue mir ein einfaches Reisetagebuch als Web-App für das iPad.
@@ -38,6 +38,11 @@ RAHMEN
   - Bestätigung immer mit dem Verb der Aktion: "Löschen", "Entfernen",
     "Zurücksetzen", "Ersetzen"
   - "💾 Backup sichern", "📂 Backup laden", "‹ Vortag" / "Folgetag ›"
+  - Icons: "✅ Fertig", "↩️ Abbrechen", "✖️ Schließen"
+- Begriffe: "🧳 Reiselogbücher" (Liste, Fenstertitel "Reiselogbücher"),
+  "＋ Neues Reiselogbuch anlegen", "Reiselogbuch bearbeiten",
+  "🗑 Reiselogbuch löschen". (App-Name, Überschrift und Backup-Name werden
+  erst umbenannt, wenn die App fertig ist.)
 - Einheitliche Fußleiste in allen Fenstern: links "Abbrechen", rechts
   "Fertig" bzw. "Schließen"; "Löschen" separat in Rot. Oben nur Titel
   (bei der Tageserfassung zusätzlich "‹ Vortag" / "Folgetag ›").
@@ -73,7 +78,7 @@ HAUPTANSICHT (TABELLE)
   (die erste Lücke, auch wenn spätere Tage schon erfasst sind) und
   markiert diese Zeile.
 - Die obere Leiste mit den Schaltflächen bleibt beim Scrollen fixiert.
-  Reihenfolge: 🧳 Reisen · Leere Tage · Darstellung · 📤 Ausgabe · Suche.
+  Reihenfolge: 🧳 Reiselogbücher · Leere Tage · Darstellung · 📤 Ausgabe · Suche.
 - Unten rechts übereinander die Schaltflächen ⬆️ (nach oben) und ⬇️ (ans
   Ende), im gleichen Aussehen wie die Dunkel-Schaltfläche, ohne Schatten.
 - Schaltfläche zum Aus-/Einblenden der leeren Tage, zeigt die Aktion:
@@ -82,7 +87,7 @@ HAUPTANSICHT (TABELLE)
 - Dezente Fortschrittsanzeige, z. B. "Tag 42 von 80 · 38 erfasst".
 - Vergangene Tage ohne Eintrag werden dezent markiert.
 - Suche über die Einträge (Programm, Kommentar, Quartier), nur innerhalb
-  der aktuellen Reise.
+  der aktuellen Reise. Treffer werden im Text gelb hinterlegt.
 - Tabellendesign (gilt für alle Tabellen in App, HTML und PDF):
   - Kopfzeile leicht grau hinterlegt (#d9d9d9), Zellenränder darin zwei
     Stufen dunkler (#a5a5a5); im Dunkelmodus Kopfzeile #3b3a37 mit
@@ -138,7 +143,9 @@ ABSCHLUSS
   (Smiley-Schnellauswahl mit gemeinsamer Häufigkeits-Sortierung, lange
   drücken/Reset, 🎤 Diktieren, automatisches Speichern alle 10 Sekunden).
   Darstellung in App und Ausgabe mit hängendem Einzug.
-- Ein Feld "Gesamtkosten" in Euro, immer ganze Euro. Der Tausenderpunkt
+- Unter Fazit und Gesamtkosten zeigt auch die App die Statistik und die
+  Quartierliste (in der App immer, in der Ausgabe nur mit Häkchen).
+- Ein Feld "Gesamtkosten" in Euro (rechtsbündig), immer ganze Euro. Der Tausenderpunkt
   erscheint schon beim Tippen ("4.850"), Ausgabe z. B. als "€ 4.850,-".
 
 AUSGABE
@@ -162,16 +169,20 @@ AUSGABE
   2. Gesamtkosten
   3. Statistik: Reisetage gesamt und davon erfasst, Anzahl der
      Quartiere, Wetter-Verteilung (z. B. "40×🌤 · 12×☀️ · 5×🌧"),
-     die drei häufigsten Smileys (z. B. "5×😊 · 3×😉 · 2×☹️") –
-     Anzahl vor dem Symbol, ohne Leerzeichen
+     Smileys: alle verwendeten aus Tagen und Fazit, absteigend nach
+     Anzahl (z. B. "5×😊 · 3×😉 · 2×☹️"); Varianten wie ☹️/☹ zählen
+     gemeinsam – Anzahl vor dem Symbol, ohne Leerzeichen
   4. Quartierliste (Quartier, Zeitraum, Anzahl Nächte, Maps-Link),
      falls bei der Reise aktiviert
   5. Dezent als letzte Zeile:
      "Ausgabe V003 erstellt am TT.MM.JJJJ um hh:mm"
 - Dateiname mit fortlaufender Versionsnummer (ein gemeinsamer Zähler
   pro Reise für HTML und PDF, im Backup enthalten):
-  "JJJJ.MM.TT-JJJJ.MM.TT <Reisetitel> V001"
-  z. B. "2026.08.24-2026.11.11 Australien V003.pdf"
+  "Reiselogbuch <Reisetitel> JJJJ.MM.TT-JJJJ.MM.TT V001"
+  z. B. "Reiselogbuch Australien 2026.08.24-2026.11.11 V003.pdf"
+  (nie zwei Leerzeichen hintereinander)
+- PDF bleibt im Hochformat (Safari ignoriert die Querformat-Vorgabe);
+  beim Drucken ist der Seitenhintergrund weiß (kein grauer Balken).
 
 SICHERHEIT
 - Backup als Datei exportieren/importieren, enthält alle Reisen.

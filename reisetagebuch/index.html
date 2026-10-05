@@ -115,6 +115,9 @@
   .ln + .ln { margin-top: 2px; }
   .ln .m { flex: none; }
   .ln .t { min-width: 0; overflow-wrap: anywhere; }
+  mark { background: #ffe45c; color: inherit; border-radius: 3px; padding: 0 1px; }
+  :root[data-theme="dark"] mark { background: #8a6d00; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) mark { background: #8a6d00; } }
 
   .fazit-box { display: block; width: 100%; text-align: left; padding: 12px 14px; min-height: 60px; border-radius: 12px; }
   .trip-row { display: flex; gap: 8px; margin-top: 10px; }
@@ -124,6 +127,13 @@
   .msg-text { padding: 8px 2px; }
   .kosten { display: flex; align-items: center; gap: 10px; max-width: 260px; }
   .kosten span { font-size: 20px; }
+  #kosten { text-align: right; }
+  .table-wrap.fit { display: inline-block; max-width: 100%; }
+  .table-wrap.fit table { width: auto; }
+  table.days.static th { position: static; }
+  table.days.static tbody tr { cursor: default; }
+  table.days td.num { text-align: right; }
+  table.days.static td.quarter a, table.days.static a { text-decoration: none; }
 
   .fab { position: fixed; right: max(16px, env(safe-area-inset-right)); bottom: calc(16px + env(safe-area-inset-bottom)); display: flex; flex-direction: column; gap: 8px; z-index: 4; }
   .fab button { width: 48px; padding: 0; font-size: 20px; }
@@ -170,7 +180,7 @@
   #printout { display: none; }
   @media print {
     @page { size: A4 landscape; margin: 12mm; }
-    body { background: #fff; color: #000; padding: 0; }
+    html, body { background: #fff !important; color: #000; padding: 0; }
     #app, dialog, .fab { display: none !important; }
     #printout { display: block; }
   }
@@ -390,9 +400,17 @@ function commentItems(text) {
   });
 }
 
-function linesHtml(items) {
+// Optional werden Suchtreffer im (bereits maskierten) Text gelb markiert.
+function highlight(text, term) {
+  const safe = esc(text);
+  if (!term) return safe;
+  const pattern = esc(term).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return safe.replace(new RegExp(pattern, 'gi'), m => `<mark>${m}</mark>`);
+}
+
+function linesHtml(items, term = '') {
   return items.map(({ m, t }) =>
-    `<div class="ln">${m ? `<span class="m">${esc(m)}</span>` : ''}<span class="t">${esc(t)}</span></div>`).join('');
+    `<div class="ln">${m ? `<span class="m">${esc(m)}</span>` : ''}<span class="t">${highlight(t, term)}</span></div>`).join('');
 }
 
 /* ---------- Smileys ---------- */
@@ -509,13 +527,13 @@ function render({ scrollToGap = false } = {}) {
       ? `<span class="wx">${esc(e.weather)}</span>`
       : `<span class="wx empty">☀️🌤🌦🌧</span>`;
     const link = q.name
-      ? `<a href="${mapsUrl(q)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${linesHtml([{ m: '📍', t: q.name }])}</a>`
+      ? `<a href="${mapsUrl(q)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${linesHtml([{ m: '📍', t: q.name }], term)}</a>`
       : '';
     const cls = [i % 2 ? 'alt' : '', iso === gap ? 'gap' : ''].join(' ').trim();
     return `<tr data-day="${iso}" class="${cls}">
       <td class="day">${dayLabel(iso)}${tags}${wx}</td>
-      <td>${linesHtml(programItems(e.program))}</td>
-      <td>${linesHtml(commentItems(e.comment))}</td>
+      <td>${linesHtml(programItems(e.program), term)}</td>
+      <td>${linesHtml(commentItems(e.comment), term)}</td>
       <td class="quarter">${link}</td>
     </tr>`;
   }).join('');
@@ -528,10 +546,11 @@ function render({ scrollToGap = false } = {}) {
 
   const theme = THEMES[db.settings.theme];
   const transport = transportText(trip);
+  const stays = quarterStays(trip);
 
   app.innerHTML = `
     <div class="bar" id="bar">
-      <button id="trips">🧳 Reisen</button>
+      <button id="trips">🧳 Reiselogbücher</button>
       <span class="spacer"></span>
       <button id="toggleEmpty">${db.settings.hideEmpty ? '⤵️ Leere Tage ein' : '⤴️ Leere Tage aus'}</button>
       <button id="theme" title="Darstellung: ${theme.label}" aria-label="Darstellung: ${theme.label}">${theme.icon}</button>
@@ -564,7 +583,22 @@ function render({ scrollToGap = false } = {}) {
       <span>€</span>
       <input type="text" id="kosten" inputmode="numeric" placeholder="0" value="${trip.kosten == null ? '' : thousands(trip.kosten)}">
       <span>,-</span>
-    </div>`;
+    </div>
+
+    <h2>Statistik</h2>
+    <dl class="meta">${tripStats(trip).map(([k, v]) => `<dt>${k}:</dt><dd>${esc(v)}</dd>`).join('')}</dl>
+    ${stays.length ? `
+      <h2>Quartierliste</h2>
+      <div class="table-wrap fit">
+        <table class="days static">
+          <thead><tr><th>Quartier</th><th>Zeitraum</th><th>Nächte</th></tr></thead>
+          <tbody>${stays.map((st, i) => `<tr class="${i % 2 ? 'alt' : ''}">
+            <td><a href="${mapsUrl(st.q)}" target="_blank" rel="noopener">📍 ${esc(st.q.name)}</a></td>
+            <td class="day">${shortDate(st.firstNight)} - ${fullDate(addDays(st.lastNight, 1))}</td>
+            <td class="num">${st.nights}</td>
+          </tr>`).join('')}</tbody>
+        </table>
+      </div>` : ''}`;
 
   fab.hidden = false;
   const bar = app.querySelector('#bar');
@@ -605,9 +639,9 @@ function renderEmpty() {
   fab.hidden = true;
   app.innerHTML = `
     <h1 style="margin-top:calc(env(safe-area-inset-top) + 20px)">Reisetagebuch</h1>
-    <p class="muted">Noch keine Reise angelegt.</p>
+    <p class="muted">Noch kein Reiselogbuch angelegt.</p>
     <div style="display:flex;gap:8px;flex-wrap:wrap">
-      <button class="primary" id="newTrip">＋ Neue Reise anlegen</button>
+      <button class="primary" id="newTrip">＋ Neues Reiselogbuch anlegen</button>
       <button id="importAll">📂 Backup laden</button>
     </div>`;
   app.querySelector('#newTrip').onclick = () => openTripDialog(null);
@@ -645,8 +679,8 @@ function messageBox(title, html, buttons) {
 }
 
 const ask = (title, html, label, danger = false) =>
-  messageBox(title, html, [{ label: 'Abbrechen', value: 'no' }, { label, value: 'yes', cls: danger ? 'danger' : 'primary' }]);
-const inform = (title, html) => messageBox(title, html, [{ label: 'Schließen', value: 'no' }]);
+  messageBox(title, html, [{ label: '↩️ Abbrechen', value: 'no' }, { label, value: 'yes', cls: danger ? 'danger' : 'primary' }]);
+const inform = (title, html) => messageBox(title, html, [{ label: '✖️ Schließen', value: 'no' }]);
 
 /* ---------- Dialoge ---------- */
 
@@ -666,10 +700,10 @@ const micButton = id => SpeechRec ? `<button type="button" class="mic" data-mic=
 const micHint = () => SpeechRec ? '' : '<div class="hint" style="margin-top:12px">🎤 Zum Diktieren die Mikrofon-Taste auf der Tastatur verwenden.</div>';
 const autosaveFoot = `
       <div class="dlg-foot">
-        <button type="button" data-act="cancel">Abbrechen</button>
+        <button type="button" data-act="cancel">↩️ Abbrechen</button>
         <span class="saved" id="savedInfo"></span>
         <span class="spacer"></span>
-        <button class="primary" value="ok">Fertig</button>
+        <button class="primary" value="ok">✅ Fertig</button>
       </div>`;
 
 // Smiley-Schnellauswahl: Antippen fügt ein, lange drücken entfernt, ↺ setzt zurück.
@@ -727,9 +761,9 @@ function openTripsDialog() {
   const trips = [...db.trips].sort((a, b) => b.start.localeCompare(a.start));
   openDialog(`
     <form method="dialog">
-      <div class="dlg-head"><h3>Reisen</h3></div>
+      <div class="dlg-head"><h3>Reiselogbücher</h3></div>
       <div class="dlg-body">
-        <button type="button" class="choice primary" id="newTrip"><strong>＋ Neue Reise anlegen</strong></button>
+        <button type="button" class="choice primary" id="newTrip"><strong>＋ Neues Reiselogbuch anlegen</strong></button>
         ${trips.map(t => {
           const state = t.start <= today && today <= t.end ? 'läuft gerade' : t.end < today ? 'beendet' : 'geplant';
           return `<div class="trip-row">
@@ -737,19 +771,19 @@ function openTripsDialog() {
                 <strong>${esc(t.title)}</strong>
                 <span class="muted">${fullDate(t.start)} - ${fullDate(t.end)} · ${state}</span>
               </button>
-              <button type="button" class="edit" data-edit="${t.id}" aria-label="Reise bearbeiten">✏️</button>
+              <button type="button" class="edit" data-edit="${t.id}" aria-label="Reiselogbuch bearbeiten">✏️</button>
             </div>`;
         }).join('')}
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:24px">
           <button type="button" id="exportAll">💾 Backup sichern</button>
           <button type="button" id="importAll">📂 Backup laden</button>
         </div>
-        <div class="hint">Das Backup enthält alle Reisen. Im Teilen-Menü „In Dateien sichern“ wählen.
+        <div class="hint">Das Backup enthält alle Reiselogbücher. Im Teilen-Menü „In Dateien sichern“ wählen.
           ${db.settings.lastBackup ? `Letztes Backup: ${new Date(db.settings.lastBackup).toLocaleString('de-DE', { dateStyle: 'medium', timeStyle: 'short' })}` : 'Noch kein Backup gesichert.'}</div>
       </div>
       <div class="dlg-foot">
         <span class="spacer"></span>
-        <button type="button" data-act="cancel">Schließen</button>
+        <button type="button" data-act="cancel">✖️ Schließen</button>
       </div>
     </form>`);
   dlg.querySelector('#newTrip').onclick = () => openTripDialog(null);
@@ -766,7 +800,7 @@ function openTripDialog(trip) {
   const transport = new Set(t.transport);
   openDialog(`
     <form method="dialog">
-      <div class="dlg-head"><h3>${isNew ? 'Neue Reise' : 'Reise bearbeiten'}</h3></div>
+      <div class="dlg-head"><h3>${isNew ? 'Neues Reiselogbuch' : 'Reiselogbuch bearbeiten'}</h3></div>
       <div class="dlg-body">
         <div class="step"><label for="fTitle">Reisetitel</label>
           <input type="text" id="fTitle" value="${esc(t.title)}" placeholder="z. B. Australien"></div>
@@ -789,13 +823,13 @@ function openTripDialog(trip) {
           <div class="hint">Am Ende der Ausgabe: alle Quartiere mit Zeitraum, Anzahl Nächte und Maps-Link.</div>
         </div>
         ${isNew ? '' : `<div style="margin-top:24px">
-          <button type="button" class="danger" id="deleteTrip">🗑 Reise löschen</button>
+          <button type="button" class="danger" id="deleteTrip">🗑 Reiselogbuch löschen</button>
         </div>`}
       </div>
       <div class="dlg-foot">
-        <button type="button" data-act="cancel">Abbrechen</button>
+        <button type="button" data-act="cancel">↩️ Abbrechen</button>
         <span class="spacer"></span>
-        <button class="primary" value="ok" id="okTrip">Fertig</button>
+        <button class="primary" value="ok" id="okTrip">✅ Fertig</button>
       </div>
     </form>`);
 
@@ -832,7 +866,7 @@ function openTripDialog(trip) {
 
   const del = dlg.querySelector('#deleteTrip');
   if (del) del.onclick = async () => {
-    const yes = await ask('Reise löschen',
+    const yes = await ask('Reiselogbuch löschen',
       `„${esc(trip.title)}“ mit allen Einträgen wirklich löschen?<div class="hint">Tipp: Vorher ein Backup sichern. Das Löschen kann nicht rückgängig gemacht werden.</div>`,
       'Löschen', true);
     if (!yes) return;
@@ -1049,9 +1083,11 @@ function openFazitDialog(trip) {
 
 /* ---------- Ausgabe ---------- */
 
+// "Reiselogbuch <Titel> JJJJ.MM.TT-JJJJ.MM.TT V001", nie zwei Leerzeichen hintereinander.
 function outputName(trip, version) {
   const title = trip.title.replace(/[\\/:*?"<>|]/g, '-');
-  return `${trip.start.replace(/-/g, '.')}-${trip.end.replace(/-/g, '.')} ${title} V${pad(version, 3)}`;
+  const range = `${trip.start.replace(/-/g, '.')}-${trip.end.replace(/-/g, '.')}`;
+  return `Reiselogbuch ${title} ${range} V${pad(version, 3)}`.replace(/\s+/g, ' ').trim();
 }
 
 // Alle Regeln gelten nur innerhalb von .rt, damit sie beim Drucken nicht in die App durchschlagen.
@@ -1089,19 +1125,26 @@ function tripStats(trip) {
   const days = tripDays(trip);
   const rec = days.filter(d => isRecorded(trip, d));
   const quarters = new Set(rec.map(d => quarterOf(trip, d).name).filter(Boolean));
+  // Varianten mit/ohne Emoji-Darstellungszeichen (z. B. ☹️ und ☹) zählen gemeinsam.
   const count = (list) => {
-    const c = {};
-    list.forEach(x => c[x] = (c[x] || 0) + 1);
-    return Object.entries(c).sort((a, b) => b[1] - a[1]);
+    const c = new Map();
+    list.forEach(x => {
+      const key = x.replace(/\uFE0F/g, '');
+      const hit = c.get(key) || { shown: x, n: 0 };
+      if (x.includes('\uFE0F')) hit.shown = x;
+      hit.n++;
+      c.set(key, hit);
+    });
+    return [...c.values()].sort((a, b) => b.n - a.n).map(h => [h.shown, h.n]);
   };
   const weather = count(rec.flatMap(d => graphemes(rawEntry(trip, d).weather)));
-  const moods = count(rec.flatMap(d => emojisIn(rawEntry(trip, d).comment))).slice(0, 3);
+  const moods = count([...rec.map(d => rawEntry(trip, d).comment), trip.fazit].flatMap(emojisIn));
   const fmt = list => list.map(([e, n]) => `${n}×${e}`).join(' · ') || '–';
   return [
     ['Reisetage', `${days.length}, davon erfasst ${rec.length}`],
     ['Quartiere', String(quarters.size)],
     ['Wetter', fmt(weather)],
-    ['Häufigste Smileys', fmt(moods)],
+    ['Smileys', fmt(moods)],
   ];
 }
 
@@ -1210,7 +1253,7 @@ function openOutputDialog(trip) {
         <div class="hint" style="margin-top:14px">Dateiname: ${esc(outputName(trip, nextVersion))}</div>
       </div>
       <div class="dlg-foot">
-        <button type="button" data-act="cancel">Abbrechen</button>
+        <button type="button" data-act="cancel">↩️ Abbrechen</button>
         <span class="spacer"></span>
       </div>
     </form>`);
@@ -1267,7 +1310,7 @@ function showOutputResult(title, name, result) {
       </div>
       <div class="dlg-foot">
         <span class="spacer"></span>
-        <button type="button" data-act="cancel">Schließen</button>
+        <button type="button" data-act="cancel">✖️ Schließen</button>
       </div>
     </form>`);
   bindBackupReminder();

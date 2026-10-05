@@ -172,12 +172,12 @@
   .chips button { font-size: 15px; padding: 6px 10px; min-height: 44px; }
   .emoji-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
   .emoji-row button {
-    font-size: 24px; line-height: 1; padding: 0 8px; min-width: 48px; height: 44px;
+    font-size: 24px; line-height: 1; padding: 0; width: 44px; min-width: 44px; height: 44px;
     -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; touch-action: manipulation;
   }
   .emoji-row button.reset { font-size: 20px; color: var(--muted); flex: none; }
-  /* Reine Icon-Schaltflächen einheitlich 46 × 44 px */
-  #theme, .fab button, .mic, .emoji-row button.reset, .trip-row .edit, .iconbtn { width: 46px; min-width: 46px; height: 44px; padding: 0; }
+  /* Reine Icon-, Wetter- und Smiley-Schaltflächen einheitlich quadratisch 44 × 44 px */
+  #theme, .fab button, .mic, .emoji-row button.reset, .trip-row .edit, .iconbtn { width: 44px; min-width: 44px; height: 44px; padding: 0; }
   .emoji-row.strip { flex-wrap: nowrap; align-items: center; }
   .emoji-row.strip .scroll { flex: 1; min-width: 0; display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
   .emoji-row.strip .scroll::-webkit-scrollbar { display: none; }
@@ -249,6 +249,10 @@ const ICONS = {
   'rotate-ccw': '<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>'
 };
 const ic = (name, cls = '') => `<svg class="ic ${cls}" viewBox="0 0 24 24" aria-hidden="true">${ICONS[name]}</svg>`;
+
+// Version und Erstellungszeitpunkt, werden bei jeder neuen Version angepasst.
+const APP_VERSION = 19;
+const APP_BUILT = '05.10.2026 um 22:31';
 
 const app = document.getElementById('app');
 const dlg = document.getElementById('dlg');
@@ -949,6 +953,8 @@ function openTripsDialog() {
           ${db.settings.lastBackup ? `Letztes Backup: ${new Date(db.settings.lastBackup).toLocaleString('de-DE', { dateStyle: 'medium', timeStyle: 'short' })}` : 'Noch kein Backup gesichert.'}</div>
       </div>
       <div class="dlg-foot">
+        <button type="button" class="iconbtn" id="appInfo" aria-label="Version anzeigen" aria-expanded="false">${ic('info')}</button>
+        <span class="hint" id="appVer" style="margin:0" hidden>Reiselogbuch · Version ${APP_VERSION} · erstellt am ${APP_BUILT}</span>
         <span class="spacer"></span>
         <button type="button" data-act="cancel">${ic('x')}Schließen</button>
       </div>
@@ -958,6 +964,11 @@ function openTripsDialog() {
   dlg.querySelectorAll('[data-edit]').forEach(b => b.onclick = () => openTripDialog(getTrip(b.dataset.edit)));
   dlg.querySelector('#exportAll').onclick = saveBackup;
   dlg.querySelector('#importAll').onclick = () => importFile.click();
+  dlg.querySelector('#appInfo').onclick = e => {
+    const v = dlg.querySelector('#appVer');
+    v.hidden = !v.hidden;
+    e.currentTarget.setAttribute('aria-expanded', String(!v.hidden));
+  };
 }
 
 // Reise anlegen oder bearbeiten; überschneidende Zeiträume werden verhindert.

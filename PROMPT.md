@@ -1,4 +1,4 @@
-# Reiselogbuch – Prompt (Stand 05.10.2026, Version 18)
+# Reiselogbuch – Prompt (Stand 05.10.2026, Version 19)
 
 ```text
 Baue mir ein einfaches Reiselogbuch als Web-App für das iPad.
@@ -40,14 +40,17 @@ RAHMEN
     "Zurücksetzen", "Ersetzen"
   - "💾 Backup sichern", "📂 Backup laden", "‹ Vortag" / "Folgetag ›"
 - Alle Schaltflächen einheitlich 44 px hoch (auch lange Texte, Vorschläge,
-  Reisemittel, Wetter, Smileys); reine Icon-Schaltflächen 46 × 44 px.
+  Reisemittel, Wetter, Smileys); reine Icon-, Wetter- und Smiley-
+  Schaltflächen quadratisch 44 × 44 px (Emoji 24 px, Icon 20 px).
   Ausnahmen: Einträge der Reiselogbuch-Liste (zweizeilig) und Fazit-Kasten.
 - Fenster passen sich in der Breite dem Inhalt an (höchstens 90 % der
   Bildschirmbreite, Mindestbreite für Eingabefelder): Reiselogbücher,
   Ausgabe, Reiselogbuch bearbeiten, Fazit, Meldungen. Die Tagesmaske ist
   fast bildschirmbreit.
 - Reiselogbücher: "Neues Reiselogbuch anlegen" (grün) rechtsbündig in der
-  Zeile von "Backup sichern / Backup laden".
+  Zeile von "Backup sichern / Backup laden". In der Fußleiste links ein
+  Info-Icon, das "Reiselogbuch · Version N · erstellt am TT.MM.JJJJ um
+  hh:mm" ein- und ausblendet (bei jeder Version aktualisiert).
 - Ausgabe: normale Schaltflächen "HTML-Datei" und "PDF", daneben ein
   Info-Icon, das den Hinweis zum Speichern ein- und ausblendet.
 - Schaltflächen-Icons aus dem Set Lucide (Liniengrafiken, direkt in die App

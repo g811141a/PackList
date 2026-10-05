@@ -1,4 +1,4 @@
-# Reiselogbuch – Prompt (Stand 05.10.2026, Version 16)
+# Reiselogbuch – Prompt (Stand 05.10.2026, Version 17)
 
 ```text
 Baue mir ein einfaches Reiselogbuch als Web-App für das iPad.
@@ -80,7 +80,7 @@ REISEN
   Die gewählten Reisemittel werden mit Icons ausgegeben.
 - Option "Quartierliste in der Ausgabe": beim Anlegen der Reise
   wählbar und nachträglich änderbar.
-- Option "🍽️ Spalte Essen und Trinken": beim Anlegen/Bearbeiten ein- und
+- Option "🍽️🍷☕️ Spalte Essen und Trinken": beim Anlegen/Bearbeiten ein- und
   ausschaltbar, Standard aus. Die Spalte steht vor dem Quartier (App und
   Ausgabe), Spaltenkopf 🍽️🍷☕️. Beim Ausschalten bleiben vorhandene Einträge erhalten.
 - Reisezeiträume dürfen sich nicht überschneiden (Hinweis, Speichern
@@ -137,7 +137,9 @@ ERFASSUNG – wenig eingeben, in ganz einfachen Schritten
      übernommen.
   3. Wie war was?: Smiley + kurzer Text; mehrere Smiley-Zeilen möglich.
      Alle Smileys möglich (iPad-Emoji-Tastatur).
-     Schnellauswahl über dem Textfeld:
+     Schnellauswahl über dem Textfeld (alle Smiley-Leisten: Wie war was?,
+     Essen und Trinken, Fazit): nur einzeilig, mit dem Finger nach links/
+     rechts wischen, Verlauf am Rand als Hinweis, ↺ fest rechts daneben.
      - Sortiert nach Häufigkeit (meistbenutzt vorne), noch nie benutzte
        in Standardreihenfolge dahinter.
      - Langes Drücken entfernt einen Smiley (mit Sicherheitsabfrage).

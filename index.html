@@ -173,7 +173,14 @@
     font-size: 24px; padding: 4px 8px; min-width: 48px;
     -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; touch-action: manipulation;
   }
-  .emoji-row button.reset { font-size: 20px; color: var(--muted); }
+  .emoji-row button.reset { font-size: 20px; color: var(--muted); flex: none; }
+  .emoji-row.strip { flex-wrap: nowrap; align-items: center; }
+  .emoji-row.strip .scroll { flex: 1; min-width: 0; display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .emoji-row.strip .scroll::-webkit-scrollbar { display: none; }
+  .emoji-row.strip .scroll button { flex: none; }
+  .emoji-row.strip .scroll.fr { -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 48px), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 48px), transparent); }
+  .emoji-row.strip .scroll.fl { -webkit-mask-image: linear-gradient(to left, #000 calc(100% - 48px), transparent); mask-image: linear-gradient(to left, #000 calc(100% - 48px), transparent); }
+  .emoji-row.strip .scroll.fl.fr { -webkit-mask-image: linear-gradient(to right, transparent, #000 48px, #000 calc(100% - 48px), transparent); mask-image: linear-gradient(to right, transparent, #000 48px, #000 calc(100% - 48px), transparent); }
   .mic { font-size: 18px; padding: 4px 10px; min-height: 38px; }
   .mic[aria-pressed="true"] { animation: pulse 1s infinite; }
   @keyframes pulse { 50% { opacity: .5; } }
@@ -836,7 +843,7 @@ function openDialog(html) {
   dlg.querySelectorAll('[data-act=cancel]').forEach(b => b.onclick = () => dlg.close('cancel'));
 }
 
-const MOOD_HINT = 'Lange drücken entfernt einen Smiley aus der Leiste. ↺ stellt die Standard-Smileys wieder her. Weitere Smileys über die Emoji-Taste der Tastatur.';
+const MOOD_HINT = 'Leiste nach links/rechts wischen für weitere Smileys. Lange drücken entfernt einen Smiley aus der Leiste. ↺ stellt die Standard-Smileys wieder her. Weitere Smileys über die Emoji-Taste der Tastatur.';
 const micButton = id => SpeechRec ? `<button type="button" class="mic" data-mic="${id}" aria-pressed="false" aria-label="Diktieren">${ic('mic')}</button>` : '';
 const micHint = () => SpeechRec ? '' : '<div class="hint" style="margin-top:12px">🎤 Zum Diktieren die Mikrofon-Taste auf der Tastatur verwenden.</div>';
 const autosaveFoot = `
@@ -850,9 +857,20 @@ const autosaveFoot = `
 // Smiley-Schnellauswahl: Antippen fügt ein, lange drücken entfernt, ↺ setzt zurück.
 function mountMoodRow(row, ta, onReset, kind = 'mood') {
   const set = EMOJI_SETS[kind];
+  // Einzeilige Leiste zum Wischen; ↺ steht fest rechts daneben. Der Verlauf am Rand zeigt, wo es weitergeht.
+  row.classList.add('strip');
   const draw = () => {
-    row.innerHTML = quickMoods(kind).map(m => `<button type="button" data-m="${m}">${m}</button>`).join('')
+    const keep = row.querySelector('.scroll')?.scrollLeft || 0;
+    row.innerHTML = `<div class="scroll">${quickMoods(kind).map(m => `<button type="button" data-m="${m}">${m}</button>`).join('')}</div>`
       + `<button type="button" class="reset" aria-label="Standard-Smileys wiederherstellen">${ic('rotate-ccw')}</button>`;
+    const strip = row.querySelector('.scroll');
+    const fade = () => {
+      strip.classList.toggle('fl', strip.scrollLeft > 2);
+      strip.classList.toggle('fr', strip.scrollLeft + strip.clientWidth < strip.scrollWidth - 2);
+    };
+    strip.scrollLeft = keep;
+    strip.addEventListener('scroll', fade, { passive: true });
+    requestAnimationFrame(fade);
     row.querySelectorAll('[data-m]').forEach(b => onLongPress(b,
       async () => {
         if (!await ask('Smiley entfernen', `${b.dataset.m} aus der Schnellauswahl entfernen?`, 'Entfernen')) return;
@@ -965,7 +983,7 @@ function openTripDialog(trip) {
           <div class="hint">Am Ende der Ausgabe: alle Quartiere mit Zeitraum, Anzahl Nächte und Maps-Link.</div>
         </div>
         <div class="step">
-          <label class="check"><input type="checkbox" id="fFood" ${t.foodColumn ? 'checked' : ''}> 🍽️ Spalte Essen und Trinken</label>
+          <label class="check"><input type="checkbox" id="fFood" ${t.foodColumn ? 'checked' : ''}> 🍽️🍷☕️ Spalte Essen und Trinken</label>
           <div class="hint">Zusätzliche Spalte vor dem Quartier für Lokale und Essen, mit Maps-Link.</div>
         </div>
         ${isNew ? '' : `<div style="margin-top:24px">

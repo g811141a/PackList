@@ -135,7 +135,7 @@
   table.days td.num, table.days th.num { text-align: right; }
   table.days td.nw { white-space: nowrap; }
   table.days.static td.quarter a, table.days.static a { text-decoration: none; }
-  a.maps { white-space: nowrap; text-decoration: none; font-size: .9em; }
+  td a { text-decoration: none; }
 
   .fab { position: fixed; right: max(16px, env(safe-area-inset-right)); bottom: calc(16px + env(safe-area-inset-bottom)); display: flex; flex-direction: column; gap: 8px; z-index: 4; }
   .fab button { width: 48px; padding: 0; font-size: 20px; }
@@ -420,20 +420,39 @@ function commentItems(text) {
   return splitLines(text).map(splitLeadingEmojis);
 }
 
-// Essen: "Smileys Name – Kommentar"; der Name (plus Ort des Quartiers) ergibt den Maps-Link.
+// Trennt den Namen vom Rest: am ersten " - " (bzw. – —), optional auch am ersten Komma.
+// "Santai Resort - Kingscliff" → ["Santai Resort", " - Kingscliff"]
+function splitName(text, withComma) {
+  const m = text.match(withComma ? /\s+[–—-]\s+|\s*,/ : /\s+[–—-]\s+/);
+  if (!m || m.index === 0) return [text, ''];
+  return [text.slice(0, m.index), text.slice(m.index)];
+}
+
+const linkAttrs = inApp => inApp ? ' target="_blank" rel="noopener" onclick="event.stopPropagation()"' : '';
+
+// Quartier: 📍 und Hotelname sind der Link, Ort danach ist normaler Text; gesucht wird mit dem ganzen Eintrag.
+function quarterHtml(q, term = '', inApp = false) {
+  if (!q.name) return '';
+  const [name, rest] = splitName(q.name, true);
+  const url = mapsUrl(q);
+  const at = linkAttrs(inApp);
+  return `<div class="ln"><a class="m pin" href="${url}"${at}>📍</a><span class="t"><a href="${url}"${at}>${highlight(name, term)}</a>${highlight(rest, term)}</span></div>`;
+}
+
+// Essen: "Smileys Name – Kommentar"; 📍 und Name sind der Link (Suche: Name + Ort des Quartiers).
 function foodItems(text, place) {
   return splitLines(text).map(line => {
     const { m, t } = splitLeadingEmojis(line);
-    const name = t.split(/\s+[–—-]\s+/)[0].trim();
-    return { m, t, maps: name ? mapsUrl({ name, place }) : '' };
+    const [name, rest] = splitName(t, false);
+    return { m, name, rest, maps: name.trim() ? mapsUrl({ name, place }) : '' };
   });
 }
 
 function foodHtml(items, term = '', inApp = false) {
-  const attrs = inApp ? ' target="_blank" rel="noopener" onclick="event.stopPropagation()"' : '';
-  return items.map(({ m, t, maps }) =>
-    `<div class="ln">${m ? `<span class="m">${esc(m)}</span>` : ''}<span class="t">${highlight(t, term)}${maps
-      ? ` <a class="maps" href="${maps}"${attrs}>📍&nbsp;Maps</a>` : ''}</span></div>`).join('');
+  return items.map(({ m, name, rest, maps }) =>
+    `<div class="ln">${m ? `<span class="m">${esc(m)}</span>` : ''}<span class="t">${maps
+      ? `<a class="pin" href="${maps}"${linkAttrs(inApp)}>📍${highlight(name, term)}</a>${highlight(rest, term)}`
+      : highlight(name + rest, term)}</span></div>`).join('');
 }
 
 // Optional werden Suchtreffer im (bereits maskierten) Text gelb markiert.
@@ -585,9 +604,7 @@ function render({ scrollToGap = false } = {}) {
     const wx = e.weather
       ? `<span class="wx">${esc(e.weather)}</span>`
       : `<span class="wx empty">☀️🌤🌦🌧</span>`;
-    const link = q.name
-      ? `<a href="${mapsUrl(q)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${linesHtml([{ m: '📍', t: q.name }], term)}</a>`
-      : '';
+    const link = quarterHtml(q, term, true);
     const cls = [i % 2 ? 'alt' : '', iso === gap ? 'gap' : ''].join(' ').trim();
     return `<tr data-day="${iso}" class="${cls}">
       <td class="day">${dayLabel(iso)}${tags}${wx}</td>
@@ -651,7 +668,7 @@ function render({ scrollToGap = false } = {}) {
         <table class="days static">
           <thead><tr><th>Quartier</th><th>Zeitraum</th><th class="num">Nächte</th></tr></thead>
           <tbody>${stays.map((st, i) => `<tr class="${i % 2 ? 'alt' : ''}">
-            <td><a href="${mapsUrl(st.q)}" target="_blank" rel="noopener">📍 ${esc(st.q.name)}</a></td>
+            <td>${quarterHtml(st.q, '', true)}</td>
             <td class="nw">${shortDate(st.firstNight)} - ${fullDate(addDays(st.lastNight, 1))}</td>
             <td class="num">${st.nights}</td>
           </tr>`).join('')}</tbody>
@@ -1197,7 +1214,7 @@ const OUTPUT_CSS = `
   .rt .ln .t { min-width: 0; overflow-wrap: anywhere; }
   .rt .stats td { border: none; padding: 1px 16px 1px 0; }
   .rt a { color: #1a5fb4; }
-  .rt a.maps { white-space: nowrap; font-size: .9em; }
+  .rt a.m { text-decoration: none; }
   .rt p { white-space: pre-line; }
   .rt .created { margin-top: 28px; font-size: 9pt; color: #777; }
   @media print { body { margin: 0; } }
@@ -1257,7 +1274,7 @@ function outputBody(trip, version, stamp) {
       <td>${linesHtml(programItems(e.program))}</td>
       <td>${linesHtml(commentItems(e.comment))}</td>
       ${trip.foodColumn ? `<td>${foodHtml(foodItems(e.food, q.place))}</td>` : ''}
-      <td>${q.name ? `<a href="${mapsUrl(q)}">${esc(q.name)}</a>` : ''}</td>
+      <td>${quarterHtml(q)}</td>
     </tr>`;
   }).join('');
   const transport = transportText(trip);
@@ -1282,7 +1299,7 @@ function outputBody(trip, version, stamp) {
       <table class="grid fit">
         <thead><tr><th>Quartier</th><th>Zeitraum</th><th class="num">Nächte</th></tr></thead>
         <tbody>${stays.map(s => `<tr>
-          <td><a href="${mapsUrl(s.q)}">${esc(s.q.name)}</a></td>
+          <td>${quarterHtml(s.q)}</td>
           <td class="nw">${shortDate(s.firstNight)} - ${fullDate(addDays(s.lastNight, 1))}</td>
           <td class="num">${s.nights}</td>
         </tr>`).join('')}</tbody>

@@ -1,4 +1,4 @@
-# Reisetagebuch – Prompt (Stand 05.10.2026, Version 9)
+# Reisetagebuch – Prompt (Stand 05.10.2026, Version 10)
 
 ```text
 Baue mir ein einfaches Reisetagebuch als Web-App für das iPad.
@@ -136,8 +136,10 @@ ERFASSUNG – wenig eingeben, in ganz einfachen Schritten
      "🕛😋 Hard Rock Café – Steak war super". Eigene Smiley-Leiste mit
      eigener Häufigkeit, Entfernen (lange drücken) und ↺, Standard:
      🕗 🕙 🕛 🕒 🕕 😋 👌 👍 😕 🤮 👎 ⭐️ 🍕 🍔 🥩 🍷 🍺 ☕️
-     Hinter jedem Lokal ein Link "📍 Maps" (Suche: Name + Ort des
-     Quartiers, ohne Ort nur der Name), mit bedingtem Zeilenumbruch.
+     Darstellung "🕛😋 📍Hard Rock Café – Steak war super": 📍 und der
+     Name des Lokals (bis einschließlich letztem Buchstaben) sind der
+     Link, ab dem Bindestrich normaler Text. Suche: Name + Ort des
+     Quartiers, ohne Ort nur der Name.
      Essen wird bei der Suche gefunden, zählt nicht als "erfasst" und
      erscheint nicht in der Statistik. Keine Restaurantliste.
   5. Quartier: Name eintragen.
@@ -158,7 +160,12 @@ ERFASSUNG – wenig eingeben, in ganz einfachen Schritten
 
 QUARTIER-SPALTE
 - Der Quartiersname wird automatisch zu einem funktionierenden
-  Google-Maps-Link (Name + ggf. Ort).
+  Google-Maps-Link. Link sind nur 📍 und der Hotelname bis vor den ersten
+  Bindestrich oder das erste Komma ("📍Santai Resort - Kingscliff",
+  "📍Cascade Gardens, Cairns"); gesucht wird mit dem ganzen Eintrag plus
+  optionalem Ort.
+- Gleiche Darstellung in Tagestabelle und Quartierliste, in App und
+  Ausgabe (überall mit 📍).
 
 ABSCHLUSS
 - Fazit: Antippen öffnet eine eigene Erfassungsmaske wie "Wie war's?"

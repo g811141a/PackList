@@ -1,4 +1,4 @@
-# Reiselogbuch – Prompt (Stand 05.10.2026, Version 21)
+# Reiselogbuch – Prompt (Stand 06.10.2026, Version 22)
 
 ```text
 Baue mir ein einfaches Reiselogbuch als Web-App für das iPad.
@@ -49,9 +49,10 @@ RAHMEN
   Ausgabe, Reiselogbuch bearbeiten, Fazit, Meldungen. Die Tagesmaske ist
   fast bildschirmbreit.
 - Reiselogbücher: Jeder Eintrag einzeilig in drei Spalten: Titel (fett),
-  Reisezeitraum und Status (grau); Zeiträume und Status stehen in allen
-  Einträgen genau untereinander. Die Titelspalte ist so breit wie der
-  längste Titel, höchstens so breit wie Platz ist. Ist ein Titel zu lang,
+  Reisezeitraum und Status (grau); Zeiträume und Status stehen ganz rechts
+  im Eintrag (ohne Lücke zum rechten Rand) und in allen Einträgen genau
+  untereinander, der Status linksbündig. Der Titel nutzt den freien Platz
+  davor. Ist ein Titel zu lang,
   bricht er um und der Reisezeitraum steht ebenfalls zweizeilig
   ("10.01.2027 -" / "28.02.2027"). Reihenfolge: zuletzt beginnende Reise
   zuerst.
@@ -59,8 +60,15 @@ RAHMEN
   Zeile von "Backup sichern / Backup laden". In der Fußleiste links ein
   Info-Icon, das "Reiselogbuch · Version N · erstellt am TT.MM.JJJJ um
   hh:mm" ein- und ausblendet (bei jeder Version aktualisiert).
-- Ausgabe: normale Schaltflächen "HTML-Datei" und "PDF", daneben ein
-  Info-Icon, das den Hinweis zum Speichern ein- und ausblendet.
+- Ausgabe: normale Schaltflächen "Vorschau", "HTML-Datei" und "PDF",
+  daneben ein Info-Icon, das den Hinweis zum Speichern ein- und ausblendet.
+- Vorschau: fast bildschirmbreites Fenster, Inhalt immer hell und genau wie
+  die HTML-Datei; oben "Vorschau" und klein der Dateiname. Zeigt die Nummer
+  der nächsten Datei, ohne den Zähler zu erhöhen. Google-Maps-Links öffnen
+  extern, die Vorschau bleibt offen. Fußleiste: links "Schließen", rechts
+  "PDF" und "Teilen" (grün, HTML-Datei über das Teilen-Menü). Nach Teilen
+  bzw. PDF schließt die Vorschau; es folgen Meldung und ggf.
+  Backup-Erinnerung.
 - Schaltflächen-Icons aus dem Set Lucide (Liniengrafiken, direkt in die App
   eingebettet, offline). Inhalte (Smileys, Wetter, Reisemittel, Essen-Leiste,
   📍, Spaltenköpfe) bleiben Emojis. Zuordnung:
@@ -71,7 +79,7 @@ RAHMEN
   Schließen x · Backup sichern save · Backup laden folder-open · Neues
   Reiselogbuch plus · Bearbeiten pencil (nur Icon) · Löschen trash (rot) ·
   Diktieren mic (nur Icon) · Vortag/Folgetag chevron-left/chevron-right ·
-  HTML-Datei file-code · PDF file-text · Smileys zurücksetzen rotate-ccw
+  Vorschau eye · Teilen share · HTML-Datei file-code · PDF file-text · Smileys zurücksetzen rotate-ccw
   (nur Icon)
 - Begriffe: "🧳 Reiselogbücher" (Liste, Fenstertitel "Reiselogbücher"),
   "＋ Neues Reiselogbuch anlegen", "Reiselogbuch bearbeiten",

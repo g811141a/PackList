@@ -1,4 +1,4 @@
-# Reiselogbuch – Prompt (Stand 05.10.2026, Version 12)
+# Reiselogbuch – Prompt (Stand 05.10.2026, Version 13)
 
 ```text
 Baue mir ein einfaches Reiselogbuch als Web-App für das iPad.
@@ -140,18 +140,25 @@ ERFASSUNG – wenig eingeben, in ganz einfachen Schritten
      Darstellung "🕛😋 📍Hard Rock Café – Steak war super": 📍 ist nur
      Zeichen, nur der Name des Lokals (bis einschließlich letztem
      Buchstaben) ist der Link, ab dem Bindestrich normaler Text.
-     Schaltfläche "⊘ ohne Link": setzt/entfernt "⊘" am Anfang der Zeile
-     mit dem Cursor; diese Zeile erscheint ohne 📍 und ohne Link. Suche: Name + Ort des
+     Checkbox "keinen Google-Maps Link" rechts in der Kopfzeile des
+     Schritts: zeigt den Zustand der Zeile mit dem Cursor und setzt bzw.
+     entfernt dort ein "⊘" am Zeilenanfang; diese Zeile erscheint ohne 📍
+     und ohne Link. Suche: Name + Ort des
      Quartiers, ohne Ort nur der Name.
      Essen wird bei der Suche gefunden, zählt nicht als "erfasst" und
      erscheint nicht in der Statistik. Keine Restaurantliste.
   5. Quartier: Name eintragen.
      Häkchen "Quartier wie Vortag": nur wenn gesetzt, wird das Quartier
      vom Vortag übernommen. Sonst bleibt das Feld leer.
-     Häkchen "Kein Maps-Link": Name ohne 📍 und ohne Link (wird bei
-     "Quartier wie Vortag" mit übernommen).
+     Checkbox "keinen Google-Maps Link" rechts in der Kopfzeile des
+     Schritts (wie bei Essen): Name ohne 📍 und ohne Link (wird bei
+     "Quartier wie Vortag" mit übernommen). "In Google Maps prüfen" ist
+     nicht unterstrichen.
      Optionales Feld "Ort für Google Maps" (z. B. "Cairns, Australien"),
-     macht den Maps-Link treffsicherer, wird nicht ausgegeben.
+     macht den Maps-Link treffsicherer und wird nach einem Komma hinter
+     dem Hotelnamen angezeigt ("📍Prize by Radisson, Wien") – überall
+     (Tagestabelle, Quartierliste, App und Ausgabe); Teile des Ortes, die
+     schon im Namen stehen, entfallen.
 - Mehrere Smileys pro Zeile (Wie war's?, Essen, Fazit): Ein angetippter
   Smiley wird angehängt, wenn der Cursor in einer leeren Zeile oder direkt
   hinter Smileys steht; steht er hinter Text, beginnt eine neue Zeile.

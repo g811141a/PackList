@@ -1,4 +1,4 @@
-# Reiselogbuch – Prompt (Stand 05.10.2026, Version 19)
+# Reiselogbuch – Prompt (Stand 05.10.2026, Version 20)
 
 ```text
 Baue mir ein einfaches Reiselogbuch als Web-App für das iPad.
@@ -42,11 +42,19 @@ RAHMEN
 - Alle Schaltflächen einheitlich 44 px hoch (auch lange Texte, Vorschläge,
   Reisemittel, Wetter, Smileys); reine Icon-, Wetter- und Smiley-
   Schaltflächen quadratisch 44 × 44 px (Emoji 24 px, Icon 20 px).
-  Ausnahmen: Einträge der Reiselogbuch-Liste (zweizeilig) und Fazit-Kasten.
+  Ausnahmen: Einträge der Reiselogbuch-Liste mit umbrochenem Titel und
+  Fazit-Kasten.
 - Fenster passen sich in der Breite dem Inhalt an (höchstens 90 % der
   Bildschirmbreite, Mindestbreite für Eingabefelder): Reiselogbücher,
   Ausgabe, Reiselogbuch bearbeiten, Fazit, Meldungen. Die Tagesmaske ist
   fast bildschirmbreit.
+- Reiselogbücher: Jeder Eintrag einzeilig in drei Spalten: Titel (fett),
+  Reisezeitraum und Status (grau); Zeiträume und Status stehen in allen
+  Einträgen genau untereinander. Die Titelspalte ist so breit wie der
+  längste Titel, höchstens so breit wie Platz ist. Ist ein Titel zu lang,
+  bricht er um und der Reisezeitraum steht ebenfalls zweizeilig
+  ("10.01.2027 -" / "28.02.2027"). Reihenfolge: zuletzt beginnende Reise
+  zuerst.
 - Reiselogbücher: "Neues Reiselogbuch anlegen" (grün) rechtsbündig in der
   Zeile von "Backup sichern / Backup laden". In der Fußleiste links ein
   Info-Icon, das "Reiselogbuch · Version N · erstellt am TT.MM.JJJJ um

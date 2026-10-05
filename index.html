@@ -196,6 +196,12 @@
   .choice { display: block; width: 100%; text-align: left; margin-top: 10px; padding: 14px 16px; }
   .choice strong { display: block; font-size: 18px; }
   .choice.current { border-color: var(--accent); border-width: 2px; }
+  /* Reiselogbücher: Titel, Reisezeitraum und Status in Spalten, die in allen Einträgen untereinander stehen */
+  .trip-row .choice { display: grid; grid-template-columns: auto auto auto; justify-content: start; align-items: start; column-gap: 16px; padding: 9px 16px; min-height: 44px; }
+  .trip-row .choice.current { padding: 8px 15px; }
+  .trip-row .choice strong { font-size: 18px; line-height: 24px; overflow-wrap: anywhere; }
+  .trip-row .choice .per, .trip-row .choice .st { color: var(--muted); line-height: 24px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .trip-row .choice.two .per span { display: block; }
   .saved { font-size: 13px; color: var(--muted); }
 
   #printout { display: none; }
@@ -251,8 +257,8 @@ const ICONS = {
 const ic = (name, cls = '') => `<svg class="ic ${cls}" viewBox="0 0 24 24" aria-hidden="true">${ICONS[name]}</svg>`;
 
 // Version und Erstellungszeitpunkt, werden bei jeder neuen Version angepasst.
-const APP_VERSION = 19;
-const APP_BUILT = '05.10.2026 um 22:31';
+const APP_VERSION = 20;
+const APP_BUILT = '05.10.2026 um 22:53';
 
 const app = document.getElementById('app');
 const dlg = document.getElementById('dlg');
@@ -938,7 +944,8 @@ function openTripsDialog() {
           return `<div class="trip-row">
               <button type="button" class="choice ${t.id === currentTripId ? 'current' : ''}" data-id="${t.id}">
                 <strong>${esc(t.title)}</strong>
-                <span class="muted">${fullDate(t.start)} - ${fullDate(t.end)} · ${state}</span>
+                <span class="per"><span>${fullDate(t.start)} -</span> <span>${fullDate(t.end)}</span></span>
+                <span class="st">${state}</span>
               </button>
               <button type="button" class="edit" data-edit="${t.id}" aria-label="Reiselogbuch bearbeiten">${ic('pencil')}</button>
             </div>`;
@@ -969,7 +976,31 @@ function openTripsDialog() {
     v.hidden = !v.hidden;
     e.currentTarget.setAttribute('aria-expanded', String(!v.hidden));
   };
+  layoutTripRows();
 }
+
+// Spaltenbreiten der Reiselogbuch-Liste: Zeitraum und Status stehen untereinander; ist ein Titel zu lang,
+// bricht er um und der Zeitraum steht ebenfalls zweizeilig ("von -" / "bis").
+function layoutTripRows() {
+  const btns = [...dlg.querySelectorAll('.trip-row .choice')];
+  if (!btns.length) return;
+  btns.forEach(b => b.classList.remove('two'));
+  const width = el => {
+    const m = el.cloneNode(true);
+    m.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap;width:auto';
+    btns[0].append(m);
+    const w = Math.ceil(m.getBoundingClientRect().width);
+    m.remove();
+    return w;
+  };
+  const max = sel => Math.max(...btns.map(b => width(b.querySelector(sel))));
+  const pw = max('.per'), sw = max('.st'), tmax = max('strong');
+  const avail = Math.floor(innerWidth * 0.9) - 32 - 44 - 8 - 34 - 32 - pw - sw;
+  const tw = Math.max(120, Math.min(tmax, avail));
+  btns.forEach(b => { b.style.gridTemplateColumns = `${tw}px ${pw}px ${sw}px`; });
+  btns.forEach(b => b.classList.toggle('two', b.querySelector('strong').offsetHeight > 30));
+}
+addEventListener('resize', () => { if (dlg.open) layoutTripRows(); });
 
 // Reise anlegen oder bearbeiten; überschneidende Zeiträume werden verhindert.
 function openTripDialog(trip) {

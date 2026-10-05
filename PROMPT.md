@@ -1,4 +1,4 @@
-# Reiselogbuch – Prompt (Stand 05.10.2026, Version 14)
+# Reiselogbuch – Prompt (Stand 05.10.2026, Version 15)
 
 ```text
 Baue mir ein einfaches Reiselogbuch als Web-App für das iPad.
@@ -39,7 +39,18 @@ RAHMEN
   - Bestätigung immer mit dem Verb der Aktion: "Löschen", "Entfernen",
     "Zurücksetzen", "Ersetzen"
   - "💾 Backup sichern", "📂 Backup laden", "‹ Vortag" / "Folgetag ›"
-  - Icons: "✅ Fertig", "🚫 Abbrechen", "✖️ Schließen"
+- Schaltflächen-Icons aus dem Set Lucide (Liniengrafiken, direkt in die App
+  eingebettet, offline). Inhalte (Smileys, Wetter, Reisemittel, Essen-Leiste,
+  📍, Spaltenköpfe) bleiben Emojis. Zuordnung:
+  Reiselogbücher book-open · Leere Tage aus fold-vertical · Leere Tage ein
+  list-chevrons-up-down · Dunkel/Hell moon/sun (nur Icon) · Ausgabe share ·
+  Suchen search · Nach oben/Ans Ende arrow-up-to-line/arrow-down-to-line
+  (nur Icon) · Fertig check (weiß auf Grün) · Abbrechen ban (rot) ·
+  Schließen x · Backup sichern save · Backup laden folder-open · Neues
+  Reiselogbuch plus · Bearbeiten pencil (nur Icon) · Löschen trash (rot) ·
+  Diktieren mic (nur Icon) · Vortag/Folgetag chevron-left/chevron-right ·
+  HTML-Datei file-code · PDF file-text · Smileys zurücksetzen rotate-ccw
+  (nur Icon)
 - Begriffe: "🧳 Reiselogbücher" (Liste, Fenstertitel "Reiselogbücher"),
   "＋ Neues Reiselogbuch anlegen", "Reiselogbuch bearbeiten",
   "🗑 Reiselogbuch löschen", Überschrift "Reiselogbuch – <Titel>" (App und

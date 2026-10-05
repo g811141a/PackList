@@ -60,6 +60,13 @@
     padding: 8px 12px; cursor: pointer; min-height: 44px;
   }
   button:disabled { opacity: .4; cursor: default; }
+  button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+  .ic { width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .ic.red { color: var(--danger); }
+  button.primary .ic.red { color: inherit; }
+  .searchbox { position: relative; display: inline-flex; align-items: center; flex: 0 1 200px; }
+  .searchbox .ic { position: absolute; left: 10px; color: var(--muted); pointer-events: none; }
+  .bar .searchbox input[type=search] { width: 100%; padding-left: 36px; }
   button.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
   button.link { border: none; background: none; color: var(--accent); padding: 6px 8px; }
   button.danger { color: var(--danger); border-color: var(--danger); }
@@ -81,7 +88,7 @@
     display: flex; gap: 8px; flex-wrap: wrap; align-items: center;
     padding: calc(env(safe-area-inset-top) + 10px) 0 10px; border-bottom: 1px solid var(--line);
   }
-  .bar input[type=search] { width: 200px; flex: 0 1 200px; }
+
   .bar .hits { font-size: 14px; }
 
   .meta { display: grid; grid-template-columns: max-content 1fr; gap: 2px 14px; margin: 4px 0 6px; }
@@ -192,8 +199,8 @@
 <body>
 <main id="app"></main>
 <div class="fab" id="fab" hidden>
-  <button id="toTop" aria-label="Nach oben">⬆️</button>
-  <button id="toEnd" aria-label="Ans Ende">⬇️</button>
+  <button id="toTop" aria-label="Nach oben"></button>
+  <button id="toEnd" aria-label="Ans Ende"></button>
 </div>
 <div id="printout"></div>
 <dialog id="dlg"></dialog>
@@ -202,6 +209,34 @@
 
 <script>
 'use strict';
+
+// Schaltflächen-Icons aus Lucide (ISC-Lizenz), direkt eingebettet, damit die App offline funktioniert.
+const ICONS = {
+  'book-open': '<path d="M12 5v16"/><path d="M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z"/>',
+  'fold-vertical': '<path d="M12 22v-6"/><path d="M12 8V2"/><path d="M4 12H2"/><path d="M10 12H8"/><path d="M16 12h-2"/><path d="M22 12h-2"/><path d="m15 19-3-3-3 3"/><path d="m15 5-3 3-3-3"/>',
+  'list-chevrons-up-down': '<path d="M3 5h8"/><path d="M3 12h8"/><path d="M3 19h8"/><path d="m15 8 3-3 3 3"/><path d="m15 16 3 3 3-3"/>',
+  'moon': '<path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/>',
+  'sun': '<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>',
+  'share': '<path d="M12 2v13"/><path d="m16 6-4-4-4 4"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>',
+  'search': '<path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/>',
+  'arrow-up-to-line': '<path d="M5 3h14"/><path d="m18 13-6-6-6 6"/><path d="M12 7v14"/>',
+  'arrow-down-to-line': '<path d="M12 17V3"/><path d="m6 11 6 6 6-6"/><path d="M19 21H5"/>',
+  'check': '<path d="M20 6 9 17l-5-5"/>',
+  'ban': '<circle cx="12" cy="12" r="10"/><path d="M4.929 4.929 19.07 19.071"/>',
+  'x': '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
+  'save': '<path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7"/><path d="M7 3v4a1 1 0 0 0 1 1h7"/>',
+  'folder-open': '<path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"/>',
+  'plus': '<path d="M5 12h14"/><path d="M12 5v14"/>',
+  'pencil': '<path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/>',
+  'trash': '<path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>',
+  'mic': '<path d="M12 19v3"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><rect x="9" y="2" width="6" height="13" rx="3"/>',
+  'chevron-left': '<path d="m15 18-6-6 6-6"/>',
+  'chevron-right': '<path d="m9 18 6-6-6-6"/>',
+  'file-code': '<path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 12.5 8 15l2 2.5"/><path d="m14 12.5 2 2.5-2 2.5"/>',
+  'file-text': '<path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>',
+  'rotate-ccw': '<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>'
+};
+const ic = (name, cls = '') => `<svg class="ic ${cls}" viewBox="0 0 24 24" aria-hidden="true">${ICONS[name]}</svg>`;
 
 const app = document.getElementById('app');
 const dlg = document.getElementById('dlg');
@@ -591,7 +626,7 @@ function onLongPress(btn, onLong, onTap) {
 /* ---------- Darstellung ---------- */
 
 // Die Schaltfläche zeigt die Aktion: bei Hell 🌙 (dunkel schalten), bei Dunkel ☀️.
-const THEMES = { light: { icon: '🌙', label: 'Dunkel einschalten' }, dark: { icon: '☀️', label: 'Hell einschalten' } };
+const THEMES = { light: { icon: 'moon', label: 'Dunkel einschalten' }, dark: { icon: 'sun', label: 'Hell einschalten' } };
 
 function applyTheme() {
   document.documentElement.setAttribute('data-theme', db.settings.theme);
@@ -653,12 +688,12 @@ function render({ scrollToGap = false } = {}) {
 
   app.innerHTML = `
     <div class="bar" id="bar">
-      <button id="trips">🧳 Reiselogbücher</button>
+      <button id="trips">${ic('book-open')}Reiselogbücher</button>
       <span class="spacer"></span>
-      <button id="toggleEmpty">${db.settings.hideEmpty ? '⤵️ Leere Tage ein' : '⤴️ Leere Tage aus'}</button>
-      <button id="theme" title="${theme.label}" aria-label="${theme.label}">${theme.icon}</button>
-      <button class="primary" id="output">📤 Ausgabe</button>
-      <input type="search" id="search" placeholder="🔎 Suchen" value="${esc(searchTerm)}" autocomplete="off">
+      <button id="toggleEmpty">${db.settings.hideEmpty ? ic('list-chevrons-up-down') + 'Leere Tage ein' : ic('fold-vertical') + 'Leere Tage aus'}</button>
+      <button id="theme" title="${theme.label}" aria-label="${theme.label}">${ic(theme.icon)}</button>
+      <button class="primary" id="output">${ic('share')}Ausgabe</button>
+      <span class="searchbox">${ic('search')}<input type="search" id="search" placeholder="Suchen" value="${esc(searchTerm)}" autocomplete="off"></span>
       ${term ? `<span class="hits muted">${visible.length} Treffer</span>` : ''}
     </div>
     <h1>Reiselogbuch – ${esc(trip.title)}</h1>
@@ -679,7 +714,7 @@ function render({ scrollToGap = false } = {}) {
     <h2>Fazit</h2>
     <button type="button" class="fazit-box" id="fazit">${trip.fazit
       ? linesHtml(commentItems(trip.fazit))
-      : '<span class="muted">✏️ Antippen, um das Fazit zu schreiben.</span>'}</button>
+      : `<span class="muted" style="display:inline-flex;gap:6px;align-items:center">${ic('pencil')}Antippen, um das Fazit zu schreiben.</span>`}</button>
 
     <h2>Gesamtkosten</h2>
     <div class="kosten">
@@ -745,8 +780,8 @@ function renderEmpty() {
     <h1 style="margin-top:calc(env(safe-area-inset-top) + 20px)">Reiselogbuch</h1>
     <p class="muted">Noch kein Reiselogbuch angelegt.</p>
     <div style="display:flex;gap:8px;flex-wrap:wrap">
-      <button class="primary" id="newTrip">＋ Neues Reiselogbuch anlegen</button>
-      <button id="importAll">📂 Backup laden</button>
+      <button class="primary" id="newTrip">${ic('plus')}Neues Reiselogbuch anlegen</button>
+      <button id="importAll">${ic('folder-open')}Backup laden</button>
     </div>`;
   app.querySelector('#newTrip').onclick = () => openTripDialog(null);
   app.querySelector('#importAll').onclick = () => importFile.click();
@@ -758,6 +793,8 @@ function showTrip(id) {
   render({ scrollToGap: true });
 }
 
+document.getElementById('toTop').innerHTML = ic('arrow-up-to-line');
+document.getElementById('toEnd').innerHTML = ic('arrow-down-to-line');
 document.getElementById('toTop').onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 document.getElementById('toEnd').onclick = () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
 
@@ -772,7 +809,7 @@ function messageBox(title, html, buttons) {
         <div class="dlg-body"><div class="msg-text">${html}</div></div>
         <div class="dlg-foot">
           ${buttons.map((b, i) => `${i === buttons.length - 1 ? '<span class="spacer"></span>' : ''}
-            <button type="button" class="${b.cls || ''}" data-v="${b.value}">${esc(b.label)}</button>`).join('')}
+            <button type="button" class="${b.cls || ''}" data-v="${b.value}">${b.icon ? ic(b.icon, b.iconCls || '') : ''}${esc(b.label)}</button>`).join('')}
         </div>
       </form>`;
     const done = value => { if (msg.open) msg.close(); resolve(value); };
@@ -782,9 +819,9 @@ function messageBox(title, html, buttons) {
   });
 }
 
-const ask = (title, html, label, danger = false) =>
-  messageBox(title, html, [{ label: '🚫 Abbrechen', value: 'no' }, { label, value: 'yes', cls: danger ? 'danger' : 'primary' }]);
-const inform = (title, html) => messageBox(title, html, [{ label: '✖️ Schließen', value: 'no' }]);
+const ask = (title, html, label, danger = false, icon = '') =>
+  messageBox(title, html, [{ label: 'Abbrechen', icon: 'ban', iconCls: 'red', value: 'no' }, { label, icon, value: 'yes', cls: danger ? 'danger' : 'primary' }]);
+const inform = (title, html) => messageBox(title, html, [{ label: 'Schließen', icon: 'x', value: 'no' }]);
 
 /* ---------- Dialoge ---------- */
 
@@ -800,14 +837,14 @@ function openDialog(html) {
 }
 
 const MOOD_HINT = 'Lange drücken entfernt einen Smiley aus der Leiste. ↺ stellt die Standard-Smileys wieder her. Weitere Smileys über die Emoji-Taste der Tastatur.';
-const micButton = id => SpeechRec ? `<button type="button" class="mic" data-mic="${id}" aria-pressed="false" aria-label="Diktieren">🎤</button>` : '';
+const micButton = id => SpeechRec ? `<button type="button" class="mic" data-mic="${id}" aria-pressed="false" aria-label="Diktieren">${ic('mic')}</button>` : '';
 const micHint = () => SpeechRec ? '' : '<div class="hint" style="margin-top:12px">🎤 Zum Diktieren die Mikrofon-Taste auf der Tastatur verwenden.</div>';
 const autosaveFoot = `
       <div class="dlg-foot">
-        <button type="button" data-act="cancel">🚫 Abbrechen</button>
+        <button type="button" data-act="cancel">${ic('ban', 'red')}Abbrechen</button>
         <span class="saved" id="savedInfo"></span>
         <span class="spacer"></span>
-        <button class="primary" value="ok">✅ Fertig</button>
+        <button class="primary" value="ok">${ic('check')}Fertig</button>
       </div>`;
 
 // Smiley-Schnellauswahl: Antippen fügt ein, lange drücken entfernt, ↺ setzt zurück.
@@ -815,7 +852,7 @@ function mountMoodRow(row, ta, onReset, kind = 'mood') {
   const set = EMOJI_SETS[kind];
   const draw = () => {
     row.innerHTML = quickMoods(kind).map(m => `<button type="button" data-m="${m}">${m}</button>`).join('')
-      + '<button type="button" class="reset" aria-label="Standard-Smileys wiederherstellen">↺</button>';
+      + `<button type="button" class="reset" aria-label="Standard-Smileys wiederherstellen">${ic('rotate-ccw')}</button>`;
     row.querySelectorAll('[data-m]').forEach(b => onLongPress(b,
       async () => {
         if (!await ask('Smiley entfernen', `${b.dataset.m} aus der Schnellauswahl entfernen?`, 'Entfernen')) return;
@@ -860,7 +897,7 @@ function mountMics() {
   return () => recognition?.stop();
 }
 
-// Reiseliste: öffnen, bearbeiten (✏️), neu anlegen, Backup.
+// Reiseliste: öffnen, bearbeiten (Stift), neu anlegen, Backup.
 function openTripsDialog() {
   const today = todayISO();
   const trips = [...db.trips].sort((a, b) => b.start.localeCompare(a.start));
@@ -868,7 +905,7 @@ function openTripsDialog() {
     <form method="dialog">
       <div class="dlg-head"><h3>Reiselogbücher</h3></div>
       <div class="dlg-body">
-        <button type="button" class="choice primary" id="newTrip"><strong>＋ Neues Reiselogbuch anlegen</strong></button>
+        <button type="button" class="choice primary" id="newTrip"><strong style="display:inline-flex;gap:6px;align-items:center">${ic('plus')}Neues Reiselogbuch anlegen</strong></button>
         ${trips.map(t => {
           const state = t.start <= today && today <= t.end ? 'läuft gerade' : t.end < today ? 'beendet' : 'geplant';
           return `<div class="trip-row">
@@ -876,19 +913,19 @@ function openTripsDialog() {
                 <strong>${esc(t.title)}</strong>
                 <span class="muted">${fullDate(t.start)} - ${fullDate(t.end)} · ${state}</span>
               </button>
-              <button type="button" class="edit" data-edit="${t.id}" aria-label="Reiselogbuch bearbeiten">✏️</button>
+              <button type="button" class="edit" data-edit="${t.id}" aria-label="Reiselogbuch bearbeiten">${ic('pencil')}</button>
             </div>`;
         }).join('')}
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:24px">
-          <button type="button" id="exportAll">💾 Backup sichern</button>
-          <button type="button" id="importAll">📂 Backup laden</button>
+          <button type="button" id="exportAll">${ic('save')}Backup sichern</button>
+          <button type="button" id="importAll">${ic('folder-open')}Backup laden</button>
         </div>
         <div class="hint">Das Backup enthält alle Reiselogbücher. Im Teilen-Menü „In Dateien sichern“ wählen.
           ${db.settings.lastBackup ? `Letztes Backup: ${new Date(db.settings.lastBackup).toLocaleString('de-DE', { dateStyle: 'medium', timeStyle: 'short' })}` : 'Noch kein Backup gesichert.'}</div>
       </div>
       <div class="dlg-foot">
         <span class="spacer"></span>
-        <button type="button" data-act="cancel">✖️ Schließen</button>
+        <button type="button" data-act="cancel">${ic('x')}Schließen</button>
       </div>
     </form>`);
   dlg.querySelector('#newTrip').onclick = () => openTripDialog(null);
@@ -932,13 +969,13 @@ function openTripDialog(trip) {
           <div class="hint">Zusätzliche Spalte vor dem Quartier für Lokale und Essen, mit Maps-Link.</div>
         </div>
         ${isNew ? '' : `<div style="margin-top:24px">
-          <button type="button" class="danger" id="deleteTrip">🗑 Reiselogbuch löschen</button>
+          <button type="button" class="danger" id="deleteTrip">${ic('trash', 'red')}Reiselogbuch löschen</button>
         </div>`}
       </div>
       <div class="dlg-foot">
-        <button type="button" data-act="cancel">🚫 Abbrechen</button>
+        <button type="button" data-act="cancel">${ic('ban', 'red')}Abbrechen</button>
         <span class="spacer"></span>
-        <button class="primary" value="ok" id="okTrip">✅ Fertig</button>
+        <button class="primary" value="ok" id="okTrip">${ic('check')}Fertig</button>
       </div>
     </form>`);
 
@@ -977,7 +1014,7 @@ function openTripDialog(trip) {
   if (del) del.onclick = async () => {
     const yes = await ask('Reiselogbuch löschen',
       `„${esc(trip.title)}“ mit allen Einträgen wirklich löschen?<div class="hint">Tipp: Vorher ein Backup sichern. Das Löschen kann nicht rückgängig gemacht werden.</div>`,
-      'Löschen', true);
+      'Löschen', true, 'trash');
     if (!yes) return;
     db.trips = db.trips.filter(x => x.id !== trip.id);
     save();
@@ -1016,9 +1053,9 @@ function openDayDialog(trip, iso) {
   openDialog(`
     <form method="dialog">
       <div class="dlg-head">
-        <button type="button" data-nav="-1" ${isFirst ? 'disabled' : ''}>‹ Vortag</button>
+        <button type="button" data-nav="-1" ${isFirst ? 'disabled' : ''}>${ic('chevron-left')}Vortag</button>
         <h3>${longDayLabel(iso)}</h3>
-        <button type="button" data-nav="1" ${idx >= days.length - 1 ? 'disabled' : ''}>Folgetag ›</button>
+        <button type="button" data-nav="1" ${idx >= days.length - 1 ? 'disabled' : ''}>Folgetag${ic('chevron-right')}</button>
       </div>
       <div class="dlg-body">
         <div class="step">
@@ -1385,17 +1422,17 @@ function openOutputDialog(trip) {
       <div class="dlg-body">
         <p class="muted">${count} erfasste${count === 1 ? 'r Tag' : ' Tage'} · Stand jetzt</p>
         <button type="button" class="choice" id="outHtml">
-          <strong>🌐 HTML-Datei</strong>
+          <strong style="display:inline-flex;gap:6px;align-items:center">${ic('file-code')}HTML-Datei</strong>
           <span class="muted">Teilen-Menü → „In Dateien sichern“</span>
         </button>
         <button type="button" class="choice" id="outPdf">
-          <strong>📄 PDF</strong>
+          <strong style="display:inline-flex;gap:6px;align-items:center">${ic('file-text')}PDF</strong>
           <span class="muted">Drucken-Menü → Teilen → „In Dateien sichern“</span>
         </button>
         <div class="hint" style="margin-top:14px">Dateiname: ${esc(outputName(trip, nextVersion))}</div>
       </div>
       <div class="dlg-foot">
-        <button type="button" data-act="cancel">🚫 Abbrechen</button>
+        <button type="button" data-act="cancel">${ic('ban', 'red')}Abbrechen</button>
         <span class="spacer"></span>
       </div>
     </form>`);
@@ -1452,7 +1489,7 @@ function showOutputResult(title, name, result) {
       </div>
       <div class="dlg-foot">
         <span class="spacer"></span>
-        <button type="button" data-act="cancel">✖️ Schließen</button>
+        <button type="button" data-act="cancel">${ic('x')}Schließen</button>
       </div>
     </form>`);
   bindBackupReminder();
@@ -1465,7 +1502,7 @@ function backupReminderHtml() {
       <strong>💾 Denk daran, auch ein Backup zu sichern.</strong>
       <div class="hint">${since}</div>
       <div style="display:flex;gap:8px;margin-top:10px">
-        <button type="button" class="primary" id="backupNow">💾 Backup sichern</button>
+        <button type="button" class="primary" id="backupNow">${ic('save')}Backup sichern</button>
       </div>
     </div>`;
 }

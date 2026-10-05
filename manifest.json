@@ -1,6 +1,6 @@
 {
-  "name": "Reisetagebuch",
-  "short_name": "Reisetagebuch",
+  "name": "Reiselogbuch",
+  "short_name": "Reiselogbuch",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#f6f3ee",

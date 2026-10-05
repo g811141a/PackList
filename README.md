@@ -1,2 +1,10 @@
-# PackList
-Pack list for Arnie
+# ReiseLogBuch
+
+Einfaches Reiselogbuch als Web-App (PWA) für das iPad – offline nutzbar, alle Daten bleiben lokal auf dem Gerät.
+
+**App:** https://g811141a.github.io/ReiseLogBuch/
+(in Safari öffnen → Teilen → „Zum Home-Bildschirm“)
+
+- `index.html` – die komplette App (HTML, CSS, JavaScript)
+- `sw.js`, `manifest.json`, `icon-*.png` – Offline-Betrieb und Home-Bildschirm
+- `PROMPT.md` – die abgestimmten Anforderungen (aktueller Stand)

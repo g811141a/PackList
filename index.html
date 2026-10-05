@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Reisetagebuch">
+<meta name="apple-mobile-web-app-title" content="Reiselogbuch">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#f6f3ee">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-180.png">
-<title>Reisetagebuch</title>
+<title>Reiselogbuch</title>
 <style>
   :root {
     --bg: #f6f3ee;
@@ -209,7 +209,8 @@ const fab = document.getElementById('fab');
 const printout = document.getElementById('printout');
 const importFile = document.getElementById('importFile');
 
-const STORAGE_KEY = 'reisetagebuch.v1';
+const STORAGE_KEY = 'reiselogbuch.v1';
+const OLD_STORAGE_KEY = 'reisetagebuch.v1'; // Name vor der Umbenennung, wird beim ersten Start übernommen
 const WEEKDAYS = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
 const WEEKDAYS_LONG = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
 const WEATHER = ['☀️', '🌤', '🌦', '🌧', '☁️', '⛈', '❄️'];
@@ -260,7 +261,7 @@ function normalize(data) {
 
 function load() {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const raw = localStorage.getItem(STORAGE_KEY) ?? localStorage.getItem(OLD_STORAGE_KEY);
     if (raw) return normalize(JSON.parse(raw));
   } catch (e) { /* leer starten */ }
   return normalize({});
@@ -716,7 +717,7 @@ function render({ scrollToGap = false } = {}) {
 function renderEmpty() {
   fab.hidden = true;
   app.innerHTML = `
-    <h1 style="margin-top:calc(env(safe-area-inset-top) + 20px)">Reisetagebuch</h1>
+    <h1 style="margin-top:calc(env(safe-area-inset-top) + 20px)">Reiselogbuch</h1>
     <p class="muted">Noch kein Reiselogbuch angelegt.</p>
     <div style="display:flex;gap:8px;flex-wrap:wrap">
       <button class="primary" id="newTrip">＋ Neues Reiselogbuch anlegen</button>
@@ -1326,7 +1327,7 @@ function outputDocument(trip, version, stamp) {
 }
 
 function backupFile() {
-  return { name: `Ω Backup Reisetagebuch ${nowStamp().file}.json`, type: 'json', content: JSON.stringify(db, null, 2) };
+  return { name: `Ω Backup Reiselogbuch ${nowStamp().file}.json`, type: 'json', content: JSON.stringify(db, null, 2) };
 }
 
 function backupIsOld() {
@@ -1486,7 +1487,7 @@ importFile.onchange = async () => {
   if (!file) return;
   try {
     const data = JSON.parse(await file.text());
-    if (!Array.isArray(data.trips)) throw new Error('Kein Reisetagebuch-Backup.');
+    if (!Array.isArray(data.trips)) throw new Error('Kein Reiselogbuch-Backup.');
     const yes = await ask('Backup laden',
       `Backup mit ${data.trips.length} Reise(n) laden?<div class="hint">Die aktuellen Daten auf diesem iPad werden ersetzt.</div>`, 'Ersetzen', true);
     if (!yes) return;

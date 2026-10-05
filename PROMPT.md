@@ -1,12 +1,12 @@
-# Reisetagebuch – Prompt (Stand 05.10.2026, Version 10)
+# Reiselogbuch – Prompt (Stand 05.10.2026, Version 11)
 
 ```text
-Baue mir ein einfaches Reisetagebuch als Web-App für das iPad.
+Baue mir ein einfaches Reiselogbuch als Web-App für das iPad.
 
 ZIEL
 Ein Tagebuch in Tabellenform, genau wie in meinem Beispiel:
 
-  Reisetagebuch – <Titel>
+  Reiselogbuch – <Titel>
   Reiseteilnehmer:  Gerhild & Arnold
   Reisezeitraum:    24.08.2026 - 11.11.2026
   Reisemittel:      ✈️ Flugzeug, 🚗 PKW
@@ -24,8 +24,9 @@ RAHMEN
 - Auch offline nutzbar.
 - Oberfläche auf Deutsch, schlicht und klar.
 - Web-App, die man über Safari zum Home-Bildschirm hinzufügt.
-- Bereitstellung über GitHub Pages (Repo wird öffentlich, die Einträge
-  bleiben trotzdem nur auf dem iPad).
+- Bereitstellung über GitHub Pages aus dem Repo "ReiseLogBuch" (Branch
+  main, Hauptordner): https://g811141a.github.io/ReiseLogBuch/
+  (Repo öffentlich, die Einträge bleiben trotzdem nur auf dem iPad).
 - Dunkelmodus manuell umschaltbar, 3 Stufen: Automatisch / Hell / Dunkel.
   Die letzte Einstellung wird gemerkt.
 - Alle Meldungen und Sicherheitsabfragen in eigenen Fenstern mit deutschen
@@ -42,8 +43,8 @@ RAHMEN
 - Begriffe: "🧳 Reiselogbücher" (Liste, Fenstertitel "Reiselogbücher"),
   "＋ Neues Reiselogbuch anlegen", "Reiselogbuch bearbeiten",
   "🗑 Reiselogbuch löschen", Überschrift "Reiselogbuch – <Titel>" (App und
-  Ausgabe). (App-Name und Backup-Name werden erst umbenannt, wenn die App
-  fertig ist.)
+  Ausgabe). Die App heißt "Reiselogbuch"; der Begriff "Reisetagebuch"
+  kommt nicht mehr vor.
 - Die "Reset"-Schaltfläche der iPad-Datumsauswahl bleibt (Systembeschriftung).
 - Einheitliche Fußleiste in allen Fenstern: links "Abbrechen", rechts
   "Fertig" bzw. "Schließen"; "Löschen" separat in Rot. Oben nur Titel
@@ -191,7 +192,7 @@ AUSGABE
   kann sie nicht prüfen.
 - Keine Hilfeseite.
 - Jederzeit möglich, auch mitten in der Reise (Zwischenstand).
-- Überschrift "Reisetagebuch – <Titel>".
+- Überschrift "Reiselogbuch – <Titel>".
 - Nur erfasste Tage, keine leeren Tage, keine Wetter-Platzhalter.
 - Die Google-Maps-Links funktionieren in beiden Formaten.
 - Spaltenbreiten passen sich dem Inhalt an.
@@ -227,6 +228,6 @@ SICHERHEIT
 - Als Backup-Zeitpunkt zählt nur ein abgeschlossenes Teilen-Menü, ein
   Abbruch zählt nicht.
 - Backup-Dateiname (ohne Versionszähler):
-  "Ω Backup Reisetagebuch JJJJ.MM.TT hh.mm"
-  z. B. "Ω Backup Reisetagebuch 2026.10.04 14.35.json"
+  "Ω Backup Reiselogbuch JJJJ.MM.TT hh.mm"
+  z. B. "Ω Backup Reiselogbuch 2026.10.04 14.35.json"
 ```

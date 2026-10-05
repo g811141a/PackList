@@ -1,4 +1,4 @@
-# Reiselogbuch – Prompt (Stand 05.10.2026, Version 15)
+# Reiselogbuch – Prompt (Stand 05.10.2026, Version 16)
 
 ```text
 Baue mir ein einfaches Reiselogbuch als Web-App für das iPad.
@@ -80,9 +80,9 @@ REISEN
   Die gewählten Reisemittel werden mit Icons ausgegeben.
 - Option "Quartierliste in der Ausgabe": beim Anlegen der Reise
   wählbar und nachträglich änderbar.
-- Option "🍽️ Spalte Essen (Restaurants)": beim Anlegen/Bearbeiten ein- und
+- Option "🍽️ Spalte Essen und Trinken": beim Anlegen/Bearbeiten ein- und
   ausschaltbar, Standard aus. Die Spalte steht vor dem Quartier (App und
-  Ausgabe). Beim Ausschalten bleiben vorhandene Einträge erhalten.
+  Ausgabe), Spaltenkopf 🍽️🍷☕️. Beim Ausschalten bleiben vorhandene Einträge erhalten.
 - Reisezeiträume dürfen sich nicht überschneiden (Hinweis, Speichern
   erst nach Korrektur möglich).
 - Frühere Reisen bleiben gespeichert und können jederzeit wieder
@@ -122,7 +122,8 @@ HAUPTANSICHT (TABELLE)
   bzw. dem Smiley.
 
 ERFASSUNG – wenig eingeben, in ganz einfachen Schritten
-- Tag antippen → Erfassungsmaske.
+- Tag antippen → Erfassungsmaske (fast bildschirmbreit, damit weniger
+  gescrollt werden muss). Checkbox-Texte in normaler Schrift.
 - Titelzeile mit Wochentag und vollem Datum, z. B. "Sonntag, 04.10.2026".
 - Die Eingabefelder bleiben schlicht (ohne Aufzählungszeichen); die
   saubere Formatierung erfolgt in Tabelle, HTML und PDF.
@@ -134,7 +135,7 @@ ERFASSUNG – wenig eingeben, in ganz einfachen Schritten
      "Besichtigung …", "Freetour …". Angetippt wird der Text als neue
      Zeile eingefügt; die "…" sind nur Platzhalter und werden nicht
      übernommen.
-  3. Wie war's: Smiley + kurzer Text; mehrere Smiley-Zeilen möglich.
+  3. Wie war was?: Smiley + kurzer Text; mehrere Smiley-Zeilen möglich.
      Alle Smileys möglich (iPad-Emoji-Tastatur).
      Schnellauswahl über dem Textfeld:
      - Sortiert nach Häufigkeit (meistbenutzt vorne), noch nie benutzte
@@ -143,7 +144,7 @@ ERFASSUNG – wenig eingeben, in ganz einfachen Schritten
        Wird er später wieder verwendet, kommt er automatisch zurück.
      - Reset-Icon (nur Symbol) stellt die Standard-Smileys wieder her
        und setzt alle Zähler auf null (mit Sicherheitsabfrage).
-  4. Essen (nur wenn die Spalte aktiviert ist): wie "Wie war's?", eine
+  4. Essen und Trinken (nur wenn die Spalte aktiviert ist): wie "Wie war was?", eine
      Zeile pro Lokal im Format "Smiley(s) Name – Kommentar", z. B.
      "🕛😋 Hard Rock Café – Steak war super". Eigene Smiley-Leiste mit
      eigener Häufigkeit, Entfernen (lange drücken) und ↺, Standard:
@@ -161,6 +162,8 @@ ERFASSUNG – wenig eingeben, in ganz einfachen Schritten
      Essen wird bei der Suche gefunden, zählt nicht als "erfasst" und
      erscheint nicht in der Statistik. Keine Restaurantliste.
   5. Quartier: Name eintragen.
+     Kopfzeile des Blocks: "☐ Quartier wie Vortag  ☐ keinen Google-Maps
+     Link" (am ersten Reisetag nur die zweite Checkbox).
      Häkchen "Quartier wie Vortag": nur wenn gesetzt, wird das Quartier
      vom Vortag übernommen. Sonst bleibt das Feld leer.
      Checkbox "keinen Google-Maps Link" rechts in der Kopfzeile des
@@ -172,7 +175,7 @@ ERFASSUNG – wenig eingeben, in ganz einfachen Schritten
      dem Hotelnamen angezeigt ("📍Prize by Radisson, Wien") – überall
      (Tagestabelle, Quartierliste, App und Ausgabe); Teile des Ortes, die
      schon im Namen stehen, entfallen.
-- Mehrere Smileys pro Zeile (Wie war's?, Essen, Fazit): Ein angetippter
+- Mehrere Smileys pro Zeile (Wie war was?, Essen, Fazit): Ein angetippter
   Smiley wird angehängt, wenn der Cursor in einer leeren Zeile oder direkt
   hinter Smileys steht; steht er hinter Text, beginnt eine neue Zeile.
   Alle führenden Smileys stehen in Tabelle und Ausgabe zusammen vorne,
@@ -193,7 +196,7 @@ QUARTIER-SPALTE
   Ausgabe (überall mit 📍).
 
 ABSCHLUSS
-- Fazit: Antippen öffnet eine eigene Erfassungsmaske wie "Wie war's?"
+- Fazit: Antippen öffnet eine eigene Erfassungsmaske wie "Wie war was?"
   (Smiley-Schnellauswahl mit gemeinsamer Häufigkeits-Sortierung, lange
   drücken/Reset, 🎤 Diktieren, automatisches Speichern alle 10 Sekunden).
   Darstellung in App und Ausgabe mit hängendem Einzug.

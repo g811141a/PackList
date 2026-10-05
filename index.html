@@ -129,8 +129,8 @@
   .fazit-box { display: inline-block; width: auto; max-width: 100%; text-align: left; padding: 12px 14px; min-height: 60px; border-radius: 12px; }
   .trip-row { display: flex; gap: 8px; margin-top: 10px; }
   .trip-row .choice { margin: 0; flex: 1; }
-  .trip-row .edit { width: 56px; font-size: 20px; flex: none; }
-  #msg { width: min(480px, 100vw - 32px); }
+  .trip-row { align-items: center; }
+  .trip-row .edit { flex: none; }
   .msg-text { padding: 8px 2px; }
   .kosten { display: flex; align-items: center; gap: 10px; }
   .kosten span { font-size: 20px; }
@@ -145,14 +145,16 @@
   td a { text-decoration: none; }
 
   .fab { position: fixed; right: max(16px, env(safe-area-inset-right)); bottom: calc(16px + env(safe-area-inset-bottom)); display: flex; flex-direction: column; gap: 8px; z-index: 4; }
-  .fab button { width: 48px; padding: 0; font-size: 20px; }
+  .fab button { padding: 0; font-size: 20px; }
 
   /* Dialoge */
   dialog {
-    border: none; border-radius: 18px; padding: 0; width: min(1100px, 100vw - 24px);
+    border: none; border-radius: 18px; padding: 0;
+    width: fit-content; min-width: min(480px, 90vw); max-width: 90vw;
     max-height: calc(100vh - 40px); background: var(--bg); color: var(--ink);
     box-shadow: 0 20px 60px rgba(0,0,0,.3);
   }
+  dialog.wide { width: min(1100px, 100vw - 24px); max-width: none; }
   dialog::backdrop { background: rgba(0,0,0,.35); }
   dialog form { display: flex; flex-direction: column; max-height: calc(100vh - 40px); }
   .dlg-head { display: flex; align-items: center; gap: 8px; padding: 12px 16px; border-bottom: 1px solid var(--line); }
@@ -167,13 +169,15 @@
     align-items: center; justify-content: center; font-size: 14px; margin-right: 8px;
   }
   .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
-  .chips button { font-size: 15px; padding: 6px 10px; min-height: 38px; }
+  .chips button { font-size: 15px; padding: 6px 10px; min-height: 44px; }
   .emoji-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
   .emoji-row button {
-    font-size: 24px; padding: 4px 8px; min-width: 48px;
+    font-size: 24px; line-height: 1; padding: 0 8px; min-width: 48px; height: 44px;
     -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; touch-action: manipulation;
   }
   .emoji-row button.reset { font-size: 20px; color: var(--muted); flex: none; }
+  /* Reine Icon-Schaltflächen einheitlich 46 × 44 px */
+  #theme, .fab button, .mic, .emoji-row button.reset, .trip-row .edit, .iconbtn { width: 46px; min-width: 46px; height: 44px; padding: 0; }
   .emoji-row.strip { flex-wrap: nowrap; align-items: center; }
   .emoji-row.strip .scroll { flex: 1; min-width: 0; display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
   .emoji-row.strip .scroll::-webkit-scrollbar { display: none; }
@@ -181,7 +185,7 @@
   .emoji-row.strip .scroll.fr { -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 48px), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 48px), transparent); }
   .emoji-row.strip .scroll.fl { -webkit-mask-image: linear-gradient(to left, #000 calc(100% - 48px), transparent); mask-image: linear-gradient(to left, #000 calc(100% - 48px), transparent); }
   .emoji-row.strip .scroll.fl.fr { -webkit-mask-image: linear-gradient(to right, transparent, #000 48px, #000 calc(100% - 48px), transparent); mask-image: linear-gradient(to right, transparent, #000 48px, #000 calc(100% - 48px), transparent); }
-  .mic { font-size: 18px; padding: 4px 10px; min-height: 38px; }
+  .mic { font-size: 18px; padding: 0; min-height: 44px; }
   .mic[aria-pressed="true"] { animation: pulse 1s infinite; }
   @keyframes pulse { 50% { opacity: .5; } }
   .hint { font-size: 14px; color: var(--muted); margin-top: 6px; }
@@ -219,6 +223,7 @@
 
 // Schaltflächen-Icons aus Lucide (ISC-Lizenz), direkt eingebettet, damit die App offline funktioniert.
 const ICONS = {
+  'info': '<circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>',
   'book-open': '<path d="M12 5v16"/><path d="M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z"/>',
   'fold-vertical': '<path d="M12 22v-6"/><path d="M12 8V2"/><path d="M4 12H2"/><path d="M10 12H8"/><path d="M16 12h-2"/><path d="M22 12h-2"/><path d="m15 19-3-3-3 3"/><path d="m15 5-3 3-3-3"/>',
   'list-chevrons-up-down': '<path d="M3 5h8"/><path d="M3 12h8"/><path d="M3 19h8"/><path d="m15 8 3-3 3 3"/><path d="m15 16 3 3 3-3"/>',
@@ -833,8 +838,9 @@ const inform = (title, html) => messageBox(title, html, [{ label: 'Schließen', 
 /* ---------- Dialoge ---------- */
 
 // Der Dialog bleibt offen und bekommt nur neuen Inhalt; so kommt kein verspätetes Schließ-Ereignis an.
-function openDialog(html) {
+function openDialog(html, wide = false) {
   clearInterval(autosaveTimer);
+  dlg.classList.toggle('wide', wide);
   dlg.onclose = null;
   dlg.innerHTML = html;
   dlg.returnValue = '';
@@ -923,7 +929,6 @@ function openTripsDialog() {
     <form method="dialog">
       <div class="dlg-head"><h3>Reiselogbücher</h3></div>
       <div class="dlg-body">
-        <button type="button" class="choice primary" id="newTrip"><strong style="display:inline-flex;gap:6px;align-items:center">${ic('plus')}Neues Reiselogbuch anlegen</strong></button>
         ${trips.map(t => {
           const state = t.start <= today && today <= t.end ? 'läuft gerade' : t.end < today ? 'beendet' : 'geplant';
           return `<div class="trip-row">
@@ -937,6 +942,8 @@ function openTripsDialog() {
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:24px">
           <button type="button" id="exportAll">${ic('save')}Backup sichern</button>
           <button type="button" id="importAll">${ic('folder-open')}Backup laden</button>
+          <span class="spacer"></span>
+          <button type="button" class="primary" id="newTrip">${ic('plus')}Neues Reiselogbuch anlegen</button>
         </div>
         <div class="hint">Das Backup enthält alle Reiselogbücher. Im Teilen-Menü „In Dateien sichern“ wählen.
           ${db.settings.lastBackup ? `Letztes Backup: ${new Date(db.settings.lastBackup).toLocaleString('de-DE', { dateStyle: 'medium', timeStyle: 'short' })}` : 'Noch kein Backup gesichert.'}</div>
@@ -1111,7 +1118,7 @@ function openDayDialog(trip, iso) {
         ${micHint()}
       </div>
       ${autosaveFoot}
-    </form>`);
+    </form>`, true);
 
   const fProgram = dlg.querySelector('#fProgram');
   const fComment = dlg.querySelector('#fComment');
@@ -1438,14 +1445,12 @@ function openOutputDialog(trip) {
       <div class="dlg-head"><h3>Ausgabe</h3></div>
       <div class="dlg-body">
         <p class="muted">${count} erfasste${count === 1 ? 'r Tag' : ' Tage'} · Stand jetzt</p>
-        <button type="button" class="choice" id="outHtml">
-          <strong style="display:inline-flex;gap:6px;align-items:center">${ic('file-code')}HTML-Datei</strong>
-          <span class="muted">Teilen-Menü → „In Dateien sichern“</span>
-        </button>
-        <button type="button" class="choice" id="outPdf">
-          <strong style="display:inline-flex;gap:6px;align-items:center">${ic('file-text')}PDF</strong>
-          <span class="muted">Drucken-Menü → Teilen → „In Dateien sichern“</span>
-        </button>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+          <button type="button" id="outHtml">${ic('file-code')}HTML-Datei</button>
+          <button type="button" id="outPdf">${ic('file-text')}PDF</button>
+          <button type="button" class="iconbtn" id="outInfo" aria-label="Hinweis anzeigen" aria-expanded="false">${ic('info')}</button>
+        </div>
+        <div class="hint" id="outHint" hidden>HTML-Datei: Teilen-Menü → „In Dateien sichern“.<br>PDF: Drucken-Menü → Teilen → „In Dateien sichern“.</div>
         <div class="hint" style="margin-top:14px">Dateiname: ${esc(outputName(trip, nextVersion))}</div>
       </div>
       <div class="dlg-foot">
@@ -1453,6 +1458,11 @@ function openOutputDialog(trip) {
         <span class="spacer"></span>
       </div>
     </form>`);
+  dlg.querySelector('#outInfo').onclick = e => {
+    const hint = dlg.querySelector('#outHint');
+    hint.hidden = !hint.hidden;
+    e.currentTarget.setAttribute('aria-expanded', String(!hint.hidden));
+  };
   dlg.querySelector('#outHtml').onclick = () => exportHtml(trip);
   dlg.querySelector('#outPdf').onclick = () => exportPdf(trip);
 }

@@ -77,6 +77,8 @@
     padding: 10px 12px; min-height: 44px;
   }
   input:disabled { opacity: .6; }
+  input.invalid { border-color: var(--danger); }
+  .step.off .check, .step.off .hint { opacity: .5; }
   textarea { resize: vertical; min-height: 96px; }
   label { display: block; font-weight: 600; margin: 0 0 6px; }
   .muted { color: var(--muted); }
@@ -260,8 +262,8 @@ const ICONS = {
 const ic = (name, cls = '') => `<svg class="ic ${cls}" viewBox="0 0 24 24" aria-hidden="true">${ICONS[name]}</svg>`;
 
 // Version und Erstellungszeitpunkt, werden bei jeder neuen Version angepasst.
-const APP_VERSION = 22;
-const APP_BUILT = '06.10.2026 um 00:16';
+const APP_VERSION = 23;
+const APP_BUILT = '06.10.2026 um 15:30';
 
 const app = document.getElementById('app');
 const dlg = document.getElementById('dlg');
@@ -319,6 +321,8 @@ function normalize(data) {
     t.transport ||= [];
     t.quarterList ??= false;
     t.foodColumn ??= false;
+    t.moodColumn ??= true;
+    t.quarterColumn ??= true;
     t.outputCounter ||= 0;
   }
   return data;
@@ -433,9 +437,17 @@ function quarterOf(trip, iso) {
   return { name: '', place: '', noMap: false };
 }
 
+// Sichtbare Tabellenspalten; "Tag" und "Programm" werden immer angezeigt.
+const cols = trip => ({ mood: trip.moodColumn !== false, food: Boolean(trip.foodColumn), quarter: trip.quarterColumn !== false });
+const colCount = trip => { const c = cols(trip); return 2 + c.mood + c.food + c.quarter; };
+const headCells = trip => { const c = cols(trip);
+  return `<th>Tag</th><th>Programm</th>${c.mood ? '<th>🙂☹️😉</th>' : ''}${c.food ? '<th>🍽️🍷☕️</th>' : ''}${c.quarter ? '<th>😴💤</th>' : ''}`; };
+
+// Erfasst: Wetter, Programm oder eine sichtbare Spalte (Essen zählt nicht); ausgeblendete Spalten zählen nicht.
 function isRecorded(trip, iso) {
   const e = rawEntry(trip, iso);
-  return Boolean(e.weather || e.program || e.comment || quarterOf(trip, iso).name);
+  const c = cols(trip);
+  return Boolean(e.weather || e.program || (c.mood && e.comment) || (c.quarter && quarterOf(trip, iso).name));
 }
 
 function firstGap(trip) {
@@ -445,7 +457,9 @@ function firstGap(trip) {
 function matchesSearch(trip, iso, term) {
   const e = rawEntry(trip, iso);
   const q = quarterOf(trip, iso);
-  return [e.program, e.comment, e.food, q.name, q.place].join('\n').toLocaleLowerCase('de').includes(term);
+  const c = cols(trip);
+  return [e.program, c.mood && e.comment, c.food && e.food, c.quarter && q.name, c.quarter && q.place]
+    .filter(Boolean).join('\n').toLocaleLowerCase('de').includes(term);
 }
 
 /* ---------- Text-Formatierung mit hängendem Einzug ---------- */
@@ -680,6 +694,7 @@ function render({ scrollToGap = false } = {}) {
     return !db.settings.hideEmpty || isRecorded(trip, iso);
   });
 
+  const c = cols(trip);
   // Zebrastreifen nach sichtbaren Zeilen, damit das Muster auch bei Filter und Suche abwechselt.
   const rows = visible.map((iso, i) => {
     const e = rawEntry(trip, iso);
@@ -695,9 +710,9 @@ function render({ scrollToGap = false } = {}) {
     return `<tr data-day="${iso}" class="${cls}">
       <td class="day">${dayLabel(iso)}${tags}${wx}</td>
       <td>${linesHtml(programItems(e.program), term)}</td>
-      <td>${linesHtml(commentItems(e.comment), term)}</td>
-      ${trip.foodColumn ? `<td>${foodHtml(foodItems(e.food, q.place), term, true)}</td>` : ''}
-      <td class="quarter">${link}</td>
+      ${c.mood ? `<td>${linesHtml(commentItems(e.comment), term)}</td>` : ''}
+      ${c.food ? `<td>${foodHtml(foodItems(e.food, q.place), term, true)}</td>` : ''}
+      ${c.quarter ? `<td class="quarter">${link}</td>` : ''}
     </tr>`;
   }).join('');
 
@@ -709,7 +724,7 @@ function render({ scrollToGap = false } = {}) {
 
   const theme = THEMES[db.settings.theme];
   const transport = transportText(trip);
-  const stays = quarterStays(trip);
+  const stays = c.quarter ? quarterStays(trip) : [];
 
   app.innerHTML = `
     <div class="bar" id="bar">
@@ -730,7 +745,7 @@ function render({ scrollToGap = false } = {}) {
     <p class="progress">${progress}</p>
     <div class="table-wrap">
       <table class="days">
-        <thead><tr><th>Tag</th><th>Programm</th><th>🙂☹️😉</th>${trip.foodColumn ? '<th>🍽️🍷☕️</th>' : ''}<th>😴💤</th></tr></thead>
+        <thead><tr>${headCells(trip)}</tr></thead>
         <tbody>${rows}</tbody>
       </table>
       ${visible.length ? '' : `<div class="empty-note">${term ? 'Keine Treffer.' : 'Noch keine Tage erfasst.'}</div>`}
@@ -1002,14 +1017,15 @@ addEventListener('resize', () => { if (dlg.open) layoutTripRows(); });
 // Reise anlegen oder bearbeiten; überschneidende Zeiträume werden verhindert.
 function openTripDialog(trip) {
   const isNew = !trip;
-  const t = trip || { title: '', participants: '', start: todayISO(), end: addDays(todayISO(), 14), transport: [], quarterList: false, foodColumn: false };
+  const t = trip || { title: '', participants: '', start: todayISO(), end: addDays(todayISO(), 14), transport: [], quarterList: false, foodColumn: true, moodColumn: true, quarterColumn: true };
   const transport = new Set(t.transport);
   openDialog(`
     <form method="dialog">
       <div class="dlg-head"><h3>${isNew ? 'Neues Reiselogbuch' : 'Reiselogbuch bearbeiten'}</h3></div>
       <div class="dlg-body">
         <div class="step"><label for="fTitle">Reisetitel</label>
-          <input type="text" id="fTitle" value="${esc(t.title)}" placeholder="z. B. Australien"></div>
+          <input type="text" id="fTitle" value="${esc(t.title)}" placeholder="z. B. Australien">
+          <div class="warn" id="titleWarn" hidden></div></div>
         <div class="step"><label for="fPeople">Reiseteilnehmer</label>
           <input type="text" id="fPeople" value="${esc(t.participants)}" placeholder="z. B. Gerhild & Arnold"></div>
         <div class="step"><label>Reisezeitraum</label>
@@ -1017,20 +1033,23 @@ function openTripDialog(trip) {
             <input type="date" id="fStart" value="${t.start}" aria-label="Von">
             <input type="date" id="fEnd" value="${t.end}" aria-label="Bis">
           </div>
-          <div class="warn" id="tripWarn"></div>
+          <div class="warn" id="tripWarn" hidden></div>
         </div>
         <div class="step"><label>Reisemittel</label>
           <div class="chips" id="transport">
             ${TRANSPORT.map(x => `<button type="button" data-t="${x.id}" aria-pressed="${transport.has(x.id)}">${x.icon} ${x.name}</button>`).join('')}
           </div>
         </div>
-        <div class="step">
-          <label class="check"><input type="checkbox" id="fQuarterList" ${t.quarterList ? 'checked' : ''}> Quartierliste in der Ausgabe</label>
-          <div class="hint">Am Ende der Ausgabe: alle Quartiere mit Zeitraum, Anzahl Nächte und Maps-Link.</div>
+        <div class="step"><label>Konfiguration Tabellenspalten</label>
+          <div class="hint" style="margin:0 0 6px">Die Spalten „Tag“ und „Programm“ werden immer angezeigt.</div>
+          <label class="check" style="margin:0"><input type="checkbox" id="fMood" ${t.moodColumn !== false ? 'checked' : ''}> 🙂☹️😉 Spalte Wie war was?</label>
+          <label class="check" style="margin:0"><input type="checkbox" id="fFood" ${t.foodColumn ? 'checked' : ''}> 🍽️🍷☕️ Spalte Essen und Trinken</label>
+          <label class="check" style="margin:0"><input type="checkbox" id="fQuarterCol" ${t.quarterColumn !== false ? 'checked' : ''}> 😴💤 Spalte Quartier</label>
+          <div class="hint">Ausgeblendete Spalten fehlen in Tabelle, Tageserfassung und Ausgabe. Vorhandene Einträge bleiben erhalten.</div>
         </div>
         <div class="step">
-          <label class="check"><input type="checkbox" id="fFood" ${t.foodColumn ? 'checked' : ''}> 🍽️🍷☕️ Spalte Essen und Trinken</label>
-          <div class="hint">Zusätzliche Spalte vor dem Quartier für Lokale und Essen, mit Maps-Link.</div>
+          <label class="check"><input type="checkbox" id="fQuarterList" ${t.quarterList ? 'checked' : ''}> Quartierliste in der Ausgabe</label>
+          <div class="hint">Am Ende der Ausgabe: alle Quartiere mit Zeitraum, Anzahl Nächte und Maps-Link. Nur mit Spalte Quartier.</div>
         </div>
         ${isNew ? '' : `<div style="margin-top:24px">
           <button type="button" class="danger" id="deleteTrip">${ic('trash', 'red')}Reiselogbuch löschen</button>
@@ -1055,24 +1074,48 @@ function openTripDialog(trip) {
     on ? transport.add(b.dataset.t) : transport.delete(b.dataset.t);
   });
 
+  // Fehlermeldungen stehen in Rot unter dem jeweiligen Feld (Feld mit rotem Rahmen), aber erst nach einer Eingabe:
+  // der Titel, wenn das Feld leer verlassen oder geleert wurde; der Zeitraum, sobald ein Datum geändert wurde.
+  // "Fertig" bleibt gesperrt, solange etwas fehlt.
+  const titleWarn = dlg.querySelector('#titleWarn');
+  let titleTouched = false, datesTouched = false, hadTitle = Boolean(fTitle.value.trim());
+  const showWarn = (box, text, fields, visible) => {
+    const on = Boolean(text) && visible;
+    box.textContent = on ? text : '';
+    box.hidden = !on;
+    fields.forEach(f => f.classList.toggle('invalid', on));
+  };
   const validate = () => {
     const start = fStart.value, end = fEnd.value;
-    let text = '';
-    if (!fTitle.value.trim()) text = 'Bitte einen Reisetitel eingeben.';
-    else if (!start || !end) text = 'Bitte Beginn und Ende der Reise wählen.';
+    const titleText = fTitle.value.trim() ? '' : 'Bitte einen Reisetitel eingeben.';
+    let dateText = '';
+    if (!start || !end) dateText = 'Bitte Beginn und Ende der Reise wählen.';
     else {
       const other = overlappingTrip(start, end, trip?.id);
-      if (other) text = `Der Zeitraum überschneidet sich mit „${other.title}“ (${fullDate(other.start)} - ${fullDate(other.end)}). Bitte korrigieren.`;
+      if (other) dateText = `Der Zeitraum überschneidet sich mit „${other.title}“ (${fullDate(other.start)} - ${fullDate(other.end)}). Bitte korrigieren.`;
     }
-    warn.textContent = text;
-    ok.disabled = Boolean(text);
-    return !text;
+    showWarn(titleWarn, titleText, [fTitle], titleTouched);
+    // Sobald ein Titel da ist, wird auch ein Problem beim Zeitraum gezeigt (z. B. Überschneidung durch das vorgeschlagene Datum).
+    showWarn(warn, dateText, [fStart, fEnd], datesTouched || hadTitle);
+    ok.disabled = Boolean(titleText || dateText);
+    return !ok.disabled;
   };
   // Von und Bis gleichen sich an, damit das Ende nie vor dem Beginn liegt.
-  fStart.oninput = () => { if (fStart.value && fEnd.value < fStart.value) fEnd.value = fStart.value; validate(); };
-  fEnd.oninput = () => { if (fEnd.value && fStart.value > fEnd.value) fStart.value = fEnd.value; validate(); };
-  fTitle.oninput = validate;
+  fStart.oninput = () => { datesTouched = true; if (fStart.value && fEnd.value < fStart.value) fEnd.value = fStart.value; validate(); };
+  fEnd.oninput = () => { datesTouched = true; if (fEnd.value && fStart.value > fEnd.value) fStart.value = fEnd.value; validate(); };
+  fTitle.oninput = () => { if (fTitle.value.trim()) hadTitle = true; else if (hadTitle) titleTouched = true; validate(); };
+  fTitle.onblur = () => { titleTouched = true; validate(); };
   validate();
+
+  // Quartierliste nur mit sichtbarer Spalte Quartier.
+  const fQuarterCol = dlg.querySelector('#fQuarterCol');
+  const fQuarterList = dlg.querySelector('#fQuarterList');
+  const syncQuarterList = () => {
+    fQuarterList.disabled = !fQuarterCol.checked;
+    fQuarterList.closest('.step').classList.toggle('off', !fQuarterCol.checked);
+  };
+  fQuarterCol.onchange = syncQuarterList;
+  syncQuarterList();
 
   const del = dlg.querySelector('#deleteTrip');
   if (del) del.onclick = async () => {
@@ -1096,13 +1139,15 @@ function openTripDialog(trip) {
     target.transport = TRANSPORT.map(x => x.id).filter(id => transport.has(id));
     target.quarterList = dlg.querySelector('#fQuarterList').checked;
     target.foodColumn = dlg.querySelector('#fFood').checked;
+    target.moodColumn = dlg.querySelector('#fMood').checked;
+    target.quarterColumn = fQuarterCol.checked;
     if (isNew) db.trips.push(target);
     save();
     if (isNew) showTrip(target.id); else render();
   };
 }
 
-// Einen Tag in 4 Schritten erfassen; speichert automatisch alle 10 Sekunden.
+// Einen Tag in 2 bis 5 Schritten erfassen (je nach sichtbaren Spalten); speichert automatisch alle 10 Sekunden.
 function openDayDialog(trip, iso) {
   const days = tripDays(trip);
   const idx = days.indexOf(iso);
@@ -1113,6 +1158,9 @@ function openDayDialog(trip, iso) {
   const knownQuarters = [...new Set(days.map(d => quarterOf(trip, d).name).filter(Boolean))];
   const prev = isFirst ? { name: '', place: '' } : quarterOf(trip, days[idx - 1]);
   const same = Boolean(e.sameQuarter) && !isFirst;
+  const c = cols(trip);
+  let stepNo = 2;
+  const nextNo = () => ++stepNo;
 
   openDialog(`
     <form method="dialog">
@@ -1135,20 +1183,20 @@ function openDayDialog(trip, iso) {
           </div>
           <textarea id="fProgram" placeholder="Was habt ihr gemacht? Eine Zeile pro Punkt.">${esc(e.program || '')}</textarea>
         </div>
-        <div class="step">
-          <div class="step-head"><label for="fComment"><span class="step-num">3</span>Wie war was?</label>${micButton('fComment')}</div>
+        <div class="step" ${c.mood ? '' : 'hidden'}>
+          <div class="step-head"><label for="fComment"><span class="step-num">${c.mood ? nextNo() : ''}</span>Wie war was?</label>${micButton('fComment')}</div>
           <div class="emoji-row" id="moods"></div>
           <textarea id="fComment" placeholder="Smiley antippen, dann ein paar Worte dazu.">${esc(e.comment || '')}</textarea>
           <div class="hint">${MOOD_HINT}</div>
         </div>
         ${trip.foodColumn ? `<div class="step">
-          <div class="step-head"><label for="fFoodText"><span class="step-num">4</span>Essen und Trinken</label><label class="check head-check"><input type="checkbox" id="noLink"> keinen Google-Maps Link</label>${micButton('fFoodText')}</div>
+          <div class="step-head"><label for="fFoodText"><span class="step-num">${nextNo()}</span>Essen und Trinken</label><label class="check head-check"><input type="checkbox" id="noLink"> keinen Google-Maps Link</label>${micButton('fFoodText')}</div>
           <div class="emoji-row" id="foodMoods"></div>
           <textarea id="fFoodText" placeholder="Eine Zeile pro Lokal: Smileys, Name – Kommentar">${esc(e.food || '')}</textarea>
           <div class="hint">Format: „🕛😋 Hard Rock Café – Steak war super“. Der Name wird zum Maps-Link (mit dem Ort des Quartiers). „keinen Google-Maps Link“ gilt für die Zeile, in der der Cursor steht (markiert mit ⊘).</div>
         </div>` : ''}
-        <div class="step">
-          <div class="step-head"><label for="fQuarter"><span class="step-num">${trip.foodColumn ? 5 : 4}</span>Quartier</label>${isFirst ? '' : `<label class="check head-check"><input type="checkbox" id="fSame" ${same ? 'checked' : ''}> Quartier wie Vortag</label>`}<label class="check head-check"><input type="checkbox" id="fNoMap" ${e.noMap && !same ? 'checked' : ''}> keinen Google-Maps Link</label></div>
+        <div class="step" ${c.quarter ? '' : 'hidden'}>
+          <div class="step-head"><label for="fQuarter"><span class="step-num">${c.quarter ? nextNo() : ''}</span>Quartier</label>${isFirst ? '' : `<label class="check head-check"><input type="checkbox" id="fSame" ${same ? 'checked' : ''}> Quartier wie Vortag</label>`}<label class="check head-check"><input type="checkbox" id="fNoMap" ${e.noMap && !same ? 'checked' : ''}> keinen Google-Maps Link</label></div>
           <input type="text" id="fQuarter" list="quarterList" placeholder="z. B. Oaks Townsville Hotel">
           <datalist id="quarterList">${knownQuarters.map(q => `<option value="${esc(q)}">`).join('')}</datalist>
           <input type="text" id="fPlace" placeholder="Ort für Google Maps (optional, z. B. Cairns, Australien)" style="margin-top:8px">
@@ -1379,11 +1427,12 @@ function tripStats(trip) {
     return [...c.values()].sort((a, b) => b.n - a.n).map(h => [h.shown, h.n]);
   };
   const weather = count(rec.flatMap(d => graphemes(rawEntry(trip, d).weather)));
-  const moods = count([...rec.map(d => rawEntry(trip, d).comment), trip.fazit].flatMap(emojisIn));
+  const c = cols(trip);
+  const moods = count([...(c.mood ? rec.map(d => rawEntry(trip, d).comment) : []), trip.fazit].flatMap(emojisIn));
   const fmt = list => list.map(([e, n]) => `${n}×${e}`).join(' · ') || '–';
   return [
     ['Reisetage', `${days.length}, davon erfasst ${rec.length}`],
-    ['Quartiere', String(quarters.size)],
+    ...(c.quarter ? [['Quartiere', String(quarters.size)]] : []),
     ['Wetter', fmt(weather)],
     ['Smileys', fmt(moods)],
   ];
@@ -1408,19 +1457,20 @@ function quarterStays(trip) {
 
 // Inhalt der Ausgabe: nur erfasste Tage, ohne Wetter-Platzhalter.
 function outputBody(trip, version, stamp) {
+  const c = cols(trip);
   const rows = tripDays(trip).filter(iso => isRecorded(trip, iso)).map(iso => {
     const e = rawEntry(trip, iso);
     const q = quarterOf(trip, iso);
     return `<tr>
       <td class="nw">${dayLabel(iso)} ${esc(e.weather || '')}</td>
       <td>${linesHtml(programItems(e.program))}</td>
-      <td>${linesHtml(commentItems(e.comment))}</td>
-      ${trip.foodColumn ? `<td>${foodHtml(foodItems(e.food, q.place))}</td>` : ''}
-      <td>${quarterHtml(q)}</td>
+      ${c.mood ? `<td>${linesHtml(commentItems(e.comment))}</td>` : ''}
+      ${c.food ? `<td>${foodHtml(foodItems(e.food, q.place))}</td>` : ''}
+      ${c.quarter ? `<td>${quarterHtml(q)}</td>` : ''}
     </tr>`;
   }).join('');
   const transport = transportText(trip);
-  const stays = trip.quarterList ? quarterStays(trip) : [];
+  const stays = trip.quarterList && c.quarter ? quarterStays(trip) : [];
   return `<div class="rt">
     <h1>Reiselogbuch – ${esc(trip.title)}</h1>
     <table class="meta">
@@ -1429,8 +1479,8 @@ function outputBody(trip, version, stamp) {
       ${transport ? `<tr><td><b>Reisemittel:</b></td><td>${esc(transport)}</td></tr>` : ''}
     </table>
     <table class="grid">
-      <thead><tr><th>Tag</th><th>Programm</th><th>🙂☹️😉</th>${trip.foodColumn ? '<th>🍽️🍷☕️</th>' : ''}<th>😴💤</th></tr></thead>
-      <tbody>${rows || `<tr><td colspan="${trip.foodColumn ? 5 : 4}">Noch keine Tage erfasst.</td></tr>`}</tbody>
+      <thead><tr>${headCells(trip)}</tr></thead>
+      <tbody>${rows || `<tr><td colspan="${colCount(trip)}">Noch keine Tage erfasst.</td></tr>`}</tbody>
     </table>
     <h2>Fazit</h2>
     <div>${linesHtml(commentItems(trip.fazit))}</div>
@@ -1494,8 +1544,8 @@ function openOutputDialog(trip) {
         <div class="hint" style="margin-top:14px">Dateiname: ${esc(outputName(trip, nextVersion))}</div>
       </div>
       <div class="dlg-foot">
-        <button type="button" data-act="cancel">${ic('ban', 'red')}Abbrechen</button>
         <span class="spacer"></span>
+        <button type="button" data-act="cancel">${ic('x')}Schließen</button>
       </div>
     </form>`);
   dlg.querySelector('#outInfo').onclick = e => {

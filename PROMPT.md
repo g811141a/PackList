@@ -1,4 +1,4 @@
-# Reiselogbuch – Prompt (Stand 06.10.2026, Version 22)
+# Reiselogbuch – Prompt (Stand 06.10.2026, Version 23)
 
 ```text
 Baue mir ein einfaches Reiselogbuch als Web-App für das iPad.
@@ -36,6 +36,14 @@ RAHMEN
   - "Fertig" = Eingaben übernehmen und schließen
   - "Abbrechen" = ohne Änderung schließen / Vorgang nicht ausführen
   - "Schließen" = Fenster ohne Eingaben schließen (Info, Liste, Meldung)
+  - "Abbrechen" nur, wenn rechts eine Gegenaktion steht (Fertig, Löschen,
+    Entfernen …), sonst immer "Schließen". Steht "Schließen" allein in der
+    Fußleiste, dann rechts; stehen rechts Aktionen, dann links (Vorschau).
+- Fehlermeldungen stehen in Rot direkt unter dem betroffenen Feld, das Feld
+  bekommt einen roten Rahmen. Beim Öffnen eines Fensters erscheint keine
+  Meldung; "Fertig" bleibt aber gesperrt, bis alles passt. Reisetitel: Meldung
+  erst, wenn das Feld leer verlassen oder geleert wird. Reisezeitraum: Meldung,
+  sobald ein Datum geändert oder ein Titel eingegeben wurde.
   - Bestätigung immer mit dem Verb der Aktion: "Löschen", "Entfernen",
     "Zurücksetzen", "Ersetzen"
   - "💾 Backup sichern", "📂 Backup laden", "‹ Vortag" / "Folgetag ›"
@@ -116,9 +124,19 @@ REISEN
   Die gewählten Reisemittel werden mit Icons ausgegeben.
 - Option "Quartierliste in der Ausgabe": beim Anlegen der Reise
   wählbar und nachträglich änderbar.
-- Option "🍽️🍷☕️ Spalte Essen und Trinken": beim Anlegen/Bearbeiten ein- und
-  ausschaltbar, Standard aus. Die Spalte steht vor dem Quartier (App und
-  Ausgabe), Spaltenkopf 🍽️🍷☕️. Beim Ausschalten bleiben vorhandene Einträge erhalten.
+- Block "Konfiguration Tabellenspalten" (unter Reisemittel) mit Hinweis
+  "Die Spalten „Tag“ und „Programm“ werden immer angezeigt." und den
+  Checkboxen in Tabellenreihenfolge: "🙂☹️😉 Spalte Wie war was?",
+  "🍽️🍷☕️ Spalte Essen und Trinken", "😴💤 Spalte Quartier". Beim Anlegen
+  alle drei eingeschaltet (bestehende Reiselogbücher: Wie war was? und
+  Quartier ein, Essen wie bisher). Ausgeblendete Spalten fehlen in Tabelle,
+  Tageserfassung (Schritte werden neu nummeriert), Suche und Ausgabe;
+  vorhandene Einträge bleiben erhalten.
+  - Quartier aus: "Quartierliste in der Ausgabe" ausgegraut, keine
+    Quartierliste in App und Ausgabe, Statistik ohne Anzahl der Quartiere.
+  - Wie war was? aus: Statistik zählt nur die Smileys des Fazits.
+  - Erfasst ist ein Tag, wenn Wetter, Programm oder eine sichtbare Spalte
+    (außer Essen) ausgefüllt ist.
 - Reisezeiträume dürfen sich nicht überschneiden (Hinweis, Speichern
   erst nach Korrektur möglich).
 - Frühere Reisen bleiben gespeichert und können jederzeit wieder
@@ -163,7 +181,7 @@ ERFASSUNG – wenig eingeben, in ganz einfachen Schritten
 - Titelzeile mit Wochentag und vollem Datum, z. B. "Sonntag, 04.10.2026".
 - Die Eingabefelder bleiben schlicht (ohne Aufzählungszeichen); die
   saubere Formatierung erfolgt in Tabelle, HTML und PDF.
-- 4 Schritte:
+- Schritte (je nach sichtbaren Spalten 2 bis 5, fortlaufend nummeriert):
   1. Wetter: Symbole antippen, auch mehrere: ☀️ 🌤 🌦 🌧 ☁️ ⛈ ❄️
   2. Programm: eine Zeile pro Punkt; mehrere Zeilen bekommen in Tabelle
      und Ausgabe ▫️ davor.

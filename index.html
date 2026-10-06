@@ -262,8 +262,9 @@ const ICONS = {
 const ic = (name, cls = '') => `<svg class="ic ${cls}" viewBox="0 0 24 24" aria-hidden="true">${ICONS[name]}</svg>`;
 
 // Version und Erstellungszeitpunkt, werden bei jeder neuen Version angepasst.
-const APP_VERSION = 25;
-const APP_BUILT = '06.10.2026 um 16:03';
+// Versionsnummer Hauptversion.Nebenversion.Korrektur (siehe CHANGELOG.md).
+const APP_VERSION = '1.0.0';
+const APP_BUILT = '06.10.2026 um 16:18';
 
 const app = document.getElementById('app');
 const dlg = document.getElementById('dlg');
@@ -1147,12 +1148,14 @@ function openTripDialog(trip) {
     if (!yes) return;
     db.trips = db.trips.filter(x => x.id !== trip.id);
     save();
-    dlg.close();
+    // Die Maske "Reiselogbücher" bleibt offen; der Hintergrund wechselt bei Bedarf auf die Startreise.
     showTrip(currentTripId === trip.id ? pickStartTrip()?.id : currentTripId);
+    openTripsDialog();
   };
 
+  // Abbrechen führt zurück zur Liste; Fertig öffnet ein neues Reiselogbuch bzw. führt nach dem Bearbeiten zur Liste.
   dlg.onclose = () => {
-    if (dlg.returnValue !== 'ok' || !validate()) return;
+    if (dlg.returnValue !== 'ok' || !validate()) return openTripsDialog();
     const target = trip || { id: uid(), days: {}, fazit: '', kosten: null, outputCounter: 0 };
     target.title = fTitle.value.trim();
     target.participants = dlg.querySelector('#fPeople').value.trim();
@@ -1165,7 +1168,9 @@ function openTripDialog(trip) {
     target.quarterColumn = fQuarterCol.checked;
     if (isNew) db.trips.push(target);
     save();
-    if (isNew) showTrip(target.id); else render();
+    if (isNew) return showTrip(target.id);
+    render();
+    openTripsDialog();
   };
 }
 

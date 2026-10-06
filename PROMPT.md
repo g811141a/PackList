@@ -1,4 +1,4 @@
-# Reiselogbuch – Prompt (Stand 06.10.2026, Version 25)
+# Reiselogbuch – Prompt (Stand 06.10.2026, Version 1.0.0)
 
 ```text
 Baue mir ein einfaches Reiselogbuch als Web-App für das iPad.
@@ -74,8 +74,17 @@ RAHMEN
   zuerst.
 - Reiselogbücher: "Neues Reiselogbuch anlegen" (grün) rechtsbündig in der
   Zeile von "Backup sichern / Backup laden". In der Fußleiste links ein
-  Info-Icon, das "Reiselogbuch · Version N · erstellt am TT.MM.JJJJ um
+  Info-Icon, das "Reiselogbuch · Version X.Y.Z · erstellt am TT.MM.JJJJ um
   hh:mm" ein- und ausblendet (bei jeder Version aktualisiert).
+- Versionsnummer dreistufig Hauptversion.Nebenversion.Korrektur (ab 1.0.0):
+  Hauptversion = grundlegende Änderung (Aufbau, Bedienkonzept, Datenstruktur);
+  Nebenversion = neue Funktion oder sichtbare Verbesserung; Korrektur =
+  Fehlerbehebung. Jede Version steht mit Datum, Art und Inhalt in CHANGELOG.md.
+- Reiselogbücher: Nach dem Löschen bleibt die Maske mit der aktualisierten
+  Liste offen (war das gelöschte geöffnet, wechselt der Hintergrund auf die
+  Startreise). "Reiselogbuch bearbeiten": "Abbrechen" und "Fertig" führen
+  zurück zur Liste. "Neues Reiselogbuch": "Fertig" öffnet es, "Abbrechen"
+  führt zurück zur Liste.
 - Ausgabe: normale Schaltflächen "Vorschau", "HTML-Datei" und "PDF",
   daneben ein Info-Icon, das den Hinweis zum Speichern ein- und ausblendet.
 - Vorschau: fast bildschirmbreites Fenster, Inhalt immer hell und genau wie

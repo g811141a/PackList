@@ -14,6 +14,8 @@ Die aktuelle Version steht in der App unter „Reiselogbücher“ → Info-Icon.
 
 ## 1.0.0 – 06.10.2026 (erste fertige Fassung)
 
+Reiselogbuch 1.0.0 · Designrichtlinie allgemein 1.0.0 · Designrichtlinie Reiselogbuch 1.0.0
+
 - Dreistufige Versionsnummer und diese Versionsgeschichte.
 - Reiselogbuch löschen: Die Maske „Reiselogbücher“ bleibt mit der aktualisierten Liste
   offen; war das gelöschte Reiselogbuch geöffnet, wechselt der Hintergrund auf die

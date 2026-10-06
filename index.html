@@ -262,8 +262,8 @@ const ICONS = {
 const ic = (name, cls = '') => `<svg class="ic ${cls}" viewBox="0 0 24 24" aria-hidden="true">${ICONS[name]}</svg>`;
 
 // Version und Erstellungszeitpunkt, werden bei jeder neuen Version angepasst.
-const APP_VERSION = 24;
-const APP_BUILT = '06.10.2026 um 15:52';
+const APP_VERSION = 25;
+const APP_BUILT = '06.10.2026 um 16:03';
 
 const app = document.getElementById('app');
 const dlg = document.getElementById('dlg');
@@ -1759,7 +1759,7 @@ window.addEventListener('resize', () => {
 });
 
 if ('serviceWorker' in navigator && location.protocol === 'https:') {
-  navigator.serviceWorker.register('sw.js').catch(() => {});
+  navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).catch(() => {});
 }
 </script>
 </body>

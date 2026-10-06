@@ -1,4 +1,4 @@
-# Reiselogbuch – Prompt (Stand 06.10.2026, Version 24)
+# Reiselogbuch – Prompt (Stand 06.10.2026, Version 25)
 
 ```text
 Baue mir ein einfaches Reiselogbuch als Web-App für das iPad.
@@ -21,7 +21,9 @@ RAHMEN
 - Läuft nur auf dem iPad, nur ich nutze es (kein Teilen, kein Login).
 - Nur Text, Icons und Smileys – keine Fotos.
 - Daten bleiben lokal auf dem iPad.
-- Auch offline nutzbar.
+- Auch offline nutzbar. Beim Start fragt die App immer bei GitHub nach
+  einer neuen Version (kein 10-Minuten-Zwischenspeicher); ohne Netz läuft
+  die gespeicherte Version.
 - Oberfläche auf Deutsch, schlicht und klar.
 - Web-App, die man über Safari zum Home-Bildschirm hinzufügt.
 - Bereitstellung über GitHub Pages aus dem Repo "ReiseLogBuch" (Branch

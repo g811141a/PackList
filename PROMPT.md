@@ -1,4 +1,4 @@
-# Reiselogbuch – Prompt (Stand 06.10.2026, Version 23)
+# Reiselogbuch – Prompt (Stand 06.10.2026, Version 24)
 
 ```text
 Baue mir ein einfaches Reiselogbuch als Web-App für das iPad.
@@ -41,9 +41,15 @@ RAHMEN
     Fußleiste, dann rechts; stehen rechts Aktionen, dann links (Vorschau).
 - Fehlermeldungen stehen in Rot direkt unter dem betroffenen Feld, das Feld
   bekommt einen roten Rahmen. Beim Öffnen eines Fensters erscheint keine
-  Meldung; "Fertig" bleibt aber gesperrt, bis alles passt. Reisetitel: Meldung
-  erst, wenn das Feld leer verlassen oder geleert wird. Reisezeitraum: Meldung,
-  sobald ein Datum geändert oder ein Titel eingegeben wurde.
+  Meldung; "Fertig" bleibt aber ausgegraut, bis alles passt. Reisetitel und
+  Reiseteilnehmer: Meldung erst, wenn das Feld leer verlassen oder geleert
+  wird. Reisezeitraum: sobald ein Datum geändert oder ein Titel eingegeben
+  wurde. Reisemittel: wenn das letzte gewählte abgewählt wird. Ein Tippen auf
+  das ausgegraute "Fertig" zeigt alle fehlenden Angaben und scrollt zur ersten.
+- Pflichtfelder werden nicht gekennzeichnet (kein Sternchen, kein
+  "erforderlich"/"optional"); fehlt eine Eingabe, erscheint die Meldung am Feld.
+  Pflicht sind nur Reisetitel, Reiseteilnehmer, Reisezeitraum und Reisemittel
+  (mindestens eines).
   - Bestätigung immer mit dem Verb der Aktion: "Löschen", "Entfernen",
     "Zurücksetzen", "Ersetzen"
   - "💾 Backup sichern", "📂 Backup laden", "‹ Vortag" / "Folgetag ›"

@@ -59,7 +59,7 @@
     border: 1px solid var(--line); background: var(--card); border-radius: 10px;
     padding: 8px 12px; cursor: pointer; min-height: 44px;
   }
-  button:disabled { opacity: .4; cursor: default; }
+  button:disabled, button[aria-disabled="true"] { opacity: .4; cursor: default; }
   button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
   .ic { width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
   .ic.red { color: var(--danger); }
@@ -262,8 +262,8 @@ const ICONS = {
 const ic = (name, cls = '') => `<svg class="ic ${cls}" viewBox="0 0 24 24" aria-hidden="true">${ICONS[name]}</svg>`;
 
 // Version und Erstellungszeitpunkt, werden bei jeder neuen Version angepasst.
-const APP_VERSION = 23;
-const APP_BUILT = '06.10.2026 um 15:30';
+const APP_VERSION = 24;
+const APP_BUILT = '06.10.2026 um 15:52';
 
 const app = document.getElementById('app');
 const dlg = document.getElementById('dlg');
@@ -1027,7 +1027,8 @@ function openTripDialog(trip) {
           <input type="text" id="fTitle" value="${esc(t.title)}" placeholder="z. B. Australien">
           <div class="warn" id="titleWarn" hidden></div></div>
         <div class="step"><label for="fPeople">Reiseteilnehmer</label>
-          <input type="text" id="fPeople" value="${esc(t.participants)}" placeholder="z. B. Gerhild & Arnold"></div>
+          <input type="text" id="fPeople" value="${esc(t.participants)}" placeholder="z. B. Gerhild & Arnold">
+          <div class="warn" id="peopleWarn" hidden></div></div>
         <div class="step"><label>Reisezeitraum</label>
           <div style="display:flex;gap:10px">
             <input type="date" id="fStart" value="${t.start}" aria-label="Von">
@@ -1039,6 +1040,7 @@ function openTripDialog(trip) {
           <div class="chips" id="transport">
             ${TRANSPORT.map(x => `<button type="button" data-t="${x.id}" aria-pressed="${transport.has(x.id)}">${x.icon} ${x.name}</button>`).join('')}
           </div>
+          <div class="warn" id="transportWarn" hidden style="margin-top:2px"></div>
         </div>
         <div class="step"><label>Konfiguration Tabellenspalten</label>
           <div class="hint" style="margin:0 0 6px">Die Spalten „Tag“ und „Programm“ werden immer angezeigt.</div>
@@ -1068,43 +1070,63 @@ function openTripDialog(trip) {
   const warn = dlg.querySelector('#tripWarn');
   const ok = dlg.querySelector('#okTrip');
 
+  // Pflichtfelder: Reisetitel, Reiseteilnehmer, Reisezeitraum, Reisemittel – ohne eigene Kennzeichnung.
+  // Fehlermeldungen stehen in Rot unter dem jeweiligen Feld (Feld mit rotem Rahmen), aber erst nach einer Eingabe:
+  // Titel/Teilnehmer, wenn das Feld leer verlassen oder geleert wurde; Zeitraum, sobald ein Datum geändert oder ein
+  // Titel eingegeben wurde; Reisemittel, wenn das letzte abgewählt wurde. "Fertig" bleibt ausgegraut, solange etwas
+  // fehlt; ein Tippen darauf zeigt alle fehlenden Angaben und scrollt zur ersten.
+  const fPeople = dlg.querySelector('#fPeople');
+  const checks = {
+    title: { box: dlg.querySelector('#titleWarn'), fields: [fTitle], touched: false,
+      text: () => fTitle.value.trim() ? '' : 'Bitte einen Reisetitel eingeben.' },
+    people: { box: dlg.querySelector('#peopleWarn'), fields: [fPeople], touched: false,
+      text: () => fPeople.value.trim() ? '' : 'Bitte Reiseteilnehmer eingeben.' },
+    dates: { box: warn, fields: [fStart, fEnd], touched: false, text: () => {
+      if (!fStart.value || !fEnd.value) return 'Bitte Beginn und Ende der Reise wählen.';
+      const other = overlappingTrip(fStart.value, fEnd.value, trip?.id);
+      return other ? `Der Zeitraum überschneidet sich mit „${other.title}“ (${fullDate(other.start)} - ${fullDate(other.end)}). Bitte korrigieren.` : '';
+    } },
+    transport: { box: dlg.querySelector('#transportWarn'), fields: [], touched: false,
+      text: () => transport.size ? '' : 'Bitte mindestens ein Reisemittel wählen.' },
+  };
+  let hadTitle = Boolean(fTitle.value.trim());
+  const validate = () => {
+    let valid = true;
+    for (const [key, c] of Object.entries(checks)) {
+      const text = c.text();
+      if (text) valid = false;
+      // Sobald ein Titel da ist, wird auch ein Problem beim Zeitraum gezeigt (z. B. Überschneidung durch das vorgeschlagene Datum).
+      const on = Boolean(text) && (c.touched || (key === 'dates' && hadTitle));
+      c.box.textContent = on ? text : '';
+      c.box.hidden = !on;
+      c.fields.forEach(f => f.classList.toggle('invalid', on));
+    }
+    ok.setAttribute('aria-disabled', String(!valid));
+    return valid;
+  };
+  ok.addEventListener('click', ev => {
+    if (validate()) return;
+    ev.preventDefault();
+    Object.values(checks).forEach(c => { c.touched = true; });
+    validate();
+    dlg.querySelector('.warn:not([hidden])')?.closest('.step').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+
   dlg.querySelectorAll('#transport button').forEach(b => b.onclick = () => {
     const on = b.getAttribute('aria-pressed') !== 'true';
     b.setAttribute('aria-pressed', on);
     on ? transport.add(b.dataset.t) : transport.delete(b.dataset.t);
+    if (!transport.size) checks.transport.touched = true;
+    validate();
   });
-
-  // Fehlermeldungen stehen in Rot unter dem jeweiligen Feld (Feld mit rotem Rahmen), aber erst nach einer Eingabe:
-  // der Titel, wenn das Feld leer verlassen oder geleert wurde; der Zeitraum, sobald ein Datum geändert wurde.
-  // "Fertig" bleibt gesperrt, solange etwas fehlt.
-  const titleWarn = dlg.querySelector('#titleWarn');
-  let titleTouched = false, datesTouched = false, hadTitle = Boolean(fTitle.value.trim());
-  const showWarn = (box, text, fields, visible) => {
-    const on = Boolean(text) && visible;
-    box.textContent = on ? text : '';
-    box.hidden = !on;
-    fields.forEach(f => f.classList.toggle('invalid', on));
-  };
-  const validate = () => {
-    const start = fStart.value, end = fEnd.value;
-    const titleText = fTitle.value.trim() ? '' : 'Bitte einen Reisetitel eingeben.';
-    let dateText = '';
-    if (!start || !end) dateText = 'Bitte Beginn und Ende der Reise wählen.';
-    else {
-      const other = overlappingTrip(start, end, trip?.id);
-      if (other) dateText = `Der Zeitraum überschneidet sich mit „${other.title}“ (${fullDate(other.start)} - ${fullDate(other.end)}). Bitte korrigieren.`;
-    }
-    showWarn(titleWarn, titleText, [fTitle], titleTouched);
-    // Sobald ein Titel da ist, wird auch ein Problem beim Zeitraum gezeigt (z. B. Überschneidung durch das vorgeschlagene Datum).
-    showWarn(warn, dateText, [fStart, fEnd], datesTouched || hadTitle);
-    ok.disabled = Boolean(titleText || dateText);
-    return !ok.disabled;
-  };
   // Von und Bis gleichen sich an, damit das Ende nie vor dem Beginn liegt.
-  fStart.oninput = () => { datesTouched = true; if (fStart.value && fEnd.value < fStart.value) fEnd.value = fStart.value; validate(); };
-  fEnd.oninput = () => { datesTouched = true; if (fEnd.value && fStart.value > fEnd.value) fStart.value = fEnd.value; validate(); };
-  fTitle.oninput = () => { if (fTitle.value.trim()) hadTitle = true; else if (hadTitle) titleTouched = true; validate(); };
-  fTitle.onblur = () => { titleTouched = true; validate(); };
+  fStart.oninput = () => { checks.dates.touched = true; if (fStart.value && fEnd.value < fStart.value) fEnd.value = fStart.value; validate(); };
+  fEnd.oninput = () => { checks.dates.touched = true; if (fEnd.value && fStart.value > fEnd.value) fStart.value = fEnd.value; validate(); };
+  fTitle.oninput = () => { if (fTitle.value.trim()) hadTitle = true; else if (hadTitle) checks.title.touched = true; validate(); };
+  fTitle.onblur = () => { checks.title.touched = true; validate(); };
+  let hadPeople = Boolean(fPeople.value.trim());
+  fPeople.oninput = () => { if (fPeople.value.trim()) hadPeople = true; else if (hadPeople) checks.people.touched = true; validate(); };
+  fPeople.onblur = () => { checks.people.touched = true; validate(); };
   validate();
 
   // Quartierliste nur mit sichtbarer Spalte Quartier.
@@ -1199,7 +1221,7 @@ function openDayDialog(trip, iso) {
           <div class="step-head"><label for="fQuarter"><span class="step-num">${c.quarter ? nextNo() : ''}</span>Quartier</label>${isFirst ? '' : `<label class="check head-check"><input type="checkbox" id="fSame" ${same ? 'checked' : ''}> Quartier wie Vortag</label>`}<label class="check head-check"><input type="checkbox" id="fNoMap" ${e.noMap && !same ? 'checked' : ''}> keinen Google-Maps Link</label></div>
           <input type="text" id="fQuarter" list="quarterList" placeholder="z. B. Oaks Townsville Hotel">
           <datalist id="quarterList">${knownQuarters.map(q => `<option value="${esc(q)}">`).join('')}</datalist>
-          <input type="text" id="fPlace" placeholder="Ort für Google Maps (optional, z. B. Cairns, Australien)" style="margin-top:8px">
+          <input type="text" id="fPlace" placeholder="Ort für Google Maps, z. B. Cairns, Australien" style="margin-top:8px">
           <div class="hint" id="qHint"></div>
         </div>
         ${micHint()}

@@ -1,6 +1,6 @@
 # Reiselogbuch – Prompt (Stand 06.10.2026, Version 1.0.0)
 
-Reiselogbuch 1.0.0 · Designrichtlinie allgemein 1.0.0 · Designrichtlinie Reiselogbuch 1.0.0
+Reiselogbuch 1.0.0 · Designrichtlinie allgemein 1.1.0 · Designrichtlinie Reiselogbuch 1.0.1
 (Gestaltungsregeln: `README - Designrichtlinie allgemein.md` und
 `README - Designrichtlinie Reiselogbuch.md`; bei jeder Design-Änderung mit aktualisieren.)
 

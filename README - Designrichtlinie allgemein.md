@@ -1,6 +1,6 @@
 # Designrichtlinie allgemein
 
-**Version 1.0.0** · Stand 06.10.2026
+**Version 1.1.0** · Stand 06.10.2026
 
 Allgemeine Gestaltungs- und Bedienregeln für alle iPad-Web-Apps von g811141a.
 Diese Datei liegt vorerst im Repo ReiseLogBuch und **wandert später ins Design-Repo**;
@@ -150,6 +150,13 @@ CSS-Variablen auf `:root`; Dunkelmodus über `data-theme="dark"`.
 - Gibt es noch keine Einträge, startet die App mit der leeren Liste und dem grauen Hinweis
   „Noch kein … angelegt.“; „Schließen“ und nicht sinnvolle Aktionen sind ausgegraut, die
   Liste lässt sich nicht schließen (auch nicht mit Escape).
+- **Erfassungsfenster** (Einträge erfassen): fast bildschirmbreit; Kopf
+  Zurück (chevron-left) · Titel · Weiter (chevron-right) zum Blättern zwischen Einträgen;
+  Fußleiste Abbrechen (links) · Fertig (rechts); automatisches Speichern (Abschnitt 9).
+- **Vorschaufenster**: fast bildschirmbreit, Inhalt immer hell und genau wie die
+  ausgegebene Datei; Kopf „Vorschau“ und darunter klein der Dateiname; Fußleiste
+  Schließen (links) · PDF · Teilen (grün, rechts); nach Teilen bzw. PDF schließt die
+  Vorschau, es folgen Meldung und ggf. Backup-Erinnerung.
 - Technisch: ein Dialog, dessen Inhalt ausgetauscht wird (nicht schließen und neu öffnen);
   ein zweiter Dialog nur für Meldungen und Abfragen.
 
@@ -169,6 +176,14 @@ CSS-Variablen auf `:root`; Dunkelmodus über `data-theme="dark"`.
   abgewählt.
 - „Fertig“ bleibt ausgegraut, solange etwas fehlt; **ein Tippen auf das ausgegraute
   „Fertig“ zeigt alle fehlenden Angaben** und scrollt zur ersten.
+- **Smiley-Leisten** (Schnellauswahl über einem Textfeld): nur einzeilig, mit dem Finger
+  nach links/rechts wischen, Verlauf am Rand als Hinweis auf weitere Smileys,
+  Zurücksetzen (rotate-ccw) fest rechts daneben. Sortiert nach Häufigkeit (meistbenutzte
+  vorne), nie benutzte in Standardreihenfolge dahinter. Langes Drücken entfernt einen
+  Smiley (mit Sicherheitsabfrage); wird er wieder verwendet, kommt er zurück.
+  Zurücksetzen stellt die Standard-Smileys her und setzt die Zähler auf null (mit
+  Abfrage). Ein angetippter Smiley wird angehängt, wenn der Cursor in einer leeren Zeile
+  oder hinter Smileys steht, sonst beginnt eine neue Zeile.
 - Diktieren über eine mic-Schaltfläche am Textfeld (sonst Hinweis auf die Mikrofon-Taste).
 - Automatisches Speichern alle 10 Sekunden in Erfassungsfenstern; „Abbrechen“ stellt den
   Ausgangszustand wieder her.
@@ -187,8 +202,12 @@ CSS-Variablen auf `:root`; Dunkelmodus über `data-theme="dark"`.
 - Hängender Einzug: Folgezeilen beginnen unter dem Text, nicht unter Aufzählungszeichen
   oder Emoji.
 - Links ohne Unterstreichung.
-- Listen in Spalten (z. B. Titel · Zeitraum · Status): Spalten stehen in allen Einträgen
-  genau untereinander und rechts angeschlagen; lange Titel brechen um.
+- **Liste in Spalten** (z. B. Liste der Reisen/Projekte): jeder Eintrag als Schaltfläche
+  mit Titel (fett) · Zeitraum · Status (grau). Zeitraum und Status stehen ganz rechts und
+  in allen Einträgen genau untereinander, Status linksbündig; der Titel nutzt den freien
+  Platz davor. Ist ein Titel zu lang, bricht er um und der Zeitraum steht zweizeilig
+  („von -“ / „bis“). Der aktuell geöffnete Eintrag hat einen grünen Rahmen; rechts
+  daneben pencil (44 × 44) zum Bearbeiten. Einzeilige Einträge 44 px hoch.
 - Statistiken bleiben schlichte Listen.
 
 ## 11. Ausgabe, Teilen und Meldungen
@@ -198,6 +217,15 @@ CSS-Variablen auf `:root`; Dunkelmodus über `data-theme="dark"`.
 - Vorschau vor dem Sichern im App-Fenster; erhöht keinen Zähler.
 - Speichern immer über das Teilen-Menü („In Dateien sichern“); PDF über das
   Drucken-Menü. Die App meldet ehrlich, dass das Menü geöffnet bzw. abgebrochen wurde.
+- **Ausgabe-Design** (HTML und PDF): Systemschrift 11 pt, h1 20 pt, h2 14 pt, schwarzer
+  Text auf Weiß, Links `#1a5fb4` ohne Unterstreichung, Tabellen wie in der App
+  (Kopf `#d9d9d9`, Ränder `#a5a5a5`, Zebra `#f5f5f5`), Zeilen nicht über Seitenumbrüche
+  teilen. Dezente letzte Zeile (9 pt, grau): „Ausgabe V003 erstellt am TT.MM.JJJJ um
+  hh:mm“. PDF im Hochformat, weißer Seitenhintergrund, Dateiname als Seitentitel.
+- **Dateinamen-Muster**:
+  - Ausgabe: „<App> <Titel> JJJJ.MM.TT-JJJJ.MM.TT V001“ – fortlaufender Zähler je Eintrag
+    (gemeinsam für HTML und PDF, im Backup enthalten), nie zwei Leerzeichen hintereinander.
+  - Backup: „Ω Backup <App> JJJJ.MM.TT hh.mm.json“ (ohne Zähler).
 - Datumsformat in Texten TT.MM.JJJJ, in Dateinamen JJJJ.MM.TT, Uhrzeit hh:mm
   (im Dateinamen hh.mm).
 - Sicherheitsabfrage vor jeder Lösch- oder Rücksetz-Aktion.
@@ -222,6 +250,12 @@ CSS-Variablen auf `:root`; Dunkelmodus über `data-theme="dark"`.
 
 - Diese Datei und die App-spezifischen Richtlinien werden **bei jeder Design-Änderung**
   aktualisiert, gemeinsam mit der App-Version.
+- **Bei jeder Design-Änderung wird geklärt, ob sie eine allgemeine Regel ist (diese
+  Datei) oder nur für eine App gilt** (App-Richtlinie); Claude fragt nach und nennt dabei
+  seine Einschätzung als Vorschlag.
+- App-Richtlinien verweisen eingangs auf diese Datei und enthalten **keine
+  Wiederholungen**, nur **Abweichungen** (bewusst anders als hier) und **Ausprägungen**
+  (konkrete Ausgestaltung einer allgemeinen Regel für die App), jeweils so gekennzeichnet.
 - Eigene dreistufige Versionsnummer je Datei (Bedeutung wie in Abschnitt 12, bezogen auf
   Regeln: neue Regel = Nebenversion, Präzisierung = Korrektur, grundlegend neue
   Gestaltung = Hauptversion).
@@ -253,4 +287,5 @@ CSS-Variablen auf `:root`; Dunkelmodus über `data-theme="dark"`.
 
 | Version | Datum | Art | Inhalt |
 |---|---|---|---|
+| 1.1.0 | 06.10.2026 | Neben | Neu: Regel „allgemein oder App?“ klären, App-Richtlinien nur mit Abweichungen/Ausprägungen; aus der Reiselogbuch-Richtlinie übernommen: Smiley-Leisten, Erfassungsfenster, Vorschaufenster, Liste in Spalten, Ausgabe-Design, Dateinamen-Muster |
 | 1.0.0 | 06.10.2026 | erste Fassung | Zusammenfassung aller bisher vereinbarten allgemeinen Regeln (Stand Reiselogbuch 1.0.0) |

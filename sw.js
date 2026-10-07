@@ -1,6 +1,6 @@
 // Offline-Cache: App-Dateien zuerst aus dem Netz holen, ohne Netz aus dem Cache.
 // "no-cache" fragt immer bei GitHub nach (umgeht den 10-Minuten-Zwischenspeicher), eine neue Version ist sofort da.
-const CACHE = 'reiselogbuch-1.1.0';
+const CACHE = 'reiselogbuch-1.2.0';
 const FILES = ['./', 'index.html', 'manifest.json', 'icon-180.png', 'icon-512.png'];
 
 self.addEventListener('install', e => {

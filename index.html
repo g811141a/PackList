@@ -19,8 +19,10 @@
     --ink: #1c1c1e;
     --muted: #8a8a8e;
     --line: #d1d1d6;
-    --accent: #2f6f62;
+    --accent: #007aff;
     --accent-ink: #ffffff;
+    --sw-on: #34c759;
+    --sw-off: #e9e9eb;
     --danger: #b3261e;
     --danger-fill: #d70015;
     --warn: #c07a12;
@@ -35,12 +37,13 @@
     --dlg-field: #ffffff;
     --btn: #f9f9f9;
     --btn-rim: #ffffff;
-    --sel-bg: #d3e8e2;
+    --sel-bg: #dcebff;
     --mark: #ffe45c;
     --mark-cur: #ffc46b;
     --mark-cur-ink: inherit;
     --float: 0 3px 28px rgba(0,0,0,.16);
-    --glow-accent: 0 2px 4px rgba(0,0,0,.12), 0 5px 14px rgba(47,111,98,.40);
+    --glow-accent: 0 2px 4px rgba(0,0,0,.10), 0 5px 18px rgba(0,122,255,.50);
+    --table-shadow: 0 1px 3px rgba(0,0,0,.12), 0 8px 24px rgba(0,0,0,.12);
     --glow-danger: 0 2px 4px rgba(0,0,0,.12), 0 5px 14px rgba(215,0,21,.35);
     --rim-color: rgba(255,255,255,.5);
     --bar-h: 64px;
@@ -48,14 +51,15 @@
   }
   :root[data-theme="dark"] {
     --bg: #000000; --card: #1c1c1e; --ink: #ffffff; --muted: #8e8e93; --line: #38383a;
-    --accent: #6fbfa9; --accent-ink: #10201c; --danger: #ff6961; --danger-fill: #ff453a; --warn: #e2a64b;
+    --accent: #0a84ff; --accent-ink: #ffffff; --sw-on: #30d158; --sw-off: #39393d; --danger: #ff6961; --danger-fill: #ff453a; --warn: #e2a64b;
     --focus: #45391a; --row-hover: #2c2c2e;
     --th-bg: #2c2c2e; --th-line: #48484a; --zebra: #161618; --field-line: #48484a;
     --dlg-bg: #1c1c1e; --dlg-card: #2c2c2e; --dlg-field: #1c1c1e;
-    --btn: #3a3a3c; --btn-rim: rgba(255,255,255,.16); --sel-bg: #24493f;
+    --btn: #3a3a3c; --btn-rim: rgba(255,255,255,.16); --sel-bg: #10335c;
     --mark: #8a6d00; --mark-cur: #e08a1e; --mark-cur-ink: #000;
     --float: 0 3px 28px rgba(0,0,0,.7);
-    --glow-accent: 0 2px 4px rgba(0,0,0,.5), 0 5px 16px rgba(111,191,169,.35);
+    --glow-accent: 0 2px 4px rgba(0,0,0,.5), 0 5px 18px rgba(10,132,255,.50);
+    --table-shadow: 0 0 0 .5px rgba(255,255,255,.12), 0 1px 3px rgba(0,0,0,.6), 0 8px 24px rgba(0,0,0,.6);
     --glow-danger: 0 2px 4px rgba(0,0,0,.5), 0 5px 16px rgba(255,69,58,.35);
     --rim-color: rgba(255,255,255,.4);
     color-scheme: dark;
@@ -100,14 +104,14 @@
   button.link { border: none; background: none; box-shadow: none; color: var(--accent); padding: 6px 8px; }
   button.danger { background: var(--danger-fill); color: #fff; border: .5px solid var(--rim-color); box-shadow: var(--glow-danger); }
   button.danger .ic.red { color: inherit; }
-  button[aria-pressed="true"] { background: var(--sel-bg); border: 2px solid var(--accent); color: var(--ink); box-shadow: var(--glow-accent); }
+  button[aria-pressed="true"] { background: var(--sel-bg); border: .5px solid var(--accent); color: var(--ink); box-shadow: var(--glow-accent); }
   input[type=text], input[type=search], input[type=date], input[type=number], textarea {
-    width: 100%; border: .5px solid var(--field-line); border-radius: 10px; background: var(--card);
+    width: 100%; border: .5px solid var(--btn-rim); border-radius: 10px; background: var(--card); box-shadow: var(--float);
     padding: 10px 12px; min-height: 44px;
   }
   input:disabled { opacity: .6; }
   input.invalid { border: 1px solid var(--danger); }
-  .step.off .check, .step.off .hint { opacity: .5; }
+  .step.off .hint { opacity: .5; }
   textarea { resize: vertical; min-height: 96px; }
   label { display: block; font-weight: 600; margin: 0 0 6px; }
   .muted { color: var(--muted); }
@@ -127,7 +131,7 @@
   .progress { font-size: 14px; color: var(--muted); margin: 0 0 12px; }
 
   /* Tabelle */
-  .table-wrap { background: var(--card); border-radius: 12px; overflow: clip; }
+  .table-wrap { background: var(--card); border-radius: 12px; overflow: clip; box-shadow: var(--table-shadow); }
   table.days { border-collapse: separate; border-spacing: 0; width: 100%; }
   table.days th, table.days td { border-bottom: 1px solid var(--line); padding: 10px 12px; vertical-align: top; text-align: left; }
   table.days td + td { border-left: 1px solid var(--line); }
@@ -224,7 +228,25 @@
   .warn { font-size: 15px; color: var(--danger); margin-top: 10px; }
   .check { display: flex; align-items: center; gap: 10px; font-weight: 400; margin: 0 0 10px; min-height: 44px; cursor: pointer; }
   .check input { width: 24px; height: 24px; accent-color: var(--accent); }
-  .step-head .head-check { flex: none; margin: 0 0 0 12px; }
+  /* Komponente Schalter (Einstellungen): Zeile mit Text links, Apple-Schalter rechts, Haarlinie dazwischen */
+  .swlist { margin: 4px 0 10px; }
+  .swlist .check { justify-content: space-between; gap: 12px; min-height: 52px; margin: 0; border-bottom: .5px solid var(--line); }
+  .swlist .check:last-child { border-bottom: none; }
+  .check.sw input { order: 2; -webkit-appearance: none; appearance: none; flex: none; width: 51px; height: 31px; margin: 0; border-radius: 16px; cursor: pointer;
+    background: radial-gradient(circle at 15.5px 50%, #fff 13.5px, transparent 14px), var(--sw-off); transition: background .2s; }
+  .check.sw input:checked { background: radial-gradient(circle at calc(100% - 15.5px) 50%, #fff 13.5px, transparent 14px), var(--sw-on); }
+  .check.sw:has(input:disabled) { opacity: .4; cursor: default; }
+  /* Komponente Options-Kapsel (Optionen beim Erfassen): wie eine Auswahl-Schaltfläche, eingeschaltet mit Häkchen */
+  .check.chip { display: inline-flex; gap: 8px; height: 44px; min-height: 44px; margin: 0; padding: 0 16px; border-radius: 22px; font-size: 15px;
+    background: var(--btn); border: .5px solid var(--btn-rim); box-shadow: var(--float); -webkit-user-select: none; user-select: none; }
+  .check.chip input { position: absolute; opacity: 0; width: 0; height: 0; pointer-events: none; }
+  .check.chip:has(input:checked) { background: var(--sel-bg); border-color: var(--accent); box-shadow: var(--glow-accent); }
+  .check.chip:has(input:checked)::before { content: ''; width: 16px; height: 16px; flex: none; background: var(--accent);
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center/contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center/contain no-repeat; }
+  .check.chip:has(input:disabled) { opacity: .4; cursor: default; }
+  .step-head .head-check { flex: none; margin: 0 0 0 4px; }
+  .qrow { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
   .choice { display: block; width: 100%; text-align: left; margin-top: 10px; padding: 14px 16px; }
   .choice strong { display: block; font-size: 18px; }
   .choice.current { border-color: var(--accent); border-width: 2px; }
@@ -295,8 +317,8 @@ const ic = (name, cls = '') => `<svg class="ic ${cls}" viewBox="0 0 24 24" aria-
 
 // Version und Erstellungszeitpunkt, werden bei jeder neuen Version angepasst.
 // Versionsnummer Hauptversion.Nebenversion.Korrektur (siehe CHANGELOG.md).
-const APP_VERSION = '1.1.0';
-const APP_BUILT = '07.10.2026 um 13:46';
+const APP_VERSION = '1.2.0';
+const APP_BUILT = '07.10.2026 um 15:31';
 
 const app = document.getElementById('app');
 const dlg = document.getElementById('dlg');
@@ -1117,13 +1139,15 @@ function openTripDialog(trip) {
         </div>
         <div class="step"><label>Konfiguration Tabellenspalten</label>
           <div class="hint" style="margin:0 0 6px">Die Spalten „Tag“ und „Programm“ werden immer angezeigt.</div>
-          <label class="check" style="margin:0"><input type="checkbox" id="fMood" ${t.moodColumn !== false ? 'checked' : ''}> 🙂☹️😉 Spalte Wie war was?</label>
-          <label class="check" style="margin:0"><input type="checkbox" id="fFood" ${t.foodColumn ? 'checked' : ''}> 🍽️🍷☕️ Spalte Essen und Trinken</label>
-          <label class="check" style="margin:0"><input type="checkbox" id="fQuarterCol" ${t.quarterColumn !== false ? 'checked' : ''}> 😴💤 Spalte Quartier</label>
+          <div class="swlist">
+            <label class="check sw"><input type="checkbox" id="fMood" ${t.moodColumn !== false ? 'checked' : ''}> 🙂☹️😉 Spalte Wie war was?</label>
+            <label class="check sw"><input type="checkbox" id="fFood" ${t.foodColumn ? 'checked' : ''}> 🍽️🍷☕️ Spalte Essen und Trinken</label>
+            <label class="check sw"><input type="checkbox" id="fQuarterCol" ${t.quarterColumn !== false ? 'checked' : ''}> 😴💤 Spalte Quartier</label>
+          </div>
           <div class="hint">Ausgeblendete Spalten fehlen in Tabelle, Tageserfassung und Ausgabe. Vorhandene Einträge bleiben erhalten.</div>
         </div>
         <div class="step">
-          <label class="check"><input type="checkbox" id="fQuarterList" ${t.quarterList ? 'checked' : ''}> Quartierliste in der Ausgabe</label>
+          <div class="swlist" style="margin:0"><label class="check sw"><input type="checkbox" id="fQuarterList" ${t.quarterList ? 'checked' : ''}> Quartierliste in der Ausgabe</label></div>
           <div class="hint">Am Ende der Ausgabe: alle Quartiere mit Zeitraum, Anzahl Nächte und Maps-Link. Nur mit Spalte Quartier.</div>
         </div>
         ${isNew ? '' : `<div style="margin-top:24px">
@@ -1289,16 +1313,16 @@ function openDayDialog(trip, iso) {
           <div class="hint">${MOOD_HINT}</div>
         </div>
         ${trip.foodColumn ? `<div class="step">
-          <div class="step-head"><label for="fFoodText"><span class="step-num">${nextNo()}</span>Essen und Trinken</label><label class="check head-check"><input type="checkbox" id="noLink"> keinen Google-Maps Link</label>${micButton('fFoodText')}</div>
+          <div class="step-head"><label for="fFoodText"><span class="step-num">${nextNo()}</span>Essen und Trinken</label><label class="check chip head-check"><input type="checkbox" id="noLink"> keinen Google-Maps Link</label>${micButton('fFoodText')}</div>
           <div class="emoji-row" id="foodMoods"></div>
           <textarea id="fFoodText" placeholder="Eine Zeile pro Lokal: Smileys, Name – Kommentar">${esc(e.food || '')}</textarea>
           <div class="hint">Format: „🕛😋 Hard Rock Café – Steak war super“. Der Name wird zum Maps-Link (mit dem Ort des Quartiers). „keinen Google-Maps Link“ gilt für die Zeile, in der der Cursor steht (markiert mit ⊘).</div>
         </div>` : ''}
         <div class="step" ${c.quarter ? '' : 'hidden'}>
-          <div class="step-head"><label for="fQuarter"><span class="step-num">${c.quarter ? nextNo() : ''}</span>Quartier</label>${isFirst ? '' : `<label class="check head-check"><input type="checkbox" id="fSame" ${same ? 'checked' : ''}> Quartier wie Vortag</label>`}<label class="check head-check"><input type="checkbox" id="fNoMap" ${e.noMap && !same ? 'checked' : ''}> keinen Google-Maps Link</label></div>
-          <input type="text" id="fQuarter" list="quarterList" placeholder="z. B. Oaks Townsville Hotel">
+          <div class="step-head"><label for="fQuarter"><span class="step-num">${c.quarter ? nextNo() : ''}</span>Quartier</label>${isFirst ? '' : `<label class="check chip head-check"><input type="checkbox" id="fSame" ${same ? 'checked' : ''}> Quartier wie Vortag</label>`}<label class="check chip head-check"><input type="checkbox" id="fNoMap" ${e.noMap && !same ? 'checked' : ''}> keinen Google-Maps Link</label></div>
+          <div class="qrow"><input type="text" id="fQuarter" list="quarterList" placeholder="z. B. Oaks Townsville Hotel">
           <datalist id="quarterList">${knownQuarters.map(q => `<option value="${esc(q)}">`).join('')}</datalist>
-          <input type="text" id="fPlace" placeholder="Ort für Google Maps, z. B. Cairns, Australien" style="margin-top:8px">
+          <input type="text" id="fPlace" placeholder="Ort für Google Maps, z. B. Cairns, Australien"></div>
           <div class="hint" id="qHint"></div>
         </div>
         ${micHint()}

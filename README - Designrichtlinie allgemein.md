@@ -1,6 +1,6 @@
 # Designrichtlinie allgemein
 
-**Version 2.0.0** · Stand 07.10.2026
+**Version 2.1.0** · Stand 07.10.2026
 
 Allgemeine Gestaltungs- und Bedienregeln für alle iPad-Web-Apps von g811141a.
 Diese Datei liegt vorerst im Repo ReiseLogBuch und **wandert später ins Design-Repo**;
@@ -49,10 +49,12 @@ heller).
 | `--muted` | `#8a8a8e` | `#8e8e93` | dezente Texte, Hinweise |
 | `--line` | `#d1d1d6` | `#38383a` | Trennlinien (Haarlinie) |
 | `--field-line` | `#c7c7cc` | `#48484a` | Haarlinie um Eingabefelder |
-| `--accent` | `#2f6f62` | `#6fbfa9` | Hauptaktion, Auswahlrand, Links |
-| `--accent-ink` | `#ffffff` | `#10201c` | Text auf Akzentfarbe |
-| `--sel-bg` | `#d3e8e2` | `#24493f` | Fläche eingeschalteter Schaltflächen |
-| `--glow-accent` | `0 2px 4px rgba(0,0,0,.12), 0 5px 14px rgba(47,111,98,.40)` | `0 2px 4px rgba(0,0,0,.5), 0 5px 16px rgba(111,191,169,.35)` | Schatten grüner und gewählter Schaltflächen |
+| `--accent` | `#007aff` | `#0a84ff` | **Akzentfarbe Apple-Blau:** Hauptaktion, Auswahl, Schritt-Nummern, Links, Rahmen und Markierungen |
+| `--accent-ink` | `#ffffff` | `#ffffff` | Text auf Akzentfarbe |
+| `--sel-bg` | `#dcebff` | `#10335c` | Fläche eingeschalteter Schaltflächen und Options-Kapseln |
+| `--sw-on` / `--sw-off` | `#34c759` / `#e9e9eb` | `#30d158` / `#39393d` | Schalter ein (Apple-Grün) / aus |
+| `--glow-accent` | `0 2px 4px rgba(0,0,0,.10), 0 5px 18px rgba(0,122,255,.50)` | `0 2px 4px rgba(0,0,0,.5), 0 5px 18px rgba(10,132,255,.50)` | leuchtender Schein der Hauptaktion und eingeschalteter Elemente |
+| `--table-shadow` | `0 1px 3px rgba(0,0,0,.12), 0 8px 24px rgba(0,0,0,.12)` | zusätzlich `0 0 0 .5px rgba(255,255,255,.12)`, Schatten `.6` | Schatten um Tabellen |
 | `--danger` | `#b3261e` | `#ff6961` | Fehlermeldungen, Icon ban, roter Feldrahmen |
 | `--danger-fill` | `#d70015` | `#ff453a` | Lösch-Schaltfläche (gefüllt) |
 | `--glow-danger` | `0 2px 4px rgba(0,0,0,.12), 0 5px 14px rgba(215,0,21,.35)` | `0 2px 4px rgba(0,0,0,.5), 0 5px 16px rgba(255,69,58,.35)` | Schatten der Lösch-Schaltfläche |
@@ -76,7 +78,7 @@ heller).
 - Radien: Schaltflächen und Suchfelder Kapsel (22 px), Icon-Schaltflächen rund,
   Listeneinträge und Kästen 14 px, Eingabefelder 10 px, Tabelle 12 px, Fenster 18 px.
 - Trennlinien und Feldränder als Haarlinie (0,5 px); Kästen und Tabelle ohne Rand.
-- Checkbox-Texte in normaler Schrift, Checkboxen 24 × 24 px in Akzentfarbe.
+- Keine klassischen Checkboxen: Ein/Aus-Einstellungen als **Schalter**, Optionen beim Erfassen als **Options-Kapsel** (Abschnitt 15).
 
 ## 4. Schaltflächen
 
@@ -88,11 +90,13 @@ heller).
   Fläche `--btn`, Lichtkante `--btn-rim` (0,5 px), Schatten `--float`, Kapselform;
   Icon-Schaltflächen rund. Text-Schaltflächen: Icon links, dann Text (Abstand 6 px).
 - **Farben von Schaltflächen** – jede Farbe hat genau eine Bedeutung:
-  - **Grün gefüllt = Hauptaktion** (je Fenster bzw. Leiste höchstens eine: Fertig, Ausgabe,
+  - **Blau gefüllt = Hauptaktion** (je Fenster bzw. Leiste höchstens eine: Fertig, Ausgabe,
     Neu … anlegen, Teilen): `--accent`, weiße Schrift, Lichtkante, Schatten `--glow-accent`.
-  - **Grün getönt mit Rand = eingeschaltet** (Umschalt-Schaltflächen wie Wetter,
-    Reisemittel, Mikrofon während der Aufnahme): Fläche `--sel-bg`, 2 px Rand `--accent`,
-    Schrift normal, Schatten `--glow-accent` (`aria-pressed="true"`).
+  - **Blau getönt mit Haarlinie = eingeschaltet** (Umschalt-Schaltflächen wie Wetter,
+    Reisemittel, Mikrofon während der Aufnahme): Fläche `--sel-bg`, Haarlinie (0,5 px)
+    `--accent`, Schrift normal, Schatten `--glow-accent` (`aria-pressed="true"`). Die Breite
+    ändert sich beim Einschalten nicht.
+  - **Apple-Grün** nur für eingeschaltete **Schalter**.
   - **Rot gefüllt = Löschen** (endgültige Löschaktionen): `--danger-fill`, weiße Schrift
     und Icon trash, Schatten `--glow-danger`; separat von den übrigen Aktionen.
   - Alle übrigen Schaltflächen neutral (schwebend).
@@ -111,13 +115,13 @@ heller).
 
 | Aktion | Lucide-Icon | Darstellung |
 |---|---|---|
-| Fertig | `check` | weiß auf Grün |
+| Fertig | `check` | weiß auf Blau |
 | Voriger / nächster Treffer | `chevron-up` / `chevron-down` | nur Icon, als Kapsel-Gruppe |
 | Abbrechen | `ban` | Icon rot, Text normal |
 | Schließen | `x` | Icon + Text |
 | Löschen | `trash` | weiß auf Rot |
 | Bearbeiten | `pencil` | nur Icon |
-| Neu anlegen | `plus` | grün, Icon + Text |
+| Neu anlegen | `plus` | blau, Icon + Text |
 | Backup sichern / laden | `save` / `folder-open` | Icon + Text |
 | Teilen / Ausgabe | `share` | Icon + Text |
 | Vorschau | `eye` | Icon + Text |
@@ -163,16 +167,16 @@ heller).
   Fußleiste Abbrechen (links) · Fertig (rechts); automatisches Speichern (Abschnitt 8).
 - **Vorschaufenster**: fast bildschirmbreit, Inhalt immer hell und genau wie die
   ausgegebene Datei; Kopf „Vorschau“ und darunter klein der Dateiname; Fußleiste
-  Schließen (links) · PDF · Teilen (grün, rechts); nach Teilen bzw. PDF schließt die
+  Schließen (links) · PDF · Teilen (blau, rechts); nach Teilen bzw. PDF schließt die
   Vorschau, es folgen Meldung und ggf. Backup-Erinnerung.
 - Technisch: ein Dialog, dessen Inhalt ausgetauscht wird (nicht schließen und neu öffnen);
   ein zweiter Dialog nur für Meldungen und Abfragen.
 
 ## 8. Eingaben, Pflichtfelder und Fehlermeldungen
 
-- Eingaben in nummerierten Schritten (grüne runde Nummer 26 px), jeder Schritt als
+- Eingaben in nummerierten Schritten (blaue runde Nummer 26 px), jeder Schritt als
   Kasten ohne Rand; Nummern laufen fortlaufend über die sichtbaren Schritte.
-- Checkboxen eines Schritts rechts in dessen Kopfzeile; zusammengehörige Einstellungen in
+- Options-Kapseln eines Schritts rechts in dessen Kopfzeile; zusammengehörige Einstellungen in
   einem gemeinsamen Kasten mit Überschrift (z. B. „Konfiguration …“).
 - Eingabefelder schlicht; Formatierung erst in Anzeige und Ausgabe.
 - **Pflichtfelder werden nicht gekennzeichnet** (kein Sternchen, kein „erforderlich“,
@@ -199,8 +203,8 @@ heller).
 
 ## 9. Tabellen (App, HTML und PDF)
 
-- Kopfzeile grau (`--th-bg`) mit Rändern `--th-line`; die Tabelle selbst ohne äußeren Rand
-  (weiße Fläche auf grauem Hintergrund).
+- Kopfzeile grau (`--th-bg`) mit Rändern `--th-line`; die Tabelle selbst ohne äußeren Rand,
+  mit Schatten `--table-shadow`, damit die seitlichen Grenzen gut zu sehen sind.
 - Jede 2. sichtbare Zeile heller (Zebra); gezählt werden nur sichtbare Zeilen; eine
   markierte Zeile bleibt gelb.
 - Trennlinien zwischen allen Spalten.
@@ -214,7 +218,7 @@ heller).
   mit Titel (fett) · Zeitraum · Status (grau). Zeitraum und Status stehen ganz rechts und
   in allen Einträgen genau untereinander, Status linksbündig; der Titel nutzt den freien
   Platz davor. Ist ein Titel zu lang, bricht er um und der Zeitraum steht zweizeilig
-  („von -“ / „bis“). Der aktuell geöffnete Eintrag hat einen grünen Rahmen; rechts
+  („von -“ / „bis“). Der aktuell geöffnete Eintrag hat einen blauen Rahmen; rechts
   daneben pencil (44 × 44) zum Bearbeiten. Einzeilige Einträge 44 px hoch.
 - Statistiken bleiben schlichte Listen.
 
@@ -337,10 +341,11 @@ programmiert (`design.css`, `ui.js`) und von allen Apps übernommen.
 
 ### 15.5 Kasten (Schritt)
 - Fläche `--dlg-card` bzw. `--card`, Radius 14 px, ohne Rand, Innenabstand 14 px;
-  Kopfzeile mit grüner Schritt-Nummer, Titel, rechts Checkboxen und Icon-Schaltflächen.
+  Kopfzeile mit blauer Schritt-Nummer, Titel, rechts Options-Kapseln und Icon-Schaltflächen.
 
 ### 15.6 Eingabefeld mit Fehlermeldung
-- Fläche weiß bzw. `--dlg-field`, Haarlinie `--field-line`, Radius 10 px, 44 px hoch
+- Fläche weiß bzw. `--dlg-field`, Lichtkante `--btn-rim` und Schatten `--float` wie die
+  schwebenden Schaltflächen (auch Zahlenfelder wie Gesamtkosten), Radius 10 px, 44 px hoch
   (Textfelder mehrzeilig); Fehler: 1 px roter Rand und rote Meldung darunter
   (Abschnitt 8).
 
@@ -349,7 +354,7 @@ programmiert (`design.css`, `ui.js`) und von allen Apps übernommen.
 
 ### 15.8 Liste in Spalten
 - Siehe Abschnitt 9; Einträge als schwebende Schaltflächen mit Radius 14 px, aktueller
-  Eintrag mit 2 px grünem Rand.
+  Eintrag mit 2 px blauem Rand.
 
 ### 15.9 Tabelle
 - Siehe Abschnitt 9.
@@ -357,12 +362,28 @@ programmiert (`design.css`, `ui.js`) und von allen Apps übernommen.
 ### 15.10 Info-Icon mit Hinweis
 - Runde Icon-Schaltfläche `info`; ein Tippen blendet einen grauen Hinweis ein bzw. aus.
 
+### 15.11 Schalter (Einstellungen ein/aus)
+- **Zweck:** Ein/Aus-Einstellungen, z. B. in Bearbeiten-Fenstern. **Technisch:** `.swlist`,
+  `label.check.sw` mit `input[type=checkbox]`.
+- **Aufbau:** Zeile mit Text links und Apple-Schalter rechts; Zeilen 52 px hoch, dazwischen
+  Haarlinie; Schalter 51 × 31 px, weißer Knopf.
+- **Zustände:** ein = `--sw-on` (Apple-Grün), Knopf rechts; aus = `--sw-off`, Knopf links;
+  gesperrt 40 % Deckkraft (Text und Schalter). Kein Schein.
+
+### 15.12 Options-Kapsel (Optionen beim Erfassen)
+- **Zweck:** einzelne Ein/Aus-Optionen in der Kopfzeile eines Kastens. **Technisch:**
+  `label.check.chip` mit verstecktem `input[type=checkbox]`.
+- **Aussehen:** wie eine schwebende Schaltfläche (Kapsel, 44 px, Schrift 15 px); ein =
+  `--sel-bg`, Haarlinie `--accent`, Schein `--glow-accent` und **Häkchen in Akzentfarbe vor
+  dem Text**; aus = neutral ohne Häkchen; gesperrt 40 % Deckkraft.
+
 ---
 
 ## Versionsgeschichte
 
 | Version | Datum | Art | Inhalt |
 |---|---|---|---|
+| 2.1.0 | 07.10.2026 | Neben | Akzentfarbe Apple-Blau (Hauptaktion, Auswahl, Nummern, Links, Rahmen); Auswahl mit Haarlinie ohne Breitenänderung und leuchtenderem Schein; Schatten um Tabellen und bei allen Eingabefeldern; neue Komponenten Schalter (Apple-Grün) und Options-Kapsel statt Checkboxen |
 | 2.0.0 | 07.10.2026 | Haupt | Apple-Look: neue Farben (Hellgrau, Weiß, Apple-Dunkel), schwebende Schaltflächen und Suchfelder, Haarlinien, Abstände 12 px; Farbbedeutungen Grün/Auswahl/Rot; neuer Abschnitt „Komponenten“ (u. a. Suchfeld mit Treffer-Navigation); Zusammenarbeit in eigene Datei ausgelagert |
 | 1.1.0 | 06.10.2026 | Neben | Neu: Regel „allgemein oder App?“ klären, App-Richtlinien nur mit Abweichungen/Ausprägungen; aus der Reiselogbuch-Richtlinie übernommen: Smiley-Leisten, Erfassungsfenster, Vorschaufenster, Liste in Spalten, Ausgabe-Design, Dateinamen-Muster |
 | 1.0.0 | 06.10.2026 | erste Fassung | Zusammenfassung aller bisher vereinbarten allgemeinen Regeln (Stand Reiselogbuch 1.0.0) |

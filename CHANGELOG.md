@@ -12,6 +12,18 @@ Versionsnummer **Hauptversion.Nebenversion.Korrektur** (z. B. 1.2.1):
 Steigt eine Stufe, beginnen die Stufen dahinter wieder bei 0.
 Die aktuelle Version steht in der App unter „Reiselogbücher“ → Info-Icon.
 
+## 1.2.0 – 07.10.2026 (Nebenversion)
+
+Reiselogbuch 1.2.0 · Designrichtlinie allgemein 2.1.0 · Designrichtlinie Reiselogbuch 1.2.0 · Zusammenarbeit allgemein 1.0.0
+
+- Akzentfarbe Apple-Blau für Hauptaktion, Auswahl, Schritt-Nummern, Links, Rahmen und
+  Markierungen; leuchtenderer Schein.
+- Gewählte Wetter-Symbole/Reisemittel mit Haarlinie: die Breite ändert sich nicht mehr.
+- Schatten um Tagestabelle und Quartierliste sowie bei allen Eingabefeldern (auch Gesamtkosten).
+- Einstellungen in „Reiselogbuch bearbeiten“ als Apple-Schalter; Optionen in der
+  Tageserfassung als Options-Kapseln mit Häkchen.
+- Tageserfassung: Hotel und Ort in einer Zeile.
+
 ## 1.1.0 – 07.10.2026 (Nebenversion)
 
 Reiselogbuch 1.1.0 · Designrichtlinie allgemein 2.0.0 · Designrichtlinie Reiselogbuch 1.1.0 · Zusammenarbeit allgemein 1.0.0

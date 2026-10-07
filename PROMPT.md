@@ -1,6 +1,6 @@
-# Reiselogbuch – Prompt (Stand 07.10.2026, Version 1.1.0)
+# Reiselogbuch – Prompt (Stand 07.10.2026, Version 1.2.0)
 
-Reiselogbuch 1.1.0 · Designrichtlinie allgemein 2.0.0 · Designrichtlinie Reiselogbuch 1.1.0 · Zusammenarbeit allgemein 1.0.0
+Reiselogbuch 1.2.0 · Designrichtlinie allgemein 2.1.0 · Designrichtlinie Reiselogbuch 1.2.0 · Zusammenarbeit allgemein 1.0.0
 (Gestaltungsregeln: `README - Designrichtlinie allgemein.md` und
 `README - Designrichtlinie Reiselogbuch.md`; Zusammenarbeit: `README - Zusammenarbeit
 allgemein.md`; Einstieg für Claude: `CLAUDE.md`. Bei jeder Design-Änderung mit aktualisieren.)
@@ -77,7 +77,7 @@ RAHMEN
   bricht er um und der Reisezeitraum steht ebenfalls zweizeilig
   ("10.01.2027 -" / "28.02.2027"). Reihenfolge: zuletzt beginnende Reise
   zuerst.
-- Reiselogbücher: "Neues Reiselogbuch anlegen" (grün) rechtsbündig in der
+- Reiselogbücher: "Neues Reiselogbuch anlegen" (blau) rechtsbündig in der
   Zeile von "Backup sichern / Backup laden". In der Fußleiste links ein
   Info-Icon, das "Reiselogbuch · Version X.Y.Z · erstellt am TT.MM.JJJJ um
   hh:mm" ein- und ausblendet (bei jeder Version aktualisiert).
@@ -96,7 +96,7 @@ RAHMEN
   die HTML-Datei; oben "Vorschau" und klein der Dateiname. Zeigt die Nummer
   der nächsten Datei, ohne den Zähler zu erhöhen. Google-Maps-Links öffnen
   extern, die Vorschau bleibt offen. Fußleiste: links "Schließen", rechts
-  "PDF" und "Teilen" (grün, HTML-Datei über das Teilen-Menü). Nach Teilen
+  "PDF" und "Teilen" (blau, HTML-Datei über das Teilen-Menü). Nach Teilen
   bzw. PDF schließt die Vorschau; es folgen Meldung und ggf.
   Backup-Erinnerung.
 - Schaltflächen-Icons aus dem Set Lucide (Liniengrafiken, direkt in die App
@@ -105,7 +105,7 @@ RAHMEN
   Reiselogbücher book-open · Leere Tage aus fold-vertical · Leere Tage ein
   list-chevrons-up-down · Dunkel/Hell moon/sun (nur Icon) · Ausgabe share ·
   Suchen search · Nach oben/Ans Ende arrow-up-to-line/arrow-down-to-line
-  (nur Icon) · Fertig check (weiß auf Grün) · Abbrechen ban (rot) ·
+  (nur Icon) · Fertig check (weiß auf Blau) · Abbrechen ban (rot) ·
   Schließen x · Backup sichern save · Backup laden folder-open · Neues
   Reiselogbuch plus · Bearbeiten pencil (nur Icon) · Löschen trash (rot) ·
   Diktieren mic (nur Icon) · Vortag/Folgetag chevron-left/chevron-right ·
@@ -188,8 +188,11 @@ HAUPTANSICHT (TABELLE)
   springt weiter.
 - Aussehen im Apple-Look (siehe Designrichtlinie allgemein 2.0.0): Hintergrund
   Hellgrau, Kästen weiß ohne Rand, schwebende Schaltflächen mit 12 px Abstand;
-  Grün gefüllt = Hauptaktion, grün getönt mit Rand = eingeschaltet, rot gefüllt
-  = Löschen.
+  Akzentfarbe Apple-Blau: blau gefüllt = Hauptaktion, blau getönt mit Haarlinie
+  = eingeschaltet (ohne Breitenänderung), rot gefüllt = Löschen. Tabellen und
+  Eingabefelder mit Schatten. Einstellungen in "Reiselogbuch bearbeiten" als
+  Apple-Schalter (Apple-Grün), Optionen in der Tageserfassung als Options-Kapseln
+  mit Häkchen. Quartier: Hotel und Ort nebeneinander in einer Zeile.
 - Tabellendesign (gilt für alle Tabellen in App, HTML und PDF):
   - Kopfzeile leicht grau hinterlegt (#d9d9d9), Zellenränder darin zwei
     Stufen dunkler (#a5a5a5); im Dunkelmodus Kopfzeile #3b3a37 mit

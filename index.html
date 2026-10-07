@@ -7,42 +7,58 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Reiselogbuch">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="theme-color" content="#f6f3ee">
+<meta name="theme-color" content="#f2f2f7">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-180.png">
 <title>Reiselogbuch</title>
 <style>
+  /* Farben im Apple-Look: Hintergrund Hellgrau, Kästen weiß ohne Rand, schwebende Schaltflächen */
   :root {
-    --bg: #f6f3ee;
+    --bg: #f2f2f7;
     --card: #ffffff;
-    --ink: #22201c;
-    --muted: #8a847a;
-    --line: #e2ddd4;
+    --ink: #1c1c1e;
+    --muted: #8a8a8e;
+    --line: #d1d1d6;
     --accent: #2f6f62;
     --accent-ink: #ffffff;
     --danger: #b3261e;
+    --danger-fill: #d70015;
     --warn: #c07a12;
     --focus: #fff1c2;
-    --row-hover: #ebe7e0;
-    --th-bg: #d9d9d9;
-    --th-line: #a5a5a5;
-    --zebra: #f5f5f5;
+    --row-hover: #ececf1;
+    --th-bg: #e5e5ea;
+    --th-line: #c7c7cc;
+    --zebra: #f7f7f9;
+    --field-line: #c7c7cc;
+    --dlg-bg: #f2f2f7;
+    --dlg-card: #ffffff;
+    --dlg-field: #ffffff;
+    --btn: #f9f9f9;
+    --btn-rim: #ffffff;
+    --sel-bg: #d3e8e2;
+    --mark: #ffe45c;
+    --mark-cur: #ffc46b;
+    --mark-cur-ink: inherit;
+    --float: 0 3px 28px rgba(0,0,0,.16);
+    --glow-accent: 0 2px 4px rgba(0,0,0,.12), 0 5px 14px rgba(47,111,98,.40);
+    --glow-danger: 0 2px 4px rgba(0,0,0,.12), 0 5px 14px rgba(215,0,21,.35);
+    --rim-color: rgba(255,255,255,.5);
     --bar-h: 64px;
     color-scheme: light;
   }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --bg: #1b1a18; --card: #252421; --ink: #ece8e1; --muted: #9a9489; --line: #3a3833;
-      --accent: #6fbfa9; --accent-ink: #10201c; --danger: #f2948c; --warn: #e2a64b;
-      --focus: #45391a; --row-hover: #34322e; color-scheme: dark;
-      --th-bg: #3b3a37; --th-line: #625f5a; --zebra: #2e2d2a;
-    }
-  }
   :root[data-theme="dark"] {
-    --bg: #1b1a18; --card: #252421; --ink: #ece8e1; --muted: #9a9489; --line: #3a3833;
-    --accent: #6fbfa9; --accent-ink: #10201c; --danger: #f2948c; --warn: #e2a64b;
-    --focus: #45391a; --row-hover: #34322e; color-scheme: dark;
-    --th-bg: #3b3a37; --th-line: #625f5a; --zebra: #2e2d2a;
+    --bg: #000000; --card: #1c1c1e; --ink: #ffffff; --muted: #8e8e93; --line: #38383a;
+    --accent: #6fbfa9; --accent-ink: #10201c; --danger: #ff6961; --danger-fill: #ff453a; --warn: #e2a64b;
+    --focus: #45391a; --row-hover: #2c2c2e;
+    --th-bg: #2c2c2e; --th-line: #48484a; --zebra: #161618; --field-line: #48484a;
+    --dlg-bg: #1c1c1e; --dlg-card: #2c2c2e; --dlg-field: #1c1c1e;
+    --btn: #3a3a3c; --btn-rim: rgba(255,255,255,.16); --sel-bg: #24493f;
+    --mark: #8a6d00; --mark-cur: #e08a1e; --mark-cur-ink: #000;
+    --float: 0 3px 28px rgba(0,0,0,.7);
+    --glow-accent: 0 2px 4px rgba(0,0,0,.5), 0 5px 16px rgba(111,191,169,.35);
+    --glow-danger: 0 2px 4px rgba(0,0,0,.5), 0 5px 16px rgba(255,69,58,.35);
+    --rim-color: rgba(255,255,255,.4);
+    color-scheme: dark;
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; background: var(--bg); color: var(--ink); }
@@ -55,29 +71,42 @@
   h2 { font-size: 20px; margin: 28px 0 8px; }
   a { color: var(--accent); }
   button, input, textarea { font: inherit; color: inherit; }
+  /* Schwebende Schaltfläche: fast weiße Fläche, weiße Lichtkante (Haarlinie), weicher Schatten, Kapselform */
   button {
-    border: 1px solid var(--line); background: var(--card); border-radius: 10px;
-    padding: 8px 12px; cursor: pointer; min-height: 44px;
+    border: .5px solid var(--btn-rim); background: var(--btn); border-radius: 22px; box-shadow: var(--float);
+    padding: 8px 14px; cursor: pointer; min-height: 44px;
   }
   button:disabled, button[aria-disabled="true"] { opacity: .4; cursor: default; }
   button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
   .ic { width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
   .ic.red { color: var(--danger); }
   button.primary .ic.red { color: inherit; }
+  /* Komponente Suchfeld: schwebende Kapsel mit Lupe, Trefferanzeige "3 von 57" und x; daneben Treffer-Navigation */
   .searchbox { position: relative; display: inline-flex; align-items: center; flex: 0 1 200px; }
-  .searchbox .ic { position: absolute; left: 10px; color: var(--muted); pointer-events: none; }
-  .bar .searchbox input[type=search] { width: 100%; padding-left: 36px; }
-  button.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
-  button.link { border: none; background: none; color: var(--accent); padding: 6px 8px; }
-  button.danger { color: var(--danger); border-color: var(--danger); }
-  button.primary.danger { background: var(--danger); color: #fff; }
-  button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  .searchbox.active { flex-basis: 300px; }
+  .searchbox > .ic { position: absolute; left: 12px; color: var(--muted); pointer-events: none; }
+  .searchbox input[type=search] { width: 100%; height: 44px; border-radius: 22px; padding: 0 14px 0 38px;
+    background: var(--btn); border: .5px solid var(--btn-rim); box-shadow: var(--float); -webkit-appearance: none; appearance: none; }
+  .searchbox input[type=search]::-webkit-search-cancel-button { display: none; }
+  .searchbox .smeta { position: absolute; right: 6px; display: flex; align-items: center; gap: 4px; }
+  .searchbox .scount { font-size: 15px; color: var(--muted); font-variant-numeric: tabular-nums; pointer-events: none; }
+  .searchbox .sclear { width: 32px; height: 32px; min-height: 0; min-width: 0; padding: 0; border: none; box-shadow: none; background: none; color: #a1a1a6; border-radius: 50%; }
+  .searchbox .sclear svg { width: 20px; height: 20px; }
+  .navgrp { display: inline-flex; height: 44px; border-radius: 22px; background: var(--btn); border: .5px solid var(--btn-rim); box-shadow: var(--float); }
+  .navgrp button { background: none; border: none; box-shadow: none; width: 48px; min-width: 48px; padding: 0; border-radius: 22px; }
+  .navgrp button:disabled { opacity: .3; }
+  /* Grün gefüllt = Hauptaktion; grün getönt mit Rand = eingeschaltet; rot gefüllt = Löschen (jeweils mit farbigem Schein) */
+  button.primary { background: var(--accent); color: var(--accent-ink); border: .5px solid var(--rim-color); box-shadow: var(--glow-accent); }
+  button.link { border: none; background: none; box-shadow: none; color: var(--accent); padding: 6px 8px; }
+  button.danger { background: var(--danger-fill); color: #fff; border: .5px solid var(--rim-color); box-shadow: var(--glow-danger); }
+  button.danger .ic.red { color: inherit; }
+  button[aria-pressed="true"] { background: var(--sel-bg); border: 2px solid var(--accent); color: var(--ink); box-shadow: var(--glow-accent); }
   input[type=text], input[type=search], input[type=date], input[type=number], textarea {
-    width: 100%; border: 1px solid var(--line); border-radius: 10px; background: var(--card);
+    width: 100%; border: .5px solid var(--field-line); border-radius: 10px; background: var(--card);
     padding: 10px 12px; min-height: 44px;
   }
   input:disabled { opacity: .6; }
-  input.invalid { border-color: var(--danger); }
+  input.invalid { border: 1px solid var(--danger); }
   .step.off .check, .step.off .hint { opacity: .5; }
   textarea { resize: vertical; min-height: 96px; }
   label { display: block; font-weight: 600; margin: 0 0 6px; }
@@ -87,11 +116,10 @@
   /* Fixierte Aktionsleiste */
   .bar {
     position: sticky; top: 0; z-index: 5; background: var(--bg);
-    display: flex; gap: 8px; flex-wrap: wrap; align-items: center;
-    padding: calc(env(safe-area-inset-top) + 10px) 0 10px; border-bottom: 1px solid var(--line);
+    display: flex; gap: 12px; flex-wrap: wrap; align-items: center;
+    padding: calc(env(safe-area-inset-top) + 10px) 0 12px; border-bottom: .5px solid var(--line);
   }
 
-  .bar .hits { font-size: 14px; }
 
   .meta { display: grid; grid-template-columns: max-content 1fr; gap: 2px 14px; margin: 4px 0 6px; }
   .meta dt { font-weight: 600; }
@@ -99,7 +127,7 @@
   .progress { font-size: 14px; color: var(--muted); margin: 0 0 12px; }
 
   /* Tabelle */
-  .table-wrap { background: var(--card); border: 1px solid var(--th-line); border-radius: 12px; overflow: clip; }
+  .table-wrap { background: var(--card); border-radius: 12px; overflow: clip; }
   table.days { border-collapse: separate; border-spacing: 0; width: 100%; }
   table.days th, table.days td { border-bottom: 1px solid var(--line); padding: 10px 12px; vertical-align: top; text-align: left; }
   table.days td + td { border-left: 1px solid var(--line); }
@@ -124,12 +152,11 @@
   .ln + .ln { margin-top: 2px; }
   .ln .m { flex: none; }
   .ln .t { min-width: 0; overflow-wrap: anywhere; }
-  mark { background: #ffe45c; color: inherit; border-radius: 3px; padding: 0 1px; }
-  :root[data-theme="dark"] mark { background: #8a6d00; }
-  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) mark { background: #8a6d00; } }
+  mark { background: var(--mark); color: inherit; border-radius: 3px; padding: 0 1px; }
+  mark.cur { background: var(--mark-cur); color: var(--mark-cur-ink); }
 
-  .fazit-box { display: inline-block; width: auto; max-width: 100%; text-align: left; padding: 12px 14px; min-height: 60px; border-radius: 12px; }
-  .trip-row { display: flex; gap: 8px; margin-top: 10px; }
+  .fazit-box { display: inline-block; width: auto; max-width: 100%; text-align: left; padding: 12px 14px; min-height: 60px; border-radius: 14px; background: var(--card); }
+  .trip-row { display: flex; gap: 12px; margin-top: 12px; }
   .trip-row .choice { margin: 0; flex: 1; }
   .trip-row { align-items: center; }
   .trip-row .edit { flex: none; }
@@ -146,7 +173,7 @@
   table.days.static td.quarter a, table.days.static a { text-decoration: none; }
   td a { text-decoration: none; }
 
-  .fab { position: fixed; right: max(16px, env(safe-area-inset-right)); bottom: calc(16px + env(safe-area-inset-bottom)); display: flex; flex-direction: column; gap: 8px; z-index: 4; }
+  .fab { position: fixed; right: max(16px, env(safe-area-inset-right)); bottom: calc(16px + env(safe-area-inset-bottom)); display: flex; flex-direction: column; gap: 12px; z-index: 4; }
   .fab button { padding: 0; font-size: 20px; }
   .fab[hidden] { display: none; }
 
@@ -154,35 +181,37 @@
   dialog {
     border: none; border-radius: 18px; padding: 0;
     width: fit-content; min-width: min(480px, 90vw); max-width: 90vw;
-    max-height: calc(100vh - 40px); background: var(--bg); color: var(--ink);
+    max-height: calc(100vh - 40px); background: var(--dlg-bg); color: var(--ink);
     box-shadow: 0 20px 60px rgba(0,0,0,.3);
   }
   dialog.wide { width: min(1100px, 100vw - 24px); max-width: none; }
   dialog::backdrop { background: rgba(0,0,0,.35); }
   dialog form { display: flex; flex-direction: column; max-height: calc(100vh - 40px); }
-  .dlg-head { display: flex; align-items: center; gap: 8px; padding: 12px 16px; border-bottom: 1px solid var(--line); }
+  .dlg-head { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: .5px solid var(--line); }
   .dlg-head h3 { margin: 0; flex: 1; text-align: center; font-size: 19px; min-height: 28px; line-height: 28px; }
   .dlg-body { padding: 8px 16px 20px; overflow-y: auto; flex: 1; }
-  .dlg-foot { display: flex; gap: 8px; align-items: center; padding: 12px 16px; border-top: 1px solid var(--line); }
-  .step { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px; margin-top: 12px; }
-  .step-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .dlg-foot { display: flex; gap: 12px; align-items: center; padding: 14px 16px 16px; border-top: .5px solid var(--line); }
+  .step { background: var(--dlg-card); border-radius: 14px; padding: 14px; margin-top: 12px; }
+  dialog input[type=text], dialog input[type=date], dialog textarea { background: var(--dlg-field); }
+  .step-head { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
   .step-head label { margin: 0; flex: 1; }
   .step-num {
     display: inline-flex; width: 26px; height: 26px; border-radius: 50%; background: var(--accent); color: var(--accent-ink);
     align-items: center; justify-content: center; font-size: 14px; margin-right: 8px;
   }
-  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 10px; }
   .chips button { font-size: 15px; padding: 6px 10px; min-height: 44px; }
-  .emoji-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+  .emoji-row { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 10px; }
   .emoji-row button {
     font-size: 24px; line-height: 1; padding: 0; width: 44px; min-width: 44px; height: 44px;
     -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; touch-action: manipulation;
   }
   .emoji-row button.reset { font-size: 20px; color: var(--muted); flex: none; }
   /* Reine Icon-, Wetter- und Smiley-Schaltflächen einheitlich quadratisch 44 × 44 px */
-  #theme, .fab button, .mic, .emoji-row button.reset, .trip-row .edit, .iconbtn { width: 44px; min-width: 44px; height: 44px; padding: 0; }
+  #theme, .fab button, .mic, .emoji-row button.reset, .trip-row .edit, .iconbtn { width: 44px; min-width: 44px; height: 44px; padding: 0; border-radius: 50%; }
+  .emoji-row button { border-radius: 50%; }
   .emoji-row.strip { flex-wrap: nowrap; align-items: center; }
-  .emoji-row.strip .scroll { flex: 1; min-width: 0; display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .emoji-row.strip .scroll { flex: 1; min-width: 0; display: flex; gap: 12px; overflow-x: auto; padding: 14px 10px 22px; margin: -14px -10px -22px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
   .emoji-row.strip .scroll::-webkit-scrollbar { display: none; }
   .emoji-row.strip .scroll button { flex: none; }
   .emoji-row.strip .scroll.fr { -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 48px), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 48px), transparent); }
@@ -201,7 +230,8 @@
   .choice.current { border-color: var(--accent); border-width: 2px; }
   /* Reiselogbücher: Titel, Reisezeitraum und Status in Spalten, die in allen Einträgen untereinander stehen */
   .trip-row .choice { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: start; column-gap: 16px; padding: 9px 16px; min-height: 44px; }
-  .trip-row .choice.current { padding: 8px 15px; }
+  .trip-row .choice { border-radius: 14px; }
+  .trip-row .choice.current { padding: 7.5px 14.5px; }
   .trip-row .choice strong { font-size: 18px; line-height: 24px; overflow-wrap: anywhere; }
   .trip-row .choice .per, .trip-row .choice .st { color: var(--muted); line-height: 24px; font-variant-numeric: tabular-nums; white-space: nowrap; }
   .trip-row .choice.two .per span { display: block; }
@@ -253,6 +283,8 @@ const ICONS = {
   'pencil': '<path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/>',
   'trash': '<path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>',
   'mic': '<path d="M12 19v3"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><rect x="9" y="2" width="6" height="13" rx="3"/>',
+  'chevron-up': '<path d="m18 15-6-6-6 6"/>',
+  'chevron-down': '<path d="m6 9 6 6 6-6"/>',
   'chevron-left': '<path d="m15 18-6-6 6-6"/>',
   'chevron-right': '<path d="m9 18 6-6-6-6"/>',
   'file-code': '<path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 12.5 8 15l2 2.5"/><path d="m14 12.5 2 2.5-2 2.5"/>',
@@ -263,8 +295,8 @@ const ic = (name, cls = '') => `<svg class="ic ${cls}" viewBox="0 0 24 24" aria-
 
 // Version und Erstellungszeitpunkt, werden bei jeder neuen Version angepasst.
 // Versionsnummer Hauptversion.Nebenversion.Korrektur (siehe CHANGELOG.md).
-const APP_VERSION = '1.0.0';
-const APP_BUILT = '06.10.2026 um 16:18';
+const APP_VERSION = '1.1.0';
+const APP_BUILT = '07.10.2026 um 13:46';
 
 const app = document.getElementById('app');
 const dlg = document.getElementById('dlg');
@@ -350,6 +382,7 @@ function save() {
 let db = load();
 let currentTripId = null;
 let searchTerm = '';
+let searchIndex = 0;
 let autosaveTimer = null;
 
 /* ---------- Datum ---------- */
@@ -734,8 +767,9 @@ function render({ scrollToGap = false } = {}) {
       <button id="toggleEmpty">${db.settings.hideEmpty ? ic('list-chevrons-up-down') + 'Leere Tage ein' : ic('fold-vertical') + 'Leere Tage aus'}</button>
       <button id="theme" title="${theme.label}" aria-label="${theme.label}">${ic(theme.icon)}</button>
       <button class="primary" id="output">${ic('share')}Ausgabe</button>
-      <span class="searchbox">${ic('search')}<input type="search" id="search" placeholder="Suchen" value="${esc(searchTerm)}" autocomplete="off"></span>
-      ${term ? `<span class="hits muted">${visible.length} Treffer</span>` : ''}
+      <span class="searchbox ${term ? 'active' : ''}">${ic('search')}<input type="search" id="search" placeholder="Suchen" value="${esc(searchTerm)}" autocomplete="off" enterkeyhint="search">${term ? `
+        <span class="smeta"><span class="scount" id="scount"></span><button type="button" class="sclear" id="sclear" aria-label="Suche löschen"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M15 9l-6 6M9 9l6 6" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></button></span>` : ''}</span>
+      ${term ? `<span class="navgrp"><button type="button" id="sprev" aria-label="Voriger Treffer">${ic('chevron-up')}</button><button type="button" id="snext" aria-label="Nächster Treffer">${ic('chevron-down')}</button></span>` : ''}
     </div>
     <h1>Reiselogbuch – ${esc(trip.title)}</h1>
     <dl class="meta">
@@ -793,13 +827,26 @@ function render({ scrollToGap = false } = {}) {
     render();
   };
   const search = app.querySelector('#search');
-  search.oninput = () => {
-    searchTerm = search.value;
-    render();
+  const refocus = () => {
     const s = app.querySelector('#search');
     s.focus();
     s.selectionStart = s.selectionEnd = s.value.length;
   };
+  search.oninput = () => {
+    searchTerm = search.value;
+    searchIndex = 0;
+    render();
+    refocus();
+    showHit(true);
+  };
+  // Eingabetaste springt zum nächsten Treffer (wie in Safari).
+  search.onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); stepHit(1); } };
+  if (term) {
+    app.querySelector('#sclear').onclick = () => { searchTerm = ''; searchIndex = 0; render(); refocus(); };
+    app.querySelector('#sprev').onclick = () => stepHit(-1);
+    app.querySelector('#snext').onclick = () => stepHit(1);
+    showHit(false);
+  }
   app.querySelectorAll('tbody tr').forEach(tr => tr.onclick = () => openDayDialog(trip, tr.dataset.day));
   app.querySelector('#fazit').onclick = () => openFazitDialog(trip);
   app.querySelector('#kosten').oninput = e => {
@@ -815,6 +862,30 @@ function render({ scrollToGap = false } = {}) {
   }
 }
 
+// Treffer-Navigation der Suche: jeder markierte Begriff in der Tabelle ist ein Treffer; der aktuelle ist hellorange.
+function showHit(scroll) {
+  const marks = [...app.querySelectorAll('table.days:not(.static) mark')];
+  const n = marks.length;
+  if (searchIndex >= n) searchIndex = Math.max(0, n - 1);
+  marks.forEach((m, i) => m.classList.toggle('cur', i === searchIndex));
+  const count = app.querySelector('#scount');
+  if (!count) return;
+  count.textContent = n ? `${searchIndex + 1} von ${n}` : '0';
+  const input = app.querySelector('#search');
+  input.style.paddingRight = (app.querySelector('.smeta').offsetWidth + 14) + 'px';
+  app.querySelector('#sprev').disabled = !n || searchIndex <= 0;
+  app.querySelector('#snext').disabled = !n || searchIndex >= n - 1;
+  if (scroll && n) marks[searchIndex].scrollIntoView({ block: 'center' });
+}
+
+function stepHit(dir) {
+  const n = app.querySelectorAll('table.days:not(.static) mark').length;
+  const next = searchIndex + dir;
+  if (next < 0 || next >= n) return;
+  searchIndex = next;
+  showHit(true);
+}
+
 // Ohne Reiselogbuch: leere Seite, darüber die Maske "Reiselogbücher" mit leerer Liste (nicht schließbar).
 function renderEmpty() {
   fab.hidden = true;
@@ -825,6 +896,7 @@ function renderEmpty() {
 function showTrip(id) {
   currentTripId = id;
   searchTerm = '';
+  searchIndex = 0;
   render({ scrollToGap: true });
 }
 
@@ -964,7 +1036,7 @@ function openTripsDialog() {
               <button type="button" class="edit" data-edit="${t.id}" aria-label="Reiselogbuch bearbeiten">${ic('pencil')}</button>
             </div>`;
         }).join('')}
-        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:24px">
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:24px">
           <button type="button" id="exportAll" ${trips.length ? '' : 'disabled'}>${ic('save')}Backup sichern</button>
           <button type="button" id="importAll">${ic('folder-open')}Backup laden</button>
           <span class="spacer"></span>
@@ -1561,7 +1633,7 @@ function openOutputDialog(trip) {
       <div class="dlg-head"><h3>Ausgabe</h3></div>
       <div class="dlg-body">
         <p class="muted">${count} erfasste${count === 1 ? 'r Tag' : ' Tage'} · Stand jetzt</p>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+        <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
           <button type="button" id="outPreview">${ic('eye')}Vorschau</button>
           <button type="button" id="outHtml">${ic('file-code')}HTML-Datei</button>
           <button type="button" id="outPdf">${ic('file-text')}PDF</button>

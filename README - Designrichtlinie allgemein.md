@@ -1,35 +1,22 @@
 # Designrichtlinie allgemein
 
-**Version 1.1.0** · Stand 06.10.2026
+**Version 2.0.0** · Stand 07.10.2026
 
 Allgemeine Gestaltungs- und Bedienregeln für alle iPad-Web-Apps von g811141a.
 Diese Datei liegt vorerst im Repo ReiseLogBuch und **wandert später ins Design-Repo**;
 ihre Versionsnummer wird dann zur Versionsnummer des Design-Repos.
 App-spezifische Regeln stehen in einer eigenen Datei je App
-(z. B. `README - Designrichtlinie Reiselogbuch.md`).
+(z. B. `README - Designrichtlinie Reiselogbuch.md`). Regeln zur Zusammenarbeit stehen in
+`README - Zusammenarbeit allgemein.md`.
 
 > **Hinweis für Claude:** Diese Regeln gelten verbindlich für jede Weiterentwicklung.
 > Bei jeder Design-Änderung wird diese Datei aktualisiert und ihre Versionsnummer erhöht
-> (siehe Abschnitt 13 und Versionsgeschichte).
+> (siehe Abschnitt 12 und Versionsgeschichte). Wiederkehrende Elemente sind in
+> Abschnitt 15 „Komponenten“ einmal definiert und werden überall genau so verwendet.
 
 ---
 
-## 1. Zusammenarbeit
-
-- Sprache: Deutsch.
-- Ablauf: Ideen sammeln → Rückfragen stellen („Frag nach“) → wenn alles geklärt ist, fragen
-  „Soll ich die neue Version X.Y.Z erstellen?“ (mit vorgeschlagener Versionsnummer) →
-  erst nach ausdrücklichem „Ja“ bauen.
-- Bei Gestaltungsfragen zuerst ein **Muster** (Screenshot) zeigen, bei Bedarf mit Varianten.
-- Nur das ändern, was besprochen wurde – keine ungefragten Änderungen.
-- Nach jeder Version: testen, Beschreibung (PROMPT.md), CHANGELOG.md und betroffene
-  Designrichtlinien aktualisieren, auf `main` pushen, Screenshots schicken, Änderungen auf
-  Deutsch zusammenfassen, an den Neustart der App erinnern.
-- Im Chat Schaltflächen mit ihren Lucide-Icon-Namen benennen (z. B. „pencil“, „trash“),
-  nicht mit Emojis.
-- Ein Repo pro App, Bereitstellung über GitHub Pages aus `main`/Hauptordner.
-
-## 2. Grundprinzipien
+## 1. Grundprinzipien
 
 - Zielgerät iPad (Safari, zum Home-Bildschirm hinzugefügt, PWA, offline nutzbar);
   eine Person nutzt die App, kein Login, kein Teilen.
@@ -41,62 +28,81 @@ App-spezifische Regeln stehen in einer eigenen Datei je App
 - Alle Aktionen sind echte Schaltflächen (kein reiner Text als Link).
 - Keine Systemfenster (alert/confirm mit „OK“/„Close“) – alle Meldungen und Abfragen in
   eigenen Fenstern mit deutschen Schaltflächen.
-- Bewusst verworfen: Schatten auf Schaltflächen; eigene Kennzeichnung von Pflichtfeldern.
+- **Apple-Look** (iPadOS): Hintergrund Hellgrau, Kästen weiß ohne Rand, schwebende Schaltflächen.
+- Bewusst verworfen: eigene Kennzeichnung von Pflichtfeldern; harte, schmale Schatten.
 
-## 3. Farben
+## 2. Farben
 
-CSS-Variablen auf `:root`; Dunkelmodus über `data-theme="dark"`.
+CSS-Variablen auf `:root`; Dunkelmodus über `data-theme="dark"`. Helligkeitsstufen wie bei
+Apple: Hintergrund → Kasten/Fenster → Schaltfläche (im Dunkelmodus Schwarz → Dunkelgrau →
+heller).
 
 | Variable | Hell | Dunkel | Verwendung |
 |---|---|---|---|
-| `--bg` | `#f6f3ee` | `#1b1a18` | Seitenhintergrund, Fenster, fixierte Leiste |
-| `--card` | `#ffffff` | `#252421` | Schaltflächen, Eingabefelder, Kästen, Tabelle |
-| `--ink` | `#22201c` | `#ece8e1` | Text |
-| `--muted` | `#8a847a` | `#9a9489` | dezente Texte, Hinweise |
-| `--line` | `#e2ddd4` | `#3a3833` | Rahmen, Trennlinien |
-| `--accent` | `#2f6f62` | `#6fbfa9` | Hauptaktion (grün), gewählte Schaltflächen, Links |
+| `--bg` | `#f2f2f7` | `#000000` | Seitenhintergrund, fixierte Leiste |
+| `--card` | `#ffffff` | `#1c1c1e` | Kästen, Tabelle, Eingabefelder (ohne Rand) |
+| `--dlg-bg` / `--dlg-card` / `--dlg-field` | `#f2f2f7` / `#ffffff` / `#ffffff` | `#1c1c1e` / `#2c2c2e` / `#1c1c1e` | Fenster, Kästen im Fenster, Felder im Fenster |
+| `--btn` | `#f9f9f9` | `#3a3a3c` | Fläche der Schaltflächen und Suchfelder |
+| `--btn-rim` | `#ffffff` | `rgba(255,255,255,.16)` | Lichtkante (Haarlinie 0,5 px) |
+| `--float` | `0 3px 28px rgba(0,0,0,.16)` | `0 3px 28px rgba(0,0,0,.7)` | Schatten „schwebend“ (Apple Mail gemessen) |
+| `--ink` | `#1c1c1e` | `#ffffff` | Text |
+| `--muted` | `#8a8a8e` | `#8e8e93` | dezente Texte, Hinweise |
+| `--line` | `#d1d1d6` | `#38383a` | Trennlinien (Haarlinie) |
+| `--field-line` | `#c7c7cc` | `#48484a` | Haarlinie um Eingabefelder |
+| `--accent` | `#2f6f62` | `#6fbfa9` | Hauptaktion, Auswahlrand, Links |
 | `--accent-ink` | `#ffffff` | `#10201c` | Text auf Akzentfarbe |
-| `--danger` | `#b3261e` | `#f2948c` | Löschen, Icon ban, Fehlermeldungen, roter Feldrahmen |
+| `--sel-bg` | `#d3e8e2` | `#24493f` | Fläche eingeschalteter Schaltflächen |
+| `--glow-accent` | `0 2px 4px rgba(0,0,0,.12), 0 5px 14px rgba(47,111,98,.40)` | `0 2px 4px rgba(0,0,0,.5), 0 5px 16px rgba(111,191,169,.35)` | Schatten grüner und gewählter Schaltflächen |
+| `--danger` | `#b3261e` | `#ff6961` | Fehlermeldungen, Icon ban, roter Feldrahmen |
+| `--danger-fill` | `#d70015` | `#ff453a` | Lösch-Schaltfläche (gefüllt) |
+| `--glow-danger` | `0 2px 4px rgba(0,0,0,.12), 0 5px 14px rgba(215,0,21,.35)` | `0 2px 4px rgba(0,0,0,.5), 0 5px 16px rgba(255,69,58,.35)` | Schatten der Lösch-Schaltfläche |
 | `--warn` | `#c07a12` | `#e2a64b` | Markierungen („fehlt“) |
 | `--focus` | `#fff1c2` | `#45391a` | markierte Zeile (gelb) |
-| `--th-bg` | `#d9d9d9` | `#3b3a37` | Tabellen-Kopfzeile |
-| `--th-line` | `#a5a5a5` | `#625f5a` | Ränder der Kopfzeile, äußere Tabellenumrandung |
-| `--zebra` | `#f5f5f5` | `#2e2d2a` | jede 2. sichtbare Tabellenzeile |
-| Suchtreffer | `#ffe45c` | `#8a6d00` | gelb hinterlegter Treffer |
+| `--th-bg` / `--th-line` | `#e5e5ea` / `#c7c7cc` | `#2c2c2e` / `#48484a` | Tabellen-Kopfzeile und ihre Ränder |
+| `--zebra` | `#f7f7f9` | `#161618` | jede 2. sichtbare Tabellenzeile |
+| `--mark` / `--mark-cur` | `#ffe45c` / `#ffc46b` | `#8a6d00` / `#e08a1e` (schwarze Schrift) | Suchtreffer / Treffer im Fokus |
 
 - Darstellung Hell/Dunkel in **2 Stufen** (kein „Automatisch“); die Schaltfläche zeigt die
   *Aktion* (moon bei Hell, sun bei Dunkel), nur Icon; die Einstellung wird gemerkt. Beim
   ersten Start gilt die Systemeinstellung.
 
-## 4. Schrift und Abstände
+## 3. Schrift und Abstände
 
 - Systemschrift `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`,
   17 px, Zeilenhöhe 1,45.
 - h1 28 px, h2 20 px, Fenstertitel 19 px zentriert; Hinweise 14 px in `--muted`.
 - Seitenrand 16 px bzw. iPad-Safe-Area.
-- Radien: Schaltflächen/Felder 10 px, Tabelle 12 px, Kästen (Schritte) 14 px, Fenster 18 px.
+- **Abstand zwischen Schaltflächen 12 px** (wie bei Apple), in Leisten, Reihen und Listen.
+- Radien: Schaltflächen und Suchfelder Kapsel (22 px), Icon-Schaltflächen rund,
+  Listeneinträge und Kästen 14 px, Eingabefelder 10 px, Tabelle 12 px, Fenster 18 px.
+- Trennlinien und Feldränder als Haarlinie (0,5 px); Kästen und Tabelle ohne Rand.
 - Checkbox-Texte in normaler Schrift, Checkboxen 24 × 24 px in Akzentfarbe.
 
-## 5. Schaltflächen
+## 4. Schaltflächen
 
 - **Alle Schaltflächen 44 px hoch** (auch lange Texte, Vorschläge, Auswahl-Chips).
   Ausnahmen: mehrzeilige Listeneinträge (z. B. umbrochene Titel) und Textkästen.
 - **Reine Icon-, Wetter- und Smiley-Schaltflächen quadratisch 44 × 44 px**;
   Emoji 24 px, Icon 20 px.
-- Text-Schaltflächen: Icon links, dann Text (Abstand 6 px); Hintergrund `--card`,
-  1 px Rahmen `--line`, **ohne Schatten**.
-- Hauptaktion („Fertig“, „Neu … anlegen“, „Teilen“): grün (`--accent`), weißer Text/Icon.
-- „Abbrechen“: normaler Text, nur das Icon ban ist rot.
-- „Löschen“: roter Text, rotes Icon trash, roter Rahmen (nicht gefüllt); separat von den
-  übrigen Aktionen.
-- Gewählte Umschalt-Schaltflächen: Akzentfarbe gefüllt (`aria-pressed="true"`).
+- **Alle Schaltflächen und Suchfelder schweben** (Komponente „Schwebende Schaltfläche“):
+  Fläche `--btn`, Lichtkante `--btn-rim` (0,5 px), Schatten `--float`, Kapselform;
+  Icon-Schaltflächen rund. Text-Schaltflächen: Icon links, dann Text (Abstand 6 px).
+- **Farben von Schaltflächen** – jede Farbe hat genau eine Bedeutung:
+  - **Grün gefüllt = Hauptaktion** (je Fenster bzw. Leiste höchstens eine: Fertig, Ausgabe,
+    Neu … anlegen, Teilen): `--accent`, weiße Schrift, Lichtkante, Schatten `--glow-accent`.
+  - **Grün getönt mit Rand = eingeschaltet** (Umschalt-Schaltflächen wie Wetter,
+    Reisemittel, Mikrofon während der Aufnahme): Fläche `--sel-bg`, 2 px Rand `--accent`,
+    Schrift normal, Schatten `--glow-accent` (`aria-pressed="true"`).
+  - **Rot gefüllt = Löschen** (endgültige Löschaktionen): `--danger-fill`, weiße Schrift
+    und Icon trash, Schatten `--glow-danger`; separat von den übrigen Aktionen.
+  - Alle übrigen Schaltflächen neutral (schwebend).
+- „Abbrechen“: neutral, nur das Icon ban ist rot.
 - Gesperrte Schaltflächen: ausgegraut (Deckkraft 40 %).
 - Keine Hover-Farbe auf dem iPad – Hover nur in `@media (hover: hover)`.
-- Schwebende Schaltflächen unten rechts (z. B. nach oben / ans Ende): gleiches Aussehen
-  wie andere Icon-Schaltflächen, ohne Schatten; ausgeblendet, wenn es nichts zu
-  scrollen gibt.
+- Schaltflächen unten rechts (z. B. nach oben / ans Ende): runde schwebende
+  Icon-Schaltflächen; ausgeblendet, wenn es nichts zu scrollen gibt.
 
-## 6. Icons
+## 5. Icons
 
 - Schaltflächen-Icons aus **Lucide** (Liniengrafiken, Strichstärke 2, `currentColor`),
   als SVG eingebettet (offline). SF Symbols dürfen im Web nicht verwendet werden.
@@ -106,9 +112,10 @@ CSS-Variablen auf `:root`; Dunkelmodus über `data-theme="dark"`.
 | Aktion | Lucide-Icon | Darstellung |
 |---|---|---|
 | Fertig | `check` | weiß auf Grün |
+| Voriger / nächster Treffer | `chevron-up` / `chevron-down` | nur Icon, als Kapsel-Gruppe |
 | Abbrechen | `ban` | Icon rot, Text normal |
 | Schließen | `x` | Icon + Text |
-| Löschen | `trash` | rot |
+| Löschen | `trash` | weiß auf Rot |
 | Bearbeiten | `pencil` | nur Icon |
 | Neu anlegen | `plus` | grün, Icon + Text |
 | Backup sichern / laden | `save` / `folder-open` | Icon + Text |
@@ -123,7 +130,7 @@ CSS-Variablen auf `:root`; Dunkelmodus über `data-theme="dark"`.
 | Zurücksetzen | `rotate-ccw` | nur Icon, gedämpft |
 | HTML-Datei / PDF | `file-code` / `file-text` | Icon + Text |
 
-## 7. Begriffe und Fußleiste
+## 6. Begriffe und Fußleiste
 
 - „Fertig“ = Eingaben übernehmen und schließen.
 - „Abbrechen“ = ohne Änderung schließen bzw. Vorgang nicht ausführen.
@@ -136,12 +143,13 @@ CSS-Variablen auf `:root`; Dunkelmodus über `data-theme="dark"`.
   „Ersetzen“.
 - Systembeschriftungen (z. B. „Reset“ der iPad-Datumsauswahl) bleiben.
 
-## 8. Fenster (Dialoge)
+## 7. Fenster (Dialoge)
 
 - Aufbau: Kopf (Titel zentriert) · Inhalt (scrollbar) · Fußleiste.
 - Breite passt sich dem Inhalt an: höchstens 90 % der Bildschirmbreite, Mindestbreite
   480 px. Erfassungs- und Vorschaufenster fast bildschirmbreit (bis 1100 px).
-- Hintergrund `--bg`, Radius 18 px, Schatten, abgedunkelter Hintergrund dahinter.
+- Hintergrund `--dlg-bg`, Kästen darin `--dlg-card`, Radius 18 px, Schatten, abgedunkelter
+  Hintergrund dahinter.
 - Hinweise und Versionsinfo hinter einem Info-Icon, per Antippen ein-/ausblenden.
 - Versionsinfo in der zentralen Liste der App unten links:
   „<App> · Version X.Y.Z · erstellt am TT.MM.JJJJ um hh:mm“.
@@ -152,7 +160,7 @@ CSS-Variablen auf `:root`; Dunkelmodus über `data-theme="dark"`.
   Liste lässt sich nicht schließen (auch nicht mit Escape).
 - **Erfassungsfenster** (Einträge erfassen): fast bildschirmbreit; Kopf
   Zurück (chevron-left) · Titel · Weiter (chevron-right) zum Blättern zwischen Einträgen;
-  Fußleiste Abbrechen (links) · Fertig (rechts); automatisches Speichern (Abschnitt 9).
+  Fußleiste Abbrechen (links) · Fertig (rechts); automatisches Speichern (Abschnitt 8).
 - **Vorschaufenster**: fast bildschirmbreit, Inhalt immer hell und genau wie die
   ausgegebene Datei; Kopf „Vorschau“ und darunter klein der Dateiname; Fußleiste
   Schließen (links) · PDF · Teilen (grün, rechts); nach Teilen bzw. PDF schließt die
@@ -160,10 +168,10 @@ CSS-Variablen auf `:root`; Dunkelmodus über `data-theme="dark"`.
 - Technisch: ein Dialog, dessen Inhalt ausgetauscht wird (nicht schließen und neu öffnen);
   ein zweiter Dialog nur für Meldungen und Abfragen.
 
-## 9. Eingaben, Pflichtfelder und Fehlermeldungen
+## 8. Eingaben, Pflichtfelder und Fehlermeldungen
 
 - Eingaben in nummerierten Schritten (grüne runde Nummer 26 px), jeder Schritt als
-  weißer Kasten; Nummern laufen fortlaufend über die sichtbaren Schritte.
+  Kasten ohne Rand; Nummern laufen fortlaufend über die sichtbaren Schritte.
 - Checkboxen eines Schritts rechts in dessen Kopfzeile; zusammengehörige Einstellungen in
   einem gemeinsamen Kasten mit Überschrift (z. B. „Konfiguration …“).
 - Eingabefelder schlicht; Formatierung erst in Anzeige und Ausgabe.
@@ -189,13 +197,13 @@ CSS-Variablen auf `:root`; Dunkelmodus über `data-theme="dark"`.
   Ausgangszustand wieder her.
 - Zahlenfelder rechtsbündig, Tausenderpunkt schon beim Tippen.
 
-## 10. Tabellen (App, HTML und PDF)
+## 9. Tabellen (App, HTML und PDF)
 
-- Kopfzeile grau (`--th-bg`), Ränder darin zwei Stufen dunkler (`--th-line`); im
-  Dunkelmodus hellere Ränder.
+- Kopfzeile grau (`--th-bg`) mit Rändern `--th-line`; die Tabelle selbst ohne äußeren Rand
+  (weiße Fläche auf grauem Hintergrund).
 - Jede 2. sichtbare Zeile heller (Zebra); gezählt werden nur sichtbare Zeilen; eine
   markierte Zeile bleibt gelb.
-- Trennlinien zwischen allen Spalten; äußere Umrandung in der Farbe der Kopfzeilen-Ränder.
+- Trennlinien zwischen allen Spalten.
 - Kopfzeile bleibt beim Scrollen unter der fixierten Leiste stehen.
 - Spaltenbreiten passen sich dem Inhalt an; kompakte Tabellen nur so breit wie nötig;
   Zahlenspalten rechtsbündig (Überschrift und Werte).
@@ -210,7 +218,7 @@ CSS-Variablen auf `:root`; Dunkelmodus über `data-theme="dark"`.
   daneben pencil (44 × 44) zum Bearbeiten. Einzeilige Einträge 44 px hoch.
 - Statistiken bleiben schlichte Listen.
 
-## 11. Ausgabe, Teilen und Meldungen
+## 10. Ausgabe, Teilen und Meldungen
 
 - Ausgabe-Inhalt unter einer eigenen CSS-Klasse, damit er nicht in die App durchschlägt;
   immer hell (weiß, schwarzer Text), auch in der Vorschau.
@@ -232,7 +240,7 @@ CSS-Variablen auf `:root`; Dunkelmodus über `data-theme="dark"`.
 - Backup-Erinnerung nur, wenn das letzte Backup älter als 24 Stunden ist; nur ein
   abgeschlossenes Teilen-Menü zählt als Backup.
 
-## 12. Versionen und Aktualisierung
+## 11. Versionen und Aktualisierung
 
 - **Versionsnummer dreistufig Hauptversion.Nebenversion.Korrektur** (z. B. 1.2.1):
   - Hauptversion: grundlegende Änderung (Aufbau, Bedienkonzept, Datenstruktur).
@@ -246,7 +254,7 @@ CSS-Variablen auf `:root`; Dunkelmodus über `data-theme="dark"`.
   GitHub nachgefragt, neue Versionen sind nach einem Neustart sofort da; offline läuft
   die gespeicherte Version.
 
-## 13. Designrichtlinien pflegen
+## 12. Designrichtlinien pflegen
 
 - Diese Datei und die App-spezifischen Richtlinien werden **bei jeder Design-Änderung**
   aktualisiert, gemeinsam mit der App-Version.
@@ -256,14 +264,16 @@ CSS-Variablen auf `:root`; Dunkelmodus über `data-theme="dark"`.
 - App-Richtlinien verweisen eingangs auf diese Datei und enthalten **keine
   Wiederholungen**, nur **Abweichungen** (bewusst anders als hier) und **Ausprägungen**
   (konkrete Ausgestaltung einer allgemeinen Regel für die App), jeweils so gekennzeichnet.
-- Eigene dreistufige Versionsnummer je Datei (Bedeutung wie in Abschnitt 12, bezogen auf
+- Eigene dreistufige Versionsnummer je Datei (Bedeutung wie in Abschnitt 11, bezogen auf
   Regeln: neue Regel = Nebenversion, Präzisierung = Korrektur, grundlegend neue
   Gestaltung = Hauptversion).
+- Wiederkehrende Elemente werden als **Komponente** (Abschnitt 15) definiert; Apps und
+  App-Richtlinien verweisen nur noch auf den Namen der Komponente.
 - In PROMPT.md und CHANGELOG.md jeder App steht, welchen Richtlinien-Versionen sie folgt,
   z. B. „Reiselogbuch 1.0.0 · Designrichtlinie allgemein 1.0.0 · Designrichtlinie
   Reiselogbuch 1.0.0“.
 
-## 14. iPad-Erfahrungen (technisch)
+## 13. iPad-Erfahrungen (technisch)
 
 - Safe-Area beachten (`env(safe-area-inset-*)`, `viewport-fit=cover`).
 - Speichern über `navigator.share` mit Dateien; Download-Links funktionieren in der
@@ -275,11 +285,77 @@ CSS-Variablen auf `:root`; Dunkelmodus über `data-theme="dark"`.
 - Emojis mit und ohne Variantenzeichen (z. B. ☹️/☹) als gleich behandeln.
 - Nach Updates die App einmal ganz schließen und neu öffnen.
 
-## 15. Geplant: Design-Repo
+## 14. Geplant: Design-Repo
 
 - Gemeinsames `design.css` (Farben, Schaltflächen, Fenster, Tabellen), `ui.js`
   (Meldungen, Abfragen, Icons, Teilen/Speichern), diese Richtlinie, eine Vorlage für neue
   Apps und eine Startseite g811141a.github.io mit allen Apps.
+
+## 15. Komponenten
+
+Jede Komponente ist hier einmal beschrieben (Zweck · Aufbau · Maße · Aussehen · Zustände ·
+Verhalten · technischer Name). Im Design-Repo wird jede Komponente später einmal
+programmiert (`design.css`, `ui.js`) und von allen Apps übernommen.
+
+### 15.1 Schwebende Schaltfläche
+- **Zweck:** jede Aktion. **Technisch:** `button` (Hauptaktion `.primary`, Löschen
+  `.danger`, eingeschaltet `aria-pressed="true"`, nur Icon `.iconbtn`).
+- **Aufbau:** Icon (20 px) links, dann Text; oder nur Icon bzw. Emoji (24 px).
+- **Maße:** 44 px hoch, Kapsel (Radius 22 px); Icon-/Emoji-Schaltflächen 44 × 44 rund;
+  Abstand zu Nachbarn 12 px.
+- **Aussehen/Zustände:** neutral `--btn` + Lichtkante + `--float`; Hauptaktion,
+  eingeschaltet und Löschen siehe Abschnitt 4; gesperrt 40 % Deckkraft.
+
+### 15.2 Suchfeld
+- **Zweck:** Suchen in der aktuellen Ansicht. **Technisch:** `.searchbox`, `.navgrp`.
+- **Aufbau:** Lupe (search) · Eingabe „Suchen“ · Trefferanzeige · x-Schaltfläche;
+  rechts daneben Kapsel-Gruppe chevron-up / chevron-down.
+- **Maße:** 44 px hoch, Kapsel; leer 200 px breit, mit Eingabe 300 px; Abstand 12 px.
+- **Aussehen:** wie die schwebende Schaltfläche; Lupe, Trefferanzeige grau; x als grauer
+  Kreis mit weißem Kreuz.
+- **Zustände:**
+  - leer: nur Lupe und Platzhalter, keine Navigation
+  - mit Treffern: rechtsbündig „3 von 57“ (ohne das Wort „Treffer“), x; Navigation
+    sichtbar; am ersten Treffer chevron-up ausgegraut, am letzten chevron-down
+  - ohne Treffer: rechtsbündig „0“, beide Pfeile ausgegraut
+- **Verhalten:** Suche beim Tippen; jede Markierung ist ein Treffer; der erste wird
+  angesprungen. Treffer gelb (`--mark`), Treffer im Fokus hellorange (`--mark-cur`) und in
+  die Bildmitte gescrollt. Pfeile und Eingabetaste springen weiter, ohne Umlauf vom letzten
+  zum ersten. x löscht die Eingabe, der Cursor bleibt im Feld. Gefiltert wird auf Einträge
+  mit Treffern.
+
+### 15.3 Leiste
+- **Obere Leiste:** fixiert, Hintergrund `--bg`, unten Haarlinie; Schaltflächen
+  schwebend, Abstand 12 px; links die zentrale Liste, rechts Funktionen, Hauptaktion und
+  Suchfeld.
+- **Fußleiste in Fenstern:** Haarlinie oben; Regeln für Abbrechen/Fertig/Schließen
+  siehe Abschnitt 6.
+
+### 15.4 Fenster
+- Typen: **Liste** (z. B. Reiselogbücher), **Erfassung**, **Vorschau**, **Meldung/Abfrage**
+  – Aufbau und Verhalten siehe Abschnitt 7.
+
+### 15.5 Kasten (Schritt)
+- Fläche `--dlg-card` bzw. `--card`, Radius 14 px, ohne Rand, Innenabstand 14 px;
+  Kopfzeile mit grüner Schritt-Nummer, Titel, rechts Checkboxen und Icon-Schaltflächen.
+
+### 15.6 Eingabefeld mit Fehlermeldung
+- Fläche weiß bzw. `--dlg-field`, Haarlinie `--field-line`, Radius 10 px, 44 px hoch
+  (Textfelder mehrzeilig); Fehler: 1 px roter Rand und rote Meldung darunter
+  (Abschnitt 8).
+
+### 15.7 Smiley-Leiste
+- Siehe Abschnitt 8; Smileys als runde schwebende 44 × 44-Schaltflächen, Abstand 12 px.
+
+### 15.8 Liste in Spalten
+- Siehe Abschnitt 9; Einträge als schwebende Schaltflächen mit Radius 14 px, aktueller
+  Eintrag mit 2 px grünem Rand.
+
+### 15.9 Tabelle
+- Siehe Abschnitt 9.
+
+### 15.10 Info-Icon mit Hinweis
+- Runde Icon-Schaltfläche `info`; ein Tippen blendet einen grauen Hinweis ein bzw. aus.
 
 ---
 
@@ -287,5 +363,6 @@ CSS-Variablen auf `:root`; Dunkelmodus über `data-theme="dark"`.
 
 | Version | Datum | Art | Inhalt |
 |---|---|---|---|
+| 2.0.0 | 07.10.2026 | Haupt | Apple-Look: neue Farben (Hellgrau, Weiß, Apple-Dunkel), schwebende Schaltflächen und Suchfelder, Haarlinien, Abstände 12 px; Farbbedeutungen Grün/Auswahl/Rot; neuer Abschnitt „Komponenten“ (u. a. Suchfeld mit Treffer-Navigation); Zusammenarbeit in eigene Datei ausgelagert |
 | 1.1.0 | 06.10.2026 | Neben | Neu: Regel „allgemein oder App?“ klären, App-Richtlinien nur mit Abweichungen/Ausprägungen; aus der Reiselogbuch-Richtlinie übernommen: Smiley-Leisten, Erfassungsfenster, Vorschaufenster, Liste in Spalten, Ausgabe-Design, Dateinamen-Muster |
 | 1.0.0 | 06.10.2026 | erste Fassung | Zusammenfassung aller bisher vereinbarten allgemeinen Regeln (Stand Reiselogbuch 1.0.0) |

@@ -1,8 +1,9 @@
-# Reiselogbuch – Prompt (Stand 06.10.2026, Version 1.0.0)
+# Reiselogbuch – Prompt (Stand 07.10.2026, Version 1.1.0)
 
-Reiselogbuch 1.0.0 · Designrichtlinie allgemein 1.1.0 · Designrichtlinie Reiselogbuch 1.0.1
+Reiselogbuch 1.1.0 · Designrichtlinie allgemein 2.0.0 · Designrichtlinie Reiselogbuch 1.1.0 · Zusammenarbeit allgemein 1.0.0
 (Gestaltungsregeln: `README - Designrichtlinie allgemein.md` und
-`README - Designrichtlinie Reiselogbuch.md`; bei jeder Design-Änderung mit aktualisieren.)
+`README - Designrichtlinie Reiselogbuch.md`; Zusammenarbeit: `README - Zusammenarbeit
+allgemein.md`; Einstieg für Claude: `CLAUDE.md`. Bei jeder Design-Änderung mit aktualisieren.)
 
 ```text
 Baue mir ein einfaches Reiselogbuch als Web-App für das iPad.
@@ -178,8 +179,17 @@ HAUPTANSICHT (TABELLE)
   wird gemerkt.
 - Dezente Fortschrittsanzeige, z. B. "Tag 42 von 80 · 38 erfasst".
 - Vergangene Tage ohne Eintrag werden dezent markiert.
-- Suche über die Einträge (Programm, Kommentar, Quartier), nur innerhalb
-  der aktuellen Reise. Treffer werden im Text gelb hinterlegt.
+- Suche über die Einträge (Programm und sichtbare Spalten), nur innerhalb
+  der aktuellen Reise. Treffer werden im Text gelb hinterlegt. Suchfeld als
+  schwebende Kapsel: bei Eingabe breiter, rechtsbündig „3 von 57“ (bzw. „0“)
+  und x zum Löschen; rechts daneben chevron-up / chevron-down zum vorigen bzw.
+  nächsten Treffer (am Anfang/Ende ausgegraut, kein Umlauf). Der Treffer im
+  Fokus ist hellorange und wird in die Bildmitte gescrollt; die Eingabetaste
+  springt weiter.
+- Aussehen im Apple-Look (siehe Designrichtlinie allgemein 2.0.0): Hintergrund
+  Hellgrau, Kästen weiß ohne Rand, schwebende Schaltflächen mit 12 px Abstand;
+  Grün gefüllt = Hauptaktion, grün getönt mit Rand = eingeschaltet, rot gefüllt
+  = Löschen.
 - Tabellendesign (gilt für alle Tabellen in App, HTML und PDF):
   - Kopfzeile leicht grau hinterlegt (#d9d9d9), Zellenränder darin zwei
     Stufen dunkler (#a5a5a5); im Dunkelmodus Kopfzeile #3b3a37 mit

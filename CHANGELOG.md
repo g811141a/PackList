@@ -12,6 +12,19 @@ Versionsnummer **Hauptversion.Nebenversion.Korrektur** (z. B. 1.2.1):
 Steigt eine Stufe, beginnen die Stufen dahinter wieder bei 0.
 Die aktuelle Version steht in der App unter „Reiselogbücher“ → Info-Icon.
 
+## 1.1.0 – 07.10.2026 (Nebenversion)
+
+Reiselogbuch 1.1.0 · Designrichtlinie allgemein 2.0.0 · Designrichtlinie Reiselogbuch 1.1.0 · Zusammenarbeit allgemein 1.0.0
+
+- Apple-Look: Hintergrund Hellgrau (dunkel: Schwarz), Kästen und Tabelle weiß ohne Rand,
+  Haarlinien, schwebende Schaltflächen (Lichtkante, weicher Schatten, Kapselform), Abstände
+  12 px.
+- Farbbedeutungen: Grün gefüllt = Hauptaktion, grün getönt mit Rand = eingeschaltet
+  (Wetter, Reisemittel, Mikrofon), rot gefüllt = Löschen.
+- Suchfeld schwebend mit Trefferanzeige „3 von 57“, x zum Löschen und Navigation zum
+  vorigen/nächsten Treffer; Treffer im Fokus hellorange.
+- Neue Dateien: `README - Zusammenarbeit allgemein.md`, `CLAUDE.md`.
+
 ## 1.0.0 – 06.10.2026 (erste fertige Fassung)
 
 Reiselogbuch 1.0.0 · Designrichtlinie allgemein 1.1.0 · Designrichtlinie Reiselogbuch 1.0.1

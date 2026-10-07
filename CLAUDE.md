@@ -1,0 +1,36 @@
+# Reiselogbuch – Hinweise für Claude
+
+**Version 1.0.0** · Stand 07.10.2026
+
+## Zuerst lesen
+
+Lies zu Beginn jeder Sitzung diese Dateien und halte dich daran:
+
+1. `README - Zusammenarbeit allgemein.md` – wie wir zusammenarbeiten (Antwortformat,
+   Ablauf, Versionen)
+2. `README - Designrichtlinie allgemein.md` – allgemeine Gestaltung und Komponenten
+3. `README - Designrichtlinie Reiselogbuch.md` – Reiselogbuch-spezifische Gestaltung
+4. `PROMPT.md` – vollständige Funktionsbeschreibung der App
+5. `CHANGELOG.md` – Versionsgeschichte (aktuelle Versionen stehen oben)
+
+## App-spezifisch
+
+- App: Reiselogbuch, iPad-Web-App (PWA), eine Datei `index.html` plus `sw.js`,
+  `manifest.json`, Icons.
+- Repo: `g811141a/ReiseLogBuch`, Branch `main`, GitHub Pages:
+  https://g811141a.github.io/ReiseLogBuch/
+- Bei jeder Version in `index.html` `APP_VERSION` und `APP_BUILT` (Zeitpunkt in
+  Europe/Berlin, „TT.MM.JJJJ um hh:mm“) und in `sw.js` den Cache-Namen
+  (`reiselogbuch-X.Y.Z`) anpassen.
+- Daten liegen im localStorage unter `reiselogbuch.v1`; Änderungen am Datenmodell immer
+  mit Übernahme alter Daten (`normalize`).
+- Ausgabe (HTML/PDF) hat eine eigene, immer helle Gestaltung (`.rt`) und ist vom
+  Apple-Look der App unabhängig.
+
+---
+
+## Versionsgeschichte
+
+| Version | Datum | Inhalt |
+|---|---|---|
+| 1.0.0 | 07.10.2026 | erste Fassung |

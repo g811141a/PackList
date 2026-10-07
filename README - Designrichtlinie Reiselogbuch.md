@@ -1,8 +1,8 @@
 # Designrichtlinie Reiselogbuch
 
-**Version 1.0.1** · Stand 06.10.2026
+**Version 1.1.0** · Stand 07.10.2026
 
-> **Es gilt die `README - Designrichtlinie allgemein.md` (Version 1.1.0).**
+> **Es gilt die `README - Designrichtlinie allgemein.md` (Version 2.0.0).**
 > Hier stehen nur **Abweichungen** (bewusst anders als dort) und **Ausprägungen**
 > (konkrete Ausgestaltung einer allgemeinen Regel für das Reiselogbuch).
 > Die vollständige Funktionsbeschreibung steht in `PROMPT.md`.
@@ -42,8 +42,9 @@ Spaltenköpfe 🙂☹️😉 (Wie war was?), 🍽️🍷☕️ (Essen und Trinke
 
 ## 3. Hauptansicht — Ausprägung
 
-- Fixierte Leiste: Reiselogbücher · (Abstand) · Leere Tage · Dunkel/Hell ·
-  Ausgabe (grün) · Suche.
+- Obere Leiste (Komponente Leiste): Reiselogbücher · (Abstand) · Leere Tage · Dunkel/Hell ·
+  Ausgabe (Hauptaktion, grün) · Suchfeld (Komponente) mit Treffer-Navigation. Die Suche
+  durchsucht Programm und die sichtbaren Spalten der Tagestabelle.
 - Darunter: Überschrift, Reiseteilnehmer, Reisezeitraum, Reisemittel und
   Fortschrittsanzeige („Tag 42 von 80 · 38 erfasst“).
 - Tagestabelle: Tag · Programm · sichtbare konfigurierte Spalten. Die erste Lücke ist
@@ -55,6 +56,8 @@ Spaltenköpfe 🙂☹️😉 (Wie war was?), 🍽️🍷☕️ (Essen und Trinke
 
 - Kopf: Vortag · Wochentag mit vollem Datum („Sonntag, 04.10.2026“) · Folgetag.
 - Schritte je nach sichtbaren Spalten (2 bis 5).
+- Eingeschaltet (grün getönt mit Rand): gewählte Wetter-Symbole und das Mikrofon während
+  der Aufnahme (pulsiert zusätzlich).
 - Programm: Vorschläge als Chips zum Antippen („Weiterfahrt nach …“, „Rundgang durch …“,
   „Besichtigung …“, „Freetour …“); „…“ ist nur Platzhalter und wird nicht übernommen.
 - Smiley-Leisten bei „Wie war was?“, „Essen und Trinken“ (eigener Satz:
@@ -73,6 +76,8 @@ Spaltenköpfe 🙂☹️😉 (Wie war was?), 🍽️🍷☕️ (Essen und Trinke
 
 ## 6. Reiselogbuch anlegen / bearbeiten — Ausprägung
 
+- Gewählte Reisemittel: eingeschaltet (grün getönt mit Rand); „Reiselogbuch löschen“:
+  Löschen (rot gefüllt).
 - Kästen: Reisetitel · Reiseteilnehmer · Reisezeitraum (Von/Bis) · Reisemittel (Chips) ·
   Konfiguration Tabellenspalten · Quartierliste in der Ausgabe · (beim Bearbeiten)
   Reiselogbuch löschen.
@@ -106,5 +111,6 @@ Spaltenköpfe 🙂☹️😉 (Wie war was?), 🍽️🍷☕️ (Essen und Trinke
 
 | Version | Datum | Art | Inhalt |
 |---|---|---|---|
+| 1.1.0 | 07.10.2026 | Neben | Angepasst an allgemein 2.0.0: Suchfeld mit Treffer-Navigation in der oberen Leiste, eingeschaltete Wetter/Reisemittel/Mikrofon, Löschen rot gefüllt |
 | 1.0.1 | 06.10.2026 | Korrektur | Bereinigt: Verweis auf „allgemein 1.1.0“, keine Wiederholungen, Punkte als Abweichung/Ausprägung gekennzeichnet; allgemeine Regeln in die allgemeine Richtlinie verschoben |
 | 1.0.0 | 06.10.2026 | erste Fassung | Zusammenfassung aller Reiselogbuch-spezifischen Gestaltungsregeln (Stand Reiselogbuch 1.0.0) |

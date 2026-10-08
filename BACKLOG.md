@@ -45,6 +45,7 @@ Status: **vereinbart** (entschieden, wartet auf „Ja“ zum Bauen) · **offen**
 | Nr. | Prio | Thema | Gilt | Status |
 |---|---|---|---|---|
 | T-01 | 2 | Langes Drücken auf ein Reiselogbuch in der Seitenleiste öffnet ein Kontextmenü: Öffnen (book-open) · Einstellungen (settings) · Reiselogbuch löschen (rot, Sprechblase); kein Wischen ([HIG – Context menus](https://developer.apple.com/design/human-interface-guidelines/context-menus)) | allgemein | offen |
+| T-02 | 2 | Responsive in drei Stufen: ab 1100 px wie jetzt (iPad quer) · 700–1100 px Seitenleiste darübergelegt (iPad hoch, Split View) · unter 700 px wie Apple auf dem iPhone: Startliste „Reiselogbücher“ als Seite mit „‹ Reiselogbücher“ zurück, Tage als Liste (je Tag ein Kasten), Fenster bildschirmfüllend, Abfragen von unten ([HIG – Layout](https://developer.apple.com/design/human-interface-guidelines/layout), [HIG – Action sheets](https://developer.apple.com/design/human-interface-guidelines/action-sheets)); Muster in Arbeit | allgemein | offen |
 
 ## 4. Später
 

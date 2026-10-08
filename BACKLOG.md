@@ -36,6 +36,7 @@ Status: **vereinbart** (entschieden, wartet auf „Ja“ zum Bauen) · **offen**
 | T-04 | – | Dauerhaften Speicher bei Safari anfordern (Daten werden nicht von selbst gelöscht), Anzeige im Menü der Seitenleiste – offen: übernehmen? Priorität (Vorschlag 1)? | allgemein | offen |
 | T-05 | 2 | Bestehende (alte) Reiselogbücher aufbereiten und importierbar machen: Dateien (Word/PDF/Excel/HTML/Fotos) auslesen, Unklarheiten nachfragen, Vorschau zeigen, Datei erstellen; Überschneidungen prüfen. Offen: Form der Unterlagen, Anzahl, Weg (a: in aktuelles Backup einfügen · b: neue Funktion „Reiselogbuch importieren“, die hinzufügt statt ersetzt) | Reiselogbuch | offen |
 | T-06 | 3 | Ausschreibungstexte (Reiseveranstalter) in Reiselogbücher umwandeln – für erledigte **und** geplante Reisen: Titel, Zeitraum, Reisemittel; je Tag das Programm („1. Tag“ → echtes Datum, Text wie in der Ausschreibung); Quartiere mit Ort, falls genannt; übrige Felder bleiben leer | Reiselogbuch | offen |
+| T-07 | 3 | Alle Kapseln technisch gleich bauen: auch Kopfzeilen-Kapsel [share \| search \| ellipsis], Seitenleisten-Kapsel und Treffer-Pfeile ⌃ ⌄ – Schaltflächen genau so hoch wie der Innenraum (44 px minus Rand), Markierung liegt immer innerhalb des Randes | allgemein | vereinbart |
 
 ## 3. Später
 

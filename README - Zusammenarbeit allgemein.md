@@ -1,6 +1,6 @@
 # Zusammenarbeit allgemein
 
-**Version 1.3.0** · Stand 08.10.2026
+**Version 1.4.0** · Stand 08.10.2026
 
 Regeln für die Zusammenarbeit mit Claude bei allen iPad-Web-Apps von g811141a.
 Diese Datei liegt vorerst im Repo ReiseLogBuch und **wandert später ins Design-Repo**.
@@ -41,8 +41,14 @@ App-spezifische Punkte stehen in der `CLAUDE.md` des jeweiligen App-Repos.
 
 ## 4. Backlog
 
-- Jedes App-Repo hat eine `BACKLOG.md` mit allen offenen Themen (Nummer, Thema, allgemein
-  oder App, Status: vereinbart · offen · prüfen · später) und einem Abschnitt „Erledigt“.
+- Jedes App-Repo hat eine `BACKLOG.md` mit allen offenen Themen (Nummer, **Priorität**, Thema,
+  allgemein oder App, Status: vereinbart · offen · prüfen · später) und einem Abschnitt
+  „Erledigt“.
+- **Priorität:** 1 hoch (als Nächstes) · 2 mittel · 3 niedrig. Gearbeitet wird immer an den
+  Themen mit der höchsten Priorität zuerst; Claude schlägt die nächsten Schritte danach vor.
+- **Neue Themen:** Claude schlägt Verbesserungen einzeln vor (mit „So macht es Apple“) und
+  fragt jeweils: „Ins Backlog übernehmen? Ja/Nein“ und „Mit welcher Priorität? a) 1 hoch ·
+  b) 2 mittel · c) 3 niedrig“ – mit eigener Empfehlung.
 - Neue Wünsche, offene Fragen und Prüfpunkte trägt Claude sofort ein; Erledigtes wandert mit
   Version und Datum nach „Erledigt“.
 - **Claude erinnert an die offenen Themen:** zu Beginn einer Sitzung (kurze Liste) und am Ende
@@ -97,6 +103,7 @@ App-spezifische Punkte stehen in der `CLAUDE.md` des jeweiligen App-Repos.
 
 | Version | Datum | Art | Inhalt |
 |---|---|---|---|
+| 1.4.0 | 08.10.2026 | Neben | Backlog mit Priorität; neue Themen einzeln vorschlagen und Übernahme samt Priorität erfragen |
 | 1.3.0 | 08.10.2026 | Neben | Neu: Backlog-Datei je App und Erinnerung an offene Themen |
 | 1.2.0 | 08.10.2026 | Neben | Neu: Apple-like entwickeln – bei jeder Anforderung recherchieren, wie Apple es löst, und Vorschläge/Empfehlungen machen |
 | 1.1.0 | 08.10.2026 | Neben | Muster zuerst nur hell und quer; Muster und Screenshots in Viererpaketen |

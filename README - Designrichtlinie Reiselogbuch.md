@@ -1,8 +1,8 @@
 # Designrichtlinie Reiselogbuch
 
-**Version 2.0.0** · Stand 08.10.2026
+**Version 2.1.0** · Stand 08.10.2026
 
-> **Es gilt die `README - Designrichtlinie allgemein.md` (Version 3.0.1).**
+> **Es gilt die `README - Designrichtlinie allgemein.md` (Version 3.1.0).**
 > Hier stehen nur **Abweichungen** (bewusst anders als dort) und **Ausprägungen**
 > (konkrete Ausgestaltung einer allgemeinen Regel für das Reiselogbuch).
 > Die vollständige Funktionsbeschreibung steht in `PROMPT.md`.
@@ -44,9 +44,9 @@ Spaltenköpfe 🙂☹️😉 (Wie war was?), 🍽️🍷☕️ (Essen und Trinke
 ## 3. Hauptansicht — Ausprägung
 
 - **Seitenleiste** (Komponente): Reiselogbücher, zuletzt beginnende Reise zuerst; je Eintrag
-  Titel · „TT.MM.JJJJ - TT.MM.JJJJ · läuft gerade / beendet / geplant“. Unten der
-  Backup-Hinweis „Heute noch kein Backup gesichert. Zuletzt gesichert am …“ mit
-  „Backup sichern“. Mehr-Menü: Backup sichern · Backup laden · Versionszeile.
+  Titel · „TT.MM.JJJJ - TT.MM.JJJJ · läuft gerade / beendet / geplant“. Unten (nur wenn
+  heute noch kein Backup erstellt wurde) „Letztes Backup erstellt am …“ mit „Backup
+  erstellen“. Mehr-Menü: Backup erstellen · Backup laden · Versionszeile.
 - **Kopfzeile** (Komponente): Titel der Reise; Kapsel [share | search | ellipsis].
   - share → Menü: Vorschau · HTML · PDF (jeweils mit grauem Hinweis), darunter
     „N erfasste Tage · Dateiname: …“.
@@ -57,8 +57,9 @@ Spaltenköpfe 🙂☹️😉 (Wie war was?), 🍽️🍷☕️ (Essen und Trinke
   Fortschrittsanzeige („Tag 42 von 80 · 38 erfasst“).
 - Tagestabelle: Tag · Programm · sichtbare konfigurierte Spalten. Die erste Lücke ist
   gelb markiert, vergangene leere Tage tragen „fehlt“ (Farbe `--warn`).
-- Darunter: Fazit (Kasten passt sich dem Inhalt an), Gesamtkosten (Zahlenfeld 96 px,
-  „€ … ,-“), Quartierliste (nur mit Spalte Quartier), Statistik.
+- Darunter: Fazit (Kasten passt sich dem Inhalt an), Gesamtkosten (Betragsfeld 150 px,
+  „[ 4.850,00 ] €“), Quartierliste (nur mit Spalte Quartier), Statistik (Reisetage · Quartiere ·
+  Nächte · Wetter · Smileys).
 
 ## 4. Tageserfassung — Ausprägung des Erfassungsfensters
 
@@ -118,6 +119,7 @@ Spaltenköpfe 🙂☹️😉 (Wie war was?), 🍽️🍷☕️ (Essen und Trinke
 
 | Version | Datum | Art | Inhalt |
 |---|---|---|---|
+| 2.1.0 | 08.10.2026 | Neben | Angepasst an allgemein 3.1.0: Backup-Texte („Backup erstellen“, „Letztes Backup erstellt am …“), Gesamtkosten „4.850,00 €“, Statistik mit Nächten |
 | 2.0.0 | 08.10.2026 | Haupt | Angepasst an allgemein 3.0.0: Seitenleiste Reiselogbücher mit Backup-Hinweis, Kopfzeile mit Kapsel [share \| search \| ellipsis], Teilen-Menü statt Fenster „Ausgabe“, Mehr-Menü (Filter, Einstellungen, Modus, Löschen), Sprechblasen, Fenster „Einstellungen“, Spaltennamen mit einfachen Anführungszeichen, Von/Bis beim Zeitraum |
 | 1.2.0 | 07.10.2026 | Neben | Hotel und Ort in einer Zeile; Farben auf Apple-Blau; Options-Kapseln und Schalter statt Checkboxen |
 | 1.1.0 | 07.10.2026 | Neben | Angepasst an allgemein 2.0.0: Suchfeld mit Treffer-Navigation in der oberen Leiste, eingeschaltete Wetter/Reisemittel/Mikrofon, Löschen rot gefüllt |

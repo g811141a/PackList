@@ -1,6 +1,6 @@
 # Designrichtlinie allgemein
 
-**Version 3.0.1** · Stand 08.10.2026
+**Version 3.1.0** · Stand 08.10.2026
 
 Allgemeine Gestaltungs- und Bedienregeln für alle iPad-Web-Apps von g811141a.
 Diese Datei liegt vorerst im Repo ReiseLogBuch und **wandert später ins Design-Repo**;
@@ -93,6 +93,7 @@ heller).
 - Trennlinien und Feldränder als Haarlinie (0,5 px); Kästen und Tabelle ohne Rand.
 - Keine klassischen Checkboxen: Ein/Aus-Einstellungen als **Schalter**, Optionen beim Erfassen als **Options-Kapsel** (Abschnitt 15).
 - **Text steht in Schaltflächen in der Höhe genau mittig zum Icon** (Zeilenhöhe 20 px wie das Icon).
+- **Tabellenüberschriften** 17 px halbfett (600), gleich groß wie der Text der Zellen (Apple-Textstil „Headline“).
 
 ## 4. Schaltflächen
 
@@ -117,7 +118,8 @@ heller).
     ändert sich beim Einschalten nicht.
   - **Blau getönt = gedrückt:** Die Schaltfläche, von der ein offenes Menü, eine Sprechblase
     oder ein Fenster kommt, ist so lange `--sel-bg` mit Haarlinie `--accent`, wie es offen ist –
-    man sieht, woher man kommt (Klasse `.on`).
+    man sieht, woher man kommt (Klasse `.on`). Das gilt auch für Folgeschritte (Teilen-Menü,
+  Dateiauswahl, Meldung danach): die Schaltfläche bleibt blau, bis alles abgeschlossen ist.
   - **Apple-Grün** nur für eingeschaltete **Schalter**.
   - **Rot gefüllt = Löschen/Verwerfen** (endgültige Aktionen, z. B. in Sprechblasen):
     `--danger-fill`, weiße Schrift und Icon, Schatten `--glow-danger`. In Menüs steht
@@ -220,8 +222,13 @@ heller).
 - Das Häkchen ist grau, bis etwas geändert wurde, dann blau. **Ein Tippen auf das Häkchen
   zeigt alle fehlenden Angaben** (falls etwas fehlt) und scrollt zur ersten.
 - **Textfelder wachsen mit dem Inhalt**; man muss nie innerhalb eines Feldes scrollen.
-- **Datumsfelder sind so breit wie das Datum** (mit kurzem Abstand zum Kalenderzeichen);
-  zwei zusammengehörige Daten mit grauer Beschriftung „Von“ · „Bis“ in einer Zeile.
+- **Datumsfelder sind so breit wie das Datum** und haben rechts ein eigenes Kalender-Icon
+  (Lucide `calendar`, auf allen Geräten gleich, kurzer Abstand zum Datum); zwei zusammengehörige
+  Daten mit grauer Beschriftung „Von“ · „Bis“ in einer Zeile.
+- **Beträge** wie bei Apple (Region Deutschland): immer zwei Nachkommastellen, Tausenderpunkt,
+  Währung **hinter** dem Betrag mit Leerzeichen – „4.850,00 €“. Im Eingabefeld steht das €
+  rechts neben dem Feld; fehlen beim Verlassen die Nachkommastellen, ergänzt die App „,00“.
+  **Betragsfelder sind immer rechtsbündig.**
 - **Smiley-Leisten** (Schnellauswahl über einem Textfeld): nur einzeilig, mit dem Finger
   nach links/rechts wischen, Verlauf am Rand als Hinweis auf weitere Smileys,
   Zurücksetzen (rotate-ccw) fest rechts daneben. Sortiert nach Häufigkeit (meistbenutzte
@@ -233,7 +240,7 @@ heller).
 - Diktieren über eine mic-Schaltfläche am Textfeld (sonst Hinweis auf die Mikrofon-Taste).
 - Automatisches Speichern alle 10 Sekunden in Erfassungsfenstern; „Änderungen verwerfen“
   (über x) stellt den Zustand beim Öffnen wieder her.
-- Zahlenfelder rechtsbündig, Tausenderpunkt schon beim Tippen.
+- Zahlen- und Betragsfelder rechtsbündig, Tausenderpunkt schon beim Tippen.
 
 ## 9. Tabellen (App, HTML und PDF)
 
@@ -244,7 +251,7 @@ heller).
 - Jede 2. sichtbare Zeile heller (Zebra); gezählt werden nur sichtbare Zeilen; eine
   markierte Zeile bleibt gelb.
 - Trennlinien zwischen allen Spalten.
-- Tabellenkopf bleibt beim Scrollen direkt unter der Kopfzeile stehen.
+- Tabellenkopf bleibt beim Scrollen direkt unter der Kopfzeile stehen; Schrift 17 px halbfett wie die Zellen.
 - Nur zwischen ganzen Wörtern umbrechen (die Spalte wird so breit wie das längste Wort).
 - Spaltenbreiten passen sich dem Inhalt an; kompakte Tabellen nur so breit wie nötig;
   Zahlenspalten rechtsbündig (Überschrift und Werte).
@@ -272,9 +279,9 @@ heller).
 - Datumsformat in Texten TT.MM.JJJJ, in Dateinamen JJJJ.MM.TT, Uhrzeit hh:mm
   (im Dateinamen hh.mm).
 - Sicherheitsabfrage (Sprechblase) vor jeder Lösch-, Ersetz- oder Rücksetz-Aktion.
-- **Backup einmal am Tag:** Wurde heute noch nicht gesichert, steht unten in der
-  Seitenleiste dezent „Heute noch kein Backup gesichert. Zuletzt gesichert am …“ mit der
-  Schaltfläche „Backup sichern“; nach einer Ausgabe erinnert das Ergebnisfenster daran. Nur
+- **Backup einmal am Tag:** Wurde heute noch keines erstellt, steht unten in der Seitenleiste
+  dezent „Letztes Backup erstellt am …“ (bzw. „Noch kein Backup erstellt.“) mit der
+  Schaltfläche „Backup erstellen“; nach einer Ausgabe erinnert das Ergebnisfenster daran. Nur
   ein abgeschlossenes Teilen-Menü zählt als Backup.
 
 ## 11. Versionen und Aktualisierung
@@ -373,6 +380,8 @@ programmiert (`design.css`, `ui.js`) und von allen Apps übernommen.
   über die volle Breite ein, Treffer-Navigation rechts.
 - **Verhalten:** bleibt beim Scrollen oben stehen (Hintergrund `--bg`, beim Scrollen
   Haarlinie unten); keine Glas-Leiste.
+- **Filter** (z. B. „Alle / Nur erfasste“): beim Öffnen eines Eintrags und beim Start immer auf
+  „Alle“.
 
 ### 15.4 Seitenleiste
 - **Apple:** [HIG – Sidebars](https://developer.apple.com/design/human-interface-guidelines/sidebars)
@@ -381,12 +390,13 @@ programmiert (`design.css`, `ui.js`) und von allen Apps übernommen.
   runde Schaltfläche panel-left (ausblenden). Darunter die Einträge: Titel fett, darunter
   grau Zeitraum · Status; gewählter Eintrag blau gefüllt (wie eine Hauptaktion). Unten
   dezente Hinweise (z. B. Backup).
-- **Maße:** so breit wie Kopf bzw. längster Titel, 340–420 px; Hintergrund `--card`,
-  Haarlinie rechts.
+- **Maße und Aussehen:** schwebend wie in Safari – eigenes Rechteck mit 10 px Abstand zum
+  Bildschirmrand, Radius 22 px, Lichtkante `--btn-rim` und Schatten `--float` wie die
+  Schaltflächen; so breit wie Kopf bzw. längster Titel, 340–420 px; Hintergrund `--card`.
 - **Verhalten:** quer fest links neben dem Inhalt, mit panel-left aus- und einblendbar
   (wird gemerkt); im Hochformat über den Inhalt gelegt (abgedunkelt dahinter), schließt sich
   nach der Auswahl.
-- **Mehr-Menü der Seitenleiste:** Backup sichern (darunter grau „Zuletzt gesichert am …“) ·
+- **Mehr-Menü der Seitenleiste:** Backup erstellen (darunter grau „Letztes Backup erstellt am …“) ·
   Backup laden · ganz unten grau die Versionszeile „<App> · Version X.Y.Z · erstellt am …“.
 
 ### 15.5 Kapsel
@@ -470,6 +480,7 @@ programmiert (`design.css`, `ui.js`) und von allen Apps übernommen.
 
 | Version | Datum | Art | Inhalt |
 |---|---|---|---|
+| 3.1.0 | 08.10.2026 | Neben | Schwebende Seitenleiste wie in Safari; Kalender-Icon in Datumsfeldern; Beträge „4.850,00 €“, rechtsbündig, „,00“ wird ergänzt; Tabellenüberschriften 17 px halbfett (Headline); Filter beim Öffnen auf „Alle“; gedrückte Schaltfläche bleibt auch bei Folgeschritten blau; „Backup erstellen“ / „Letztes Backup erstellt am …“ |
 | 3.0.1 | 08.10.2026 | Korrektur | Links zu den Apple Human Interface Guidelines bei den Abschnitten und bei jeder Komponente |
 | 3.0.0 | 08.10.2026 | Haupt | Neues Bedienkonzept wie Apple-Apps: Seitenleiste, Kopfzeile mit Kapsel und Mehr-Menü, Suche als zweite Zeile; Fenster ohne Fußleiste mit rundem x und Häkchen (grau bis zur Änderung); Abfragen als Sprechblase, „Änderungen verwerfen“ beim x; gedrückte Schaltfläche blau getönt; Hauptaktion nur in Fenstern blau; share immer ohne Text; Icons in Menüs vor dem Text; Text mittig zum Icon; Textfelder wachsen mit; Datumsfelder so breit wie das Datum; Backup-Hinweis einmal am Tag; neue Komponenten Kopfzeile, Seitenleiste, Kapsel, Menü, Sprechblase, Fenster-Kopfzeile |
 | 2.1.0 | 07.10.2026 | Neben | Akzentfarbe Apple-Blau (Hauptaktion, Auswahl, Nummern, Links, Rahmen); Auswahl mit Haarlinie ohne Breitenänderung und leuchtenderem Schein; Schatten um Tabellen und bei allen Eingabefeldern; neue Komponenten Schalter (Apple-Grün) und Options-Kapsel statt Checkboxen |

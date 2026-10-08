@@ -1,6 +1,6 @@
 # Backlog – offene Themen
 
-**Stand 08.10.2026** · Aktuelle Version: Reiselogbuch 2.0.0
+**Stand 08.10.2026** · Aktuelle Version: Reiselogbuch 2.1.0
 
 Hier stehen alle offenen Themen. Erledigte Punkte wandern mit Version und Datum nach unten
 in „Erledigt“. Claude erinnert zu Beginn und am Ende jeder Sitzung an die offenen Punkte
@@ -14,33 +14,17 @@ Status: **vereinbart** (entschieden, wartet auf „Ja“ zum Bauen) · **offen**
 
 ---
 
-## 1. Reiselogbuch 2.1.0 – vereinbart, wartet auf das Ende der Tests
-
-| Nr. | Prio | Thema | Gilt | Status |
-|---|---|---|---|---|
-| B-01 | 1 | Seitenleiste schwebend wie in Safari: runde Ecken, Lichtkante, Schatten wie Schaltflächen, Abstand zum Rand | allgemein | vereinbart |
-| B-02 | 1 | Beim Öffnen eines Reiselogbuchs (und nach Neustart) immer „Alle Tage“ | allgemein | vereinbart |
-| B-03 | 1 | Datumsfelder mit eigenem Kalender-Icon (calendar) rechts im Feld, auf allen Geräten gleich | allgemein | vereinbart |
-| B-04 | 1 | Fehler: ellipsis der Seitenleiste bleibt blau, solange eine Abfrage/Meldung von dort offen ist (z. B. Backup) | allgemein | vereinbart |
-| B-05 | 1 | „Backup sichern“ heißt „Backup erstellen“ | Reiselogbuch | vereinbart |
-| B-06 | 1 | Text nur noch „Letztes Backup erstellt am TT.MM.JJJJ um hh:mm“ (bzw. „Noch kein Backup erstellt.“) – Seitenleiste unten, Menü der Seitenleiste, Erinnerung nach HTML/PDF; „Heute noch kein Backup …“ entfällt | Reiselogbuch | vereinbart |
-| B-07 | 1 | Statistik: unter „Quartiere“ neue Zeile „Nächte“ (Summe aller Nächte) | Reiselogbuch | vereinbart |
-| B-08 | 1 | Gesamtkosten mit zwei Nachkommastellen; fehlen sie, ergänzt die App „,00“; „,-“ entfällt | allgemein | vereinbart |
-| B-09 | 1 | Beträge wie bei Apple: „4.850,00 €“ – € hinter dem Betrag (App: [ 4.850,00 ] €, Ausgabe: „4.850,00 €“) | allgemein | vereinbart |
-| B-10 | 1 | Betragsfelder immer rechtsbündig (Regel in der Designrichtlinie) | allgemein | vereinbart |
-| B-11 | 1 | Tabellenüberschriften 17 px halbfett, gleich groß wie die Zellen (Apple „Headline“) | allgemein | vereinbart |
-| B-12 | 1 | Beim Bauen: Designrichtlinie allgemein 3.1.0 und Reiselogbuch 2.1.0 mit HIG-Links für neue Regeln | – | vereinbart |
-
-## 2. Auf dem iPad prüfen
+## 1. Auf dem iPad prüfen
 
 | Nr. | Prio | Thema | Status |
 |---|---|---|---|
-| P-01 | 1 | Datumsfelder: Breite passt zum Datum (27.08.2026) ohne Leerraum | prüfen |
+| P-01 | 1 | Datumsfelder: Breite passt zum Datum (27.08.2026) mit Kalender-Icon, ohne Leerraum | prüfen |
 | P-02 | 1 | Seitenleiste im Hochformat (darübergelegt, schließt nach Auswahl) | prüfen |
 | P-03 | 1 | Sprechblasen und Menüs an der richtigen Stelle, auch in Fenstern | prüfen |
 | P-04 | 1 | Teilen-Menü: HTML und PDF speichern, Backup erstellen und laden | prüfen |
+| P-05 | 1 | Version 2.1.0: schwebende Seitenleiste, Gesamtkosten mit Cent, ellipsis bleibt blau beim Backup | prüfen |
 
-## 3. Weitere Themen
+## 2. Weitere Themen
 
 | Nr. | Prio | Thema | Gilt | Status |
 |---|---|---|---|---|
@@ -51,7 +35,7 @@ Status: **vereinbart** (entschieden, wartet auf „Ja“ zum Bauen) · **offen**
 | T-05 | 2 | Bestehende (alte) Reiselogbücher aufbereiten und importierbar machen: Dateien (Word/PDF/Excel/HTML/Fotos) auslesen, Unklarheiten nachfragen, Vorschau zeigen, Datei erstellen; Überschneidungen prüfen. Offen: Form der Unterlagen, Anzahl, Weg (a: in aktuelles Backup einfügen · b: neue Funktion „Reiselogbuch importieren“, die hinzufügt statt ersetzt) | Reiselogbuch | offen |
 | T-06 | 3 | Ausschreibungstexte (Reiseveranstalter) in Reiselogbücher umwandeln – für erledigte **und** geplante Reisen: Titel, Zeitraum, Reisemittel; je Tag das Programm („1. Tag“ → echtes Datum, Text wie in der Ausschreibung); Quartiere mit Ort, falls genannt; übrige Felder bleiben leer | Reiselogbuch | offen |
 
-## 4. Später
+## 3. Später
 
 | Nr. | Prio | Thema | Gilt | Status |
 |---|---|---|---|---|
@@ -65,6 +49,7 @@ Status: **vereinbart** (entschieden, wartet auf „Ja“ zum Bauen) · **offen**
 
 | Nr. | Thema | Version | Datum |
 |---|---|---|---|
+| E-04 | Reiselogbuch 2.1.0: B-01 bis B-12 (schwebende Seitenleiste, immer „Alle Tage“, Kalender-Icon, ellipsis bleibt blau, „Backup erstellen“, Statistik „Nächte“, Beträge „4.850,00 €“ rechtsbündig, Tabellenüberschriften 17 px halbfett) | Reiselogbuch 2.1.0 · allgemein 3.1.0 · Reiselogbuch-Richtlinie 2.1.0 | 08.10.2026 |
 | E-01 | Links zu den Apple Human Interface Guidelines je Abschnitt und Komponente | Designrichtlinie allgemein 3.0.1 | 08.10.2026 |
 | E-02 | Regel „Apple-like entwickeln, Apple-Lösungen recherchieren und empfehlen“ | Zusammenarbeit allgemein 1.2.0 | 08.10.2026 |
 | E-03 | Neues Bedienkonzept: Seitenleiste, Kopfzeile mit Kapsel, Menüs, Sprechblasen, Fenster mit x/Häkchen | Reiselogbuch 2.0.0 | 08.10.2026 |

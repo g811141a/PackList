@@ -1,6 +1,6 @@
-# Reiselogbuch – Prompt (Stand 08.10.2026, Version 2.0.0)
+# Reiselogbuch – Prompt (Stand 08.10.2026, Version 2.1.0)
 
-Reiselogbuch 2.0.0 · Designrichtlinie allgemein 3.0.1 · Designrichtlinie Reiselogbuch 2.0.0 · Zusammenarbeit allgemein 1.4.0
+Reiselogbuch 2.1.0 · Designrichtlinie allgemein 3.1.0 · Designrichtlinie Reiselogbuch 2.1.0 · Zusammenarbeit allgemein 1.4.0
 (Gestaltungsregeln: `README - Designrichtlinie allgemein.md` und
 `README - Designrichtlinie Reiselogbuch.md`; Zusammenarbeit: `README - Zusammenarbeit
 allgemein.md`; Einstieg für Claude: `CLAUDE.md`. Bei jeder Design-Änderung mit aktualisieren.)
@@ -20,7 +20,7 @@ Ein Tagebuch in Tabellenform, genau wie in meinem Beispiel:
   | Mo, 24.08. 🌤   | Anreise nach Wien   | ☹️ Kurzer Kommentar | Prize by Radisson, Wien    |
 
   Fazit
-  Gesamtkosten: € 0,-
+  Gesamtkosten: 0,00 €
 
 RAHMEN
 - Läuft nur auf dem iPad, nur ich nutze es (kein Teilen, kein Login).
@@ -42,16 +42,17 @@ RAHMEN
     panel-left zum Ausblenden. Darunter alle Reiselogbücher (zuletzt
     beginnende zuerst): Titel fett, darunter grau "TT.MM.JJJJ - TT.MM.JJJJ ·
     läuft gerade/beendet/geplant"; das geöffnete ist blau gefüllt. Antippen
-    öffnet es. Quer steht die Seitenleiste fest links (aus-/einblendbar, wird
+    öffnet es. Die Seitenleiste schwebt wie in Safari (runde Ecken, Schatten wie die
+    Schaltflächen, Abstand zum Rand). Quer steht sie fest links (aus-/einblendbar, wird
     gemerkt); im Hochformat wird sie über den Inhalt gelegt und schließt sich
     nach der Auswahl. Ist sie ausgeblendet, steht panel-left links in der
     Kopfzeile.
   - plus öffnet "Neues Reiselogbuch". ellipsis der Seitenleiste: Backup
-    sichern (darunter grau "Zuletzt gesichert am …") · Backup laden · grau
+    erstellen (darunter grau "Letztes Backup erstellt am …") · Backup laden · grau
     "Reiselogbuch · Version X.Y.Z · erstellt am TT.MM.JJJJ um hh:mm".
-  - Wurde heute noch kein Backup gesichert, steht unten in der Seitenleiste
-    dezent "Heute noch kein Backup gesichert. Zuletzt gesichert am …" und die
-    Schaltfläche "Backup sichern".
+  - Wurde heute noch kein Backup erstellt, steht unten in der Seitenleiste
+    dezent "Letztes Backup erstellt am …" (bzw. "Noch kein Backup erstellt.")
+    und die Schaltfläche "Backup erstellen".
   - Kopfzeile des Inhalts (bleibt beim Scrollen stehen, keine Glas-Leiste):
     Titel der Reise in der Mitte, rechts die Kapsel [share | search |
     ellipsis]. share öffnet das Teilen-Menü (Vorschau · HTML · PDF), search
@@ -93,7 +94,8 @@ RAHMEN
   der Höhe genau mittig zum Icon. Mehrere Schaltflächen nebeneinander in
   einer Kapsel.
 - Textfelder wachsen mit dem Inhalt (nie innerhalb eines Feldes scrollen).
-  Datumsfelder sind so breit wie das Datum.
+  Datumsfelder sind so breit wie das Datum und haben rechts ein Kalender-Icon.
+  Tabellenüberschriften 17 px halbfett wie die Zellen.
 - Fenster passen sich in der Breite dem Inhalt an (höchstens 90 % der
   Bildschirmbreite, Mindestbreite für Eingabefelder): Neues Reiselogbuch,
   Einstellungen, Fazit, Meldungen. Tagesmaske und Vorschau sind fast
@@ -178,8 +180,8 @@ HAUPTANSICHT (TABELLE)
   darunter. In der Tabelle wird nur zwischen ganzen Wörtern umgebrochen.
 - Unten rechts übereinander die Schaltflächen ⬆️ (nach oben) und ⬇️ (ans
   Ende), im gleichen Aussehen wie die Dunkel-Schaltfläche, ohne Schatten.
-- Filter im Mehr-Menü: "Alle Tage" bzw. "Nur erfasste Tage"; die letzte
-  Einstellung wird gemerkt.
+- Filter im Mehr-Menü: "Alle Tage" bzw. "Nur erfasste Tage"; beim Öffnen
+  eines Reiselogbuchs und beim Start gilt immer "Alle Tage".
 - Dezente Fortschrittsanzeige, z. B. "Tag 42 von 80 · 38 erfasst".
 - Vergangene Tage ohne Eintrag werden dezent markiert.
 - Suche über die Einträge (Programm und sichtbare Spalten), nur innerhalb
@@ -301,9 +303,11 @@ ABSCHLUSS
   danach die Statistik (Quartierliste in der App immer, in der Ausgabe nur
   mit Häkchen).
 - Der Fazit-Kasten in der App passt sich in der Breite dem Inhalt an.
-- Ein Feld "Gesamtkosten" in Euro (rechtsbündig, schmal – "99.999" muss
-  sichtbar sein), immer ganze Euro. Der Tausenderpunkt
-  erscheint schon beim Tippen ("4.850"), Ausgabe z. B. als "€ 4.850,-".
+- Ein Feld "Gesamtkosten" in Euro, rechtsbündig, € rechts neben dem Feld,
+  immer mit zwei Nachkommastellen (Komma für Cent). Der Tausenderpunkt
+  erscheint schon beim Tippen ("4.850"); fehlen beim Verlassen des Feldes die
+  Nachkommastellen, ergänzt die App ",00". Anzeige und Ausgabe z. B. als
+  "4.850,00 €".
 
 AUSGABE
 - share in der Kopfzeile öffnet das Teilen-Menü: Vorschau · HTML · PDF (mit
@@ -328,7 +332,7 @@ AUSGABE
   3. Quartierliste (Quartier, Zeitraum, Anzahl Nächte, Maps-Link),
      falls bei der Reise aktiviert
   4. Statistik: Reisetage gesamt und davon erfasst, Anzahl der
-     Quartiere, Wetter-Verteilung (z. B. "40×🌤 · 12×☀️ · 5×🌧"),
+     Quartiere, darunter Anzahl der Nächte (Summe), Wetter-Verteilung (z. B. "40×🌤 · 12×☀️ · 5×🌧"),
      Smileys: alle verwendeten aus Tagen und Fazit, absteigend nach
      Anzahl (z. B. "5×😊 · 3×😉 · 2×☹️"); Varianten wie ☹️/☹ zählen
      gemeinsam – Anzahl vor dem Symbol, ohne Leerzeichen
@@ -344,14 +348,14 @@ AUSGABE
 
 SICHERHEIT
 - Backup als Datei exportieren/importieren, enthält alle Reisen.
-- Backup über "Backup sichern" (Mehr-Menü der Seitenleiste oder Hinweis
+- Backup über "Backup erstellen" (Mehr-Menü der Seitenleiste oder Hinweis
   unten in der Seitenleiste), über das Teilen-Menü ("In Dateien sichern").
   Backup laden ersetzt nach einer Sprechblase ("Ersetzen") alle Daten.
 - Einmal am Tag sichern: Solange heute noch kein Backup gesichert wurde,
   steht der Hinweis unten in der Seitenleiste. Kein automatisches Backup bei
   der Ausgabe; danach erscheint eine Erinnerung "Denk daran, auch ein Backup
-  zu sichern." mit "Heute noch kein Backup gesichert. Zuletzt gesichert am …"
-  und dem blauen Knopf "Backup sichern".
+  zu erstellen." mit "Letztes Backup erstellt am …" und dem blauen Knopf
+  "Backup erstellen".
 - Als Backup-Zeitpunkt zählt nur ein abgeschlossenes Teilen-Menü, ein
   Abbruch zählt nicht.
 - Backup-Dateiname (ohne Versionszähler):

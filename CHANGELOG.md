@@ -12,6 +12,20 @@ Versionsnummer **Hauptversion.Nebenversion.Korrektur** (z. B. 1.2.1):
 Steigt eine Stufe, beginnen die Stufen dahinter wieder bei 0.
 Die aktuelle Version steht in der App im Mehr-Menü (ellipsis) der Seitenleiste „Reiselogbücher“.
 
+## 2.1.0 – 08.10.2026 (Nebenversion)
+
+Reiselogbuch 2.1.0 · Designrichtlinie allgemein 3.1.0 · Designrichtlinie Reiselogbuch 2.1.0 · Zusammenarbeit allgemein 1.4.0
+
+- Seitenleiste schwebt wie in Safari: runde Ecken, Lichtkante, Schatten wie die Schaltflächen.
+- Beim Öffnen eines Reiselogbuchs und beim Start immer „Alle Tage“.
+- Datumsfelder mit eigenem Kalender-Icon; Breite passt zum Datum.
+- Fehler behoben: ellipsis der Seitenleiste bleibt blau, solange Teilen-Menü, Dateiauswahl
+  oder Meldung von dort offen sind.
+- „Backup erstellen“ statt „Backup sichern“; nur noch „Letztes Backup erstellt am …“.
+- Statistik: neue Zeile „Nächte“ unter „Quartiere“.
+- Gesamtkosten mit Cent: „4.850,00 €“ (€ hinter dem Betrag), rechtsbündig, „,00“ wird ergänzt.
+- Tabellenüberschriften 17 px halbfett, gleich groß wie die Zellen.
+
 ## 2.0.0 – 08.10.2026 (Hauptversion)
 
 Reiselogbuch 2.0.0 · Designrichtlinie allgemein 3.0.0 · Designrichtlinie Reiselogbuch 2.0.0 · Zusammenarbeit allgemein 1.1.0

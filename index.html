@@ -128,7 +128,11 @@
   dialog input[type=date] { flex: none; }
   .dates { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
   .dates .dl { color: var(--muted); }
-  .dates .dl + input + .dl { margin-left: 14px; }
+  .dates .dl + .datebox + .dl { margin-left: 14px; }
+  .datebox { position: relative; display: inline-flex; align-items: center; flex: none; }
+  .datebox input[type=date] { padding-right: 40px; }
+  .datebox > .ic { position: absolute; right: 12px; pointer-events: none; }
+  .datebox input::-webkit-calendar-picker-indicator { position: absolute; inset: 0; width: auto; height: auto; opacity: 0; cursor: pointer; }
   label { display: block; font-weight: 600; margin: 0 0 6px; }
   .muted { color: var(--muted); }
   .spacer { flex: 1; }
@@ -144,12 +148,14 @@
   .emptymain { margin-top: 120px; text-align: center; color: var(--muted); font-size: 19px; }
 
   /* Komponente Seitenleiste: quer fest links neben dem Inhalt, im Hochformat über den Inhalt gelegt */
-  body.docked { padding-left: calc(var(--side-w) + 20px); }
-  #side { position: fixed; z-index: 7; top: 0; bottom: 0; left: 0; width: max-content; min-width: 340px; max-width: 420px; overflow-y: auto;
-    background: var(--card); border-right: .5px solid var(--line); display: flex; flex-direction: column;
-    padding: calc(env(safe-area-inset-top) + 10px) 12px calc(env(safe-area-inset-bottom) + 14px) max(12px, env(safe-area-inset-left)); }
+  /* Schwebend wie in Safari: runde Ecken, Lichtkante und Schatten wie die Schaltflächen, Abstand zum Rand */
+  body.docked { padding-left: calc(var(--side-w) + max(10px, env(safe-area-inset-left)) + 20px); }
+  #side { position: fixed; z-index: 7; top: calc(env(safe-area-inset-top) + 10px); bottom: calc(env(safe-area-inset-bottom) + 10px); left: max(10px, env(safe-area-inset-left));
+    width: max-content; min-width: 340px; max-width: 420px; overflow-y: auto;
+    background: var(--card); border: .5px solid var(--btn-rim); border-radius: 22px; box-shadow: var(--float);
+    display: flex; flex-direction: column; padding: 10px 12px 14px; }
   #side[hidden] { display: none; }
-  #side.over { z-index: 25; border-right: none; box-shadow: 4px 0 30px rgba(0,0,0,.25); }
+  #side.over { z-index: 25; }
   .side-shade { position: fixed; inset: 0; z-index: 24; background: rgba(0,0,0,.25); }
   .side-head { display: flex; align-items: center; gap: 12px; min-height: 44px; margin-bottom: 14px; padding-left: 8px; }
   .side-head h2 { margin: 0 4px 0 0; flex: 1; font-size: 20px; white-space: nowrap; }
@@ -192,7 +198,7 @@
   table.days { border-collapse: separate; border-spacing: 0; width: 100%; }
   table.days th, table.days td { border-bottom: 1px solid var(--line); padding: 10px 12px; vertical-align: top; text-align: left; }
   table.days td + td { border-left: 1px solid var(--line); }
-  table.days th { position: sticky; top: var(--bar-h); background: var(--th-bg); border-bottom-color: var(--th-line); font-size: 15px; z-index: 2; }
+  table.days th { position: sticky; top: var(--bar-h); background: var(--th-bg); border-bottom-color: var(--th-line); font-size: 17px; font-weight: 600; z-index: 2; }
   table.days th + th { border-left: 1px solid var(--th-line); }
   table.days tbody tr:last-child td { border-bottom: none; }
   table.days tbody tr { cursor: pointer; }
@@ -222,7 +228,7 @@
   .msg-text { padding: 8px 2px; }
   .kosten { display: flex; align-items: center; gap: 10px; }
   .kosten span { font-size: 20px; }
-  #kosten { text-align: right; width: 96px; flex: none; }
+  #kosten { text-align: right; width: 150px; flex: none; }
   .table-wrap.fit { display: inline-block; max-width: 100%; }
   .table-wrap.fit table { width: auto; }
   table.days.static th { position: static; }
@@ -368,6 +374,7 @@ const ICONS = {
   'file-code': '<path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 12.5 8 15l2 2.5"/><path d="m14 12.5 2 2.5-2 2.5"/>',
   'file-text': '<path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>',
   'rotate-ccw': '<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>',
+  'calendar': '<path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/>',
   'panel-left': '<rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/>',
   'ellipsis': '<circle cx="12" cy="12" r="1.3"/><circle cx="19" cy="12" r="1.3"/><circle cx="5" cy="12" r="1.3"/>',
   'settings': '<path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/>'
@@ -376,8 +383,8 @@ const ic = (name, cls = '') => `<svg class="ic ${cls}" viewBox="0 0 24 24" aria-
 
 // Version und Erstellungszeitpunkt, werden bei jeder neuen Version angepasst.
 // Versionsnummer Hauptversion.Nebenversion.Korrektur (siehe CHANGELOG.md).
-const APP_VERSION = '2.0.0';
-const APP_BUILT = '08.10.2026 um 12:57';
+const APP_VERSION = '2.1.0';
+const APP_BUILT = '08.10.2026 um 15:15';
 
 const app = document.getElementById('app');
 const side = document.getElementById('side');
@@ -456,7 +463,7 @@ function save() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
     return true;
   } catch (e) {
-    inform('Speichern fehlgeschlagen', 'Der Speicher ist voll oder nicht verfügbar. Bitte ein Backup sichern.');
+    inform('Speichern fehlgeschlagen', 'Der Speicher ist voll oder nicht verfügbar. Bitte ein Backup erstellen.');
     return false;
   }
 }
@@ -733,8 +740,13 @@ function mapsUrl({ name, place }) {
 function thousands(n) {
   return String(Math.round(Number(n) || 0)).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 }
+// Betrag mit zwei Nachkommastellen wie bei Apple: "4.850,00" (ohne Währung).
+function money(n) {
+  const [i, d] = (Math.round((Number(n) || 0) * 100) / 100).toFixed(2).split('.');
+  return thousands(i) + ',' + d;
+}
 function formatEuro(value) {
-  return '€ ' + thousands(value) + ',-';
+  return money(value) + ' €';
 }
 
 function insertAtCursor(ta, text, ownLine) {
@@ -756,14 +768,17 @@ function autoGrow(ta) {
 }
 const growAll = () => dlg.querySelectorAll('textarea').forEach(autoGrow);
 
-// Datumsfeld so breit wie das Datum, mit kurzem Abstand zum Kalenderzeichen (auf dem iPad gibt es keines).
-const NO_DATE_ICON = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+// Datumsfeld so breit wie das Datum, mit kurzem Abstand zum eigenen Kalender-Icon (auf allen Geräten gleich).
+const dateBox = (id, value, label) => `<span class="datebox"><input type="date" id="${id}" value="${value}" aria-label="${label}">${ic('calendar')}</span>`;
 function fitDate(inp) {
   const cs = getComputedStyle(inp);
   const ctx = (fitDate.ctx ||= document.createElement('canvas').getContext('2d'));
   ctx.font = `${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
-  const w = ctx.measureText(inp.value ? fullDate(inp.value) : '00.00.0000').width;
-  inp.style.width = Math.ceil(w + parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight) + (NO_DATE_ICON ? 6 : 32)) + 'px';
+  // Das Datum wird in der Sprache des Geräts angezeigt; gemessen wird die breitere Schreibweise.
+  const d = inp.value ? new Date(inp.value + 'T12:00') : new Date(2000, 11, 28);
+  const w = Math.max(...[fullDate(inp.value || '2000-12-28'), d.toLocaleDateString(), d.toLocaleDateString(undefined, { day: '2-digit', month: '2-digit', year: 'numeric' })]
+    .map(t => ctx.measureText(t).width));
+  inp.style.width = Math.ceil(w + parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight) + 14) + 'px';
 }
 
 function insertEmoji(ta, emoji) {
@@ -903,9 +918,8 @@ function render({ scrollToGap = false } = {}) {
 
     <h2>Gesamtkosten</h2>
     <div class="kosten">
+      <input type="text" id="kosten" inputmode="decimal" placeholder="0,00" value="${trip.kosten == null ? '' : money(trip.kosten)}">
       <span>€</span>
-      <input type="text" id="kosten" inputmode="numeric" placeholder="0" value="${trip.kosten == null ? '' : thousands(trip.kosten)}">
-      <span>,-</span>
     </div>
 
     ${stays.length ? `
@@ -964,12 +978,19 @@ function render({ scrollToGap = false } = {}) {
   markOpener();
   app.querySelectorAll('tbody tr').forEach(tr => tr.onclick = () => openDayDialog(trip, tr.dataset.day));
   app.querySelector('#fazit').onclick = () => openFazitDialog(trip);
-  app.querySelector('#kosten').oninput = e => {
-    const digits = e.target.value.replace(/\D/g, '').replace(/^0+(?=\d)/, '').slice(0, 9);
-    trip.kosten = digits ? Number(digits) : null;
-    e.target.value = digits ? thousands(trip.kosten) : '';
+  // Betrag: Tausenderpunkt beim Tippen, Komma für Cent (höchstens zwei Stellen); beim Verlassen wird ",00" ergänzt.
+  const kosten = app.querySelector('#kosten');
+  kosten.oninput = () => {
+    const raw = kosten.value.replace(/[^\d,]/g, '');
+    const [i, ...rest] = raw.split(',');
+    const int = i.replace(/^0+(?=\d)/, '').slice(0, 9);
+    const dec = rest.join('').slice(0, 2);
+    const hasComma = raw.includes(',');
+    trip.kosten = int || dec ? Number(`${int || 0}.${dec || 0}`) : null;
+    kosten.value = int || hasComma ? `${int ? thousands(int) : '0'}${hasComma ? ',' + dec : ''}` : '';
     save();
   };
+  kosten.onblur = () => { kosten.value = trip.kosten == null ? '' : money(trip.kosten); };
 
   if (scrollToGap) {
     const row = app.querySelector('tr.gap');
@@ -1015,6 +1036,8 @@ function renderEmpty() {
 
 function showTrip(id) {
   currentTripId = id;
+  // Beim Öffnen eines Reiselogbuchs (und beim Start) immer alle Tage zeigen.
+  db.settings.hideEmpty = false;
   searchTerm = '';
   searchIndex = 0;
   searchOpen = false;
@@ -1040,16 +1063,16 @@ function tripState(t, today) {
   return t.start <= today && today <= t.end ? 'läuft gerade' : t.end < today ? 'beendet' : 'geplant';
 }
 
-// Backup: einmal am Tag sichern; Datum und Uhrzeit des letzten Backups.
+// Backup: einmal am Tag erstellen; Datum und Uhrzeit des letzten Backups.
 function backedUpToday() {
   const last = db.settings.lastBackup;
   return Boolean(last) && new Date(last).toDateString() === new Date().toDateString();
 }
 function lastBackupText() {
   const last = db.settings.lastBackup;
-  if (!last) return 'Noch kein Backup gesichert.';
+  if (!last) return 'Noch kein Backup erstellt.';
   const d = new Date(last);
-  return `Zuletzt gesichert am ${pad(d.getDate())}.${pad(d.getMonth() + 1)}.${d.getFullYear()} um ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  return `Letztes Backup erstellt am ${pad(d.getDate())}.${pad(d.getMonth() + 1)}.${d.getFullYear()} um ${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
 
 function renderSide() {
@@ -1076,17 +1099,18 @@ function renderSide() {
     ${trips.length ? trips.map(t => `<button type="button" class="side-row ${t.id === currentTripId ? 'current' : ''}" data-id="${t.id}">
         <b>${esc(t.title)}</b><small>${fullDate(t.start)} - ${fullDate(t.end)} · ${tripState(t, today)}</small></button>`).join('')
       : '<div class="side-empty">Noch kein Reiselogbuch angelegt.</div>'}
-    ${trips.length && !backedUpToday() ? `<div class="bhint"><div>Heute noch kein Backup gesichert.<br>${lastBackupText()}</div>
-      <button type="button" id="hintBackup">${ic('save')}Backup sichern</button></div>` : ''}`;
+    ${trips.length && !backedUpToday() ? `<div class="bhint"><div>${lastBackupText()}</div>
+      <button type="button" id="hintBackup">${ic('save')}Backup erstellen</button></div>` : ''}`;
   side.querySelector('#newTrip').onclick = () => { setOpener('#newTrip'); openTripDialog(null); };
   side.querySelector('#sideMore').onclick = e => openMenu(e.currentTarget, [
-    { icon: 'save', label: 'Backup sichern', sub: lastBackupText(), disabled: !db.trips.length, act: saveBackup },
-    { icon: 'folder-open', label: 'Backup laden', act: () => importFile.click() },
+    { icon: 'save', label: 'Backup erstellen', sub: lastBackupText(), disabled: !db.trips.length, act: () => saveBackup('#sideMore') },
+    { icon: 'folder-open', label: 'Backup laden', act: () => { hold('#sideMore'); importFile.click(); } },
     'sep',
     { note: `Reiselogbuch · Version ${APP_VERSION} · erstellt am ${APP_BUILT}` },
   ], 'left');
   side.querySelector('#sideHide').onclick = toggleSide;
-  side.querySelector('#hintBackup')?.addEventListener('click', saveBackup);
+  side.querySelector('#hintBackup')?.addEventListener('click', () => saveBackup('#hintBackup'));
+  held.forEach(sel => side.querySelector(sel)?.classList.add('on'));
   side.querySelectorAll('[data-id]').forEach(b => b.onclick = () => { sideOverlay = false; showTrip(b.dataset.id); });
   document.documentElement.style.setProperty('--side-w', side.offsetWidth + 'px');
 }
@@ -1165,7 +1189,7 @@ function openMainMenu(anchor, trip) {
 
 async function deleteTrip(trip) {
   const yes = await confirmPop(app.querySelector('#mainMore'),
-    `„${esc(trip.title)}“ mit allen Einträgen löschen? Das kann nicht rückgängig gemacht werden. Tipp: Vorher ein Backup sichern.`,
+    `„${esc(trip.title)}“ mit allen Einträgen löschen? Das kann nicht rückgängig gemacht werden. Tipp: Vorher ein Backup erstellen.`,
     { label: 'Reiselogbuch löschen', icon: 'trash' });
   if (!yes) return;
   db.trips = db.trips.filter(x => x.id !== trip.id);
@@ -1184,6 +1208,11 @@ function openShareMenu(anchor, trip) {
     { note: `${count} erfasste${count === 1 ? 'r Tag' : ' Tage'} · Dateiname: ${outputName(trip, (trip.outputCounter || 0) + 1)}` },
   ]);
 }
+
+// Schaltflächen, von denen eine noch laufende Aktion kommt (Teilen-Menü, Meldung, Dateiauswahl), bleiben blau.
+const held = new Set();
+function hold(sel) { if (!sel) return; held.add(sel); document.querySelector(sel)?.classList.add('on'); }
+function release(sel) { if (!sel) return; held.delete(sel); document.querySelector(sel)?.classList.remove('on'); }
 
 // Die Schaltfläche, von der ein Fenster kommt, bleibt blau hinterlegt, solange es offen ist.
 function setOpener(sel) {
@@ -1349,8 +1378,8 @@ function openTripDialog(trip) {
           <div class="warn" id="peopleWarn" hidden></div></div>
         <div class="step"><label>Reisezeitraum</label>
           <div class="dates">
-            <span class="dl">Von</span><input type="date" id="fStart" value="${t.start}" aria-label="Von">
-            <span class="dl">Bis</span><input type="date" id="fEnd" value="${t.end}" aria-label="Bis">
+            <span class="dl">Von</span>${dateBox('fStart', t.start, 'Von')}
+            <span class="dl">Bis</span>${dateBox('fEnd', t.end, 'Bis')}
           </div>
           <div class="warn" id="tripWarn" hidden></div>
         </div>
@@ -1764,7 +1793,7 @@ function tripStats(trip) {
   const fmt = list => list.map(([e, n]) => `${n}×${e}`).join(' · ') || '–';
   return [
     ['Reisetage', `${days.length}, davon erfasst ${rec.length}`],
-    ...(c.quarter ? [['Quartiere', String(quarters.size)]] : []),
+    ...(c.quarter ? [['Quartiere', String(quarters.size)], ['Nächte', String(quarterStays(trip).reduce((n, st) => n + st.nights, 0))]] : []),
     ['Wetter', fmt(weather)],
     ['Smileys', fmt(moods)],
   ];
@@ -1923,12 +1952,11 @@ function showOutputResult(title, name, result) {
 }
 
 function backupReminderHtml() {
-  const last = db.settings.lastBackup ? ` ${lastBackupText()}` : '';
   return `<div class="step" id="reminder">
-      <strong>💾 Denk daran, auch ein Backup zu sichern.</strong>
-      <div class="hint">Heute noch kein Backup gesichert.${last}</div>
+      <strong>💾 Denk daran, auch ein Backup zu erstellen.</strong>
+      <div class="hint">${lastBackupText()}</div>
       <div style="display:flex;gap:8px;margin-top:10px">
-        <button type="button" class="primary" id="backupNow">${ic('save')}Backup sichern</button>
+        <button type="button" class="primary" id="backupNow">${ic('save')}Backup erstellen</button>
       </div>
     </div>`;
 }
@@ -1943,8 +1971,10 @@ function bindBackupReminder() {
   };
 }
 
-// Sichert das Backup über das Teilen-Menü; der Zeitpunkt zählt nur, wenn das Menü abgeschlossen wurde.
-async function saveBackup() {
+// Erstellt das Backup über das Teilen-Menü; der Zeitpunkt zählt nur, wenn das Menü abgeschlossen wurde.
+// anchor: Schaltfläche, von der es kommt – sie bleibt bis zum Schließen der Meldung blau.
+async function saveBackup(anchor) {
+  hold(anchor);
   const file = backupFile();
   const result = await shareFiles([file]);
   if (result === 'shared' || result === 'downloaded') {
@@ -1953,7 +1983,8 @@ async function saveBackup() {
     renderSide();
   }
   const text = `${result === 'aborted' || result === 'error' ? '⚠️' : '✅'} ${RESULT_TEXT[result](file.name)}`;
-  if (!dlg.querySelector('#reminder')) inform('Backup', text);
+  if (!dlg.querySelector('#reminder')) await inform('Backup', text);
+  release(anchor);
   return text;
 }
 
@@ -1986,10 +2017,11 @@ function downloadFile(name, content, type) {
 
 /* ---------- Backup ---------- */
 
+importFile.addEventListener('cancel', () => release('#sideMore'));
 importFile.onchange = async () => {
   const file = importFile.files[0];
   importFile.value = '';
-  if (!file) return;
+  if (!file) return release('#sideMore');
   try {
     const data = JSON.parse(await file.text());
     if (!Array.isArray(data.trips)) throw new Error('Kein Reiselogbuch-Backup.');
@@ -1997,14 +2029,16 @@ importFile.onchange = async () => {
     const yes = await confirmPop(side.querySelector('#sideMore'),
       `Backup mit ${n} Reiselogbu${n === 1 ? 'ch' : 'chern'} laden? Die aktuellen Daten auf diesem iPad werden ersetzt.`,
       { label: 'Ersetzen', icon: 'folder-open' });
-    if (!yes) return;
+    if (!yes) return release('#sideMore');
+    release('#sideMore');
     db = normalize(data);
     save();
     applyTheme();
     if (dlg.open) dlg.close();
     showTrip(pickStartTrip()?.id);
   } catch (e) {
-    inform('Backup laden', 'Die Datei konnte nicht gelesen werden: ' + esc(e.message));
+    await inform('Backup laden', 'Die Datei konnte nicht gelesen werden: ' + esc(e.message));
+    release('#sideMore');
   }
 };
 

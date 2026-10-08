@@ -20,19 +20,7 @@ Status: **vereinbart** (entschieden, wartet auf „Ja“ zum Bauen) · **offen**
 |---|---|---|---|---|
 | F-10 | 1 | Bei sichtbarer Tastatur wird die Kopfzeile von Fenstern (Einstellungen, Tageserfassung, Fazit, Neues Reiselogbuch …) und der Hauptansicht (inkl. Suchzeile) nach oben weggeschoben. Lösung: Fenster passen Höhe und Lage laufend an den sichtbaren Bereich über der Tastatur an; Kopfzeile bleibt fest, nur der Inhalt scrollt, aktives Feld wird sichtbar gerollt; gilt für alle Fenster, Menüs, Sprechblasen ([HIG – Sheets](https://developer.apple.com/design/human-interface-guidelines/sheets)) | allgemein | vereinbart |
 
-## 2. Auf dem iPad prüfen
-
-| Nr. | Prio | Thema | Status |
-|---|---|---|---|
-| P-01 | 1 | Datumsfelder: Breite passt zum Datum (27.08.2026) mit Kalender-Icon, ohne Leerraum | prüfen |
-| P-02 | 1 | Seitenleiste im Hochformat (darübergelegt, schließt nach Auswahl) | prüfen |
-| P-03 | 1 | Sprechblasen und Menüs an der richtigen Stelle, auch in Fenstern | prüfen |
-| P-04 | 1 | Teilen-Menü: HTML und PDF speichern, Backup erstellen und laden | prüfen |
-| P-07 | 1 | Version 2.1.2: Start mit Seitenleiste (quer und hoch), laufende Reise geöffnet, Abstand unten | prüfen |
-| P-06 | 1 | Version 2.1.1: PDF quer mit eingeblendeter Seitenleiste; Suche mit Tastatur (Kopfzeile bleibt fest, Treffer unter der Suchzeile); Kapseln wischen | prüfen |
-| P-05 | 1 | Version 2.1.0: schwebende Seitenleiste, Gesamtkosten mit Cent, ellipsis bleibt blau beim Backup | prüfen |
-
-## 3. Weitere Themen
+## 2. Weitere Themen
 
 | Nr. | Prio | Thema | Gilt | Status |
 |---|---|---|---|---|
@@ -44,7 +32,7 @@ Status: **vereinbart** (entschieden, wartet auf „Ja“ zum Bauen) · **offen**
 | T-06 | 3 | Ausschreibungstexte (Reiseveranstalter) in Reiselogbücher umwandeln – für erledigte **und** geplante Reisen: Titel, Zeitraum, Reisemittel; je Tag das Programm („1. Tag“ → echtes Datum, Text wie in der Ausschreibung); Quartiere mit Ort, falls genannt; übrige Felder bleiben leer | Reiselogbuch | offen |
 | T-07 | 3 | Alle Kapseln technisch gleich bauen: auch Kopfzeilen-Kapsel [share \| search \| ellipsis], Seitenleisten-Kapsel und Treffer-Pfeile ⌃ ⌄ – Schaltflächen genau so hoch wie der Innenraum (44 px minus Rand), Markierung liegt immer innerhalb des Randes | allgemein | vereinbart |
 
-## 4. Später
+## 3. Später
 
 | Nr. | Prio | Thema | Gilt | Status |
 |---|---|---|---|---|
@@ -58,6 +46,7 @@ Status: **vereinbart** (entschieden, wartet auf „Ja“ zum Bauen) · **offen**
 
 | Nr. | Thema | Version | Datum |
 |---|---|---|---|
+| E-09 | Auf dem iPad geprüft und ok: P-01 Datumsfelder · P-02 Seitenleiste hoch · P-03 Sprechblasen/Menüs · P-04 HTML/PDF, Backup · P-05 Version 2.1.0 · P-06 Version 2.1.1 · P-07 Version 2.1.2 | bis Reiselogbuch 2.1.4 | 08.10.2026 |
 | E-08 | Reiselogbuch 2.1.4: F-09 Markierung in Auswahl-Kapseln rund (Kreis/Kapsel innen) mit Abstand | Reiselogbuch 2.1.4 · allgemein 3.2.2 | 08.10.2026 |
 | E-07 | Reiselogbuch 2.1.3: F-08 Markierung in Auswahl-Kapseln nicht mehr abgeschnitten | Reiselogbuch 2.1.3 | 08.10.2026 |
 | E-06 | Reiselogbuch 2.1.2: F-06 Seitenleiste beim Start eingeblendet, F-07 Abstand unten 4 px | Reiselogbuch 2.1.2 · allgemein 3.2.1 | 08.10.2026 |

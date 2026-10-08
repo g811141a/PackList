@@ -14,7 +14,13 @@ Status: **vereinbart** (entschieden, wartet auf „Ja“ zum Bauen) · **offen**
 
 ---
 
-## 1. Auf dem iPad prüfen
+## 1. Fehler
+
+| Nr. | Prio | Thema | Gilt | Status |
+|---|---|---|---|---|
+| F-01 | 1 | PDF-Ausgabe bei eingeblendeter Seitenleiste fehlerhaft (quer): Beim Drucken bleibt der linke Platz der Seitenleiste frei, das Reiselogbuch ist verschoben/abgeschnitten. Ursache: Abstand `body.docked` gilt auch beim Drucken. Lösung: beim Drucken nur das Reiselogbuch, ohne Seitenleiste und ohne deren Abstand (Druck-Regel `body.docked { padding: 0 }`); prüfen quer und hoch, mit und ohne Seitenleiste | allgemein | vereinbart |
+
+## 2. Auf dem iPad prüfen
 
 | Nr. | Prio | Thema | Status |
 |---|---|---|---|
@@ -24,7 +30,7 @@ Status: **vereinbart** (entschieden, wartet auf „Ja“ zum Bauen) · **offen**
 | P-04 | 1 | Teilen-Menü: HTML und PDF speichern, Backup erstellen und laden | prüfen |
 | P-05 | 1 | Version 2.1.0: schwebende Seitenleiste, Gesamtkosten mit Cent, ellipsis bleibt blau beim Backup | prüfen |
 
-## 2. Weitere Themen
+## 3. Weitere Themen
 
 | Nr. | Prio | Thema | Gilt | Status |
 |---|---|---|---|---|
@@ -35,7 +41,7 @@ Status: **vereinbart** (entschieden, wartet auf „Ja“ zum Bauen) · **offen**
 | T-05 | 2 | Bestehende (alte) Reiselogbücher aufbereiten und importierbar machen: Dateien (Word/PDF/Excel/HTML/Fotos) auslesen, Unklarheiten nachfragen, Vorschau zeigen, Datei erstellen; Überschneidungen prüfen. Offen: Form der Unterlagen, Anzahl, Weg (a: in aktuelles Backup einfügen · b: neue Funktion „Reiselogbuch importieren“, die hinzufügt statt ersetzt) | Reiselogbuch | offen |
 | T-06 | 3 | Ausschreibungstexte (Reiseveranstalter) in Reiselogbücher umwandeln – für erledigte **und** geplante Reisen: Titel, Zeitraum, Reisemittel; je Tag das Programm („1. Tag“ → echtes Datum, Text wie in der Ausschreibung); Quartiere mit Ort, falls genannt; übrige Felder bleiben leer | Reiselogbuch | offen |
 
-## 3. Später
+## 4. Später
 
 | Nr. | Prio | Thema | Gilt | Status |
 |---|---|---|---|---|

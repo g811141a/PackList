@@ -40,7 +40,13 @@ Status: **vereinbart** (entschieden, wartet auf „Ja“ zum Bauen) · **offen**
 | P-03 | 1 | Sprechblasen und Menüs an der richtigen Stelle, auch in Fenstern | prüfen |
 | P-04 | 1 | Teilen-Menü: HTML und PDF speichern, Backup erstellen und laden | prüfen |
 
-## 3. Später
+## 3. Weitere Themen
+
+| Nr. | Prio | Thema | Gilt | Status |
+|---|---|---|---|---|
+| T-01 | 2 | Langes Drücken auf ein Reiselogbuch in der Seitenleiste öffnet ein Kontextmenü: Öffnen (book-open) · Einstellungen (settings) · Reiselogbuch löschen (rot, Sprechblase); kein Wischen ([HIG – Context menus](https://developer.apple.com/design/human-interface-guidelines/context-menus)) | allgemein | offen |
+
+## 4. Später
 
 | Nr. | Prio | Thema | Gilt | Status |
 |---|---|---|---|---|

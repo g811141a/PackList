@@ -47,6 +47,7 @@
     --glow-danger: 0 2px 4px rgba(0,0,0,.12), 0 5px 14px rgba(215,0,21,.35);
     --rim-color: rgba(255,255,255,.5);
     --bar-h: 64px;
+    --side-w: 0px;
     color-scheme: light;
   }
   :root[data-theme="dark"] {
@@ -78,7 +79,7 @@
   /* Schwebende Schaltfläche: fast weiße Fläche, weiße Lichtkante (Haarlinie), weicher Schatten, Kapselform */
   button {
     border: .5px solid var(--btn-rim); background: var(--btn); border-radius: 22px; box-shadow: var(--float);
-    padding: 8px 14px; cursor: pointer; min-height: 44px;
+    padding: 8px 14px; cursor: pointer; min-height: 44px; line-height: 20px;
   }
   button:disabled, button[aria-disabled="true"] { opacity: .4; cursor: default; }
   button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
@@ -96,9 +97,16 @@
   .searchbox .scount { font-size: 15px; color: var(--muted); font-variant-numeric: tabular-nums; pointer-events: none; }
   .searchbox .sclear { width: 32px; height: 32px; min-height: 0; min-width: 0; padding: 0; border: none; box-shadow: none; background: none; color: #a1a1a6; border-radius: 50%; }
   .searchbox .sclear svg { width: 20px; height: 20px; }
-  .navgrp { display: inline-flex; height: 44px; border-radius: 22px; background: var(--btn); border: .5px solid var(--btn-rim); box-shadow: var(--float); }
-  .navgrp button { background: none; border: none; box-shadow: none; width: 48px; min-width: 48px; padding: 0; border-radius: 22px; }
-  .navgrp button:disabled { opacity: .3; }
+  /* Komponente Kapsel: mehrere Schaltflächen in einer schwebenden Kapsel */
+  .grp, .navgrp { display: inline-flex; flex: none; height: 44px; border-radius: 22px; background: var(--btn); border: .5px solid var(--btn-rim); box-shadow: var(--float); }
+  .grp button, .navgrp button { background: none; border: none; box-shadow: none; width: 48px; min-width: 48px; padding: 0; border-radius: 22px; }
+  .grp button.txt { width: auto; padding: 0 14px; }
+  .grp button.fill { background: var(--accent); color: var(--accent-ink); }
+  .grp button:disabled, .navgrp button:disabled { opacity: .3; }
+  /* Gedrückt: Die Schaltfläche, von der ein offenes Menü, eine Sprechblase oder ein Fenster kommt, ist blau hinterlegt. */
+  button.on { background: var(--sel-bg); border-color: var(--accent); }
+  .grp button.on, .navgrp button.on { background: var(--sel-bg); box-shadow: inset 0 0 0 .5px var(--accent); }
+  .round { width: 44px; min-width: 44px; height: 44px; padding: 0; border-radius: 50%; flex: none; }
   /* Grün gefüllt = Hauptaktion; grün getönt mit Rand = eingeschaltet; rot gefüllt = Löschen (jeweils mit farbigem Schein) */
   button.primary { background: var(--accent); color: var(--accent-ink); border: .5px solid var(--rim-color); box-shadow: var(--glow-accent); }
   button.link { border: none; background: none; box-shadow: none; color: var(--accent); padding: 6px 8px; }
@@ -112,17 +120,66 @@
   input:disabled { opacity: .6; }
   input.invalid { border: 1px solid var(--danger); }
   .step.off .hint { opacity: .5; }
-  textarea { resize: vertical; min-height: 96px; }
+  /* Textfelder wachsen mit dem Inhalt; man muss nie innerhalb eines Feldes scrollen. */
+  textarea { resize: none; overflow: hidden; min-height: 96px; }
+  /* Datumsfelder sind so breit wie das Datum (wird beim Öffnen berechnet). */
+  input[type=date] { -webkit-appearance: none; appearance: none; text-align: left; }
+  input[type=date]::-webkit-date-and-time-value { text-align: left; }
+  dialog input[type=date] { flex: none; }
+  .dates { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .dates .dl { color: var(--muted); }
+  .dates .dl + input + .dl { margin-left: 14px; }
   label { display: block; font-weight: 600; margin: 0 0 6px; }
   .muted { color: var(--muted); }
   .spacer { flex: 1; }
 
-  /* Fixierte Aktionsleiste */
-  .bar {
-    position: sticky; top: 0; z-index: 5; background: var(--bg);
-    display: flex; gap: 12px; flex-wrap: wrap; align-items: center;
-    padding: calc(env(safe-area-inset-top) + 10px) 0 12px; border-bottom: .5px solid var(--line);
-  }
+  /* Komponente Kopfzeile: fest oben, Titel in der Mitte, rechts eine Kapsel; die Suche erscheint als zweite Zeile */
+  .nb { position: sticky; top: 0; z-index: 6; background: var(--bg); margin: 0 -16px; padding: calc(env(safe-area-inset-top) + 10px) 16px 10px; border-bottom: .5px solid transparent; }
+  .nb.line { border-bottom-color: var(--line); }
+  .nb1 { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; min-height: 44px; }
+  .nb1 > .r { justify-self: end; }
+  .nb-title { font-weight: 600; font-size: 17px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .nb2 { display: flex; gap: 12px; align-items: center; margin-top: 10px; }
+  .nb2 .searchbox { flex: 1 1 auto; }
+  .emptymain { margin-top: 120px; text-align: center; color: var(--muted); font-size: 19px; }
+
+  /* Komponente Seitenleiste: quer fest links neben dem Inhalt, im Hochformat über den Inhalt gelegt */
+  body.docked { padding-left: calc(var(--side-w) + 20px); }
+  #side { position: fixed; z-index: 7; top: 0; bottom: 0; left: 0; width: max-content; min-width: 340px; max-width: 420px; overflow-y: auto;
+    background: var(--card); border-right: .5px solid var(--line); display: flex; flex-direction: column;
+    padding: calc(env(safe-area-inset-top) + 10px) 12px calc(env(safe-area-inset-bottom) + 14px) max(12px, env(safe-area-inset-left)); }
+  #side[hidden] { display: none; }
+  #side.over { z-index: 25; border-right: none; box-shadow: 4px 0 30px rgba(0,0,0,.25); }
+  .side-shade { position: fixed; inset: 0; z-index: 24; background: rgba(0,0,0,.25); }
+  .side-head { display: flex; align-items: center; gap: 12px; min-height: 44px; margin-bottom: 14px; padding-left: 8px; }
+  .side-head h2 { margin: 0 4px 0 0; flex: 1; font-size: 20px; white-space: nowrap; }
+  #side .side-row { display: block; width: 100%; text-align: left; border: none; box-shadow: none; background: none; border-radius: 12px; padding: 9px 12px; margin-bottom: 4px; min-height: 0; }
+  .side-row b { display: block; font-size: 17px; font-weight: 600; overflow-wrap: anywhere; }
+  .side-row small { display: block; color: var(--muted); font-size: 14px; white-space: nowrap; }
+  #side .side-row.current { background: var(--accent); color: var(--accent-ink); box-shadow: var(--glow-accent); }
+  .side-row.current small { color: rgba(255,255,255,.85); }
+  .side-empty { color: var(--muted); padding: 8px 12px; }
+  .bhint { margin-top: auto; padding: 16px 12px 0; font-size: 13px; color: var(--muted); display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
+  .bhint button { color: var(--ink); font-size: 17px; }
+
+  /* Komponente Menü: Karte mit Schatten wie die Schaltflächen, Icons vor dem Text; antippen daneben schließt */
+  .layer { position: fixed; inset: 0; z-index: 29; }
+  .menu { position: fixed; z-index: 30; width: 340px; background: var(--card); border-radius: 14px; border: .5px solid var(--btn-rim); box-shadow: var(--float); overflow: hidden; }
+  .menu .mi { display: flex; justify-content: flex-start; align-items: center; gap: 10px; width: 100%; min-height: 46px; padding: 0 16px; font-size: 17px; text-align: left;
+    border: none; border-bottom: .5px solid var(--line); border-radius: 0; background: none; box-shadow: none; }
+  .menu .mi:last-child, .menu .mi.has-sub { border-bottom: none; }
+  .menu .mi.red { color: var(--danger); }
+  .menu .tick { width: 20px; display: inline-flex; color: var(--accent); }
+  .menu .sub { font-size: 13px; color: var(--muted); padding: 0 16px 10px 46px; margin-top: -8px; border-bottom: .5px solid var(--line); }
+  .menu .sep { height: 8px; background: var(--bg); }
+  .menu .note { font-size: 13px; color: var(--muted); padding: 10px 16px; }
+  /* Komponente Sprechblase (Abfrage): an der angetippten Schaltfläche; roter Knopf, darunter der Weg zurück */
+  .pop { position: fixed; z-index: 30; width: 320px; background: var(--card); border-radius: 14px; border: .5px solid var(--btn-rim); box-shadow: var(--float); padding: 16px; text-align: center; }
+  .pop p { margin: 0 0 14px; font-size: 15px; color: var(--muted); }
+  .pop .btns { display: flex; flex-direction: column; gap: 10px; }
+  .pop .btns button { width: 100%; }
+  :root[data-theme="dark"] .menu, :root[data-theme="dark"] .pop { background: #2c2c2e; }
+  :root[data-theme="dark"] .menu .sep { background: #1c1c1e; }
 
 
   .meta { display: grid; grid-template-columns: max-content 1fr; gap: 2px 14px; margin: 4px 0 6px; }
@@ -156,14 +213,12 @@
   .ln + .ln { margin-top: 2px; }
   .ln .m { flex: none; }
   .ln .t { min-width: 0; overflow-wrap: anywhere; }
+  /* In der Tagestabelle nur zwischen ganzen Wörtern umbrechen (die Spalte wird so breit wie das längste Wort). */
+  table.days .ln .t { overflow-wrap: normal; }
   mark { background: var(--mark); color: inherit; border-radius: 3px; padding: 0 1px; }
   mark.cur { background: var(--mark-cur); color: var(--mark-cur-ink); }
 
   .fazit-box { display: inline-block; width: auto; max-width: 100%; text-align: left; padding: 12px 14px; min-height: 60px; border-radius: 14px; background: var(--card); }
-  .trip-row { display: flex; gap: 12px; margin-top: 12px; }
-  .trip-row .choice { margin: 0; flex: 1; }
-  .trip-row { align-items: center; }
-  .trip-row .edit { flex: none; }
   .msg-text { padding: 8px 2px; }
   .kosten { display: flex; align-items: center; gap: 10px; }
   .kosten span { font-size: 20px; }
@@ -193,6 +248,16 @@
   dialog form { display: flex; flex-direction: column; max-height: calc(100vh - 40px); }
   .dlg-head { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: .5px solid var(--line); }
   .dlg-head h3 { margin: 0; flex: 1; text-align: center; font-size: 19px; min-height: 28px; line-height: 28px; }
+  /* Fenster-Kopfzeile: rundes x links, Titel (mit Zusatzzeile) in der Mitte, rechts weitere Schaltflächen und rundes Häkchen.
+     Das Häkchen ist grau, bis etwas geändert wurde; dann blau. */
+  .dlg-head .hl, .dlg-head .hr { flex: 1 1 0; display: flex; align-items: center; gap: 12px; }
+  .dlg-head .hr { justify-content: flex-end; }
+  .dlg-head .mid { flex: none; max-width: 60%; text-align: center; }
+  .dlg-head .mid .sub { display: block; font-size: 13px; color: var(--muted); line-height: 1.2; }
+  .dlg-head .mid .sub:empty { display: none; }
+  #msg { width: 360px; min-width: 0; }
+  #msg .dlg-head { border: none; }
+  #msg .msg-text { text-align: center; padding: 0 4px 10px; }
   .dlg-body { padding: 8px 16px 20px; overflow-y: auto; flex: 1; }
   .dlg-foot { display: flex; gap: 12px; align-items: center; padding: 14px 16px 16px; border-top: .5px solid var(--line); }
   .step { background: var(--dlg-card); border-radius: 14px; padding: 14px; margin-top: 12px; }
@@ -212,7 +277,7 @@
   }
   .emoji-row button.reset { font-size: 20px; color: var(--muted); flex: none; }
   /* Reine Icon-, Wetter- und Smiley-Schaltflächen einheitlich quadratisch 44 × 44 px */
-  #theme, .fab button, .mic, .emoji-row button.reset, .trip-row .edit, .iconbtn { width: 44px; min-width: 44px; height: 44px; padding: 0; border-radius: 50%; }
+  .fab button, .mic, .emoji-row button.reset, .iconbtn { width: 44px; min-width: 44px; height: 44px; padding: 0; border-radius: 50%; }
   .emoji-row button { border-radius: 50%; }
   .emoji-row.strip { flex-wrap: nowrap; align-items: center; }
   .emoji-row.strip .scroll { flex: 1; min-width: 0; display: flex; gap: 12px; overflow-x: auto; padding: 14px 10px 22px; margin: -14px -10px -22px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
@@ -247,16 +312,6 @@
   .check.chip:has(input:disabled) { opacity: .4; cursor: default; }
   .step-head .head-check { flex: none; margin: 0 0 0 4px; }
   .qrow { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
-  .choice { display: block; width: 100%; text-align: left; margin-top: 10px; padding: 14px 16px; }
-  .choice strong { display: block; font-size: 18px; }
-  .choice.current { border-color: var(--accent); border-width: 2px; }
-  /* Reiselogbücher: Titel, Reisezeitraum und Status in Spalten, die in allen Einträgen untereinander stehen */
-  .trip-row .choice { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: start; column-gap: 16px; padding: 9px 16px; min-height: 44px; }
-  .trip-row .choice { border-radius: 14px; }
-  .trip-row .choice.current { padding: 7.5px 14.5px; }
-  .trip-row .choice strong { font-size: 18px; line-height: 24px; overflow-wrap: anywhere; }
-  .trip-row .choice .per, .trip-row .choice .st { color: var(--muted); line-height: 24px; font-variant-numeric: tabular-nums; white-space: nowrap; }
-  .trip-row .choice.two .per span { display: block; }
   .dlg-body.preview { margin: 0; padding: 24px; background: #fff; color: #000; color-scheme: light; }
   .saved { font-size: 13px; color: var(--muted); }
 
@@ -264,12 +319,13 @@
   @media print {
     @page { size: A4 landscape; margin: 12mm; }
     html, body { background: #fff !important; color: #000; padding: 0; }
-    #app, dialog, .fab { display: none !important; }
+    #app, #side, .side-shade, dialog, .fab { display: none !important; }
     #printout { display: block; }
   }
 </style>
 </head>
 <body>
+<aside id="side" hidden></aside>
 <main id="app"></main>
 <div class="fab" id="fab" hidden>
   <button id="toTop" aria-label="Nach oben"></button>
@@ -311,16 +367,20 @@ const ICONS = {
   'chevron-right': '<path d="m9 18 6-6-6-6"/>',
   'file-code': '<path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 12.5 8 15l2 2.5"/><path d="m14 12.5 2 2.5-2 2.5"/>',
   'file-text': '<path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>',
-  'rotate-ccw': '<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>'
+  'rotate-ccw': '<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>',
+  'panel-left': '<rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/>',
+  'ellipsis': '<circle cx="12" cy="12" r="1.3"/><circle cx="19" cy="12" r="1.3"/><circle cx="5" cy="12" r="1.3"/>',
+  'settings': '<path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/>'
 };
 const ic = (name, cls = '') => `<svg class="ic ${cls}" viewBox="0 0 24 24" aria-hidden="true">${ICONS[name]}</svg>`;
 
 // Version und Erstellungszeitpunkt, werden bei jeder neuen Version angepasst.
 // Versionsnummer Hauptversion.Nebenversion.Korrektur (siehe CHANGELOG.md).
-const APP_VERSION = '1.2.0';
-const APP_BUILT = '07.10.2026 um 15:31';
+const APP_VERSION = '2.0.0';
+const APP_BUILT = '08.10.2026 um 12:57';
 
 const app = document.getElementById('app');
+const side = document.getElementById('side');
 const dlg = document.getElementById('dlg');
 const msg = document.getElementById('msg');
 const fab = document.getElementById('fab');
@@ -406,6 +466,11 @@ let currentTripId = null;
 let searchTerm = '';
 let searchIndex = 0;
 let autosaveTimer = null;
+let searchOpen = false;    // Suchzeile unter der Kopfzeile eingeblendet
+let sideOverlay = false;   // Hochformat: Seitenleiste über den Inhalt gelegt
+let dlgOpener = '';        // Schaltfläche, von der das offene Fenster kommt (bleibt blau hinterlegt)
+let dlgDirty = null;       // Prüft, ob im offenen Fenster etwas geändert wurde
+let emptyPrompted = false; // Ohne Reiselogbuch öffnet sich "Neues Reiselogbuch" einmal von selbst
 
 /* ---------- Datum ---------- */
 
@@ -681,6 +746,24 @@ function insertAtCursor(ta, text, ownLine) {
   ta.value = before + ins + v.slice(pos);
   ta.focus();
   ta.selectionStart = ta.selectionEnd = pos + ins.length;
+  autoGrow(ta);
+}
+
+// Textfeld so hoch wie sein Inhalt (mindestens die eingestellte Höhe).
+function autoGrow(ta) {
+  ta.style.height = 'auto';
+  ta.style.height = (ta.scrollHeight + 2) + 'px';
+}
+const growAll = () => dlg.querySelectorAll('textarea').forEach(autoGrow);
+
+// Datumsfeld so breit wie das Datum, mit kurzem Abstand zum Kalenderzeichen (auf dem iPad gibt es keines).
+const NO_DATE_ICON = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+function fitDate(inp) {
+  const cs = getComputedStyle(inp);
+  const ctx = (fitDate.ctx ||= document.createElement('canvas').getContext('2d'));
+  ctx.font = `${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
+  const w = ctx.measureText(inp.value ? fullDate(inp.value) : '00.00.0000').width;
+  inp.style.width = Math.ceil(w + parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight) + (NO_DATE_ICON ? 6 : 32)) + 'px';
 }
 
 function insertEmoji(ta, emoji) {
@@ -700,6 +783,7 @@ function insertEmoji(ta, emoji) {
   ta.value = before + ins + v.slice(pos);
   ta.focus();
   ta.selectionStart = ta.selectionEnd = before.length + ins.length;
+  autoGrow(ta);
 }
 
 function onLongPress(btn, onLong, onTap) {
@@ -720,9 +804,6 @@ function onLongPress(btn, onLong, onTap) {
 
 /* ---------- Darstellung ---------- */
 
-// Die Schaltfläche zeigt die Aktion: bei Hell 🌙 (dunkel schalten), bei Dunkel ☀️.
-const THEMES = { light: { icon: 'moon', label: 'Dunkel einschalten' }, dark: { icon: 'sun', label: 'Hell einschalten' } };
-
 function applyTheme() {
   document.documentElement.setAttribute('data-theme', db.settings.theme);
 }
@@ -739,6 +820,8 @@ function cycleTheme() {
 function render({ scrollToGap = false } = {}) {
   const trip = getTrip(currentTripId);
   if (!trip) return renderEmpty();
+  emptyPrompted = false;
+  renderSide();
   const today = todayISO();
   const days = tripDays(trip);
   const gap = firstGap(trip);
@@ -778,20 +861,25 @@ function render({ scrollToGap = false } = {}) {
   else progress = `Tag ${days.indexOf(today) + 1} von ${days.length}`;
   progress += ` · ${recorded} erfasst`;
 
-  const theme = THEMES[db.settings.theme];
   const transport = transportText(trip);
   const stays = c.quarter ? quarterStays(trip) : [];
 
   app.innerHTML = `
-    <div class="bar" id="bar">
-      <button id="trips">${ic('book-open')}Reiselogbücher</button>
-      <span class="spacer"></span>
-      <button id="toggleEmpty">${db.settings.hideEmpty ? ic('list-chevrons-up-down') + 'Leere Tage ein' : ic('fold-vertical') + 'Leere Tage aus'}</button>
-      <button id="theme" title="${theme.label}" aria-label="${theme.label}">${ic(theme.icon)}</button>
-      <button class="primary" id="output">${ic('share')}Ausgabe</button>
-      <span class="searchbox ${term ? 'active' : ''}">${ic('search')}<input type="search" id="search" placeholder="Suchen" value="${esc(searchTerm)}" autocomplete="off" enterkeyhint="search">${term ? `
-        <span class="smeta"><span class="scount" id="scount"></span><button type="button" class="sclear" id="sclear" aria-label="Suche löschen"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M15 9l-6 6M9 9l6 6" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></button></span>` : ''}</span>
-      ${term ? `<span class="navgrp"><button type="button" id="sprev" aria-label="Voriger Treffer">${ic('chevron-up')}</button><button type="button" id="snext" aria-label="Nächster Treffer">${ic('chevron-down')}</button></span>` : ''}
+    <div class="nb" id="bar">
+      <div class="nb1">
+        <span>${sideToggleHtml()}</span>
+        <span class="nb-title">${esc(trip.title)}</span>
+        <span class="r"><span class="grp">
+          <button type="button" id="shareBtn" aria-label="Ausgabe">${ic('share')}</button>
+          <button type="button" id="searchBtn" class="${searchOpen ? 'on' : ''}" aria-label="Suchen">${ic('search')}</button>
+          <button type="button" id="mainMore" aria-label="Mehr">${ic('ellipsis')}</button>
+        </span></span>
+      </div>
+      ${searchOpen ? `<div class="nb2">
+        <span class="searchbox active">${ic('search')}<input type="search" id="search" placeholder="Suchen" value="${esc(searchTerm)}" autocomplete="off" enterkeyhint="search">${term ? `
+          <span class="smeta"><span class="scount" id="scount"></span><button type="button" class="sclear" id="sclear" aria-label="Suche löschen"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M15 9l-6 6M9 9l6 6" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></button></span>` : ''}</span>
+        <span class="navgrp"><button type="button" id="sprev" aria-label="Voriger Treffer" ${term ? '' : 'disabled'}>${ic('chevron-up')}</button><button type="button" id="snext" aria-label="Nächster Treffer" ${term ? '' : 'disabled'}>${ic('chevron-down')}</button></span>
+      </div>` : ''}
     </div>
     <h1>Reiselogbuch – ${esc(trip.title)}</h1>
     <dl class="meta">
@@ -838,15 +926,17 @@ function render({ scrollToGap = false } = {}) {
 
   fab.hidden = false;
   const bar = app.querySelector('#bar');
+  bar.classList.toggle('line', scrollY > 4);
   document.documentElement.style.setProperty('--bar-h', bar.offsetHeight + 'px');
+  bindSideToggle(app);
 
-  app.querySelector('#trips').onclick = openTripsDialog;
-  app.querySelector('#output').onclick = () => openOutputDialog(trip);
-  app.querySelector('#theme').onclick = cycleTheme;
-  app.querySelector('#toggleEmpty').onclick = () => {
-    db.settings.hideEmpty = !db.settings.hideEmpty;
-    save();
+  app.querySelector('#shareBtn').onclick = e => openShareMenu(e.currentTarget, trip);
+  app.querySelector('#mainMore').onclick = e => openMainMenu(e.currentTarget, trip);
+  app.querySelector('#searchBtn').onclick = () => {
+    searchOpen = !searchOpen;
+    if (!searchOpen) { searchTerm = ''; searchIndex = 0; }
     render();
+    if (searchOpen) app.querySelector('#search').focus();
   };
   const search = app.querySelector('#search');
   const refocus = () => {
@@ -854,21 +944,24 @@ function render({ scrollToGap = false } = {}) {
     s.focus();
     s.selectionStart = s.selectionEnd = s.value.length;
   };
-  search.oninput = () => {
-    searchTerm = search.value;
-    searchIndex = 0;
-    render();
-    refocus();
-    showHit(true);
-  };
-  // Eingabetaste springt zum nächsten Treffer (wie in Safari).
-  search.onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); stepHit(1); } };
+  if (search) {
+    search.oninput = () => {
+      searchTerm = search.value;
+      searchIndex = 0;
+      render();
+      refocus();
+      showHit(true);
+    };
+    // Eingabetaste springt zum nächsten Treffer (wie in Safari).
+    search.onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); stepHit(1); } };
+  }
   if (term) {
     app.querySelector('#sclear').onclick = () => { searchTerm = ''; searchIndex = 0; render(); refocus(); };
     app.querySelector('#sprev').onclick = () => stepHit(-1);
     app.querySelector('#snext').onclick = () => stepHit(1);
     showHit(false);
   }
+  markOpener();
   app.querySelectorAll('tbody tr').forEach(tr => tr.onclick = () => openDayDialog(trip, tr.dataset.day));
   app.querySelector('#fazit').onclick = () => openFazitDialog(trip);
   app.querySelector('#kosten').oninput = e => {
@@ -908,18 +1001,197 @@ function stepHit(dir) {
   showHit(true);
 }
 
-// Ohne Reiselogbuch: leere Seite, darüber die Maske "Reiselogbücher" mit leerer Liste (nicht schließbar).
+// Ohne Reiselogbuch: leere Seite mit Hinweis; "Neues Reiselogbuch" öffnet sich einmal von selbst.
 function renderEmpty() {
   fab.hidden = true;
-  app.innerHTML = '';
-  if (!dlg.open) openTripsDialog();
+  searchOpen = false;
+  renderSide();
+  app.innerHTML = `
+    <div class="nb" id="bar"><div class="nb1"><span>${sideToggleHtml()}</span><span></span><span></span></div></div>
+    <div class="emptymain">Noch kein Reiselogbuch angelegt.<br>Mit „plus“ in der Seitenleiste ein neues anlegen.</div>`;
+  bindSideToggle(app);
+  if (!emptyPrompted && !dlg.open) { emptyPrompted = true; openTripDialog(null); }
 }
 
 function showTrip(id) {
   currentTripId = id;
   searchTerm = '';
   searchIndex = 0;
+  searchOpen = false;
   render({ scrollToGap: true });
+}
+
+/* ---------- Seitenleiste ---------- */
+
+// Quer (breiter Bildschirm) steht die Seitenleiste fest links und lässt sich aus- und einblenden;
+// im Hochformat wird sie über den Inhalt gelegt und schließt sich nach der Auswahl wieder.
+const isWide = () => window.innerWidth >= 1100;
+const sideVisible = () => isWide() ? db.settings.sidebar !== false : sideOverlay;
+const sideToggleHtml = () => sideVisible() && isWide() ? ''
+  : `<button type="button" class="round" data-side-toggle aria-label="Seitenleiste einblenden">${ic('panel-left')}</button>`;
+
+function toggleSide() {
+  if (isWide()) { db.settings.sidebar = !sideVisible(); save(); } else sideOverlay = !sideOverlay;
+  render();
+}
+const bindSideToggle = root => root.querySelectorAll('[data-side-toggle]').forEach(b => b.onclick = toggleSide);
+
+function tripState(t, today) {
+  return t.start <= today && today <= t.end ? 'läuft gerade' : t.end < today ? 'beendet' : 'geplant';
+}
+
+// Backup: einmal am Tag sichern; Datum und Uhrzeit des letzten Backups.
+function backedUpToday() {
+  const last = db.settings.lastBackup;
+  return Boolean(last) && new Date(last).toDateString() === new Date().toDateString();
+}
+function lastBackupText() {
+  const last = db.settings.lastBackup;
+  if (!last) return 'Noch kein Backup gesichert.';
+  const d = new Date(last);
+  return `Zuletzt gesichert am ${pad(d.getDate())}.${pad(d.getMonth() + 1)}.${d.getFullYear()} um ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
+function renderSide() {
+  const show = sideVisible();
+  const wide = isWide();
+  side.hidden = !show;
+  side.classList.toggle('over', show && !wide);
+  document.body.classList.toggle('docked', show && wide);
+  document.querySelector('.side-shade')?.remove();
+  if (!show) return;
+  if (!wide) {
+    const shade = document.createElement('div');
+    shade.className = 'side-shade';
+    shade.onclick = () => { sideOverlay = false; render(); };
+    side.before(shade);
+  }
+  const today = todayISO();
+  const trips = [...db.trips].sort((a, b) => b.start.localeCompare(a.start));
+  side.innerHTML = `
+    <div class="side-head"><h2>Reiselogbücher</h2>
+      <span class="grp"><button type="button" id="newTrip" aria-label="Neues Reiselogbuch">${ic('plus')}</button><button type="button" id="sideMore" aria-label="Mehr">${ic('ellipsis')}</button></span>
+      <button type="button" class="round" id="sideHide" aria-label="Seitenleiste ausblenden">${ic('panel-left')}</button>
+    </div>
+    ${trips.length ? trips.map(t => `<button type="button" class="side-row ${t.id === currentTripId ? 'current' : ''}" data-id="${t.id}">
+        <b>${esc(t.title)}</b><small>${fullDate(t.start)} - ${fullDate(t.end)} · ${tripState(t, today)}</small></button>`).join('')
+      : '<div class="side-empty">Noch kein Reiselogbuch angelegt.</div>'}
+    ${trips.length && !backedUpToday() ? `<div class="bhint"><div>Heute noch kein Backup gesichert.<br>${lastBackupText()}</div>
+      <button type="button" id="hintBackup">${ic('save')}Backup sichern</button></div>` : ''}`;
+  side.querySelector('#newTrip').onclick = () => { setOpener('#newTrip'); openTripDialog(null); };
+  side.querySelector('#sideMore').onclick = e => openMenu(e.currentTarget, [
+    { icon: 'save', label: 'Backup sichern', sub: lastBackupText(), disabled: !db.trips.length, act: saveBackup },
+    { icon: 'folder-open', label: 'Backup laden', act: () => importFile.click() },
+    'sep',
+    { note: `Reiselogbuch · Version ${APP_VERSION} · erstellt am ${APP_BUILT}` },
+  ], 'left');
+  side.querySelector('#sideHide').onclick = toggleSide;
+  side.querySelector('#hintBackup')?.addEventListener('click', saveBackup);
+  side.querySelectorAll('[data-id]').forEach(b => b.onclick = () => { sideOverlay = false; showTrip(b.dataset.id); });
+  document.documentElement.style.setProperty('--side-w', side.offsetWidth + 'px');
+}
+
+/* ---------- Menüs und Sprechblasen ---------- */
+
+// Menü oder Sprechblase unter (bzw. über) der Schaltfläche, im Bildschirm gehalten.
+function placeAt(el, anchor, align) {
+  const r = anchor.getBoundingClientRect();
+  const w = el.offsetWidth, h = el.offsetHeight;
+  let left = align === 'right' ? r.right - w : r.left;
+  left = Math.max(12, Math.min(left, innerWidth - w - 12));
+  let top = r.bottom + 8;
+  if (top + h > innerHeight - 12) top = Math.max(12, r.top - h - 8);
+  el.style.left = left + 'px';
+  el.style.top = top + 'px';
+}
+
+// Einträge: { icon, label, sub, red, tick, disabled, act } · 'sep' (Abstand) · { note } (graue Zeile).
+function openMenu(anchor, items, align = 'right') {
+  const host = anchor.closest('dialog') || document.body;
+  const layer = document.createElement('div');
+  layer.className = 'layer';
+  const menu = document.createElement('div');
+  menu.className = 'menu';
+  menu.setAttribute('role', 'menu');
+  menu.innerHTML = items.map((it, i) => it === 'sep' ? '<div class="sep"></div>'
+    : it.note ? `<div class="note">${esc(it.note)}</div>`
+    : `<button type="button" class="mi ${it.red ? 'red' : ''} ${it.sub ? 'has-sub' : ''}" data-i="${i}" ${it.disabled ? 'disabled' : ''} role="menuitem">${
+        'tick' in it ? `<span class="tick">${it.tick ? ic('check') : ''}</span>` : ic(it.icon)}${esc(it.label)}</button>${
+        it.sub ? `<div class="sub">${esc(it.sub)}</div>` : ''}`).join('');
+  anchor.classList.add('on');
+  const close = () => { layer.remove(); menu.remove(); anchor.classList.remove('on'); };
+  layer.onclick = close;
+  menu.querySelectorAll('[data-i]').forEach(b => b.onclick = () => { close(); items[b.dataset.i].act(); });
+  host.append(layer, menu);
+  placeAt(menu, anchor, align);
+}
+
+// Abfrage als Sprechblase an der angetippten Schaltfläche; daneben tippen bricht ab.
+function confirmPop(anchor, html, act, back = { label: 'Abbrechen', icon: 'ban', red: true }) {
+  return new Promise(resolve => {
+    const visible = anchor?.isConnected && anchor.getClientRects().length;
+    const host = (visible && anchor.closest('dialog')) || (dlg.open ? dlg : document.body);
+    const layer = document.createElement('div');
+    layer.className = 'layer';
+    const pop = document.createElement('div');
+    pop.className = 'pop';
+    pop.innerHTML = `<p>${html}</p><div class="btns">
+      <button type="button" class="${act.cls || 'danger'}" data-v="1">${ic(act.icon)}${esc(act.label)}</button>
+      <button type="button" data-v="0">${ic(back.icon, back.red ? 'red' : '')}${esc(back.label)}</button></div>`;
+    if (visible) anchor.classList.add('on');
+    const done = v => { layer.remove(); pop.remove(); if (visible) anchor.classList.remove('on'); resolve(v); };
+    layer.onclick = () => done(false);
+    pop.querySelectorAll('[data-v]').forEach(b => b.onclick = () => done(b.dataset.v === '1'));
+    host.append(layer, pop);
+    if (visible) placeAt(pop, anchor, anchor.getBoundingClientRect().left > innerWidth / 2 ? 'right' : 'left');
+    else { pop.style.left = (innerWidth - pop.offsetWidth) / 2 + 'px'; pop.style.top = '120px'; }
+  });
+}
+
+// Mehr-Menü der Hauptansicht.
+function openMainMenu(anchor, trip) {
+  const dark = db.settings.theme === 'dark';
+  const setHide = v => { db.settings.hideEmpty = v; save(); render(); };
+  openMenu(anchor, [
+    { tick: !db.settings.hideEmpty, label: 'Alle Tage', act: () => setHide(false) },
+    { tick: db.settings.hideEmpty, label: 'Nur erfasste Tage', act: () => setHide(true) },
+    'sep',
+    { icon: 'settings', label: 'Einstellungen', act: () => { setOpener('#mainMore'); openTripDialog(trip); } },
+    { icon: dark ? 'sun' : 'moon', label: dark ? 'Modus hell' : 'Modus dunkel', act: cycleTheme },
+    'sep',
+    { icon: 'trash', label: 'Reiselogbuch löschen', red: true, act: () => deleteTrip(trip) },
+  ]);
+}
+
+async function deleteTrip(trip) {
+  const yes = await confirmPop(app.querySelector('#mainMore'),
+    `„${esc(trip.title)}“ mit allen Einträgen löschen? Das kann nicht rückgängig gemacht werden. Tipp: Vorher ein Backup sichern.`,
+    { label: 'Reiselogbuch löschen', icon: 'trash' });
+  if (!yes) return;
+  db.trips = db.trips.filter(x => x.id !== trip.id);
+  save();
+  showTrip(pickStartTrip()?.id);
+}
+
+// Teilen-Menü: Vorschau, HTML, PDF; darunter Zahl der erfassten Tage und Dateiname.
+function openShareMenu(anchor, trip) {
+  const count = tripDays(trip).filter(iso => isRecorded(trip, iso)).length;
+  openMenu(anchor, [
+    { icon: 'eye', label: 'Vorschau', act: () => { setOpener('#shareBtn'); openPreview(trip); } },
+    { icon: 'file-code', label: 'HTML', sub: 'Im Teilen-Menü „In Dateien sichern“ wählen', act: () => exportHtml(trip) },
+    { icon: 'file-text', label: 'PDF', sub: 'Im Drucken-Menü Teilen, dann „In Dateien sichern“', act: () => exportPdf(trip) },
+    'sep',
+    { note: `${count} erfasste${count === 1 ? 'r Tag' : ' Tage'} · Dateiname: ${outputName(trip, (trip.outputCounter || 0) + 1)}` },
+  ]);
+}
+
+// Die Schaltfläche, von der ein Fenster kommt, bleibt blau hinterlegt, solange es offen ist.
+function setOpener(sel) {
+  dlgOpener = sel;
+  markOpener();
+}
+function markOpener() {
+  if (dlgOpener) document.querySelector(dlgOpener)?.classList.add('on');
 }
 
 document.getElementById('toTop').innerHTML = ic('arrow-up-to-line');
@@ -929,28 +1201,21 @@ document.getElementById('toEnd').onclick = () => window.scrollTo({ top: document
 
 /* ---------- Meldungen und Sicherheitsabfragen ---------- */
 
-// Eigene Fenster statt alert/confirm, damit die Schaltflächen deutsch beschriftet sind.
-function messageBox(title, html, buttons) {
+// Kleines Fenster mit rundem x; Abfragen mit Entscheidung sind Sprechblasen (confirmPop).
+function inform(title, html) {
   return new Promise(resolve => {
     msg.innerHTML = `
       <form method="dialog">
-        <div class="dlg-head"><h3>${esc(title)}</h3></div>
+        <div class="dlg-head"><div class="hl"><button type="button" class="round" data-x aria-label="Schließen">${ic('x')}</button></div>
+          <div class="mid"><h3>${esc(title)}</h3></div><div class="hr"></div></div>
         <div class="dlg-body"><div class="msg-text">${html}</div></div>
-        <div class="dlg-foot">
-          ${buttons.map((b, i) => `${i === buttons.length - 1 ? '<span class="spacer"></span>' : ''}
-            <button type="button" class="${b.cls || ''}" data-v="${b.value}">${b.icon ? ic(b.icon, b.iconCls || '') : ''}${esc(b.label)}</button>`).join('')}
-        </div>
       </form>`;
-    const done = value => { if (msg.open) msg.close(); resolve(value); };
-    msg.querySelectorAll('[data-v]').forEach(b => b.onclick = () => done(b.dataset.v === 'yes'));
-    msg.oncancel = e => { e.preventDefault(); done(false); };
+    const done = () => { if (msg.open) msg.close(); resolve(); };
+    msg.querySelector('[data-x]').onclick = done;
+    msg.oncancel = e => { e.preventDefault(); done(); };
     msg.showModal();
   });
 }
-
-const ask = (title, html, label, danger = false, icon = '') =>
-  messageBox(title, html, [{ label: 'Abbrechen', icon: 'ban', iconCls: 'red', value: 'no' }, { label, icon, value: 'yes', cls: danger ? 'danger' : 'primary' }]);
-const inform = (title, html) => messageBox(title, html, [{ label: 'Schließen', icon: 'x', value: 'no' }]);
 
 /* ---------- Dialoge ---------- */
 
@@ -959,23 +1224,52 @@ function openDialog(html, wide = false) {
   clearInterval(autosaveTimer);
   dlg.classList.toggle('wide', wide);
   dlg.onclose = null;
+  dlgDirty = null;
   dlg.innerHTML = html;
   dlg.returnValue = '';
   if (!dlg.open) dlg.showModal();
   dlg.querySelector('.dlg-body')?.scrollTo(0, 0);
-  dlg.querySelectorAll('[data-act=cancel]').forEach(b => b.onclick = () => dlg.close('cancel'));
+  const x = dlg.querySelector('#dlgX');
+  // x schließt; wurde etwas geändert, fragt eine Sprechblase, ob die Änderungen verworfen werden sollen.
+  if (x) x.onclick = async () => {
+    if (dlgDirty?.() && !await confirmPop(x, 'Die Änderungen in diesem Fenster gehen verloren.',
+      { label: 'Änderungen verwerfen', icon: 'trash' }, { label: 'Weiter bearbeiten', icon: 'pencil' })) return;
+    dlg.close('cancel');
+  };
+  markOpener();
+  growAll();
+  requestAnimationFrame(growAll);
 }
+
+// Kopfzeile der Fenster: rundes x links, Titel (mit grauer Zusatzzeile) in der Mitte,
+// rechts weitere Schaltflächen und das runde Häkchen (grau, bis etwas geändert wurde).
+function dlgHead(title, { sub = '', right = '', check = true } = {}) {
+  return `<div class="dlg-head">
+      <div class="hl"><button type="button" class="round" id="dlgX" aria-label="${check ? 'Abbrechen' : 'Schließen'}">${ic('x')}</button></div>
+      <div class="mid"><h3>${title}</h3><span class="sub" id="dlgSub">${sub}</span></div>
+      <div class="hr">${right}${check ? `<button class="round" value="ok" id="dlgOk" aria-label="Fertig">${ic('check')}</button>` : ''}</div>
+    </div>`;
+}
+
+// Häkchen blau, sobald etwas geändert wurde; Textfelder wachsen mit.
+function refreshOk() {
+  dlg.querySelector('#dlgOk')?.classList.toggle('primary', Boolean(dlgDirty?.()));
+  growAll();
+}
+dlg.addEventListener('input', refreshOk);
+dlg.addEventListener('change', refreshOk);
+dlg.addEventListener('click', () => setTimeout(refreshOk));
+// Escape wirkt wie das x.
+dlg.addEventListener('cancel', e => { e.preventDefault(); dlg.querySelector('#dlgX')?.click(); });
+dlg.addEventListener('close', () => {
+  if (dlg.open) return;
+  if (dlgOpener) document.querySelector(dlgOpener)?.classList.remove('on');
+  dlgOpener = '';
+});
 
 const MOOD_HINT = 'Leiste nach links/rechts wischen für weitere Smileys. Lange drücken entfernt einen Smiley aus der Leiste. ↺ stellt die Standard-Smileys wieder her. Weitere Smileys über die Emoji-Taste der Tastatur.';
 const micButton = id => SpeechRec ? `<button type="button" class="mic" data-mic="${id}" aria-pressed="false" aria-label="Diktieren">${ic('mic')}</button>` : '';
 const micHint = () => SpeechRec ? '' : '<div class="hint" style="margin-top:12px">🎤 Zum Diktieren die Mikrofon-Taste auf der Tastatur verwenden.</div>';
-const autosaveFoot = `
-      <div class="dlg-foot">
-        <button type="button" data-act="cancel">${ic('ban', 'red')}Abbrechen</button>
-        <span class="saved" id="savedInfo"></span>
-        <span class="spacer"></span>
-        <button class="primary" value="ok">${ic('check')}Fertig</button>
-      </div>`;
 
 // Smiley-Schnellauswahl: Antippen fügt ein, lange drücken entfernt, ↺ setzt zurück.
 function mountMoodRow(row, ta, onReset, kind = 'mood') {
@@ -996,15 +1290,15 @@ function mountMoodRow(row, ta, onReset, kind = 'mood') {
     requestAnimationFrame(fade);
     row.querySelectorAll('[data-m]').forEach(b => onLongPress(b,
       async () => {
-        if (!await ask('Smiley entfernen', `${b.dataset.m} aus der Schnellauswahl entfernen?`, 'Entfernen')) return;
+        if (!await confirmPop(b, `${b.dataset.m} aus der Schnellauswahl entfernen?`, { label: 'Entfernen', icon: 'trash' })) return;
         db[set.hidden].push(b.dataset.m);
         delete db[set.usage][b.dataset.m];
         save();
         draw();
       },
       () => insertEmoji(ta, b.dataset.m)));
-    row.querySelector('.reset').onclick = async () => {
-      if (!await ask('Smileys zurücksetzen', 'Standard-Smileys wiederherstellen und alle Zähler auf null setzen?', 'Zurücksetzen')) return;
+    row.querySelector('.reset').onclick = async e => {
+      if (!await confirmPop(e.currentTarget, 'Standard-Smileys wiederherstellen und alle Zähler auf null setzen?', { label: 'Zurücksetzen', icon: 'rotate-ccw' })) return;
       db[set.usage] = {};
       db[set.hidden] = [];
       onReset();
@@ -1038,77 +1332,6 @@ function mountMics() {
   return () => recognition?.stop();
 }
 
-// Reiseliste: öffnen, bearbeiten (Stift), neu anlegen, Backup.
-function openTripsDialog() {
-  const today = todayISO();
-  const trips = [...db.trips].sort((a, b) => b.start.localeCompare(a.start));
-  openDialog(`
-    <form method="dialog">
-      <div class="dlg-head"><h3>Reiselogbücher</h3></div>
-      <div class="dlg-body">
-        ${trips.length ? '' : '<p class="muted" style="margin:14px 0 0">Noch kein Reiselogbuch angelegt.</p>'}
-        ${trips.map(t => {
-          const state = t.start <= today && today <= t.end ? 'läuft gerade' : t.end < today ? 'beendet' : 'geplant';
-          return `<div class="trip-row">
-              <button type="button" class="choice ${t.id === currentTripId ? 'current' : ''}" data-id="${t.id}">
-                <strong>${esc(t.title)}</strong>
-                <span class="per"><span>${fullDate(t.start)} -</span> <span>${fullDate(t.end)}</span></span>
-                <span class="st">${state}</span>
-              </button>
-              <button type="button" class="edit" data-edit="${t.id}" aria-label="Reiselogbuch bearbeiten">${ic('pencil')}</button>
-            </div>`;
-        }).join('')}
-        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:24px">
-          <button type="button" id="exportAll" ${trips.length ? '' : 'disabled'}>${ic('save')}Backup sichern</button>
-          <button type="button" id="importAll">${ic('folder-open')}Backup laden</button>
-          <span class="spacer"></span>
-          <button type="button" class="primary" id="newTrip">${ic('plus')}Neues Reiselogbuch anlegen</button>
-        </div>
-        <div class="hint">Das Backup enthält alle Reiselogbücher. Im Teilen-Menü „In Dateien sichern“ wählen.
-          ${db.settings.lastBackup ? `Letztes Backup: ${new Date(db.settings.lastBackup).toLocaleString('de-DE', { dateStyle: 'medium', timeStyle: 'short' })}` : 'Noch kein Backup gesichert.'}</div>
-      </div>
-      <div class="dlg-foot">
-        <button type="button" class="iconbtn" id="appInfo" aria-label="Version anzeigen" aria-expanded="false">${ic('info')}</button>
-        <span class="hint" id="appVer" style="margin:0" hidden>Reiselogbuch · Version ${APP_VERSION} · erstellt am ${APP_BUILT}</span>
-        <span class="spacer"></span>
-        <button type="button" data-act="cancel" ${trips.length ? '' : 'disabled'}>${ic('x')}Schließen</button>
-      </div>
-    </form>`);
-  dlg.querySelector('#newTrip').onclick = () => openTripDialog(null);
-  dlg.querySelectorAll('[data-id]').forEach(b => b.onclick = () => { dlg.close(); showTrip(b.dataset.id); });
-  dlg.querySelectorAll('[data-edit]').forEach(b => b.onclick = () => openTripDialog(getTrip(b.dataset.edit)));
-  dlg.querySelector('#exportAll').onclick = saveBackup;
-  dlg.querySelector('#importAll').onclick = () => importFile.click();
-  dlg.querySelector('#appInfo').onclick = e => {
-    const v = dlg.querySelector('#appVer');
-    v.hidden = !v.hidden;
-    e.currentTarget.setAttribute('aria-expanded', String(!v.hidden));
-  };
-  layoutTripRows();
-}
-
-// Spaltenbreiten der Reiselogbuch-Liste: Zeitraum und Status stehen rechts untereinander; ist ein Titel zu lang,
-// bricht er um und der Zeitraum steht ebenfalls zweizeilig ("von -" / "bis").
-function layoutTripRows() {
-  const btns = [...dlg.querySelectorAll('.trip-row .choice')];
-  if (!btns.length) return;
-  btns.forEach(b => b.classList.remove('two'));
-  const width = el => {
-    const m = el.cloneNode(true);
-    m.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap;width:auto';
-    btns[0].append(m);
-    const w = Math.ceil(m.getBoundingClientRect().width);
-    m.remove();
-    return w;
-  };
-  const max = sel => Math.max(...btns.map(b => width(b.querySelector(sel))));
-  const pw = max('.per'), sw = max('.st');
-  // Der Titel nimmt den freien Platz ein, Zeitraum und Status stehen rechts angeschlagen.
-  btns.forEach(b => { b.style.gridTemplateColumns = `minmax(0, 1fr) ${pw}px ${sw}px`; });
-  btns.forEach(b => b.classList.toggle('two', b.querySelector('strong').offsetHeight > 30));
-}
-addEventListener('resize', () => { if (dlg.open) layoutTripRows(); });
-
 // Reise anlegen oder bearbeiten; überschneidende Zeiträume werden verhindert.
 function openTripDialog(trip) {
   const isNew = !trip;
@@ -1116,7 +1339,7 @@ function openTripDialog(trip) {
   const transport = new Set(t.transport);
   openDialog(`
     <form method="dialog">
-      <div class="dlg-head"><h3>${isNew ? 'Neues Reiselogbuch' : 'Reiselogbuch bearbeiten'}</h3></div>
+      ${dlgHead(isNew ? 'Neues Reiselogbuch' : 'Einstellungen')}
       <div class="dlg-body">
         <div class="step"><label for="fTitle">Reisetitel</label>
           <input type="text" id="fTitle" value="${esc(t.title)}" placeholder="z. B. Australien">
@@ -1125,9 +1348,9 @@ function openTripDialog(trip) {
           <input type="text" id="fPeople" value="${esc(t.participants)}" placeholder="z. B. Gerhild & Arnold">
           <div class="warn" id="peopleWarn" hidden></div></div>
         <div class="step"><label>Reisezeitraum</label>
-          <div style="display:flex;gap:10px">
-            <input type="date" id="fStart" value="${t.start}" aria-label="Von">
-            <input type="date" id="fEnd" value="${t.end}" aria-label="Bis">
+          <div class="dates">
+            <span class="dl">Von</span><input type="date" id="fStart" value="${t.start}" aria-label="Von">
+            <span class="dl">Bis</span><input type="date" id="fEnd" value="${t.end}" aria-label="Bis">
           </div>
           <div class="warn" id="tripWarn" hidden></div>
         </div>
@@ -1140,9 +1363,9 @@ function openTripDialog(trip) {
         <div class="step"><label>Konfiguration Tabellenspalten</label>
           <div class="hint" style="margin:0 0 6px">Die Spalten „Tag“ und „Programm“ werden immer angezeigt.</div>
           <div class="swlist">
-            <label class="check sw"><input type="checkbox" id="fMood" ${t.moodColumn !== false ? 'checked' : ''}> 🙂☹️😉 Spalte Wie war was?</label>
-            <label class="check sw"><input type="checkbox" id="fFood" ${t.foodColumn ? 'checked' : ''}> 🍽️🍷☕️ Spalte Essen und Trinken</label>
-            <label class="check sw"><input type="checkbox" id="fQuarterCol" ${t.quarterColumn !== false ? 'checked' : ''}> 😴💤 Spalte Quartier</label>
+            <label class="check sw"><input type="checkbox" id="fMood" ${t.moodColumn !== false ? 'checked' : ''}> Spalte 🙂☹️😉 ‚Wie war was?‘</label>
+            <label class="check sw"><input type="checkbox" id="fFood" ${t.foodColumn ? 'checked' : ''}> Spalte 🍽️🍷☕️ ‚Essen und Trinken‘</label>
+            <label class="check sw"><input type="checkbox" id="fQuarterCol" ${t.quarterColumn !== false ? 'checked' : ''}> Spalte 😴💤 ‚Quartier‘</label>
           </div>
           <div class="hint">Ausgeblendete Spalten fehlen in Tabelle, Tageserfassung und Ausgabe. Vorhandene Einträge bleiben erhalten.</div>
         </div>
@@ -1150,14 +1373,6 @@ function openTripDialog(trip) {
           <div class="swlist" style="margin:0"><label class="check sw"><input type="checkbox" id="fQuarterList" ${t.quarterList ? 'checked' : ''}> Quartierliste in der Ausgabe</label></div>
           <div class="hint">Am Ende der Ausgabe: alle Quartiere mit Zeitraum, Anzahl Nächte und Maps-Link. Nur mit Spalte Quartier.</div>
         </div>
-        ${isNew ? '' : `<div style="margin-top:24px">
-          <button type="button" class="danger" id="deleteTrip">${ic('trash', 'red')}Reiselogbuch löschen</button>
-        </div>`}
-      </div>
-      <div class="dlg-foot">
-        <button type="button" data-act="cancel">${ic('ban', 'red')}Abbrechen</button>
-        <span class="spacer"></span>
-        <button class="primary" value="ok" id="okTrip">${ic('check')}Fertig</button>
       </div>
     </form>`);
 
@@ -1165,13 +1380,15 @@ function openTripDialog(trip) {
   const fStart = dlg.querySelector('#fStart');
   const fEnd = dlg.querySelector('#fEnd');
   const warn = dlg.querySelector('#tripWarn');
-  const ok = dlg.querySelector('#okTrip');
+  const ok = dlg.querySelector('#dlgOk');
+  fitDate(fStart);
+  fitDate(fEnd);
 
   // Pflichtfelder: Reisetitel, Reiseteilnehmer, Reisezeitraum, Reisemittel – ohne eigene Kennzeichnung.
   // Fehlermeldungen stehen in Rot unter dem jeweiligen Feld (Feld mit rotem Rahmen), aber erst nach einer Eingabe:
   // Titel/Teilnehmer, wenn das Feld leer verlassen oder geleert wurde; Zeitraum, sobald ein Datum geändert oder ein
-  // Titel eingegeben wurde; Reisemittel, wenn das letzte abgewählt wurde. "Fertig" bleibt ausgegraut, solange etwas
-  // fehlt; ein Tippen darauf zeigt alle fehlenden Angaben und scrollt zur ersten.
+  // Titel eingegeben wurde; Reisemittel, wenn das letzte abgewählt wurde. Ein Tippen auf das Häkchen zeigt alle
+  // fehlenden Angaben und scrollt zur ersten; ohne Änderung schließt das Häkchen einfach.
   const fPeople = dlg.querySelector('#fPeople');
   const checks = {
     title: { box: dlg.querySelector('#titleWarn'), fields: [fTitle], touched: false,
@@ -1198,10 +1415,10 @@ function openTripDialog(trip) {
       c.box.hidden = !on;
       c.fields.forEach(f => f.classList.toggle('invalid', on));
     }
-    ok.setAttribute('aria-disabled', String(!valid));
     return valid;
   };
   ok.addEventListener('click', ev => {
+    if (!dlgDirty()) { ev.preventDefault(); dlg.close('cancel'); return; }
     if (validate()) return;
     ev.preventDefault();
     Object.values(checks).forEach(c => { c.touched = true; });
@@ -1217,8 +1434,9 @@ function openTripDialog(trip) {
     validate();
   });
   // Von und Bis gleichen sich an, damit das Ende nie vor dem Beginn liegt.
-  fStart.oninput = () => { checks.dates.touched = true; if (fStart.value && fEnd.value < fStart.value) fEnd.value = fStart.value; validate(); };
-  fEnd.oninput = () => { checks.dates.touched = true; if (fEnd.value && fStart.value > fEnd.value) fStart.value = fEnd.value; validate(); };
+  const dateChanged = () => { checks.dates.touched = true; fitDate(fStart); fitDate(fEnd); validate(); };
+  fStart.oninput = () => { if (fStart.value && fEnd.value < fStart.value) fEnd.value = fStart.value; dateChanged(); };
+  fEnd.oninput = () => { if (fEnd.value && fStart.value > fEnd.value) fStart.value = fEnd.value; dateChanged(); };
   fTitle.oninput = () => { if (fTitle.value.trim()) hadTitle = true; else if (hadTitle) checks.title.touched = true; validate(); };
   fTitle.onblur = () => { checks.title.touched = true; validate(); };
   let hadPeople = Boolean(fPeople.value.trim());
@@ -1236,22 +1454,15 @@ function openTripDialog(trip) {
   fQuarterCol.onchange = syncQuarterList;
   syncQuarterList();
 
-  const del = dlg.querySelector('#deleteTrip');
-  if (del) del.onclick = async () => {
-    const yes = await ask('Reiselogbuch löschen',
-      `„${esc(trip.title)}“ mit allen Einträgen wirklich löschen?<div class="hint">Tipp: Vorher ein Backup sichern. Das Löschen kann nicht rückgängig gemacht werden.</div>`,
-      'Löschen', true, 'trash');
-    if (!yes) return;
-    db.trips = db.trips.filter(x => x.id !== trip.id);
-    save();
-    // Die Maske "Reiselogbücher" bleibt offen; der Hintergrund wechselt bei Bedarf auf die Startreise.
-    showTrip(currentTripId === trip.id ? pickStartTrip()?.id : currentTripId);
-    openTripsDialog();
-  };
+  // Geändert: Vergleich mit dem Stand beim Öffnen.
+  const state = () => JSON.stringify([fTitle.value, fPeople.value, fStart.value, fEnd.value, [...transport].sort(),
+    ...['#fMood', '#fFood', '#fQuarterCol', '#fQuarterList'].map(id => dlg.querySelector(id).checked)]);
+  const initial = state();
+  dlgDirty = () => state() !== initial;
 
-  // Abbrechen führt zurück zur Liste; Fertig öffnet ein neues Reiselogbuch bzw. führt nach dem Bearbeiten zur Liste.
+  // x schließt; das Häkchen legt ein neues Reiselogbuch an bzw. übernimmt die Einstellungen.
   dlg.onclose = () => {
-    if (dlg.returnValue !== 'ok' || !validate()) return openTripsDialog();
+    if (dlg.returnValue !== 'ok' || !validate()) return render();
     const target = trip || { id: uid(), days: {}, fazit: '', kosten: null, outputCounter: 0 };
     target.title = fTitle.value.trim();
     target.participants = dlg.querySelector('#fPeople').value.trim();
@@ -1266,7 +1477,6 @@ function openTripDialog(trip) {
     save();
     if (isNew) return showTrip(target.id);
     render();
-    openTripsDialog();
   };
 }
 
@@ -1287,11 +1497,9 @@ function openDayDialog(trip, iso) {
 
   openDialog(`
     <form method="dialog">
-      <div class="dlg-head">
-        <button type="button" data-nav="-1" ${isFirst ? 'disabled' : ''}>${ic('chevron-left')}Vortag</button>
-        <h3>${longDayLabel(iso)}</h3>
-        <button type="button" data-nav="1" ${idx >= days.length - 1 ? 'disabled' : ''}>Folgetag${ic('chevron-right')}</button>
-      </div>
+      ${dlgHead(longDayLabel(iso), { right: `<span class="grp">
+        <button type="button" data-nav="-1" ${isFirst ? 'disabled' : ''} aria-label="Vortag">${ic('chevron-left')}</button>
+        <button type="button" data-nav="1" ${idx >= days.length - 1 ? 'disabled' : ''} aria-label="Folgetag">${ic('chevron-right')}</button></span>` })}
       <div class="dlg-body">
         <div class="step">
           <div class="step-head"><label><span class="step-num">1</span>Wetter</label></div>
@@ -1327,7 +1535,6 @@ function openDayDialog(trip, iso) {
         </div>
         ${micHint()}
       </div>
-      ${autosaveFoot}
     </form>`, true);
 
   const fProgram = dlg.querySelector('#fProgram');
@@ -1336,7 +1543,7 @@ function openDayDialog(trip, iso) {
   const fPlace = dlg.querySelector('#fPlace');
   const fSame = dlg.querySelector('#fSame');
   const qHint = dlg.querySelector('#qHint');
-  const savedInfo = dlg.querySelector('#savedInfo');
+  const savedInfo = dlg.querySelector('#dlgSub');
   let own = { name: same ? '' : (e.quarter || ''), place: same ? '' : (e.place || '') };
   const fFood = dlg.querySelector('#fFoodText');
   let lastComment = e.comment || '';
@@ -1418,7 +1625,7 @@ function openDayDialog(trip, iso) {
     if (next) trip.days[iso] = next; else delete trip.days[iso];
     if (save()) {
       lastSnapshot = snapshot;
-      savedInfo.textContent = `Gespeichert ${nowStamp().time}`;
+      savedInfo.textContent = `Automatisch gespeichert um ${nowStamp().time}`;
     }
   };
 
@@ -1430,6 +1637,8 @@ function openDayDialog(trip, iso) {
   };
 
   autosaveTimer = setInterval(persist, AUTOSAVE_MS);
+  const initialDay = JSON.stringify(collect());
+  dlgDirty = () => JSON.stringify(collect()) !== initialDay;
 
   dlg.querySelectorAll('[data-nav]').forEach(b => b.onclick = () => {
     stopMic();
@@ -1450,7 +1659,7 @@ function openFazitDialog(trip) {
   const original = trip.fazit || '';
   openDialog(`
     <form method="dialog">
-      <div class="dlg-head"><h3>Fazit</h3></div>
+      ${dlgHead('Fazit')}
       <div class="dlg-body">
         <div class="step">
           <div class="step-head"><label for="fFazit">Was bleibt von dieser Reise?</label>${micButton('fFazit')}</div>
@@ -1460,11 +1669,11 @@ function openFazitDialog(trip) {
         </div>
         ${micHint()}
       </div>
-      ${autosaveFoot}
     </form>`);
 
   const ta = dlg.querySelector('#fFazit');
-  const savedInfo = dlg.querySelector('#savedInfo');
+  const savedInfo = dlg.querySelector('#dlgSub');
+  dlgDirty = () => ta.value.trim() !== original.trim();
   let lastSaved = original;
   mountMoodRow(dlg.querySelector('#moods'), ta, () => { lastSaved = ta.value.trim(); });
   const stopMic = mountMics();
@@ -1475,7 +1684,7 @@ function openFazitDialog(trip) {
     countMoods(lastSaved, value);
     lastSaved = value;
     trip.fazit = value;
-    if (save()) savedInfo.textContent = `Gespeichert ${nowStamp().time}`;
+    if (save()) savedInfo.textContent = `Automatisch gespeichert um ${nowStamp().time}`;
   };
   const restore = () => {
     countMoods(lastSaved, original);
@@ -1629,7 +1838,6 @@ function outputBody(trip, version, stamp) {
 
 /* ---------- Speichern über das Teilen-Menü ---------- */
 
-const DAY_MS = 24 * 60 * 60 * 1000;
 
 function outputDocument(trip, version, stamp) {
   return `<!doctype html>
@@ -1644,61 +1852,16 @@ function backupFile() {
   return { name: `Ω Backup Reiselogbuch ${nowStamp().file}.json`, type: 'json', content: JSON.stringify(db, null, 2) };
 }
 
-function backupIsOld() {
-  const last = db.settings.lastBackup;
-  return !last || Date.now() - last > DAY_MS;
-}
-
-function openOutputDialog(trip) {
-  const count = tripDays(trip).filter(iso => isRecorded(trip, iso)).length;
-  const nextVersion = (trip.outputCounter || 0) + 1;
-  openDialog(`
-    <form method="dialog">
-      <div class="dlg-head"><h3>Ausgabe</h3></div>
-      <div class="dlg-body">
-        <p class="muted">${count} erfasste${count === 1 ? 'r Tag' : ' Tage'} · Stand jetzt</p>
-        <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
-          <button type="button" id="outPreview">${ic('eye')}Vorschau</button>
-          <button type="button" id="outHtml">${ic('file-code')}HTML-Datei</button>
-          <button type="button" id="outPdf">${ic('file-text')}PDF</button>
-          <button type="button" class="iconbtn" id="outInfo" aria-label="Hinweis anzeigen" aria-expanded="false">${ic('info')}</button>
-        </div>
-        <div class="hint" id="outHint" hidden>HTML-Datei: Teilen-Menü → „In Dateien sichern“.<br>PDF: Drucken-Menü → Teilen → „In Dateien sichern“.</div>
-        <div class="hint" style="margin-top:14px">Dateiname: ${esc(outputName(trip, nextVersion))}</div>
-      </div>
-      <div class="dlg-foot">
-        <span class="spacer"></span>
-        <button type="button" data-act="cancel">${ic('x')}Schließen</button>
-      </div>
-    </form>`);
-  dlg.querySelector('#outInfo').onclick = e => {
-    const hint = dlg.querySelector('#outHint');
-    hint.hidden = !hint.hidden;
-    e.currentTarget.setAttribute('aria-expanded', String(!hint.hidden));
-  };
-  dlg.querySelector('#outPreview').onclick = () => openPreview(trip);
-  dlg.querySelector('#outHtml').onclick = () => exportHtml(trip);
-  dlg.querySelector('#outPdf').onclick = () => exportPdf(trip);
-}
-
 // Vorschau der Ausgabe in der App, immer hell; zeigt die Nummer der nächsten Datei, ohne den Zähler zu erhöhen.
 function openPreview(trip) {
   const version = (trip.outputCounter || 0) + 1;
   openDialog(`
     <form method="dialog">
-      <div class="dlg-head"><div style="flex:1;text-align:center">
-        <h3>Vorschau</h3>
-        <div class="hint" style="margin:0">${esc(outputName(trip, version))}</div>
-      </div></div>
+      ${dlgHead('Vorschau', { sub: esc(outputName(trip, version)), check: false,
+        right: `<span class="grp"><button type="button" class="txt" id="prvPdf">${ic('file-text')}PDF</button><button type="button" class="fill" id="prvShare" aria-label="Teilen">${ic('share')}</button></span>` })}
       <div class="dlg-body preview">
         <style>${OUTPUT_CSS.replace(/\bbody\b/g, '.dlg-body.preview')}.dlg-body.preview { margin: 0; padding: 24px; }</style>
         ${outputBody(trip, version, nowStamp())}
-      </div>
-      <div class="dlg-foot">
-        <button type="button" data-act="cancel">${ic('x')}Schließen</button>
-        <span class="spacer"></span>
-        <button type="button" id="prvPdf">${ic('file-text')}PDF</button>
-        <button type="button" class="primary" id="prvShare">${ic('share')}Teilen</button>
       </div>
     </form>`, true);
   dlg.querySelectorAll('.preview a[href]').forEach(a => { a.target = '_blank'; a.rel = 'noopener'; });
@@ -1716,8 +1879,9 @@ function nextOutput(trip) {
 async function exportHtml(trip) {
   const { version, stamp } = nextOutput(trip);
   const file = { name: `${outputName(trip, version)}.html`, type: 'html', content: outputDocument(trip, version, stamp) };
-  dlg.close();
+  if (dlg.open) dlg.close();
   const result = await shareFiles([file]);
+  dlgOpener = '#shareBtn';
   showOutputResult(`Ausgabe V${pad(version, 3)}`, file.name, result);
 }
 
@@ -1725,6 +1889,7 @@ async function exportHtml(trip) {
 function exportPdf(trip) {
   const { version, stamp } = nextOutput(trip);
   const name = outputName(trip, version);
+  dlgOpener = '#shareBtn';
   showOutputResult(`Ausgabe V${pad(version, 3)}`, name + '.pdf', 'print');
   const oldTitle = document.title;
   printout.innerHTML = `<style>${OUTPUT_CSS.replace(/\bbody\b/g, '#printout')}</style>${outputBody(trip, version, stamp)}`;
@@ -1745,28 +1910,23 @@ const RESULT_TEXT = {
 };
 
 function showOutputResult(title, name, result) {
-  const remind = backupIsOld() && result !== 'aborted' && result !== 'error';
+  const remind = !backedUpToday() && result !== 'aborted' && result !== 'error';
   openDialog(`
     <form method="dialog">
-      <div class="dlg-head"><h3>${esc(title)}</h3></div>
+      ${dlgHead(esc(title), { check: false })}
       <div class="dlg-body">
         <div class="step">${result === 'aborted' || result === 'error' ? '⚠️' : '✅'} ${RESULT_TEXT[result](name)}</div>
         ${remind ? backupReminderHtml() : ''}
-      </div>
-      <div class="dlg-foot">
-        <span class="spacer"></span>
-        <button type="button" data-act="cancel">${ic('x')}Schließen</button>
       </div>
     </form>`);
   bindBackupReminder();
 }
 
 function backupReminderHtml() {
-  const last = db.settings.lastBackup;
-  const since = last ? `Letztes Backup vor ${Math.floor((Date.now() - last) / DAY_MS)} Tag(en).` : 'Noch kein Backup gesichert.';
+  const last = db.settings.lastBackup ? ` ${lastBackupText()}` : '';
   return `<div class="step" id="reminder">
       <strong>💾 Denk daran, auch ein Backup zu sichern.</strong>
-      <div class="hint">${since}</div>
+      <div class="hint">Heute noch kein Backup gesichert.${last}</div>
       <div style="display:flex;gap:8px;margin-top:10px">
         <button type="button" class="primary" id="backupNow">${ic('save')}Backup sichern</button>
       </div>
@@ -1790,6 +1950,7 @@ async function saveBackup() {
   if (result === 'shared' || result === 'downloaded') {
     db.settings.lastBackup = Date.now();
     save();
+    renderSide();
   }
   const text = `${result === 'aborted' || result === 'error' ? '⚠️' : '✅'} ${RESULT_TEXT[result](file.name)}`;
   if (!dlg.querySelector('#reminder')) inform('Backup', text);
@@ -1832,8 +1993,10 @@ importFile.onchange = async () => {
   try {
     const data = JSON.parse(await file.text());
     if (!Array.isArray(data.trips)) throw new Error('Kein Reiselogbuch-Backup.');
-    const yes = await ask('Backup laden',
-      `Backup mit ${data.trips.length} Reise(n) laden?<div class="hint">Die aktuellen Daten auf diesem iPad werden ersetzt.</div>`, 'Ersetzen', true);
+    const n = data.trips.length;
+    const yes = await confirmPop(side.querySelector('#sideMore'),
+      `Backup mit ${n} Reiselogbu${n === 1 ? 'ch' : 'chern'} laden? Die aktuellen Daten auf diesem iPad werden ersetzt.`,
+      { label: 'Ersetzen', icon: 'folder-open' });
     if (!yes) return;
     db = normalize(data);
     save();
@@ -1847,17 +2010,18 @@ importFile.onchange = async () => {
 
 /* ---------- Start ---------- */
 
-// Ohne Reiselogbuch lässt sich die Maske "Reiselogbücher" nicht schließen (auch nicht mit Escape);
-// wird ein anderes Fenster geschlossen (z. B. "Neues Reiselogbuch" mit Abbrechen), kommt sie wieder.
-dlg.addEventListener('cancel', e => { if (!db.trips.length) e.preventDefault(); });
-dlg.addEventListener('close', () => setTimeout(() => { if (!db.trips.length && !dlg.open) renderEmpty(); }));
-
 applyTheme();
 showTrip(pickStartTrip()?.id);
+// Wechsel quer/hoch: Seitenleiste fest oder darübergelegt; sonst nur Höhen und Breiten nachführen.
+let wasWide = isWide();
 window.addEventListener('resize', () => {
+  if (isWide() !== wasWide) { wasWide = isWide(); sideOverlay = false; render(); return; }
   const bar = document.getElementById('bar');
   if (bar) document.documentElement.style.setProperty('--bar-h', bar.offsetHeight + 'px');
+  if (!side.hidden) document.documentElement.style.setProperty('--side-w', side.offsetWidth + 'px');
 });
+// Beim Scrollen bekommt die Kopfzeile eine Haarlinie.
+window.addEventListener('scroll', () => document.getElementById('bar')?.classList.toggle('line', scrollY > 4), { passive: true });
 
 if ('serviceWorker' in navigator && location.protocol === 'https:') {
   navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).catch(() => {});

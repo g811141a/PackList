@@ -1,8 +1,8 @@
 # Designrichtlinie Reiselogbuch
 
-**Version 1.2.0** · Stand 07.10.2026
+**Version 2.0.0** · Stand 08.10.2026
 
-> **Es gilt die `README - Designrichtlinie allgemein.md` (Version 2.1.0).**
+> **Es gilt die `README - Designrichtlinie allgemein.md` (Version 3.0.0).**
 > Hier stehen nur **Abweichungen** (bewusst anders als dort) und **Ausprägungen**
 > (konkrete Ausgestaltung einer allgemeinen Regel für das Reiselogbuch).
 > Die vollständige Funktionsbeschreibung steht in `PROMPT.md`.
@@ -18,22 +18,23 @@
 ## 1. Begriffe — Ausprägung
 
 - App-Name „Reiselogbuch“; der Begriff „Reisetagebuch“ kommt nicht vor.
-- Liste: „Reiselogbücher“; Fenster „Neues Reiselogbuch“ / „Reiselogbuch bearbeiten“;
-  Schaltflächen „Neues Reiselogbuch anlegen“, „Reiselogbuch löschen“.
+- Seitenleiste: „Reiselogbücher“; Fenster „Neues Reiselogbuch“ (über plus) und
+  „Einstellungen“ (Mehr-Menü); Menüpunkt „Reiselogbuch löschen“.
 - Überschrift in App und Ausgabe: „Reiselogbuch – <Titel>“.
 - Erfassungsschritte: „Wetter“, „Programm“, „Wie war was?“, „Essen und Trinken“, „Quartier“.
 - Options-Kapseln (Tageserfassung): „Quartier wie Vortag“, „keinen Google-Maps Link“; Schalter (Bearbeiten):
   „Quartierliste in der Ausgabe“.
-- Blättern in der Tageserfassung: „Vortag“ / „Folgetag“.
-- Ein-/Ausblenden: „Leere Tage aus“ / „Leere Tage ein“ (zeigt die Aktion).
-- Leere Liste: „Noch kein Reiselogbuch angelegt.“
+- Blättern in der Tageserfassung: chevron-left / chevron-right (Vortag / Folgetag, nur Icon).
+- Filter im Mehr-Menü: „Alle Tage“ / „Nur erfasste Tage“ (Häkchen vor der Auswahl).
+- Leer: „Noch kein Reiselogbuch angelegt.“ (Seitenleiste) bzw. zusätzlich „Mit „plus“ in der
+  Seitenleiste ein neues anlegen.“ (Inhalt).
 
 ## 2. Icons und Emojis — Ausprägung
 
 | Aktion | Lucide-Icon |
 |---|---|
-| Reiselogbücher | `book-open` |
-| Leere Tage aus / ein | `fold-vertical` / `list-chevrons-up-down` |
+| Ausgabe (Teilen-Menü) | `share` |
+| Einstellungen des Reiselogbuchs | `settings` |
 
 Emojis als Inhalt: Wetter ☀️ 🌤 🌦 🌧 ☁️ ⛈ ❄️ · Reisemittel 🚗 🚆 🚲 ✈️ 🚙 🚢 🚐 🚶 ·
 📍 vor Maps-Links (nur Zeichen, verlinkt ist nur der Name; Ort nach Komma) ·
@@ -42,9 +43,16 @@ Spaltenköpfe 🙂☹️😉 (Wie war was?), 🍽️🍷☕️ (Essen und Trinke
 
 ## 3. Hauptansicht — Ausprägung
 
-- Obere Leiste (Komponente Leiste): Reiselogbücher · (Abstand) · Leere Tage · Dunkel/Hell ·
-  Ausgabe (Hauptaktion, blau) · Suchfeld (Komponente) mit Treffer-Navigation. Die Suche
-  durchsucht Programm und die sichtbaren Spalten der Tagestabelle.
+- **Seitenleiste** (Komponente): Reiselogbücher, zuletzt beginnende Reise zuerst; je Eintrag
+  Titel · „TT.MM.JJJJ - TT.MM.JJJJ · läuft gerade / beendet / geplant“. Unten der
+  Backup-Hinweis „Heute noch kein Backup gesichert. Zuletzt gesichert am …“ mit
+  „Backup sichern“. Mehr-Menü: Backup sichern · Backup laden · Versionszeile.
+- **Kopfzeile** (Komponente): Titel der Reise; Kapsel [share | search | ellipsis].
+  - share → Menü: Vorschau · HTML · PDF (jeweils mit grauem Hinweis), darunter
+    „N erfasste Tage · Dateiname: …“.
+  - search → Suchzeile; die Suche durchsucht Programm und die sichtbaren Spalten.
+  - ellipsis → Mehr-Menü: Alle Tage / Nur erfasste Tage · Einstellungen · Modus dunkel/hell ·
+    Reiselogbuch löschen (rot, Sprechblase mit Tipp zum Backup).
 - Darunter: Überschrift, Reiseteilnehmer, Reisezeitraum, Reisemittel und
   Fortschrittsanzeige („Tag 42 von 80 · 38 erfasst“).
 - Tagestabelle: Tag · Programm · sichtbare konfigurierte Spalten. Die erste Lücke ist
@@ -54,7 +62,8 @@ Spaltenköpfe 🙂☹️😉 (Wie war was?), 🍽️🍷☕️ (Essen und Trinke
 
 ## 4. Tageserfassung — Ausprägung des Erfassungsfensters
 
-- Kopf: Vortag · Wochentag mit vollem Datum („Sonntag, 04.10.2026“) · Folgetag.
+- Kopfzeile: x · Wochentag mit vollem Datum („Sonntag, 04.10.2026“), darunter
+  „Automatisch gespeichert um hh:mm“ · Kapsel [chevron-left | chevron-right] · Häkchen.
 - Schritte je nach sichtbaren Spalten (2 bis 5).
 - Eingeschaltet (blau getönt mit Haarlinie): gewählte Wetter-Symbole und das Mikrofon während
   der Aufnahme (pulsiert zusätzlich).
@@ -67,21 +76,18 @@ Spaltenköpfe 🙂☹️😉 (Wie war was?), 🍽️🍷☕️ (Essen und Trinke
   Australien“ **nebeneinander in einer Zeile (halb und halb)**, bei schmalem Bildschirm
   untereinander; Link „📍 In Google Maps prüfen“.
 
-## 5. Reiselogbücher — Ausprägung der Liste in Spalten
+## 5. Abfragen — Ausprägung der Sprechblasen
 
-- Spalten: Reisetitel · Reisezeitraum · Status („läuft gerade“, „beendet“, „geplant“).
-- Reihenfolge: zuletzt beginnende Reise zuerst.
-- Zeile unter der Liste: Backup sichern · Backup laden · (Abstand) ·
-  Neues Reiselogbuch anlegen; darunter Hinweis zum Backup mit Zeitpunkt des letzten.
-- Info-Icon in der Fußleiste: „Reiselogbuch · Version X.Y.Z · erstellt am …“.
+- Reiselogbuch löschen (am ellipsis der Kopfzeile) · Backup laden („Ersetzen“, am ellipsis der
+  Seitenleiste) · Smiley entfernen (am Smiley) · Smileys zurücksetzen (am rotate-ccw) ·
+  Änderungen verwerfen (am x). Rote Schaltflächen: „Reiselogbuch löschen“, „Ersetzen“,
+  „Entfernen“, „Zurücksetzen“, „Änderungen verwerfen“.
 
-## 6. Reiselogbuch anlegen / bearbeiten — Ausprägung
+## 6. Neues Reiselogbuch / Einstellungen — Ausprägung
 
-- Gewählte Reisemittel: eingeschaltet (blau getönt mit Haarlinie); „Reiselogbuch löschen“:
-  Löschen (rot gefüllt).
-- Kästen: Reisetitel · Reiseteilnehmer · Reisezeitraum (Von/Bis) · Reisemittel (Chips) ·
-  Konfiguration Tabellenspalten · Quartierliste in der Ausgabe · (beim Bearbeiten)
-  Reiselogbuch löschen.
+- Gewählte Reisemittel: eingeschaltet (blau getönt mit Haarlinie).
+- Kästen: Reisetitel · Reiseteilnehmer · Reisezeitraum („Von“ Datum · „Bis“ Datum) ·
+  Reisemittel (Chips) · Konfiguration Tabellenspalten · Quartierliste in der Ausgabe.
 - Pflichtfelder: Reisetitel, Reiseteilnehmer, Reisezeitraum, mindestens ein Reisemittel.
   Meldungen:
   - „Bitte einen Reisetitel eingeben.“
@@ -91,15 +97,15 @@ Spaltenköpfe 🙂☹️😉 (Wie war was?), 🍽️🍷☕️ (Essen und Trinke
     (das vorgeschlagene Datum kann sich mit einer anderen Reise überschneiden)
   - „Bitte mindestens ein Reisemittel wählen.“
 - Konfiguration Tabellenspalten: Hinweis „Die Spalten „Tag“ und „Programm“ werden immer
-  angezeigt.“; Schalter in Tabellenreihenfolge „🙂☹️😉 Spalte Wie war was?“,
-  „🍽️🍷☕️ Spalte Essen und Trinken“, „😴💤 Spalte Quartier“, beim Anlegen alle
-  eingeschaltet; Hinweis „Ausgeblendete Spalten fehlen in Tabelle, Tageserfassung und
+  angezeigt.“; Schalter in Tabellenreihenfolge „Spalte 🙂☹️😉 ‚Wie war was?‘“,
+  „Spalte 🍽️🍷☕️ ‚Essen und Trinken‘“, „Spalte 😴💤 ‚Quartier‘“ (einfache
+  Anführungszeichen), beim Anlegen alle eingeschaltet; Hinweis „Ausgeblendete Spalten fehlen in Tabelle, Tageserfassung und
   Ausgabe. Vorhandene Einträge bleiben erhalten.“ Ohne Spalte Quartier ist
   „Quartierliste in der Ausgabe“ ausgegraut.
 
 ## 7. Ausgabe — Ausprägung
 
-- Fenster „Ausgabe“: Vorschau · HTML-Datei · PDF · Info-Icon; Dateiname als Hinweis.
+- Kein eigenes Fenster „Ausgabe“ mehr: Teilen-Menü in der Kopfzeile (Abschnitt 3).
 - Inhalt: Überschrift, Reisedaten, Tagestabelle (nur erfasste Tage, ohne
   Wetter-Platzhalter), danach Fazit · Gesamtkosten · Quartierliste (falls aktiviert) ·
   Statistik · Zeile „Ausgabe V… erstellt am …“.
@@ -112,6 +118,7 @@ Spaltenköpfe 🙂☹️😉 (Wie war was?), 🍽️🍷☕️ (Essen und Trinke
 
 | Version | Datum | Art | Inhalt |
 |---|---|---|---|
+| 2.0.0 | 08.10.2026 | Haupt | Angepasst an allgemein 3.0.0: Seitenleiste Reiselogbücher mit Backup-Hinweis, Kopfzeile mit Kapsel [share \| search \| ellipsis], Teilen-Menü statt Fenster „Ausgabe“, Mehr-Menü (Filter, Einstellungen, Modus, Löschen), Sprechblasen, Fenster „Einstellungen“, Spaltennamen mit einfachen Anführungszeichen, Von/Bis beim Zeitraum |
 | 1.2.0 | 07.10.2026 | Neben | Hotel und Ort in einer Zeile; Farben auf Apple-Blau; Options-Kapseln und Schalter statt Checkboxen |
 | 1.1.0 | 07.10.2026 | Neben | Angepasst an allgemein 2.0.0: Suchfeld mit Treffer-Navigation in der oberen Leiste, eingeschaltete Wetter/Reisemittel/Mikrofon, Löschen rot gefüllt |
 | 1.0.1 | 06.10.2026 | Korrektur | Bereinigt: Verweis auf „allgemein 1.1.0“, keine Wiederholungen, Punkte als Abweichung/Ausprägung gekennzeichnet; allgemeine Regeln in die allgemeine Richtlinie verschoben |

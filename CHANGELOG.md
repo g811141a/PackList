@@ -10,7 +10,36 @@ Versionsnummer **Hauptversion.Nebenversion.Korrektur** (z. B. 1.2.1):
 - **Korrektur** (1.0.1): Fehlerbehebung ohne neue Funktion.
 
 Steigt eine Stufe, beginnen die Stufen dahinter wieder bei 0.
-Die aktuelle Version steht in der App unter „Reiselogbücher“ → Info-Icon.
+Die aktuelle Version steht in der App im Mehr-Menü (ellipsis) der Seitenleiste „Reiselogbücher“.
+
+## 2.0.0 – 08.10.2026 (Hauptversion)
+
+Reiselogbuch 2.0.0 · Designrichtlinie allgemein 3.0.0 · Designrichtlinie Reiselogbuch 2.0.0 · Zusammenarbeit allgemein 1.1.0
+
+Neues Bedienkonzept wie in Apple-Apps. Die Daten bleiben unverändert erhalten.
+
+- Seitenleiste „Reiselogbücher“ statt Fenster: Kapsel [plus | ellipsis] und panel-left;
+  gewähltes Reiselogbuch blau gefüllt; quer fest links (aus-/einblendbar), hoch darübergelegt.
+- Backup-Hinweis unten in der Seitenleiste, solange heute noch nicht gesichert wurde;
+  Mehr-Menü der Seitenleiste mit Backup sichern/laden und Versionszeile.
+- Kopfzeile mit Titel und Kapsel [share | search | ellipsis]; Suche als zweite Zeile über
+  die volle Breite; Tabellenkopf bleibt direkt darunter stehen.
+- Teilen-Menü (Vorschau · HTML · PDF) statt Fenster „Ausgabe“; Mehr-Menü mit Alle Tage /
+  Nur erfasste Tage, Einstellungen, Modus dunkel/hell, Reiselogbuch löschen.
+- Fenster ohne Fußleiste: rundes x links, rundes Häkchen rechts (grau, nach einer Änderung
+  blau); x mit Änderungen fragt „Änderungen verwerfen“ / „Weiter bearbeiten“.
+- Alle Abfragen als Sprechblase an der angetippten Schaltfläche; Meldungen als kleines
+  Fenster mit x.
+- „Reiselogbuch bearbeiten“ heißt jetzt „Einstellungen“; Löschen nur noch im Mehr-Menü;
+  Reisezeitraum mit „Von“/„Bis“ und Datumsfeldern so breit wie das Datum; Spaltennamen
+  „Spalte 🙂☹️😉 ‚Wie war was?‘“ usw.
+- Tageserfassung: Vortag/Folgetag als Kapsel neben dem Häkchen, „Automatisch gespeichert
+  um …“ unter dem Datum; Textfelder wachsen mit dem Inhalt (auch Fazit).
+- Gedrückte Schaltflächen (offenes Menü, Fenster, Sprechblase) bleiben blau getönt.
+- Tabelle bricht nur zwischen ganzen Wörtern um; Text in Schaltflächen mittig zum Icon.
+- Backup-Erinnerung nach der Ausgabe: „Heute noch kein Backup gesichert. Zuletzt gesichert
+  am …“ (einmal am Tag statt alle 24 Stunden).
+- Smiley entfernen und Smileys zurücksetzen bestätigen jetzt rot.
 
 ## 1.2.0 – 07.10.2026 (Nebenversion)
 

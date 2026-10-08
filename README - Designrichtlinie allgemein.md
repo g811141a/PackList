@@ -1,6 +1,6 @@
 # Designrichtlinie allgemein
 
-**Version 2.1.0** · Stand 07.10.2026
+**Version 3.0.0** · Stand 08.10.2026
 
 Allgemeine Gestaltungs- und Bedienregeln für alle iPad-Web-Apps von g811141a.
 Diese Datei liegt vorerst im Repo ReiseLogBuch und **wandert später ins Design-Repo**;
@@ -26,10 +26,14 @@ App-spezifische Regeln stehen in einer eigenen Datei je App
 - Keine Hilfeseite – die Oberfläche ist selbsterklärend; Hinweise bei Bedarf hinter einem
   Info-Icon.
 - Alle Aktionen sind echte Schaltflächen (kein reiner Text als Link).
-- Keine Systemfenster (alert/confirm mit „OK“/„Close“) – alle Meldungen und Abfragen in
-  eigenen Fenstern mit deutschen Schaltflächen.
+- Keine Systemfenster (alert/confirm mit „OK“/„Close“) – Abfragen als **Sprechblase** an der
+  angetippten Schaltfläche, reine Meldungen in einem kleinen Fenster (Abschnitt 15).
 - **Apple-Look** (iPadOS): Hintergrund Hellgrau, Kästen weiß ohne Rand, schwebende Schaltflächen.
-- Bewusst verworfen: eigene Kennzeichnung von Pflichtfeldern; harte, schmale Schatten.
+- **Aufbau wie Apple-Apps:** links eine **Seitenleiste** mit der zentralen Liste, rechts der
+  Inhalt mit einer **Kopfzeile** (Titel in der Mitte, rechts eine Kapsel mit den wichtigsten
+  Aktionen; Weiteres im **Mehr-Menü** ellipsis).
+- Bewusst verworfen: eigene Kennzeichnung von Pflichtfeldern; harte, schmale Schatten;
+  Glas-Leiste (schlechter lesbar).
 
 ## 2. Farben
 
@@ -39,8 +43,8 @@ heller).
 
 | Variable | Hell | Dunkel | Verwendung |
 |---|---|---|---|
-| `--bg` | `#f2f2f7` | `#000000` | Seitenhintergrund, fixierte Leiste |
-| `--card` | `#ffffff` | `#1c1c1e` | Kästen, Tabelle, Eingabefelder (ohne Rand) |
+| `--bg` | `#f2f2f7` | `#000000` | Seitenhintergrund, Kopfzeile |
+| `--card` | `#ffffff` | `#1c1c1e` | Kästen, Tabelle, Eingabefelder (ohne Rand), Seitenleiste, Menüs (dunkel `#2c2c2e`) |
 | `--dlg-bg` / `--dlg-card` / `--dlg-field` | `#f2f2f7` / `#ffffff` / `#ffffff` | `#1c1c1e` / `#2c2c2e` / `#1c1c1e` | Fenster, Kästen im Fenster, Felder im Fenster |
 | `--btn` | `#f9f9f9` | `#3a3a3c` | Fläche der Schaltflächen und Suchfelder |
 | `--btn-rim` | `#ffffff` | `rgba(255,255,255,.16)` | Lichtkante (Haarlinie 0,5 px) |
@@ -51,7 +55,7 @@ heller).
 | `--field-line` | `#c7c7cc` | `#48484a` | Haarlinie um Eingabefelder |
 | `--accent` | `#007aff` | `#0a84ff` | **Akzentfarbe Apple-Blau:** Hauptaktion, Auswahl, Schritt-Nummern, Links, Rahmen und Markierungen |
 | `--accent-ink` | `#ffffff` | `#ffffff` | Text auf Akzentfarbe |
-| `--sel-bg` | `#dcebff` | `#10335c` | Fläche eingeschalteter Schaltflächen und Options-Kapseln |
+| `--sel-bg` | `#dcebff` | `#10335c` | Fläche eingeschalteter und gedrückter Schaltflächen, Options-Kapseln |
 | `--sw-on` / `--sw-off` | `#34c759` / `#e9e9eb` | `#30d158` / `#39393d` | Schalter ein (Apple-Grün) / aus |
 | `--glow-accent` | `0 2px 4px rgba(0,0,0,.10), 0 5px 18px rgba(0,122,255,.50)` | `0 2px 4px rgba(0,0,0,.5), 0 5px 18px rgba(10,132,255,.50)` | leuchtender Schein der Hauptaktion und eingeschalteter Elemente |
 | `--table-shadow` | `0 1px 3px rgba(0,0,0,.12), 0 8px 24px rgba(0,0,0,.12)` | zusätzlich `0 0 0 .5px rgba(255,255,255,.12)`, Schatten `.6` | Schatten um Tabellen |
@@ -64,9 +68,9 @@ heller).
 | `--zebra` | `#f7f7f9` | `#161618` | jede 2. sichtbare Tabellenzeile |
 | `--mark` / `--mark-cur` | `#ffe45c` / `#ffc46b` | `#8a6d00` / `#e08a1e` (schwarze Schrift) | Suchtreffer / Treffer im Fokus |
 
-- Darstellung Hell/Dunkel in **2 Stufen** (kein „Automatisch“); die Schaltfläche zeigt die
-  *Aktion* (moon bei Hell, sun bei Dunkel), nur Icon; die Einstellung wird gemerkt. Beim
-  ersten Start gilt die Systemeinstellung.
+- Darstellung Hell/Dunkel in **2 Stufen** (kein „Automatisch“); im Mehr-Menü als
+  „Modus dunkel“ (moon) bzw. „Modus hell“ (sun) – der Eintrag zeigt die *Aktion*; die
+  Einstellung wird gemerkt. Beim ersten Start gilt die Systemeinstellung.
 
 ## 3. Schrift und Abstände
 
@@ -79,6 +83,7 @@ heller).
   Listeneinträge und Kästen 14 px, Eingabefelder 10 px, Tabelle 12 px, Fenster 18 px.
 - Trennlinien und Feldränder als Haarlinie (0,5 px); Kästen und Tabelle ohne Rand.
 - Keine klassischen Checkboxen: Ein/Aus-Einstellungen als **Schalter**, Optionen beim Erfassen als **Options-Kapsel** (Abschnitt 15).
+- **Text steht in Schaltflächen in der Höhe genau mittig zum Icon** (Zeilenhöhe 20 px wie das Icon).
 
 ## 4. Schaltflächen
 
@@ -89,18 +94,25 @@ heller).
 - **Alle Schaltflächen und Suchfelder schweben** (Komponente „Schwebende Schaltfläche“):
   Fläche `--btn`, Lichtkante `--btn-rim` (0,5 px), Schatten `--float`, Kapselform;
   Icon-Schaltflächen rund. Text-Schaltflächen: Icon links, dann Text (Abstand 6 px).
+- **Mehrere Schaltflächen nebeneinander stehen in einer Kapsel** (Komponente Kapsel).
 - **Farben von Schaltflächen** – jede Farbe hat genau eine Bedeutung:
-  - **Blau gefüllt = Hauptaktion** (je Fenster bzw. Leiste höchstens eine: Fertig, Ausgabe,
-    Neu … anlegen, Teilen): `--accent`, weiße Schrift, Lichtkante, Schatten `--glow-accent`.
+  - **Blau gefüllt = Hauptaktion** – nur **in Fenstern**, höchstens eine je Fenster (z. B.
+    Häkchen nach einer Änderung, Teilen in der Vorschau, Backup sichern in der Erinnerung):
+    `--accent`, weiße Schrift, Lichtkante, Schatten `--glow-accent`. **Menüs und die Kapsel der
+    Kopfzeile werden nicht eingefärbt.**
   - **Blau getönt mit Haarlinie = eingeschaltet** (Umschalt-Schaltflächen wie Wetter,
     Reisemittel, Mikrofon während der Aufnahme): Fläche `--sel-bg`, Haarlinie (0,5 px)
     `--accent`, Schrift normal, Schatten `--glow-accent` (`aria-pressed="true"`). Die Breite
     ändert sich beim Einschalten nicht.
+  - **Blau getönt = gedrückt:** Die Schaltfläche, von der ein offenes Menü, eine Sprechblase
+    oder ein Fenster kommt, ist so lange `--sel-bg` mit Haarlinie `--accent`, wie es offen ist –
+    man sieht, woher man kommt (Klasse `.on`).
   - **Apple-Grün** nur für eingeschaltete **Schalter**.
-  - **Rot gefüllt = Löschen** (endgültige Löschaktionen): `--danger-fill`, weiße Schrift
-    und Icon trash, Schatten `--glow-danger`; separat von den übrigen Aktionen.
+  - **Rot gefüllt = Löschen/Verwerfen** (endgültige Aktionen, z. B. in Sprechblasen):
+    `--danger-fill`, weiße Schrift und Icon, Schatten `--glow-danger`. In Menüs steht
+    „… löschen“ als roter Text mit rotem Icon.
   - Alle übrigen Schaltflächen neutral (schwebend).
-- „Abbrechen“: neutral, nur das Icon ban ist rot.
+- „Abbrechen“ (in Sprechblasen): neutral, nur das Icon ban ist rot.
 - Gesperrte Schaltflächen: ausgegraut (Deckkraft 40 %).
 - Keine Hover-Farbe auf dem iPad – Hover nur in `@media (hover: hover)`.
 - Schaltflächen unten rechts (z. B. nach oben / ans Ende): runde schwebende
@@ -115,62 +127,64 @@ heller).
 
 | Aktion | Lucide-Icon | Darstellung |
 |---|---|---|
-| Fertig | `check` | weiß auf Blau |
-| Voriger / nächster Treffer | `chevron-up` / `chevron-down` | nur Icon, als Kapsel-Gruppe |
-| Abbrechen | `ban` | Icon rot, Text normal |
-| Schließen | `x` | Icon + Text |
-| Löschen | `trash` | weiß auf Rot |
-| Bearbeiten | `pencil` | nur Icon |
-| Neu anlegen | `plus` | blau, Icon + Text |
+| Fertig (Fenster) | `check` | rund, nur Icon; grau, nach einer Änderung weiß auf Blau |
+| Abbrechen / Schließen (Fenster) | `x` | rund, nur Icon, links oben |
+| Seitenleiste aus-/einblenden | `panel-left` | rund, nur Icon |
+| Mehr-Menü | `ellipsis` | nur Icon, in einer Kapsel |
+| Einstellungen | `settings` | im Mehr-Menü |
+| Neu anlegen | `plus` | nur Icon, in einer Kapsel |
+| Teilen / Ausgabe | `share` | **immer nur Icon, nie mit Text** |
+| Suchen | `search` | in der Kapsel und im Suchfeld |
+| Voriger / nächster Treffer | `chevron-up` / `chevron-down` | nur Icon, als Kapsel |
+| Zurück / Weiter (Blättern) | `chevron-left` / `chevron-right` | nur Icon, als Kapsel |
+| Abbrechen (Sprechblase) | `ban` | Icon rot, Text normal |
+| Löschen / Entfernen / Verwerfen | `trash` | weiß auf Rot (Sprechblase), rot (Menü) |
+| Weiter bearbeiten | `pencil` | Icon + Text |
 | Backup sichern / laden | `save` / `folder-open` | Icon + Text |
-| Teilen / Ausgabe | `share` | Icon + Text |
 | Vorschau | `eye` | Icon + Text |
+| HTML / PDF | `file-code` / `file-text` | Icon + Text |
 | Info / Hinweis ein-/ausblenden | `info` | nur Icon |
-| Dunkel / Hell | `moon` / `sun` | nur Icon, zeigt die Aktion |
-| Suchen | `search` | im Suchfeld |
+| Modus dunkel / hell | `moon` / `sun` | im Mehr-Menü, zeigt die Aktion |
 | Nach oben / Ans Ende | `arrow-up-to-line` / `arrow-down-to-line` | nur Icon |
 | Diktieren | `mic` | nur Icon, pulsiert während der Aufnahme |
-| Zurück / Weiter | `chevron-left` / `chevron-right` | Icon + Text |
 | Zurücksetzen | `rotate-ccw` | nur Icon, gedämpft |
-| HTML-Datei / PDF | `file-code` / `file-text` | Icon + Text |
 
-## 6. Begriffe und Fußleiste
+- In Menüs stehen die Icons **vor** dem Text.
 
-- „Fertig“ = Eingaben übernehmen und schließen.
-- „Abbrechen“ = ohne Änderung schließen bzw. Vorgang nicht ausführen.
-- „Schließen“ = Fenster ohne Eingaben schließen (Liste, Info, Vorschau, Meldung).
-- **„Abbrechen“ nur, wenn rechts eine Gegenaktion steht** (Fertig, Löschen, Entfernen …),
-  sonst immer „Schließen“.
-- Lage: links „Abbrechen“, rechts die Gegenaktion. Steht „Schließen“ **allein**, dann
-  **rechts**; stehen rechts Aktionen, steht „Schließen“ **links**.
+## 6. Begriffe
+
+- Fenster haben **keine Fußleiste mehr**: links oben ein rundes x, rechts oben ein rundes
+  Häkchen (Komponente Fenster-Kopfzeile).
+- x = Fenster schließen; wurde etwas geändert, fragt eine Sprechblase „Änderungen
+  verwerfen“ / „Weiter bearbeiten“ (die Eingaben bleiben dann erhalten). So macht es auch
+  Apple (z. B. Kontakte).
+- Häkchen = übernehmen und schließen; ohne Änderung schließt es einfach.
 - Bestätigungen immer mit dem Verb der Aktion: „Löschen“, „Entfernen“, „Zurücksetzen“,
-  „Ersetzen“.
+  „Ersetzen“, „Änderungen verwerfen“.
+- Menüpunkt und Fenster heißen gleich (z. B. „Einstellungen“).
 - Systembeschriftungen (z. B. „Reset“ der iPad-Datumsauswahl) bleiben.
 
 ## 7. Fenster (Dialoge)
 
-- Aufbau: Kopf (Titel zentriert) · Inhalt (scrollbar) · Fußleiste.
+- Aufbau: Kopfzeile (Komponente Fenster-Kopfzeile) · Inhalt (scrollbar).
 - Breite passt sich dem Inhalt an: höchstens 90 % der Bildschirmbreite, Mindestbreite
   480 px. Erfassungs- und Vorschaufenster fast bildschirmbreit (bis 1100 px).
 - Hintergrund `--dlg-bg`, Kästen darin `--dlg-card`, Radius 18 px, Schatten, abgedunkelter
   Hintergrund dahinter.
-- Hinweise und Versionsinfo hinter einem Info-Icon, per Antippen ein-/ausblenden.
-- Versionsinfo in der zentralen Liste der App unten links:
-  „<App> · Version X.Y.Z · erstellt am TT.MM.JJJJ um hh:mm“.
-- Nach Aktionen in einer Liste (Bearbeiten, Löschen, Abbrechen beim Neuanlegen) bleibt
-  bzw. kehrt die App zur Liste zurück, damit dort weitergearbeitet werden kann.
-- Gibt es noch keine Einträge, startet die App mit der leeren Liste und dem grauen Hinweis
-  „Noch kein … angelegt.“; „Schließen“ und nicht sinnvolle Aktionen sind ausgegraut, die
-  Liste lässt sich nicht schließen (auch nicht mit Escape).
-- **Erfassungsfenster** (Einträge erfassen): fast bildschirmbreit; Kopf
-  Zurück (chevron-left) · Titel · Weiter (chevron-right) zum Blättern zwischen Einträgen;
-  Fußleiste Abbrechen (links) · Fertig (rechts); automatisches Speichern (Abschnitt 8).
+- Escape wirkt wie das x.
+- Gibt es noch keinen Eintrag, öffnet sich „Neues …“ einmal von selbst; mit x bleibt die
+  leere Seite mit grauem Hinweis „Noch kein … angelegt.“.
+- **Erfassungsfenster** (Einträge erfassen): fast bildschirmbreit; Kopfzeile x · Titel mit
+  Zusatzzeile „Automatisch gespeichert um hh:mm“ · Kapsel [chevron-left | chevron-right] zum
+  Blättern · Häkchen; automatisches Speichern (Abschnitt 8).
 - **Vorschaufenster**: fast bildschirmbreit, Inhalt immer hell und genau wie die
-  ausgegebene Datei; Kopf „Vorschau“ und darunter klein der Dateiname; Fußleiste
-  Schließen (links) · PDF · Teilen (blau, rechts); nach Teilen bzw. PDF schließt die
-  Vorschau, es folgen Meldung und ggf. Backup-Erinnerung.
+  ausgegebene Datei; Kopfzeile x · „Vorschau“ mit Dateiname als Zusatzzeile · Kapsel
+  [PDF | share blau gefüllt]; nach Teilen bzw. PDF folgt das Ergebnisfenster mit ggf.
+  Backup-Erinnerung.
+- **Meldung** (ohne Entscheidung, z. B. Fehler): kleines Fenster, x links oben, Titel,
+  Text zentriert.
 - Technisch: ein Dialog, dessen Inhalt ausgetauscht wird (nicht schließen und neu öffnen);
-  ein zweiter Dialog nur für Meldungen und Abfragen.
+  ein zweiter Dialog nur für Meldungen.
 
 ## 8. Eingaben, Pflichtfelder und Fehlermeldungen
 
@@ -186,19 +200,22 @@ heller).
 - Beim Öffnen eines Fensters erscheint keine Meldung. Eine Meldung erscheint erst nach
   einer Eingabe: Textfeld leer verlassen oder geleert, Datum geändert, letzte Auswahl
   abgewählt.
-- „Fertig“ bleibt ausgegraut, solange etwas fehlt; **ein Tippen auf das ausgegraute
-  „Fertig“ zeigt alle fehlenden Angaben** und scrollt zur ersten.
+- Das Häkchen ist grau, bis etwas geändert wurde, dann blau. **Ein Tippen auf das Häkchen
+  zeigt alle fehlenden Angaben** (falls etwas fehlt) und scrollt zur ersten.
+- **Textfelder wachsen mit dem Inhalt**; man muss nie innerhalb eines Feldes scrollen.
+- **Datumsfelder sind so breit wie das Datum** (mit kurzem Abstand zum Kalenderzeichen);
+  zwei zusammengehörige Daten mit grauer Beschriftung „Von“ · „Bis“ in einer Zeile.
 - **Smiley-Leisten** (Schnellauswahl über einem Textfeld): nur einzeilig, mit dem Finger
   nach links/rechts wischen, Verlauf am Rand als Hinweis auf weitere Smileys,
   Zurücksetzen (rotate-ccw) fest rechts daneben. Sortiert nach Häufigkeit (meistbenutzte
   vorne), nie benutzte in Standardreihenfolge dahinter. Langes Drücken entfernt einen
-  Smiley (mit Sicherheitsabfrage); wird er wieder verwendet, kommt er zurück.
-  Zurücksetzen stellt die Standard-Smileys her und setzt die Zähler auf null (mit
-  Abfrage). Ein angetippter Smiley wird angehängt, wenn der Cursor in einer leeren Zeile
+  Smiley (Sprechblase „Entfernen“, rot); wird er wieder verwendet, kommt er zurück.
+  Zurücksetzen stellt die Standard-Smileys her und setzt die Zähler auf null (Sprechblase
+  „Zurücksetzen“, rot). Ein angetippter Smiley wird angehängt, wenn der Cursor in einer leeren Zeile
   oder hinter Smileys steht, sonst beginnt eine neue Zeile.
 - Diktieren über eine mic-Schaltfläche am Textfeld (sonst Hinweis auf die Mikrofon-Taste).
-- Automatisches Speichern alle 10 Sekunden in Erfassungsfenstern; „Abbrechen“ stellt den
-  Ausgangszustand wieder her.
+- Automatisches Speichern alle 10 Sekunden in Erfassungsfenstern; „Änderungen verwerfen“
+  (über x) stellt den Zustand beim Öffnen wieder her.
 - Zahlenfelder rechtsbündig, Tausenderpunkt schon beim Tippen.
 
 ## 9. Tabellen (App, HTML und PDF)
@@ -208,18 +225,13 @@ heller).
 - Jede 2. sichtbare Zeile heller (Zebra); gezählt werden nur sichtbare Zeilen; eine
   markierte Zeile bleibt gelb.
 - Trennlinien zwischen allen Spalten.
-- Kopfzeile bleibt beim Scrollen unter der fixierten Leiste stehen.
+- Tabellenkopf bleibt beim Scrollen direkt unter der Kopfzeile stehen.
+- Nur zwischen ganzen Wörtern umbrechen (die Spalte wird so breit wie das längste Wort).
 - Spaltenbreiten passen sich dem Inhalt an; kompakte Tabellen nur so breit wie nötig;
   Zahlenspalten rechtsbündig (Überschrift und Werte).
 - Hängender Einzug: Folgezeilen beginnen unter dem Text, nicht unter Aufzählungszeichen
   oder Emoji.
 - Links ohne Unterstreichung.
-- **Liste in Spalten** (z. B. Liste der Reisen/Projekte): jeder Eintrag als Schaltfläche
-  mit Titel (fett) · Zeitraum · Status (grau). Zeitraum und Status stehen ganz rechts und
-  in allen Einträgen genau untereinander, Status linksbündig; der Titel nutzt den freien
-  Platz davor. Ist ein Titel zu lang, bricht er um und der Zeitraum steht zweizeilig
-  („von -“ / „bis“). Der aktuell geöffnete Eintrag hat einen blauen Rahmen; rechts
-  daneben pencil (44 × 44) zum Bearbeiten. Einzeilige Einträge 44 px hoch.
 - Statistiken bleiben schlichte Listen.
 
 ## 10. Ausgabe, Teilen und Meldungen
@@ -240,9 +252,11 @@ heller).
   - Backup: „Ω Backup <App> JJJJ.MM.TT hh.mm.json“ (ohne Zähler).
 - Datumsformat in Texten TT.MM.JJJJ, in Dateinamen JJJJ.MM.TT, Uhrzeit hh:mm
   (im Dateinamen hh.mm).
-- Sicherheitsabfrage vor jeder Lösch- oder Rücksetz-Aktion.
-- Backup-Erinnerung nur, wenn das letzte Backup älter als 24 Stunden ist; nur ein
-  abgeschlossenes Teilen-Menü zählt als Backup.
+- Sicherheitsabfrage (Sprechblase) vor jeder Lösch-, Ersetz- oder Rücksetz-Aktion.
+- **Backup einmal am Tag:** Wurde heute noch nicht gesichert, steht unten in der
+  Seitenleiste dezent „Heute noch kein Backup gesichert. Zuletzt gesichert am …“ mit der
+  Schaltfläche „Backup sichern“; nach einer Ausgabe erinnert das Ergebnisfenster daran. Nur
+  ein abgeschlossenes Teilen-Menü zählt als Backup.
 
 ## 11. Versionen und Aktualisierung
 
@@ -314,11 +328,12 @@ programmiert (`design.css`, `ui.js`) und von allen Apps übernommen.
 - **Zweck:** Suchen in der aktuellen Ansicht. **Technisch:** `.searchbox`, `.navgrp`.
 - **Aufbau:** Lupe (search) · Eingabe „Suchen“ · Trefferanzeige · x-Schaltfläche;
   rechts daneben Kapsel-Gruppe chevron-up / chevron-down.
-- **Maße:** 44 px hoch, Kapsel; leer 200 px breit, mit Eingabe 300 px; Abstand 12 px.
+- **Maße:** 44 px hoch, Kapsel; in der zweiten Zeile der Kopfzeile über die volle Breite,
+  Treffer-Navigation immer am rechten Rand; Abstand 12 px.
 - **Aussehen:** wie die schwebende Schaltfläche; Lupe, Trefferanzeige grau; x als grauer
   Kreis mit weißem Kreuz.
 - **Zustände:**
-  - leer: nur Lupe und Platzhalter, keine Navigation
+  - leer: nur Lupe und Platzhalter, Pfeile ausgegraut
   - mit Treffern: rechtsbündig „3 von 57“ (ohne das Wort „Treffer“), x; Navigation
     sichtbar; am ersten Treffer chevron-up ausgegraut, am letzten chevron-down
   - ohne Treffer: rechtsbündig „0“, beide Pfeile ausgegraut
@@ -328,41 +343,78 @@ programmiert (`design.css`, `ui.js`) und von allen Apps übernommen.
   zum ersten. x löscht die Eingabe, der Cursor bleibt im Feld. Gefiltert wird auf Einträge
   mit Treffern.
 
-### 15.3 Leiste
-- **Obere Leiste:** fixiert, Hintergrund `--bg`, unten Haarlinie; Schaltflächen
-  schwebend, Abstand 12 px; links die zentrale Liste, rechts Funktionen, Hauptaktion und
-  Suchfeld.
-- **Fußleiste in Fenstern:** Haarlinie oben; Regeln für Abbrechen/Fertig/Schließen
-  siehe Abschnitt 6.
+### 15.3 Kopfzeile
+- **Zweck:** oberste Zeile des Inhalts. **Technisch:** `.nb`.
+- **Aufbau:** links panel-left (nur wenn die Seitenleiste ausgeblendet ist) · Titel in der
+  Mitte (17 px, fett) · rechts eine Kapsel mit den wichtigsten Aktionen, zuletzt ellipsis
+  (Mehr-Menü). Suche: search in der Kapsel blendet eine **zweite Zeile** mit dem Suchfeld
+  über die volle Breite ein, Treffer-Navigation rechts.
+- **Verhalten:** bleibt beim Scrollen oben stehen (Hintergrund `--bg`, beim Scrollen
+  Haarlinie unten); keine Glas-Leiste.
 
-### 15.4 Fenster
-- Typen: **Liste** (z. B. Reiselogbücher), **Erfassung**, **Vorschau**, **Meldung/Abfrage**
+### 15.4 Seitenleiste
+- **Zweck:** zentrale Liste der App. **Technisch:** `#side`.
+- **Aufbau:** Kopf: Überschrift (20 px, fett, linksbündig) · Kapsel [plus | ellipsis] ·
+  runde Schaltfläche panel-left (ausblenden). Darunter die Einträge: Titel fett, darunter
+  grau Zeitraum · Status; gewählter Eintrag blau gefüllt (wie eine Hauptaktion). Unten
+  dezente Hinweise (z. B. Backup).
+- **Maße:** so breit wie Kopf bzw. längster Titel, 340–420 px; Hintergrund `--card`,
+  Haarlinie rechts.
+- **Verhalten:** quer fest links neben dem Inhalt, mit panel-left aus- und einblendbar
+  (wird gemerkt); im Hochformat über den Inhalt gelegt (abgedunkelt dahinter), schließt sich
+  nach der Auswahl.
+- **Mehr-Menü der Seitenleiste:** Backup sichern (darunter grau „Zuletzt gesichert am …“) ·
+  Backup laden · ganz unten grau die Versionszeile „<App> · Version X.Y.Z · erstellt am …“.
+
+### 15.5 Kapsel
+- Mehrere Schaltflächen in einer schwebenden Kapsel (44 px hoch, je Icon 48 px breit);
+  Text-Schaltflächen darin mit Innenabstand 14 px. Technisch `.grp` (`.navgrp`).
+
+### 15.6 Menü
+- **Zweck:** weitere Aktionen hinter ellipsis bzw. Auswahl hinter einer Schaltfläche.
+  **Technisch:** `.menu` (öffnen mit `openMenu`).
+- **Aussehen:** Karte 340 px, Radius 14 px, Lichtkante und Schatten wie die Schaltflächen;
+  Einträge 46 px hoch, Icon **vor** dem Text, Haarlinien; Gruppen durch 8 px Abstand
+  getrennt; Auswahl mit blauem Häkchen vorne; graue Zusatzzeile unter einem Eintrag; graue
+  Notiz ganz unten. Nichts blau eingefärbt, „… löschen“ rot.
+- **Verhalten:** erscheint unter der Schaltfläche (darf über die Seitenleiste
+  hinausragen); die Schaltfläche ist so lange gedrückt (blau getönt); daneben tippen schließt.
+
+### 15.7 Sprechblase (Abfrage)
+- **Zweck:** jede Abfrage mit Entscheidung. **Technisch:** `.pop` (`confirmPop`).
+- **Aufbau:** grauer Text · rote Schaltfläche mit dem Verb der Aktion · darunter der Weg
+  zurück („Abbrechen“ mit rotem ban bzw. „Weiter bearbeiten“ mit pencil); Breite 320 px.
+- **Verhalten:** an der angetippten Schaltfläche (diese ist gedrückt); daneben tippen bricht ab.
+
+### 15.8 Fenster-Kopfzeile
+- **Aufbau:** links rundes x (44 × 44) · Mitte Titel (19 px) mit grauer Zusatzzeile (13 px) ·
+  rechts ggf. eine Kapsel und das runde Häkchen. Häkchen grau, nach einer Änderung blau
+  gefüllt. Technisch `dlgHead()`.
+
+### 15.9 Fenster
+- Typen: **Bearbeiten** (z. B. Neu, Einstellungen), **Erfassung**, **Vorschau**, **Meldung**
   – Aufbau und Verhalten siehe Abschnitt 7.
 
-### 15.5 Kasten (Schritt)
+### 15.10 Kasten (Schritt)
 - Fläche `--dlg-card` bzw. `--card`, Radius 14 px, ohne Rand, Innenabstand 14 px;
   Kopfzeile mit blauer Schritt-Nummer, Titel, rechts Options-Kapseln und Icon-Schaltflächen.
 
-### 15.6 Eingabefeld mit Fehlermeldung
+### 15.11 Eingabefeld mit Fehlermeldung
 - Fläche weiß bzw. `--dlg-field`, Lichtkante `--btn-rim` und Schatten `--float` wie die
   schwebenden Schaltflächen (auch Zahlenfelder wie Gesamtkosten), Radius 10 px, 44 px hoch
   (Textfelder mehrzeilig); Fehler: 1 px roter Rand und rote Meldung darunter
-  (Abschnitt 8).
+  (Abschnitt 8). Textfelder wachsen mit dem Inhalt; Datumsfelder so breit wie das Datum.
 
-### 15.7 Smiley-Leiste
+### 15.12 Smiley-Leiste
 - Siehe Abschnitt 8; Smileys als runde schwebende 44 × 44-Schaltflächen, Abstand 12 px.
 
-### 15.8 Liste in Spalten
-- Siehe Abschnitt 9; Einträge als schwebende Schaltflächen mit Radius 14 px, aktueller
-  Eintrag mit 2 px blauem Rand.
-
-### 15.9 Tabelle
+### 15.13 Tabelle
 - Siehe Abschnitt 9.
 
-### 15.10 Info-Icon mit Hinweis
+### 15.14 Info-Icon mit Hinweis
 - Runde Icon-Schaltfläche `info`; ein Tippen blendet einen grauen Hinweis ein bzw. aus.
 
-### 15.11 Schalter (Einstellungen ein/aus)
+### 15.15 Schalter (Einstellungen ein/aus)
 - **Zweck:** Ein/Aus-Einstellungen, z. B. in Bearbeiten-Fenstern. **Technisch:** `.swlist`,
   `label.check.sw` mit `input[type=checkbox]`.
 - **Aufbau:** Zeile mit Text links und Apple-Schalter rechts; Zeilen 52 px hoch, dazwischen
@@ -370,7 +422,7 @@ programmiert (`design.css`, `ui.js`) und von allen Apps übernommen.
 - **Zustände:** ein = `--sw-on` (Apple-Grün), Knopf rechts; aus = `--sw-off`, Knopf links;
   gesperrt 40 % Deckkraft (Text und Schalter). Kein Schein.
 
-### 15.12 Options-Kapsel (Optionen beim Erfassen)
+### 15.16 Options-Kapsel (Optionen beim Erfassen)
 - **Zweck:** einzelne Ein/Aus-Optionen in der Kopfzeile eines Kastens. **Technisch:**
   `label.check.chip` mit verstecktem `input[type=checkbox]`.
 - **Aussehen:** wie eine schwebende Schaltfläche (Kapsel, 44 px, Schrift 15 px); ein =
@@ -383,6 +435,7 @@ programmiert (`design.css`, `ui.js`) und von allen Apps übernommen.
 
 | Version | Datum | Art | Inhalt |
 |---|---|---|---|
+| 3.0.0 | 08.10.2026 | Haupt | Neues Bedienkonzept wie Apple-Apps: Seitenleiste, Kopfzeile mit Kapsel und Mehr-Menü, Suche als zweite Zeile; Fenster ohne Fußleiste mit rundem x und Häkchen (grau bis zur Änderung); Abfragen als Sprechblase, „Änderungen verwerfen“ beim x; gedrückte Schaltfläche blau getönt; Hauptaktion nur in Fenstern blau; share immer ohne Text; Icons in Menüs vor dem Text; Text mittig zum Icon; Textfelder wachsen mit; Datumsfelder so breit wie das Datum; Backup-Hinweis einmal am Tag; neue Komponenten Kopfzeile, Seitenleiste, Kapsel, Menü, Sprechblase, Fenster-Kopfzeile |
 | 2.1.0 | 07.10.2026 | Neben | Akzentfarbe Apple-Blau (Hauptaktion, Auswahl, Nummern, Links, Rahmen); Auswahl mit Haarlinie ohne Breitenänderung und leuchtenderem Schein; Schatten um Tabellen und bei allen Eingabefeldern; neue Komponenten Schalter (Apple-Grün) und Options-Kapsel statt Checkboxen |
 | 2.0.0 | 07.10.2026 | Haupt | Apple-Look: neue Farben (Hellgrau, Weiß, Apple-Dunkel), schwebende Schaltflächen und Suchfelder, Haarlinien, Abstände 12 px; Farbbedeutungen Grün/Auswahl/Rot; neuer Abschnitt „Komponenten“ (u. a. Suchfeld mit Treffer-Navigation); Zusammenarbeit in eigene Datei ausgelagert |
 | 1.1.0 | 06.10.2026 | Neben | Neu: Regel „allgemein oder App?“ klären, App-Richtlinien nur mit Abweichungen/Ausprägungen; aus der Reiselogbuch-Richtlinie übernommen: Smiley-Leisten, Erfassungsfenster, Vorschaufenster, Liste in Spalten, Ausgabe-Design, Dateinamen-Muster |

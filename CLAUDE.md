@@ -1,6 +1,6 @@
 # Reiselogbuch – Hinweise für Claude
 
-**Version 1.0.0** · Stand 07.10.2026
+**Version 1.1.0** · Stand 08.10.2026
 
 ## Zuerst lesen
 
@@ -26,6 +26,9 @@ Lies zu Beginn jeder Sitzung diese Dateien und halte dich daran:
   mit Übernahme alter Daten (`normalize`).
 - Ausgabe (HTML/PDF) hat eine eigene, immer helle Gestaltung (`.rt`) und ist vom
   Apple-Look der App unabhängig.
+- Bedienung ab 2.0.0: Seitenleiste `#side` (`renderSide`), Kopfzeile `.nb` mit Kapsel,
+  Menüs `openMenu`, Sprechblasen `confirmPop`, Fenster-Kopfzeile `dlgHead` (Häkchen blau über
+  `dlgDirty`), gedrückte Schaltflächen `.on`. Seitenleiste ein/aus: `settings.sidebar`.
 
 ---
 
@@ -33,4 +36,5 @@ Lies zu Beginn jeder Sitzung diese Dateien und halte dich daran:
 
 | Version | Datum | Inhalt |
 |---|---|---|
+| 1.1.0 | 08.10.2026 | Hinweise zur Bedienung ab Reiselogbuch 2.0.0 |
 | 1.0.0 | 07.10.2026 | erste Fassung |

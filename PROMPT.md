@@ -1,6 +1,6 @@
-# Reiselogbuch – Prompt (Stand 07.10.2026, Version 1.2.0)
+# Reiselogbuch – Prompt (Stand 08.10.2026, Version 2.0.0)
 
-Reiselogbuch 1.2.0 · Designrichtlinie allgemein 2.1.0 · Designrichtlinie Reiselogbuch 1.2.0 · Zusammenarbeit allgemein 1.0.0
+Reiselogbuch 2.0.0 · Designrichtlinie allgemein 3.0.0 · Designrichtlinie Reiselogbuch 2.0.0 · Zusammenarbeit allgemein 1.1.0
 (Gestaltungsregeln: `README - Designrichtlinie allgemein.md` und
 `README - Designrichtlinie Reiselogbuch.md`; Zusammenarbeit: `README - Zusammenarbeit
 allgemein.md`; Einstieg für Claude: `CLAUDE.md`. Bei jeder Design-Änderung mit aktualisieren.)
@@ -34,92 +34,97 @@ RAHMEN
 - Bereitstellung über GitHub Pages aus dem Repo "ReiseLogBuch" (Branch
   main, Hauptordner): https://g811141a.github.io/ReiseLogBuch/
   (Repo öffentlich, die Einträge bleiben trotzdem nur auf dem iPad).
-- Darstellung Hell / Dunkel (2 Stufen), die Schaltfläche zeigt die Aktion
-  (🌙 bei Hell, ☀️ bei Dunkel). Die letzte Einstellung wird gemerkt.
-- Alle Meldungen und Sicherheitsabfragen in eigenen Fenstern mit deutschen
-  Schaltflächen (keine iPad-Systemfenster mit "Close"/"OK").
+- Darstellung Hell / Dunkel (2 Stufen), im Mehr-Menü als "Modus dunkel"
+  bzw. "Modus hell" (zeigt die Aktion). Die letzte Einstellung wird gemerkt.
+- Aufbau wie Apple-Apps:
+  - Links die Seitenleiste "Reiselogbücher": Überschrift linksbündig,
+    daneben die Kapsel [plus | ellipsis] und rechts die runde Schaltfläche
+    panel-left zum Ausblenden. Darunter alle Reiselogbücher (zuletzt
+    beginnende zuerst): Titel fett, darunter grau "TT.MM.JJJJ - TT.MM.JJJJ ·
+    läuft gerade/beendet/geplant"; das geöffnete ist blau gefüllt. Antippen
+    öffnet es. Quer steht die Seitenleiste fest links (aus-/einblendbar, wird
+    gemerkt); im Hochformat wird sie über den Inhalt gelegt und schließt sich
+    nach der Auswahl. Ist sie ausgeblendet, steht panel-left links in der
+    Kopfzeile.
+  - plus öffnet "Neues Reiselogbuch". ellipsis der Seitenleiste: Backup
+    sichern (darunter grau "Zuletzt gesichert am …") · Backup laden · grau
+    "Reiselogbuch · Version X.Y.Z · erstellt am TT.MM.JJJJ um hh:mm".
+  - Wurde heute noch kein Backup gesichert, steht unten in der Seitenleiste
+    dezent "Heute noch kein Backup gesichert. Zuletzt gesichert am …" und die
+    Schaltfläche "Backup sichern".
+  - Kopfzeile des Inhalts (bleibt beim Scrollen stehen, keine Glas-Leiste):
+    Titel der Reise in der Mitte, rechts die Kapsel [share | search |
+    ellipsis]. share öffnet das Teilen-Menü (Vorschau · HTML · PDF), search
+    blendet darunter eine zweite Zeile mit dem Suchfeld über die volle
+    Breite ein, ellipsis öffnet das Mehr-Menü: "Alle Tage" / "Nur erfasste
+    Tage" (Häkchen) · "Einstellungen" · "Modus dunkel/hell" ·
+    "Reiselogbuch löschen" (rot).
+  - Menüs: Icons vor dem Text, Schatten wie die Schaltflächen; daneben tippen
+    schließt. Die Schaltfläche, von der ein Menü, eine Abfrage oder ein
+    Fenster kommt, ist so lange blau getönt.
+- Abfragen (Löschen, Backup laden, Smiley entfernen, Smileys zurücksetzen,
+  Änderungen verwerfen) als Sprechblase an der angetippten Schaltfläche:
+  grauer Text, rote Schaltfläche mit dem Verb der Aktion, darunter
+  "Abbrechen" (bzw. "Weiter bearbeiten"); daneben tippen bricht ab. Reine
+  Meldungen (z. B. Fehler) in einem kleinen Fenster mit rundem x. Keine
+  iPad-Systemfenster mit "Close"/"OK".
 - Alle Aktionen sind echte Schaltflächen (kein reiner Text als Link).
-- Einheitliche Bezeichnungen:
-  - "Fertig" = Eingaben übernehmen und schließen
-  - "Abbrechen" = ohne Änderung schließen / Vorgang nicht ausführen
-  - "Schließen" = Fenster ohne Eingaben schließen (Info, Liste, Meldung)
-  - "Abbrechen" nur, wenn rechts eine Gegenaktion steht (Fertig, Löschen,
-    Entfernen …), sonst immer "Schließen". Steht "Schließen" allein in der
-    Fußleiste, dann rechts; stehen rechts Aktionen, dann links (Vorschau).
+- Fenster ohne Fußleiste: links oben rundes x, rechts oben rundes Häkchen.
+  Das Häkchen ist grau, bis etwas geändert wurde, dann blau. x schließt;
+  wurde etwas geändert, fragt eine Sprechblase "Änderungen verwerfen" /
+  "Weiter bearbeiten" (die Eingaben bleiben dann erhalten). Häkchen ohne
+  Änderung schließt einfach. Escape wirkt wie x.
 - Fehlermeldungen stehen in Rot direkt unter dem betroffenen Feld, das Feld
   bekommt einen roten Rahmen. Beim Öffnen eines Fensters erscheint keine
-  Meldung; "Fertig" bleibt aber ausgegraut, bis alles passt. Reisetitel und
-  Reiseteilnehmer: Meldung erst, wenn das Feld leer verlassen oder geleert
-  wird. Reisezeitraum: sobald ein Datum geändert oder ein Titel eingegeben
-  wurde. Reisemittel: wenn das letzte gewählte abgewählt wird. Ein Tippen auf
-  das ausgegraute "Fertig" zeigt alle fehlenden Angaben und scrollt zur ersten.
+  Meldung. Reisetitel und Reiseteilnehmer: Meldung erst, wenn das Feld leer
+  verlassen oder geleert wird. Reisezeitraum: sobald ein Datum geändert oder
+  ein Titel eingegeben wurde. Reisemittel: wenn das letzte gewählte abgewählt
+  wird. Ein Tippen auf das Häkchen zeigt alle fehlenden Angaben und scrollt
+  zur ersten.
 - Pflichtfelder werden nicht gekennzeichnet (kein Sternchen, kein
   "erforderlich"/"optional"); fehlt eine Eingabe, erscheint die Meldung am Feld.
   Pflicht sind nur Reisetitel, Reiseteilnehmer, Reisezeitraum und Reisemittel
   (mindestens eines).
   - Bestätigung immer mit dem Verb der Aktion: "Löschen", "Entfernen",
-    "Zurücksetzen", "Ersetzen"
-  - "💾 Backup sichern", "📂 Backup laden", "‹ Vortag" / "Folgetag ›"
+    "Zurücksetzen", "Ersetzen", "Änderungen verwerfen"
 - Alle Schaltflächen einheitlich 44 px hoch (auch lange Texte, Vorschläge,
   Reisemittel, Wetter, Smileys); reine Icon-, Wetter- und Smiley-
-  Schaltflächen quadratisch 44 × 44 px (Emoji 24 px, Icon 20 px).
-  Ausnahmen: Einträge der Reiselogbuch-Liste mit umbrochenem Titel und
-  Fazit-Kasten.
+  Schaltflächen quadratisch 44 × 44 px (Emoji 24 px, Icon 20 px); Text in
+  der Höhe genau mittig zum Icon. Mehrere Schaltflächen nebeneinander in
+  einer Kapsel.
+- Textfelder wachsen mit dem Inhalt (nie innerhalb eines Feldes scrollen).
+  Datumsfelder sind so breit wie das Datum.
 - Fenster passen sich in der Breite dem Inhalt an (höchstens 90 % der
-  Bildschirmbreite, Mindestbreite für Eingabefelder): Reiselogbücher,
-  Ausgabe, Reiselogbuch bearbeiten, Fazit, Meldungen. Die Tagesmaske ist
-  fast bildschirmbreit.
-- Reiselogbücher: Jeder Eintrag einzeilig in drei Spalten: Titel (fett),
-  Reisezeitraum und Status (grau); Zeiträume und Status stehen ganz rechts
-  im Eintrag (ohne Lücke zum rechten Rand) und in allen Einträgen genau
-  untereinander, der Status linksbündig. Der Titel nutzt den freien Platz
-  davor. Ist ein Titel zu lang,
-  bricht er um und der Reisezeitraum steht ebenfalls zweizeilig
-  ("10.01.2027 -" / "28.02.2027"). Reihenfolge: zuletzt beginnende Reise
-  zuerst.
-- Reiselogbücher: "Neues Reiselogbuch anlegen" (blau) rechtsbündig in der
-  Zeile von "Backup sichern / Backup laden". In der Fußleiste links ein
-  Info-Icon, das "Reiselogbuch · Version X.Y.Z · erstellt am TT.MM.JJJJ um
-  hh:mm" ein- und ausblendet (bei jeder Version aktualisiert).
+  Bildschirmbreite, Mindestbreite für Eingabefelder): Neues Reiselogbuch,
+  Einstellungen, Fazit, Meldungen. Tagesmaske und Vorschau sind fast
+  bildschirmbreit.
 - Versionsnummer dreistufig Hauptversion.Nebenversion.Korrektur (ab 1.0.0):
   Hauptversion = grundlegende Änderung (Aufbau, Bedienkonzept, Datenstruktur);
   Nebenversion = neue Funktion oder sichtbare Verbesserung; Korrektur =
   Fehlerbehebung. Jede Version steht mit Datum, Art und Inhalt in CHANGELOG.md.
-- Reiselogbücher: Nach dem Löschen bleibt die Maske mit der aktualisierten
-  Liste offen (war das gelöschte geöffnet, wechselt der Hintergrund auf die
-  Startreise). "Reiselogbuch bearbeiten": "Abbrechen" und "Fertig" führen
-  zurück zur Liste. "Neues Reiselogbuch": "Fertig" öffnet es, "Abbrechen"
-  führt zurück zur Liste.
-- Ausgabe: normale Schaltflächen "Vorschau", "HTML-Datei" und "PDF",
-  daneben ein Info-Icon, das den Hinweis zum Speichern ein- und ausblendet.
 - Vorschau: fast bildschirmbreites Fenster, Inhalt immer hell und genau wie
-  die HTML-Datei; oben "Vorschau" und klein der Dateiname. Zeigt die Nummer
-  der nächsten Datei, ohne den Zähler zu erhöhen. Google-Maps-Links öffnen
-  extern, die Vorschau bleibt offen. Fußleiste: links "Schließen", rechts
-  "PDF" und "Teilen" (blau, HTML-Datei über das Teilen-Menü). Nach Teilen
-  bzw. PDF schließt die Vorschau; es folgen Meldung und ggf.
+  die HTML-Datei; Kopfzeile x · "Vorschau" mit dem Dateinamen klein darunter ·
+  Kapsel [PDF | share (blau gefüllt)]. Zeigt die Nummer der nächsten Datei,
+  ohne den Zähler zu erhöhen. Google-Maps-Links öffnen extern, die Vorschau
+  bleibt offen. Nach Teilen bzw. PDF folgen Meldung und ggf.
   Backup-Erinnerung.
 - Schaltflächen-Icons aus dem Set Lucide (Liniengrafiken, direkt in die App
   eingebettet, offline). Inhalte (Smileys, Wetter, Reisemittel, Essen-Leiste,
   📍, Spaltenköpfe) bleiben Emojis. Zuordnung:
-  Reiselogbücher book-open · Leere Tage aus fold-vertical · Leere Tage ein
-  list-chevrons-up-down · Dunkel/Hell moon/sun (nur Icon) · Ausgabe share ·
-  Suchen search · Nach oben/Ans Ende arrow-up-to-line/arrow-down-to-line
-  (nur Icon) · Fertig check (weiß auf Blau) · Abbrechen ban (rot) ·
-  Schließen x · Backup sichern save · Backup laden folder-open · Neues
-  Reiselogbuch plus · Bearbeiten pencil (nur Icon) · Löschen trash (rot) ·
-  Diktieren mic (nur Icon) · Vortag/Folgetag chevron-left/chevron-right ·
-  Vorschau eye · Teilen share · HTML-Datei file-code · PDF file-text · Smileys zurücksetzen rotate-ccw
-  (nur Icon)
-- Begriffe: "🧳 Reiselogbücher" (Liste, Fenstertitel "Reiselogbücher"),
-  "＋ Neues Reiselogbuch anlegen", "Reiselogbuch bearbeiten",
-  "🗑 Reiselogbuch löschen", Überschrift "Reiselogbuch – <Titel>" (App und
-  Ausgabe). Die App heißt "Reiselogbuch"; der Begriff "Reisetagebuch"
-  kommt nicht mehr vor.
+  Seitenleiste panel-left · Neues Reiselogbuch plus · Mehr-Menü ellipsis ·
+  Einstellungen settings · Ausgabe/Teilen share (immer ohne Text) · Suchen
+  search · Modus dunkel/hell moon/sun · Fertig check (rund) · Abbrechen/
+  Schließen x (rund) · Abbrechen in Sprechblasen ban (rot) · Löschen/
+  Entfernen/Verwerfen trash · Weiter bearbeiten pencil · Backup sichern save
+  · Backup laden folder-open · Vorschau eye · HTML file-code · PDF file-text
+  · Nach oben/Ans Ende arrow-up-to-line/arrow-down-to-line · Diktieren mic ·
+  Vortag/Folgetag chevron-left/chevron-right (nur Icon, als Kapsel) ·
+  Treffer chevron-up/chevron-down · Smileys zurücksetzen rotate-ccw
+- Begriffe: Seitenleiste "Reiselogbücher", Fenster "Neues Reiselogbuch" und
+  "Einstellungen", Menüpunkt "Reiselogbuch löschen", Überschrift
+  "Reiselogbuch – <Titel>" (App und Ausgabe). Die App heißt "Reiselogbuch";
+  der Begriff "Reisetagebuch" kommt nicht mehr vor.
 - Die "Reset"-Schaltfläche der iPad-Datumsauswahl bleibt (Systembeschriftung).
-- Einheitliche Fußleiste in allen Fenstern: links "Abbrechen", rechts
-  "Fertig" bzw. "Schließen"; "Löschen" separat in Rot. Oben nur Titel
-  (bei der Tageserfassung zusätzlich "‹ Vortag" / "Folgetag ›").
 
 REISEN
 - Es wird immer an einer Reise gearbeitet.
@@ -128,17 +133,16 @@ REISEN
 - Fällt heute in keine Reise, öffnet die App die zuletzt beendete Reise.
   Gibt es noch keine beendete Reise, öffnet die nächste geplante Reise.
 - Gibt es noch kein Reiselogbuch (erster Start oder letztes gelöscht),
-  zeigt die App eine leere Seite und darüber die Maske "Reiselogbücher"
-  mit dem grauen Hinweis "Noch kein Reiselogbuch angelegt.". "Schließen"
-  und "Backup sichern" sind ausgegraut, die Maske lässt sich auch nicht
-  mit Escape schließen. "Abbrechen" beim Anlegen führt zurück zur leeren
-  Liste, "Fertig" öffnet das neue Reiselogbuch.
-- Eine neue Reise wird bewusst neu angelegt.
-- Reisen-Liste (🧳 Reisen): Antippen öffnet die Reise, ✏️ in derselben
-  Zeile öffnet "Reise bearbeiten". "🗑 Reise löschen" als rote
-  Schaltfläche in der Bearbeiten-Maske.
-- Reisezeitraum: Liegt das Bis-Datum vor dem Von-Datum, wird es auf das
-  Von-Datum gesetzt – und umgekehrt.
+  öffnet sich "Neues Reiselogbuch" einmal von selbst; mit x bleibt die leere
+  Seite mit dem grauen Hinweis "Noch kein Reiselogbuch angelegt." (auch in
+  der Seitenleiste). Das Häkchen öffnet das neue Reiselogbuch.
+- Eine neue Reise wird bewusst neu angelegt (plus in der Seitenleiste).
+- Die geöffnete Reise wird über Mehr-Menü → "Einstellungen" bearbeitet und
+  über Mehr-Menü → "Reiselogbuch löschen" gelöscht (Sprechblase mit Tipp,
+  vorher ein Backup zu sichern); danach öffnet die Startreise.
+- Reisezeitraum: grau "Von" Datum · "Bis" Datum in einer Zeile. Liegt das
+  Bis-Datum vor dem Von-Datum, wird es auf das Von-Datum gesetzt – und
+  umgekehrt.
 - Allgemeine Reisedaten: Titel, Reiseteilnehmer, Reisezeitraum,
   darunter Reisemittel per Antippen, Mehrfachauswahl möglich,
   in dieser Reihenfolge:
@@ -148,8 +152,8 @@ REISEN
   wählbar und nachträglich änderbar.
 - Block "Konfiguration Tabellenspalten" (unter Reisemittel) mit Hinweis
   "Die Spalten „Tag“ und „Programm“ werden immer angezeigt." und den
-  Checkboxen in Tabellenreihenfolge: "🙂☹️😉 Spalte Wie war was?",
-  "🍽️🍷☕️ Spalte Essen und Trinken", "😴💤 Spalte Quartier". Beim Anlegen
+  Schaltern in Tabellenreihenfolge: "Spalte 🙂☹️😉 ‚Wie war was?‘",
+  "Spalte 🍽️🍷☕️ ‚Essen und Trinken‘", "Spalte 😴💤 ‚Quartier‘". Beim Anlegen
   alle drei eingeschaltet (bestehende Reiselogbücher: Wie war was? und
   Quartier ein, Essen wie bisher). Ausgeblendete Spalten fehlen in Tabelle,
   Tageserfassung (Schritte werden neu nummeriert), Suche und Ausgabe;
@@ -170,27 +174,28 @@ HAUPTANSICHT (TABELLE)
 - Beim Öffnen scrollt die App zum ersten nicht erfassten Tag der Reise
   (die erste Lücke, auch wenn spätere Tage schon erfasst sind) und
   markiert diese Zeile.
-- Die obere Leiste mit den Schaltflächen bleibt beim Scrollen fixiert.
-  Reihenfolge: 🧳 Reiselogbücher · Leere Tage · Darstellung · 📤 Ausgabe · Suche.
+- Die Kopfzeile bleibt beim Scrollen stehen, der Tabellenkopf direkt
+  darunter. In der Tabelle wird nur zwischen ganzen Wörtern umgebrochen.
 - Unten rechts übereinander die Schaltflächen ⬆️ (nach oben) und ⬇️ (ans
   Ende), im gleichen Aussehen wie die Dunkel-Schaltfläche, ohne Schatten.
-- Schaltfläche zum Aus-/Einblenden der leeren Tage, zeigt die Aktion:
-  "⤴️ Leere Tage aus" bzw. "⤵️ Leere Tage ein"; die letzte Einstellung
-  wird gemerkt.
+- Filter im Mehr-Menü: "Alle Tage" bzw. "Nur erfasste Tage"; die letzte
+  Einstellung wird gemerkt.
 - Dezente Fortschrittsanzeige, z. B. "Tag 42 von 80 · 38 erfasst".
 - Vergangene Tage ohne Eintrag werden dezent markiert.
 - Suche über die Einträge (Programm und sichtbare Spalten), nur innerhalb
   der aktuellen Reise. Treffer werden im Text gelb hinterlegt. Suchfeld als
-  schwebende Kapsel: bei Eingabe breiter, rechtsbündig „3 von 57“ (bzw. „0“)
+  schwebende Kapsel in der zweiten Zeile über die volle Breite, rechtsbündig
+  „3 von 57“ (bzw. „0“)
   und x zum Löschen; rechts daneben chevron-up / chevron-down zum vorigen bzw.
   nächsten Treffer (am Anfang/Ende ausgegraut, kein Umlauf). Der Treffer im
   Fokus ist hellorange und wird in die Bildmitte gescrollt; die Eingabetaste
   springt weiter.
-- Aussehen im Apple-Look (siehe Designrichtlinie allgemein 2.0.0): Hintergrund
+- Aussehen im Apple-Look (siehe Designrichtlinie allgemein 3.0.0): Hintergrund
   Hellgrau, Kästen weiß ohne Rand, schwebende Schaltflächen mit 12 px Abstand;
   Akzentfarbe Apple-Blau: blau gefüllt = Hauptaktion, blau getönt mit Haarlinie
-  = eingeschaltet (ohne Breitenänderung), rot gefüllt = Löschen. Tabellen und
-  Eingabefelder mit Schatten. Einstellungen in "Reiselogbuch bearbeiten" als
+  = eingeschaltet (ohne Breitenänderung), rot gefüllt = Löschen; blau gefüllt nur in Fenstern,
+  nie in Menüs oder der Kopfzeilen-Kapsel. Tabellen und
+  Eingabefelder mit Schatten. Einstellungen im Fenster "Einstellungen" als
   Apple-Schalter (Apple-Grün), Optionen in der Tageserfassung als Options-Kapseln
   mit Häkchen. Quartier: Hotel und Ort nebeneinander in einer Zeile.
 - Tabellendesign (gilt für alle Tabellen in App, HTML und PDF):
@@ -273,7 +278,9 @@ ERFASSUNG – wenig eingeben, in ganz einfachen Schritten
 - Diktieren: eigenes 🎤-Symbol an den Textfeldern, wenn das iPad es
   unterstützt; sonst ein Hinweis auf die Mikrofon-Taste der Tastatur.
 - Automatisches Speichern alle 10 Sekunden während der Erfassung.
-- Mit "‹ Vortag" / "Folgetag ›" direkt weiterblättern.
+- Mit der Kapsel [chevron-left | chevron-right] rechts oben (neben dem
+  Häkchen) direkt zum Vortag bzw. Folgetag blättern; unter dem Datum steht
+  grau "Automatisch gespeichert um hh:mm".
 - Ein Tag gilt als erfasst, sobald mindestens ein Feld ausgefüllt ist.
 
 QUARTIER-SPALTE
@@ -299,7 +306,8 @@ ABSCHLUSS
   erscheint schon beim Tippen ("4.850"), Ausgabe z. B. als "€ 4.850,-".
 
 AUSGABE
-- Ein Knopf "Ausgabe", danach Wahl zwischen HTML oder PDF.
+- share in der Kopfzeile öffnet das Teilen-Menü: Vorschau · HTML · PDF (mit
+  grauen Hinweisen zum Speichern), darunter "N erfasste Tage · Dateiname: …".
 - HTML: Speichern über das Teilen-Menü ("In Dateien sichern", Ordner
   frei wählbar).
 - PDF: direkt über das Drucken-Menü von Safari (dort Teilen → "In Dateien
@@ -336,12 +344,14 @@ AUSGABE
 
 SICHERHEIT
 - Backup als Datei exportieren/importieren, enthält alle Reisen.
-- Backup über den Knopf "Backup sichern" (Reisen), ebenfalls über das
-  Teilen-Menü ("In Dateien sichern").
-- Kein automatisches Backup bei der Ausgabe. Stattdessen erscheint nach
-  der Ausgabe eine Erinnerung mit Knopf "Backup jetzt sichern", aber nur,
-  wenn das letzte Backup mehr als 24 Stunden zurückliegt (beim PDF nach
-  dem Schließen des Drucken-Menüs).
+- Backup über "Backup sichern" (Mehr-Menü der Seitenleiste oder Hinweis
+  unten in der Seitenleiste), über das Teilen-Menü ("In Dateien sichern").
+  Backup laden ersetzt nach einer Sprechblase ("Ersetzen") alle Daten.
+- Einmal am Tag sichern: Solange heute noch kein Backup gesichert wurde,
+  steht der Hinweis unten in der Seitenleiste. Kein automatisches Backup bei
+  der Ausgabe; danach erscheint eine Erinnerung "Denk daran, auch ein Backup
+  zu sichern." mit "Heute noch kein Backup gesichert. Zuletzt gesichert am …"
+  und dem blauen Knopf "Backup sichern".
 - Als Backup-Zeitpunkt zählt nur ein abgeschlossenes Teilen-Menü, ein
   Abbruch zählt nicht.
 - Backup-Dateiname (ohne Versionszähler):

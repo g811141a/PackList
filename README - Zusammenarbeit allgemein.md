@@ -1,6 +1,6 @@
 # Zusammenarbeit allgemein
 
-**Version 1.0.0** · Stand 07.10.2026
+**Version 1.1.0** · Stand 08.10.2026
 
 Regeln für die Zusammenarbeit mit Claude bei allen iPad-Web-Apps von g811141a.
 Diese Datei liegt vorerst im Repo ReiseLogBuch und **wandert später ins Design-Repo**.
@@ -31,6 +31,9 @@ App-spezifische Punkte stehen in der `CLAUDE.md` des jeweiligen App-Repos.
 1. Ideen sammeln und **nachfragen** („Frag nach“), bis alles geklärt ist.
 2. Bei Gestaltungsfragen zuerst ein **Muster** (Screenshot) zeigen, bei Bedarf mit
    Varianten (a, b, c).
+   - Muster zuerst **nur hell und quer**; dunkel und hoch erst, wenn hell passt.
+   - Muster und Screenshots **in Viererpaketen** schicken (je Sendung höchstens 4 Bilder),
+     damit man sie nacheinander durchsehen kann.
 3. **Bei jeder Design-Änderung fragen, ob sie allgemein gilt oder nur für die App**
    (eigene Einschätzung als Vorschlag).
 4. Zusammenfassen und fragen: „Soll ich die neue Version X.Y.Z erstellen?“ – mit
@@ -48,8 +51,8 @@ App-spezifische Punkte stehen in der `CLAUDE.md` des jeweiligen App-Repos.
   allgemein 2.0.0 · Designrichtlinie Reiselogbuch 1.1.0 · Zusammenarbeit allgemein 1.0.0“).
 - Versionsnummer, Erstellungszeitpunkt und Cache-Name des Service Workers erhöhen.
 - Auf `main` hochladen, prüfen, ob GitHub Pages die Version online gestellt hat.
-- Screenshots schicken und die Änderungen auf Deutsch zusammenfassen; an den Neustart der
-  App erinnern.
+- Screenshots in Viererpaketen schicken und die Änderungen auf Deutsch zusammenfassen; an
+  den Neustart der App erinnern.
 
 ## 5. Versionen
 
@@ -72,4 +75,5 @@ App-spezifische Punkte stehen in der `CLAUDE.md` des jeweiligen App-Repos.
 
 | Version | Datum | Art | Inhalt |
 |---|---|---|---|
+| 1.1.0 | 08.10.2026 | Neben | Muster zuerst nur hell und quer; Muster und Screenshots in Viererpaketen |
 | 1.0.0 | 07.10.2026 | erste Fassung | Aus der Designrichtlinie allgemein ausgelagert; neu: Antwortformat (ja/nein, a/b/c), Frage „allgemein oder App?“ |

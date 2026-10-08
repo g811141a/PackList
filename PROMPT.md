@@ -1,6 +1,6 @@
-# Reiselogbuch – Prompt (Stand 08.10.2026, Version 2.1.0)
+# Reiselogbuch – Prompt (Stand 08.10.2026, Version 2.1.1)
 
-Reiselogbuch 2.1.0 · Designrichtlinie allgemein 3.1.0 · Designrichtlinie Reiselogbuch 2.1.0 · Zusammenarbeit allgemein 1.4.0
+Reiselogbuch 2.1.1 · Designrichtlinie allgemein 3.2.0 · Designrichtlinie Reiselogbuch 2.1.1 · Zusammenarbeit allgemein 1.4.0
 (Gestaltungsregeln: `README - Designrichtlinie allgemein.md` und
 `README - Designrichtlinie Reiselogbuch.md`; Zusammenarbeit: `README - Zusammenarbeit
 allgemein.md`; Einstieg für Claude: `CLAUDE.md`. Bei jeder Design-Änderung mit aktualisieren.)
@@ -96,6 +96,12 @@ RAHMEN
 - Textfelder wachsen mit dem Inhalt (nie innerhalb eines Feldes scrollen).
   Datumsfelder sind so breit wie das Datum und haben rechts ein Kalender-Icon.
   Tabellenüberschriften 17 px halbfett wie die Zellen.
+- Smileys, Wetter-Symbole und Reisemittel stehen je in einer Kapsel; bei
+  knappem Platz lässt sich der Inhalt wischen. Zurücksetzen steht daneben.
+- Suche: Markierung sofort, Sprung zum Treffer nach kurzer Tipp-Pause; der
+  Treffer steht direkt unter der Suchzeile. Kopf- und Suchzeile bleiben fest,
+  auch bei offener Tastatur.
+- Drucken/PDF: nur das Reiselogbuch, ohne Seitenleiste.
 - Fenster passen sich in der Breite dem Inhalt an (höchstens 90 % der
   Bildschirmbreite, Mindestbreite für Eingabefelder): Neues Reiselogbuch,
   Einstellungen, Fazit, Meldungen. Tagesmaske und Vorschau sind fast
@@ -304,7 +310,8 @@ ABSCHLUSS
   mit Häkchen).
 - Der Fazit-Kasten in der App passt sich in der Breite dem Inhalt an.
 - Ein Feld "Gesamtkosten" in Euro, rechtsbündig, € rechts neben dem Feld,
-  immer mit zwei Nachkommastellen (Komma für Cent). Der Tausenderpunkt
+  immer mit zwei Nachkommastellen (Komma für Cent), mindestens so breit, dass
+  "100.000,00" passt, bei längeren Beträgen wächst es mit. Der Tausenderpunkt
   erscheint schon beim Tippen ("4.850"); fehlen beim Verlassen des Feldes die
   Nachkommastellen, ergänzt die App ",00". Anzeige und Ausgabe z. B. als
   "4.850,00 €".
@@ -322,7 +329,8 @@ AUSGABE
 - Keine Hilfeseite.
 - Jederzeit möglich, auch mitten in der Reise (Zwischenstand).
 - Überschrift "Reiselogbuch – <Titel>".
-- Nur erfasste Tage, keine leeren Tage, keine Wetter-Platzhalter.
+- Nur erfasste Tage, keine leeren Tage, keine Wetter-Platzhalter;
+  das Wetter steht in der Spalte "Tag" unter dem Datum.
 - Die Google-Maps-Links funktionieren in beiden Formaten.
 - Spaltenbreiten passen sich dem Inhalt an.
 - Hängender Einzug bei Aufzählungen und Smiley-Zeilen.

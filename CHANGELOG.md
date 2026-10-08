@@ -12,6 +12,18 @@ Versionsnummer **Hauptversion.Nebenversion.Korrektur** (z. B. 1.2.1):
 Steigt eine Stufe, beginnen die Stufen dahinter wieder bei 0.
 Die aktuelle Version steht in der App im Mehr-Menü (ellipsis) der Seitenleiste „Reiselogbücher“.
 
+## 2.1.1 – 08.10.2026 (Korrektur)
+
+Reiselogbuch 2.1.1 · Designrichtlinie allgemein 3.2.0 · Designrichtlinie Reiselogbuch 2.1.1 · Zusammenarbeit allgemein 1.4.0
+
+- F-01: PDF/Drucken bei eingeblendeter Seitenleiste – jetzt nur das Reiselogbuch, ohne
+  freien Platz links.
+- F-02: Suche – Markierung sofort, Sprung nach kurzer Tipp-Pause; Treffer direkt unter der
+  Suchzeile; Kopf- und Suchzeile bleiben bei offener Tastatur fest.
+- F-03: Ausgabe – Wetter in der Spalte „Tag“ unter dem Datum, die Spalte wird schmäler.
+- F-04: Gesamtkosten – Feld so breit wie „100.000,00“, wächst bei längeren Beträgen mit.
+- F-05: Smileys, Wetter-Symbole und Reisemittel in je einer wischbaren Kapsel.
+
 ## 2.1.0 – 08.10.2026 (Nebenversion)
 
 Reiselogbuch 2.1.0 · Designrichtlinie allgemein 3.1.0 · Designrichtlinie Reiselogbuch 2.1.0 · Zusammenarbeit allgemein 1.4.0

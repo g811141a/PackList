@@ -1,6 +1,6 @@
 # Designrichtlinie allgemein
 
-**Version 3.1.0** · Stand 08.10.2026
+**Version 3.2.0** · Stand 08.10.2026
 
 Allgemeine Gestaltungs- und Bedienregeln für alle iPad-Web-Apps von g811141a.
 Diese Datei liegt vorerst im Repo ReiseLogBuch und **wandert später ins Design-Repo**;
@@ -228,7 +228,8 @@ heller).
 - **Beträge** wie bei Apple (Region Deutschland): immer zwei Nachkommastellen, Tausenderpunkt,
   Währung **hinter** dem Betrag mit Leerzeichen – „4.850,00 €“. Im Eingabefeld steht das €
   rechts neben dem Feld; fehlen beim Verlassen die Nachkommastellen, ergänzt die App „,00“.
-  **Betragsfelder sind immer rechtsbündig.**
+  **Betragsfelder sind immer rechtsbündig** und dynamisch breit: mindestens so breit, dass
+  „100.000,00“ vollständig passt; längere Beträge lassen das Feld beim Tippen mitwachsen.
 - **Smiley-Leisten** (Schnellauswahl über einem Textfeld): nur einzeilig, mit dem Finger
   nach links/rechts wischen, Verlauf am Rand als Hinweis auf weitere Smileys,
   Zurücksetzen (rotate-ccw) fest rechts daneben. Sortiert nach Häufigkeit (meistbenutzte
@@ -324,6 +325,10 @@ heller).
   Home-Bildschirm-App nicht zuverlässig.
 - Long-Press-Menü und Textauswahl auf Emoji-Schaltflächen abschalten
   (`-webkit-touch-callout: none`, `user-select: none`).
+- Beim Drucken nur den Ausgabe-Inhalt zeigen: Seitenleiste, Fenster und deren Abstände
+  (z. B. `padding-left` für die Seitenleiste) ausblenden bzw. auf 0 setzen.
+- Bei offener Tastatur verschiebt Safari den sichtbaren Bereich: fixierte Kopfzeilen über
+  `visualViewport.offsetTop` nachführen.
 - Elemente mit `display` im CSS brauchen eine eigene `[hidden]`-Regel, sonst bleiben sie
   sichtbar.
 - Emojis mit und ohne Variantenzeichen (z. B. ☹️/☹) als gleich behandeln.
@@ -365,9 +370,11 @@ programmiert (`design.css`, `ui.js`) und von allen Apps übernommen.
   - mit Treffern: rechtsbündig „3 von 57“ (ohne das Wort „Treffer“), x; Navigation
     sichtbar; am ersten Treffer chevron-up ausgegraut, am letzten chevron-down
   - ohne Treffer: rechtsbündig „0“, beide Pfeile ausgegraut
-- **Verhalten:** Suche beim Tippen; jede Markierung ist ein Treffer; der erste wird
-  angesprungen. Treffer gelb (`--mark`), Treffer im Fokus hellorange (`--mark-cur`) und in
-  die Bildmitte gescrollt. Pfeile und Eingabetaste springen weiter, ohne Umlauf vom letzten
+- **Verhalten:** Suche beim Tippen (Markierung sofort); jede Markierung ist ein Treffer; zum
+  ersten wird erst nach einer kurzen Tipp-Pause (ca. 0,5 s) gesprungen. Der Treffer steht dann
+  **direkt unter der Suchzeile** (und dem Tabellenkopf), nicht in der Bildmitte. Kopf- und
+  Suchzeile bleiben fest oben, auch bei offener Tastatur. Treffer gelb (`--mark`), Treffer im Fokus hellorange (`--mark-cur`) und
+  unter die Suchzeile gescrollt. Pfeile und Eingabetaste springen weiter, ohne Umlauf vom letzten
   zum ersten. x löscht die Eingabe, der Cursor bleibt im Feld. Gefiltert wird auf Einträge
   mit Treffern.
 
@@ -445,9 +452,15 @@ programmiert (`design.css`, `ui.js`) und von allen Apps übernommen.
   (Textfelder mehrzeilig); Fehler: 1 px roter Rand und rote Meldung darunter
   (Abschnitt 8). Textfelder wachsen mit dem Inhalt; Datumsfelder so breit wie das Datum.
 
-### 15.12 Smiley-Leiste
+### 15.12 Smiley-Leiste und Auswahl-Kapsel
 - **Apple:** [HIG – Collections](https://developer.apple.com/design/human-interface-guidelines/collections)
 - Siehe Abschnitt 8; Smileys als runde schwebende 44 × 44-Schaltflächen, Abstand 12 px.
+- **Auswahl-Kapsel:** Mehrere Auswahl-Schaltflächen (Smileys, Wetter, Reisemittel …) stehen in
+  **einer** schwebenden Kapsel (44 px hoch, Lichtkante, Schatten, keine Ränder dazwischen).
+  Reicht der Platz nicht, lässt sich der Inhalt nach links/rechts wischen; ein weicher Verlauf am
+  Rand zeigt, wo es weitergeht. Gewählte Einträge sind in der Kapsel blau getönt (Haarlinie
+  `--accent`). Zurücksetzen (rotate-ccw) steht als eigene runde Schaltfläche rechts daneben.
+  Vorbild: Tapback-Leiste in Nachrichten. Technisch `.cap` > `.scroll`.
 
 ### 15.13 Tabelle
 - **Apple:** [HIG – Lists and tables](https://developer.apple.com/design/human-interface-guidelines/lists-and-tables)
@@ -480,6 +493,7 @@ programmiert (`design.css`, `ui.js`) und von allen Apps übernommen.
 
 | Version | Datum | Art | Inhalt |
 |---|---|---|---|
+| 3.2.0 | 08.10.2026 | Neben | Auswahl-Kapsel (Smileys, Wetter, Reisemittel in einer wischbaren Kapsel); Suche springt nach Tipp-Pause und zeigt den Treffer unter der Suchzeile, Kopfzeile bleibt bei Tastatur fest; Betragsfelder dynamisch breit (mind. „100.000,00“); Drucken ohne Seitenleiste und ohne deren Abstand |
 | 3.1.0 | 08.10.2026 | Neben | Schwebende Seitenleiste wie in Safari; Kalender-Icon in Datumsfeldern; Beträge „4.850,00 €“, rechtsbündig, „,00“ wird ergänzt; Tabellenüberschriften 17 px halbfett (Headline); Filter beim Öffnen auf „Alle“; gedrückte Schaltfläche bleibt auch bei Folgeschritten blau; „Backup erstellen“ / „Letztes Backup erstellt am …“ |
 | 3.0.1 | 08.10.2026 | Korrektur | Links zu den Apple Human Interface Guidelines bei den Abschnitten und bei jeder Komponente |
 | 3.0.0 | 08.10.2026 | Haupt | Neues Bedienkonzept wie Apple-Apps: Seitenleiste, Kopfzeile mit Kapsel und Mehr-Menü, Suche als zweite Zeile; Fenster ohne Fußleiste mit rundem x und Häkchen (grau bis zur Änderung); Abfragen als Sprechblase, „Änderungen verwerfen“ beim x; gedrückte Schaltfläche blau getönt; Hauptaktion nur in Fenstern blau; share immer ohne Text; Icons in Menüs vor dem Text; Text mittig zum Icon; Textfelder wachsen mit; Datumsfelder so breit wie das Datum; Backup-Hinweis einmal am Tag; neue Komponenten Kopfzeile, Seitenleiste, Kapsel, Menü, Sprechblase, Fenster-Kopfzeile |

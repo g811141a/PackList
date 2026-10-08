@@ -48,6 +48,7 @@
     --rim-color: rgba(255,255,255,.5);
     --bar-h: 64px;
     --side-w: 0px;
+    --vv-top: 0px;
     color-scheme: light;
   }
   :root[data-theme="dark"] {
@@ -138,7 +139,7 @@
   .spacer { flex: 1; }
 
   /* Komponente Kopfzeile: fest oben, Titel in der Mitte, rechts eine Kapsel; die Suche erscheint als zweite Zeile */
-  .nb { position: sticky; top: 0; z-index: 6; background: var(--bg); margin: 0 -16px; padding: calc(env(safe-area-inset-top) + 10px) 16px 10px; border-bottom: .5px solid transparent; }
+  .nb { position: sticky; top: var(--vv-top); z-index: 6; background: var(--bg); margin: 0 -16px; padding: calc(env(safe-area-inset-top) + 10px) 16px 10px; border-bottom: .5px solid transparent; }
   .nb.line { border-bottom-color: var(--line); }
   .nb1 { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; min-height: 44px; }
   .nb1 > .r { justify-self: end; }
@@ -198,7 +199,7 @@
   table.days { border-collapse: separate; border-spacing: 0; width: 100%; }
   table.days th, table.days td { border-bottom: 1px solid var(--line); padding: 10px 12px; vertical-align: top; text-align: left; }
   table.days td + td { border-left: 1px solid var(--line); }
-  table.days th { position: sticky; top: var(--bar-h); background: var(--th-bg); border-bottom-color: var(--th-line); font-size: 17px; font-weight: 600; z-index: 2; }
+  table.days th { position: sticky; top: calc(var(--bar-h) + var(--vv-top)); background: var(--th-bg); border-bottom-color: var(--th-line); font-size: 17px; font-weight: 600; z-index: 2; }
   table.days th + th { border-left: 1px solid var(--th-line); }
   table.days tbody tr:last-child td { border-bottom: none; }
   table.days tbody tr { cursor: pointer; }
@@ -228,7 +229,7 @@
   .msg-text { padding: 8px 2px; }
   .kosten { display: flex; align-items: center; gap: 10px; }
   .kosten span { font-size: 20px; }
-  #kosten { text-align: right; width: 150px; flex: none; }
+  #kosten { text-align: right; width: 130px; flex: none; }
   .table-wrap.fit { display: inline-block; max-width: 100%; }
   .table-wrap.fit table { width: auto; }
   table.days.static th { position: static; }
@@ -285,13 +286,20 @@
   /* Reine Icon-, Wetter- und Smiley-Schaltflächen einheitlich quadratisch 44 × 44 px */
   .fab button, .mic, .emoji-row button.reset, .iconbtn { width: 44px; min-width: 44px; height: 44px; padding: 0; border-radius: 50%; }
   .emoji-row button { border-radius: 50%; }
+  /* Komponente Auswahl-Kapsel: Smileys, Wetter, Reisemittel in einer Kapsel; bei knappem Platz wischbar */
   .emoji-row.strip { flex-wrap: nowrap; align-items: center; }
-  .emoji-row.strip .scroll { flex: 1; min-width: 0; display: flex; gap: 12px; overflow-x: auto; padding: 14px 10px 22px; margin: -14px -10px -22px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
-  .emoji-row.strip .scroll::-webkit-scrollbar { display: none; }
-  .emoji-row.strip .scroll button { flex: none; }
-  .emoji-row.strip .scroll.fr { -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 48px), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 48px), transparent); }
-  .emoji-row.strip .scroll.fl { -webkit-mask-image: linear-gradient(to left, #000 calc(100% - 48px), transparent); mask-image: linear-gradient(to left, #000 calc(100% - 48px), transparent); }
-  .emoji-row.strip .scroll.fl.fr { -webkit-mask-image: linear-gradient(to right, transparent, #000 48px, #000 calc(100% - 48px), transparent); mask-image: linear-gradient(to right, transparent, #000 48px, #000 calc(100% - 48px), transparent); }
+  .cap { flex: 0 1 auto; min-width: 0; display: flex; height: 44px; border-radius: 22px; overflow: hidden;
+    background: var(--btn); border: .5px solid var(--btn-rim); box-shadow: var(--float); }
+  .cap .scroll { display: flex; min-width: 0; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .cap .scroll::-webkit-scrollbar { display: none; }
+  .cap .scroll button { flex: none; background: none; border: none; box-shadow: none; border-radius: 22px; min-height: 44px; height: 44px; }
+  .cap .scroll button[aria-pressed="true"] { background: var(--sel-bg); box-shadow: inset 0 0 0 .5px var(--accent); }
+  .emoji-row .cap .scroll button { width: 48px; min-width: 48px; }
+  .chips .cap .scroll button { padding: 0 14px; white-space: nowrap; }
+  .strip > .reset { margin-left: auto; }
+  .cap .scroll.fr { -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 48px), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 48px), transparent); }
+  .cap .scroll.fl { -webkit-mask-image: linear-gradient(to left, #000 calc(100% - 48px), transparent); mask-image: linear-gradient(to left, #000 calc(100% - 48px), transparent); }
+  .cap .scroll.fl.fr { -webkit-mask-image: linear-gradient(to right, transparent, #000 48px, #000 calc(100% - 48px), transparent); mask-image: linear-gradient(to right, transparent, #000 48px, #000 calc(100% - 48px), transparent); }
   .mic { font-size: 18px; padding: 0; min-height: 44px; }
   .mic[aria-pressed="true"] { animation: pulse 1s infinite; }
   @keyframes pulse { 50% { opacity: .5; } }
@@ -324,7 +332,7 @@
   #printout { display: none; }
   @media print {
     @page { size: A4 landscape; margin: 12mm; }
-    html, body { background: #fff !important; color: #000; padding: 0; }
+    html, body, body.docked { background: #fff !important; color: #000; padding: 0 !important; margin: 0; }
     #app, #side, .side-shade, dialog, .fab { display: none !important; }
     #printout { display: block; }
   }
@@ -383,8 +391,8 @@ const ic = (name, cls = '') => `<svg class="ic ${cls}" viewBox="0 0 24 24" aria-
 
 // Version und Erstellungszeitpunkt, werden bei jeder neuen Version angepasst.
 // Versionsnummer Hauptversion.Nebenversion.Korrektur (siehe CHANGELOG.md).
-const APP_VERSION = '2.1.0';
-const APP_BUILT = '08.10.2026 um 15:15';
+const APP_VERSION = '2.1.1';
+const APP_BUILT = '08.10.2026 um 15:53';
 
 const app = document.getElementById('app');
 const side = document.getElementById('side');
@@ -473,7 +481,8 @@ let currentTripId = null;
 let searchTerm = '';
 let searchIndex = 0;
 let autosaveTimer = null;
-let searchOpen = false;    // Suchzeile unter der Kopfzeile eingeblendet
+let searchOpen = false;
+let searchJump = null;     // Zeitgeber für den Sprung zum ersten Treffer    // Suchzeile unter der Kopfzeile eingeblendet
 let sideOverlay = false;   // Hochformat: Seitenleiste über den Inhalt gelegt
 let dlgOpener = '';        // Schaltfläche, von der das offene Fenster kommt (bleibt blau hinterlegt)
 let dlgDirty = null;       // Prüft, ob im offenen Fenster etwas geändert wurde
@@ -781,6 +790,15 @@ function fitDate(inp) {
   inp.style.width = Math.ceil(w + parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight) + 14) + 'px';
 }
 
+// Betragsfeld mindestens so breit wie "100.000,00", bei längeren Beträgen wächst es mit.
+function fitMoney(inp) {
+  const cs = getComputedStyle(inp);
+  const ctx = (fitMoney.ctx ||= document.createElement('canvas').getContext('2d'));
+  ctx.font = `${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
+  const w = Math.max(ctx.measureText('100.000,00').width, ctx.measureText(inp.value).width);
+  inp.style.width = Math.ceil(w + parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight) + 6) + 'px';
+}
+
 function insertEmoji(ta, emoji) {
   const v = ta.value;
   const pos = ta.selectionStart ?? v.length;
@@ -959,12 +977,14 @@ function render({ scrollToGap = false } = {}) {
     s.selectionStart = s.selectionEnd = s.value.length;
   };
   if (search) {
+    // Markiert wird sofort; zum ersten Treffer gesprungen wird erst nach einer kurzen Tipp-Pause.
     search.oninput = () => {
       searchTerm = search.value;
       searchIndex = 0;
       render();
       refocus();
-      showHit(true);
+      clearTimeout(searchJump);
+      searchJump = setTimeout(() => showHit(true), 500);
     };
     // Eingabetaste springt zum nächsten Treffer (wie in Safari).
     search.onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); stepHit(1); } };
@@ -990,7 +1010,9 @@ function render({ scrollToGap = false } = {}) {
     kosten.value = int || hasComma ? `${int ? thousands(int) : '0'}${hasComma ? ',' + dec : ''}` : '';
     save();
   };
-  kosten.onblur = () => { kosten.value = trip.kosten == null ? '' : money(trip.kosten); };
+  kosten.onblur = () => { kosten.value = trip.kosten == null ? '' : money(trip.kosten); fitMoney(kosten); };
+  kosten.addEventListener('input', () => fitMoney(kosten));
+  fitMoney(kosten);
 
   if (scrollToGap) {
     const row = app.querySelector('tr.gap');
@@ -1011,7 +1033,17 @@ function showHit(scroll) {
   input.style.paddingRight = (app.querySelector('.smeta').offsetWidth + 14) + 'px';
   app.querySelector('#sprev').disabled = !n || searchIndex <= 0;
   app.querySelector('#snext').disabled = !n || searchIndex >= n - 1;
-  if (scroll && n) marks[searchIndex].scrollIntoView({ block: 'center' });
+  if (scroll && n) scrollUnderBar(marks[searchIndex]);
+}
+
+// Treffer direkt unter die Suchzeile (und den Tabellenkopf) rollen, mit einer halben Zeile Abstand.
+function scrollUnderBar(el) {
+  const row = el.closest('tr') || el;
+  const bar = document.getElementById('bar');
+  const head = app.querySelector('table.days:not(.static) thead');
+  const offset = (bar?.offsetHeight || 0) + (head?.offsetHeight || 0) + 12;
+  const top = row.getBoundingClientRect().top + scrollY - offset - (window.visualViewport?.offsetTop || 0);
+  window.scrollTo({ top: Math.max(0, top) });
 }
 
 function stepHit(dir) {
@@ -1266,6 +1298,7 @@ function openDialog(html, wide = false) {
     dlg.close('cancel');
   };
   markOpener();
+  mountCap(dlg);
   growAll();
   requestAnimationFrame(growAll);
 }
@@ -1300,6 +1333,20 @@ const MOOD_HINT = 'Leiste nach links/rechts wischen für weitere Smileys. Lange 
 const micButton = id => SpeechRec ? `<button type="button" class="mic" data-mic="${id}" aria-pressed="false" aria-label="Diktieren">${ic('mic')}</button>` : '';
 const micHint = () => SpeechRec ? '' : '<div class="hint" style="margin-top:12px">🎤 Zum Diktieren die Mikrofon-Taste auf der Tastatur verwenden.</div>';
 
+// Auswahl-Kapsel: Schaltflächen in einer Kapsel; ist sie zu schmal, lässt sich der Inhalt wischen,
+// ein Verlauf am Rand zeigt, wo es weitergeht.
+const capHtml = (buttons, id = '') => `<div class="cap"><div class="scroll" ${id ? `id="${id}"` : ''}>${buttons}</div></div>`;
+function mountCap(root) {
+  root.querySelectorAll('.cap .scroll').forEach(strip => {
+    const fade = () => {
+      strip.classList.toggle('fl', strip.scrollLeft > 2);
+      strip.classList.toggle('fr', strip.scrollLeft + strip.clientWidth < strip.scrollWidth - 2);
+    };
+    strip.addEventListener('scroll', fade, { passive: true });
+    requestAnimationFrame(fade);
+  });
+}
+
 // Smiley-Schnellauswahl: Antippen fügt ein, lange drücken entfernt, ↺ setzt zurück.
 function mountMoodRow(row, ta, onReset, kind = 'mood') {
   const set = EMOJI_SETS[kind];
@@ -1307,16 +1354,11 @@ function mountMoodRow(row, ta, onReset, kind = 'mood') {
   row.classList.add('strip');
   const draw = () => {
     const keep = row.querySelector('.scroll')?.scrollLeft || 0;
-    row.innerHTML = `<div class="scroll">${quickMoods(kind).map(m => `<button type="button" data-m="${m}">${m}</button>`).join('')}</div>`
+    row.innerHTML = capHtml(quickMoods(kind).map(m => `<button type="button" data-m="${m}">${m}</button>`).join(''))
       + `<button type="button" class="reset" aria-label="Standard-Smileys wiederherstellen">${ic('rotate-ccw')}</button>`;
     const strip = row.querySelector('.scroll');
-    const fade = () => {
-      strip.classList.toggle('fl', strip.scrollLeft > 2);
-      strip.classList.toggle('fr', strip.scrollLeft + strip.clientWidth < strip.scrollWidth - 2);
-    };
     strip.scrollLeft = keep;
-    strip.addEventListener('scroll', fade, { passive: true });
-    requestAnimationFrame(fade);
+    mountCap(row);
     row.querySelectorAll('[data-m]').forEach(b => onLongPress(b,
       async () => {
         if (!await confirmPop(b, `${b.dataset.m} aus der Schnellauswahl entfernen?`, { label: 'Entfernen', icon: 'trash' })) return;
@@ -1384,8 +1426,8 @@ function openTripDialog(trip) {
           <div class="warn" id="tripWarn" hidden></div>
         </div>
         <div class="step"><label>Reisemittel</label>
-          <div class="chips" id="transport">
-            ${TRANSPORT.map(x => `<button type="button" data-t="${x.id}" aria-pressed="${transport.has(x.id)}">${x.icon} ${x.name}</button>`).join('')}
+          <div class="chips">
+            ${capHtml(TRANSPORT.map(x => `<button type="button" data-t="${x.id}" aria-pressed="${transport.has(x.id)}">${x.icon} ${x.name}</button>`).join(''), 'transport')}
           </div>
           <div class="warn" id="transportWarn" hidden style="margin-top:2px"></div>
         </div>
@@ -1532,8 +1574,8 @@ function openDayDialog(trip, iso) {
       <div class="dlg-body">
         <div class="step">
           <div class="step-head"><label><span class="step-num">1</span>Wetter</label></div>
-          <div class="emoji-row" id="wx">
-            ${WEATHER.map(w => `<button type="button" aria-pressed="${weather.has(w)}" data-w="${w}">${w}</button>`).join('')}
+          <div class="emoji-row strip">
+            ${capHtml(WEATHER.map(w => `<button type="button" aria-pressed="${weather.has(w)}" data-w="${w}">${w}</button>`).join(''), 'wx')}
           </div>
         </div>
         <div class="step">
@@ -1823,7 +1865,7 @@ function outputBody(trip, version, stamp) {
     const e = rawEntry(trip, iso);
     const q = quarterOf(trip, iso);
     return `<tr>
-      <td class="nw">${dayLabel(iso)} ${esc(e.weather || '')}</td>
+      <td class="nw">${dayLabel(iso)}${e.weather ? `<br>${esc(e.weather)}` : ''}</td>
       <td>${linesHtml(programItems(e.program))}</td>
       ${c.mood ? `<td>${linesHtml(commentItems(e.comment))}</td>` : ''}
       ${c.food ? `<td>${foodHtml(foodItems(e.food, q.place))}</td>` : ''}
@@ -2054,6 +2096,12 @@ window.addEventListener('resize', () => {
   if (bar) document.documentElement.style.setProperty('--bar-h', bar.offsetHeight + 'px');
   if (!side.hidden) document.documentElement.style.setProperty('--side-w', side.offsetWidth + 'px');
 });
+// Bei offener Tastatur verschiebt Safari den sichtbaren Bereich; Kopfzeile und Tabellenkopf wandern mit.
+if (window.visualViewport) {
+  const vvTop = () => document.documentElement.style.setProperty('--vv-top', Math.max(0, visualViewport.offsetTop) + 'px');
+  visualViewport.addEventListener('scroll', vvTop);
+  visualViewport.addEventListener('resize', vvTop);
+}
 // Beim Scrollen bekommt die Kopfzeile eine Haarlinie.
 window.addEventListener('scroll', () => document.getElementById('bar')?.classList.toggle('line', scrollY > 4), { passive: true });
 

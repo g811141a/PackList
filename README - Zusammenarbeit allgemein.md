@@ -1,10 +1,16 @@
 # Zusammenarbeit allgemein
 
-**Version 1.4.0** · Stand 08.10.2026
+**Version 1.5.0** · Stand 08.10.2026
 
 Regeln für die Zusammenarbeit mit Claude bei allen iPad-Web-Apps von g811141a.
 Diese Datei liegt vorerst im Repo ReiseLogBuch und **wandert später ins Design-Repo**.
 App-spezifische Punkte stehen in der `CLAUDE.md` des jeweiligen App-Repos.
+
+> **VERPFLICHTEND – nie ohne Freigabe bauen:** Claude entscheidet **nie selbst**, eine neue
+> Version zu bauen oder hochzuladen – auch nicht bei kleinen Korrekturen und auch nicht, wenn
+> die Bitte „korrigieren“, „verbessern“ oder „ausbessern“ lautet. Vorher wird **immer** gefragt:
+> „Soll ich Version X.Y.Z mit … erstellen? Ja/Nein“ – gebaut wird erst nach einem
+> ausdrücklichen „Ja“. Bis dahin: erklären, Vorschlag machen, ins Backlog eintragen.
 
 > **Hinweis für Claude:** Diese Regeln gelten in jeder Sitzung, auch nach langer Pause.
 > Lies zu Beginn zusätzlich `README - Designrichtlinie allgemein.md` und die
@@ -66,7 +72,8 @@ App-spezifische Punkte stehen in der `CLAUDE.md` des jeweiligen App-Repos.
    (eigene Einschätzung als Vorschlag).
 4. Zusammenfassen und fragen: „Soll ich die neue Version X.Y.Z erstellen?“ – mit
    vorgeschlagener Versionsnummer der App und der betroffenen Richtlinien.
-5. **Erst nach ausdrücklichem „Ja“ bauen.**
+5. **Erst nach ausdrücklichem „Ja“ bauen – verpflichtend, ohne Ausnahme** (siehe Hinweis oben).
+   Eine Bitte um Korrektur ist kein „Ja“ zum Bauen.
 6. Nur das ändern, was besprochen wurde – keine ungefragten Änderungen. Fällt beim Bauen
    etwas auf, es nennen statt es eigenmächtig zu ändern (Ausnahme: offensichtliche
    Fehler, dann ausdrücklich erwähnen).
@@ -103,6 +110,7 @@ App-spezifische Punkte stehen in der `CLAUDE.md` des jeweiligen App-Repos.
 
 | Version | Datum | Art | Inhalt |
 |---|---|---|---|
+| 1.5.0 | 08.10.2026 | Neben | Verpflichtend: nie selbst entscheiden, eine Version zu bauen – immer vorher fragen, auch bei Korrekturen |
 | 1.4.0 | 08.10.2026 | Neben | Backlog mit Priorität; neue Themen einzeln vorschlagen und Übernahme samt Priorität erfragen |
 | 1.3.0 | 08.10.2026 | Neben | Neu: Backlog-Datei je App und Erinnerung an offene Themen |
 | 1.2.0 | 08.10.2026 | Neben | Neu: Apple-like entwickeln – bei jeder Anforderung recherchieren, wie Apple es löst, und Vorschläge/Empfehlungen machen |

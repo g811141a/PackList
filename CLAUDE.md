@@ -1,6 +1,12 @@
 # Reiselogbuch – Hinweise für Claude
 
-**Version 1.2.0** · Stand 08.10.2026
+**Version 1.3.0** · Stand 08.10.2026
+
+## Verpflichtend
+
+**Nie selbst entscheiden, eine neue Version zu bauen oder hochzuladen.** Immer vorher fragen
+(„Soll ich Version X.Y.Z mit … erstellen? Ja/Nein“) und erst nach ausdrücklichem „Ja“ bauen –
+auch bei kleinen Korrekturen und wenn um „korrigieren/verbessern“ gebeten wird.
 
 ## Zuerst lesen
 
@@ -37,6 +43,7 @@ Lies zu Beginn jeder Sitzung diese Dateien und halte dich daran:
 
 | Version | Datum | Inhalt |
 |---|---|---|
+| 1.3.0 | 08.10.2026 | Verpflichtend: nie ohne Freigabe bauen |
 | 1.2.0 | 08.10.2026 | BACKLOG.md in die Liste „Zuerst lesen“ |
 | 1.1.0 | 08.10.2026 | Hinweise zur Bedienung ab Reiselogbuch 2.0.0 |
 | 1.0.0 | 07.10.2026 | erste Fassung |

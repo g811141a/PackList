@@ -1,6 +1,6 @@
 # Designrichtlinie allgemein
 
-**Version 3.2.1** · Stand 08.10.2026
+**Version 3.2.2** · Stand 08.10.2026
 
 Allgemeine Gestaltungs- und Bedienregeln für alle iPad-Web-Apps von g811141a.
 Diese Datei liegt vorerst im Repo ReiseLogBuch und **wandert später ins Design-Repo**;
@@ -459,8 +459,10 @@ programmiert (`design.css`, `ui.js`) und von allen Apps übernommen.
 - **Auswahl-Kapsel:** Mehrere Auswahl-Schaltflächen (Smileys, Wetter, Reisemittel …) stehen in
   **einer** schwebenden Kapsel (44 px hoch, Lichtkante, Schatten, keine Ränder dazwischen).
   Reicht der Platz nicht, lässt sich der Inhalt nach links/rechts wischen; ein weicher Verlauf am
-  Rand zeigt, wo es weitergeht. Gewählte Einträge sind in der Kapsel blau getönt (Haarlinie
-  `--accent`). Zurücksetzen (rotate-ccw) steht als eigene runde Schaltfläche rechts daneben.
+  Rand zeigt, wo es weitergeht. Gewählte Einträge sind blau getönt (Haarlinie `--accent`), und
+  zwar als eigene Form **innerhalb** der Schaltfläche mit Luft rundherum (wie Tapback): bei
+  Emojis ein Kreis von 36 px, bei Text eine Kapsel mit 3 px Abstand nach innen – markierte
+  Nachbarn stoßen nie aneinander. Schaltflächen füllen genau den Innenraum der Kapsel. Zurücksetzen (rotate-ccw) steht als eigene runde Schaltfläche rechts daneben.
   Vorbild: Tapback-Leiste in Nachrichten. Technisch `.cap` > `.scroll`.
 
 ### 15.13 Tabelle
@@ -494,6 +496,7 @@ programmiert (`design.css`, `ui.js`) und von allen Apps übernommen.
 
 | Version | Datum | Art | Inhalt |
 |---|---|---|---|
+| 3.2.2 | 08.10.2026 | Korrektur | Auswahl-Kapsel: Markierung als Kreis bzw. Kapsel innerhalb der Schaltfläche mit Abstand; Schaltflächen so hoch wie der Innenraum |
 | 3.2.1 | 08.10.2026 | Korrektur | Seitenleiste beim Start immer eingeblendet (auch hoch, darübergelegt); unten 4 px Abstand wie Safari |
 | 3.2.0 | 08.10.2026 | Neben | Auswahl-Kapsel (Smileys, Wetter, Reisemittel in einer wischbaren Kapsel); Suche springt nach Tipp-Pause und zeigt den Treffer unter der Suchzeile, Kopfzeile bleibt bei Tastatur fest; Betragsfelder dynamisch breit (mind. „100.000,00“); Drucken ohne Seitenleiste und ohne deren Abstand |
 | 3.1.0 | 08.10.2026 | Neben | Schwebende Seitenleiste wie in Safari; Kalender-Icon in Datumsfeldern; Beträge „4.850,00 €“, rechtsbündig, „,00“ wird ergänzt; Tabellenüberschriften 17 px halbfett (Headline); Filter beim Öffnen auf „Alle“; gedrückte Schaltfläche bleibt auch bei Folgeschritten blau; „Backup erstellen“ / „Letztes Backup erstellt am …“ |

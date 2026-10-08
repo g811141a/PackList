@@ -2,7 +2,7 @@
 
 **Version 2.1.2** · Stand 08.10.2026
 
-> **Es gilt die `README - Designrichtlinie allgemein.md` (Version 3.2.1).**
+> **Es gilt die `README - Designrichtlinie allgemein.md` (Version 3.2.2).**
 > Hier stehen nur **Abweichungen** (bewusst anders als dort) und **Ausprägungen**
 > (konkrete Ausgestaltung einer allgemeinen Regel für das Reiselogbuch).
 > Die vollständige Funktionsbeschreibung steht in `PROMPT.md`.

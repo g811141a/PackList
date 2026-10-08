@@ -12,6 +12,14 @@ Versionsnummer **Hauptversion.Nebenversion.Korrektur** (z. B. 1.2.1):
 Steigt eine Stufe, beginnen die Stufen dahinter wieder bei 0.
 Die aktuelle Version steht in der App im Mehr-Menü (ellipsis) der Seitenleiste „Reiselogbücher“.
 
+## 2.1.4 – 08.10.2026 (Korrektur)
+
+Reiselogbuch 2.1.4 · Designrichtlinie allgemein 3.2.2 · Designrichtlinie Reiselogbuch 2.1.2 · Zusammenarbeit allgemein 1.4.0
+
+- F-09: Markierung in den Auswahl-Kapseln wie bei Apple (Tapback): bei Wetter und Smileys ein
+  runder Kreis statt eines „Eis“, bei Reisemitteln eine Kapsel mit Abstand nach innen; markierte
+  Nachbarn haben jetzt Abstand zueinander.
+
 ## 2.1.3 – 08.10.2026 (Korrektur)
 
 Reiselogbuch 2.1.3 · Designrichtlinie allgemein 3.2.1 · Designrichtlinie Reiselogbuch 2.1.2 · Zusammenarbeit allgemein 1.4.0

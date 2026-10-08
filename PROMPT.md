@@ -1,6 +1,6 @@
-# Reiselogbuch – Prompt (Stand 08.10.2026, Version 2.1.4)
+# Reiselogbuch – Prompt (Stand 08.10.2026, Version 2.1.5)
 
-Reiselogbuch 2.1.4 · Designrichtlinie allgemein 3.2.2 · Designrichtlinie Reiselogbuch 2.1.2 · Zusammenarbeit allgemein 1.5.0
+Reiselogbuch 2.1.5 · Designrichtlinie allgemein 3.2.3 · Designrichtlinie Reiselogbuch 2.1.2 · Zusammenarbeit allgemein 1.5.0
 (Gestaltungsregeln: `README - Designrichtlinie allgemein.md` und
 `README - Designrichtlinie Reiselogbuch.md`; Zusammenarbeit: `README - Zusammenarbeit
 allgemein.md`; Einstieg für Claude: `CLAUDE.md`. Bei jeder Design-Änderung mit aktualisieren.)
@@ -103,6 +103,8 @@ RAHMEN
   Treffer steht direkt unter der Suchzeile. Kopf- und Suchzeile bleiben fest,
   auch bei offener Tastatur.
 - Drucken/PDF: nur das Reiselogbuch, ohne Seitenleiste.
+- Bei sichtbarer Tastatur bleiben die Kopfzeilen aller Fenster und der
+  Hauptansicht sichtbar; nur der Inhalt scrollt.
 - Fenster passen sich in der Breite dem Inhalt an (höchstens 90 % der
   Bildschirmbreite, Mindestbreite für Eingabefelder): Neues Reiselogbuch,
   Einstellungen, Fazit, Meldungen. Tagesmaske und Vorschau sind fast

@@ -1,6 +1,6 @@
 # Backlog – offene Themen
 
-**Stand 08.10.2026** · Aktuelle Version: Reiselogbuch 2.1.4
+**Stand 08.10.2026** · Aktuelle Version: Reiselogbuch 2.1.5
 
 Hier stehen alle offenen Themen. Erledigte Punkte wandern mit Version und Datum nach unten
 in „Erledigt“. Claude erinnert zu Beginn und am Ende jeder Sitzung an die offenen Punkte
@@ -14,11 +14,11 @@ Status: **vereinbart** (entschieden, wartet auf „Ja“ zum Bauen) · **offen**
 
 ---
 
-## 1. Fehler
+## 1. Auf dem iPad prüfen
 
-| Nr. | Prio | Thema | Gilt | Status |
-|---|---|---|---|---|
-| F-10 | 1 | Bei sichtbarer Tastatur wird die Kopfzeile von Fenstern (Einstellungen, Tageserfassung, Fazit, Neues Reiselogbuch …) und der Hauptansicht (inkl. Suchzeile) nach oben weggeschoben. Lösung: Fenster passen Höhe und Lage laufend an den sichtbaren Bereich über der Tastatur an; Kopfzeile bleibt fest, nur der Inhalt scrollt, aktives Feld wird sichtbar gerollt; gilt für alle Fenster, Menüs, Sprechblasen ([HIG – Sheets](https://developer.apple.com/design/human-interface-guidelines/sheets)) | allgemein | vereinbart |
+| Nr. | Prio | Thema | Status |
+|---|---|---|---|
+| P-08 | 1 | Version 2.1.5: Tastatur offen in Einstellungen, Tageserfassung, Fazit und bei der Suche – Kopfzeilen bleiben sichtbar, Feld bleibt sichtbar | prüfen |
 
 ## 2. Weitere Themen
 
@@ -46,6 +46,7 @@ Status: **vereinbart** (entschieden, wartet auf „Ja“ zum Bauen) · **offen**
 
 | Nr. | Thema | Version | Datum |
 |---|---|---|---|
+| E-10 | Reiselogbuch 2.1.5: F-10 Kopfzeilen bei sichtbarer Tastatur sichtbar | Reiselogbuch 2.1.5 · allgemein 3.2.3 | 08.10.2026 |
 | E-09 | Auf dem iPad geprüft und ok: P-01 Datumsfelder · P-02 Seitenleiste hoch · P-03 Sprechblasen/Menüs · P-04 HTML/PDF, Backup · P-05 Version 2.1.0 · P-06 Version 2.1.1 · P-07 Version 2.1.2 | bis Reiselogbuch 2.1.4 | 08.10.2026 |
 | E-08 | Reiselogbuch 2.1.4: F-09 Markierung in Auswahl-Kapseln rund (Kreis/Kapsel innen) mit Abstand | Reiselogbuch 2.1.4 · allgemein 3.2.2 | 08.10.2026 |
 | E-07 | Reiselogbuch 2.1.3: F-08 Markierung in Auswahl-Kapseln nicht mehr abgeschnitten | Reiselogbuch 2.1.3 | 08.10.2026 |

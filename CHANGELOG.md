@@ -12,6 +12,14 @@ Versionsnummer **Hauptversion.Nebenversion.Korrektur** (z. B. 1.2.1):
 Steigt eine Stufe, beginnen die Stufen dahinter wieder bei 0.
 Die aktuelle Version steht in der App im Mehr-Menü (ellipsis) der Seitenleiste „Reiselogbücher“.
 
+## 2.1.5 – 08.10.2026 (Korrektur)
+
+Reiselogbuch 2.1.5 · Designrichtlinie allgemein 3.2.3 · Designrichtlinie Reiselogbuch 2.1.2 · Zusammenarbeit allgemein 1.5.0
+
+- F-10: Bei sichtbarer Tastatur bleiben die Kopfzeilen aller Fenster (Einstellungen,
+  Tageserfassung, Fazit, Neues Reiselogbuch, Meldungen) und der Hauptansicht sichtbar; das
+  Fenster passt sich dem Bereich über der Tastatur an, nur der Inhalt scrollt.
+
 ## 2.1.4 – 08.10.2026 (Korrektur)
 
 Reiselogbuch 2.1.4 · Designrichtlinie allgemein 3.2.2 · Designrichtlinie Reiselogbuch 2.1.2 · Zusammenarbeit allgemein 1.4.0

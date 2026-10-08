@@ -247,12 +247,13 @@
   dialog {
     border: none; border-radius: 18px; padding: 0;
     width: fit-content; min-width: min(480px, 90vw); max-width: 90vw;
-    max-height: calc(100vh - 40px); background: var(--dlg-bg); color: var(--ink);
+    max-height: var(--dlg-max, calc(100vh - 40px)); background: var(--dlg-bg); color: var(--ink);
     box-shadow: 0 20px 60px rgba(0,0,0,.3);
   }
   dialog.wide { width: min(1100px, 100vw - 24px); max-width: none; }
   dialog::backdrop { background: rgba(0,0,0,.35); }
-  dialog form { display: flex; flex-direction: column; max-height: calc(100vh - 40px); }
+  dialog form { display: flex; flex-direction: column; max-height: var(--dlg-max, calc(100vh - 40px)); }
+  .dlg-head { flex: none; }
   .dlg-head { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: .5px solid var(--line); }
   .dlg-head h3 { margin: 0; flex: 1; text-align: center; font-size: 19px; min-height: 28px; line-height: 28px; }
   /* Fenster-Kopfzeile: rundes x links, Titel (mit Zusatzzeile) in der Mitte, rechts weitere Schaltflächen und rundes Häkchen.
@@ -397,8 +398,8 @@ const ic = (name, cls = '') => `<svg class="ic ${cls}" viewBox="0 0 24 24" aria-
 
 // Version und Erstellungszeitpunkt, werden bei jeder neuen Version angepasst.
 // Versionsnummer Hauptversion.Nebenversion.Korrektur (siehe CHANGELOG.md).
-const APP_VERSION = '2.1.4';
-const APP_BUILT = '08.10.2026 um 16:16';
+const APP_VERSION = '2.1.5';
+const APP_BUILT = '08.10.2026 um 21:18';
 
 const app = document.getElementById('app');
 const side = document.getElementById('side');
@@ -1281,6 +1282,7 @@ function inform(title, html) {
     msg.querySelector('[data-x]').onclick = done;
     msg.oncancel = e => { e.preventDefault(); done(); };
     msg.showModal();
+    placeDialogs();
   });
 }
 
@@ -1295,6 +1297,7 @@ function openDialog(html, wide = false) {
   dlg.innerHTML = html;
   dlg.returnValue = '';
   if (!dlg.open) dlg.showModal();
+  placeDialogs();
   dlg.querySelector('.dlg-body')?.scrollTo(0, 0);
   const x = dlg.querySelector('#dlgX');
   // x schließt; wurde etwas geändert, fragt eine Sprechblase, ob die Änderungen verworfen werden sollen.
@@ -1323,6 +1326,7 @@ function dlgHead(title, { sub = '', right = '', check = true } = {}) {
 function refreshOk() {
   dlg.querySelector('#dlgOk')?.classList.toggle('primary', Boolean(dlgDirty?.()));
   growAll();
+  placeDialogs();
 }
 dlg.addEventListener('input', refreshOk);
 dlg.addEventListener('change', refreshOk);
@@ -2100,17 +2104,38 @@ showTrip(pickStartTrip()?.id);
 // Wechsel quer/hoch: Seitenleiste fest oder darübergelegt; sonst nur Höhen und Breiten nachführen.
 let wasWide = isWide();
 window.addEventListener('resize', () => {
+  placeDialogs();
   if (isWide() !== wasWide) { wasWide = isWide(); sideOverlay = false; render(); return; }
   const bar = document.getElementById('bar');
   if (bar) document.documentElement.style.setProperty('--bar-h', bar.offsetHeight + 'px');
   if (!side.hidden) document.documentElement.style.setProperty('--side-w', side.offsetWidth + 'px');
 });
-// Bei offener Tastatur verschiebt Safari den sichtbaren Bereich; Kopfzeile und Tabellenkopf wandern mit.
-if (window.visualViewport) {
-  const vvTop = () => document.documentElement.style.setProperty('--vv-top', Math.max(0, visualViewport.offsetTop) + 'px');
-  visualViewport.addEventListener('scroll', vvTop);
-  visualViewport.addEventListener('resize', vvTop);
+// Bei offener Tastatur verkleinert und verschiebt Safari den sichtbaren Bereich. Kopfzeile, Tabellenkopf
+// und alle Fenster richten sich danach: die Kopfzeilen bleiben sichtbar, nur der Inhalt scrollt.
+function placeDialogs() {
+  const vv = window.visualViewport;
+  const top = vv ? Math.max(0, vv.offsetTop) : 0;
+  const h = vv ? vv.height : innerHeight;
+  const root = document.documentElement.style;
+  root.setProperty('--vv-top', top + 'px');
+  root.setProperty('--dlg-max', Math.max(200, h - 20) + 'px');
+  [dlg, msg].forEach(d => {
+    if (!d.open) return;
+    // Fenster im sichtbaren Bereich zentrieren (bei offener Tastatur oberhalb der Tastatur).
+    d.style.margin = '0 auto';
+    d.style.bottom = 'auto';
+    d.style.top = Math.round(top + Math.max(10, (h - d.offsetHeight) / 2)) + 'px';
+  });
 }
+if (window.visualViewport) {
+  visualViewport.addEventListener('scroll', placeDialogs);
+  visualViewport.addEventListener('resize', placeDialogs);
+}
+// Das angetippte Feld im Fenster in den sichtbaren Teil rollen, sobald die Tastatur offen ist.
+dlg.addEventListener('focusin', e => {
+  if (!e.target.matches('input, textarea')) return;
+  setTimeout(() => { placeDialogs(); e.target.scrollIntoView({ block: 'nearest' }); }, 350);
+});
 // Beim Scrollen bekommt die Kopfzeile eine Haarlinie.
 window.addEventListener('scroll', () => document.getElementById('bar')?.classList.toggle('line', scrollY > 4), { passive: true });
 

@@ -151,7 +151,7 @@
   /* Komponente Seitenleiste: quer fest links neben dem Inhalt, im Hochformat über den Inhalt gelegt */
   /* Schwebend wie in Safari: runde Ecken, Lichtkante und Schatten wie die Schaltflächen, Abstand zum Rand */
   body.docked { padding-left: calc(var(--side-w) + max(10px, env(safe-area-inset-left)) + 20px); }
-  #side { position: fixed; z-index: 7; top: calc(env(safe-area-inset-top) + 10px); bottom: calc(env(safe-area-inset-bottom) + 10px); left: max(10px, env(safe-area-inset-left));
+  #side { position: fixed; z-index: 7; top: calc(env(safe-area-inset-top) + 10px); bottom: calc(env(safe-area-inset-bottom) + 4px); left: max(10px, env(safe-area-inset-left));
     width: max-content; min-width: 340px; max-width: 420px; overflow-y: auto;
     background: var(--card); border: .5px solid var(--btn-rim); border-radius: 22px; box-shadow: var(--float);
     display: flex; flex-direction: column; padding: 10px 12px 14px; }
@@ -391,8 +391,8 @@ const ic = (name, cls = '') => `<svg class="ic ${cls}" viewBox="0 0 24 24" aria-
 
 // Version und Erstellungszeitpunkt, werden bei jeder neuen Version angepasst.
 // Versionsnummer Hauptversion.Nebenversion.Korrektur (siehe CHANGELOG.md).
-const APP_VERSION = '2.1.1';
-const APP_BUILT = '08.10.2026 um 15:53';
+const APP_VERSION = '2.1.2';
+const APP_BUILT = '08.10.2026 um 16:04';
 
 const app = document.getElementById('app');
 const side = document.getElementById('side');
@@ -2087,6 +2087,9 @@ importFile.onchange = async () => {
 /* ---------- Start ---------- */
 
 applyTheme();
+// Beim Start ist die Seitenleiste immer eingeblendet (im Hochformat über den Inhalt gelegt).
+db.settings.sidebar = true;
+sideOverlay = !isWide();
 showTrip(pickStartTrip()?.id);
 // Wechsel quer/hoch: Seitenleiste fest oder darübergelegt; sonst nur Höhen und Breiten nachführen.
 let wasWide = isWide();

@@ -12,6 +12,14 @@ Versionsnummer **Hauptversion.Nebenversion.Korrektur** (z. B. 1.2.1):
 Steigt eine Stufe, beginnen die Stufen dahinter wieder bei 0.
 Die aktuelle Version steht in der App im Mehr-Menü (ellipsis) der Seitenleiste „Reiselogbücher“.
 
+## 2.1.2 – 08.10.2026 (Korrektur)
+
+Reiselogbuch 2.1.2 · Designrichtlinie allgemein 3.2.1 · Designrichtlinie Reiselogbuch 2.1.2 · Zusammenarbeit allgemein 1.4.0
+
+- F-06: Beim Start ist die Seitenleiste immer eingeblendet (hoch über den Inhalt gelegt); die
+  laufende Reise ist geöffnet.
+- F-07: Seitenleiste reicht wie in Safari bis 4 px über den unteren Rand.
+
 ## 2.1.1 – 08.10.2026 (Korrektur)
 
 Reiselogbuch 2.1.1 · Designrichtlinie allgemein 3.2.0 · Designrichtlinie Reiselogbuch 2.1.1 · Zusammenarbeit allgemein 1.4.0

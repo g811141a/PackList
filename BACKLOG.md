@@ -1,6 +1,6 @@
 # Backlog – offene Themen
 
-**Stand 08.10.2026** · Aktuelle Version: Reiselogbuch 2.1.1
+**Stand 08.10.2026** · Aktuelle Version: Reiselogbuch 2.1.2
 
 Hier stehen alle offenen Themen. Erledigte Punkte wandern mit Version und Datum nach unten
 in „Erledigt“. Claude erinnert zu Beginn und am Ende jeder Sitzung an die offenen Punkte
@@ -22,6 +22,7 @@ Status: **vereinbart** (entschieden, wartet auf „Ja“ zum Bauen) · **offen**
 | P-02 | 1 | Seitenleiste im Hochformat (darübergelegt, schließt nach Auswahl) | prüfen |
 | P-03 | 1 | Sprechblasen und Menüs an der richtigen Stelle, auch in Fenstern | prüfen |
 | P-04 | 1 | Teilen-Menü: HTML und PDF speichern, Backup erstellen und laden | prüfen |
+| P-07 | 1 | Version 2.1.2: Start mit Seitenleiste (quer und hoch), laufende Reise geöffnet, Abstand unten | prüfen |
 | P-06 | 1 | Version 2.1.1: PDF quer mit eingeblendeter Seitenleiste; Suche mit Tastatur (Kopfzeile bleibt fest, Treffer unter der Suchzeile); Kapseln wischen | prüfen |
 | P-05 | 1 | Version 2.1.0: schwebende Seitenleiste, Gesamtkosten mit Cent, ellipsis bleibt blau beim Backup | prüfen |
 
@@ -50,6 +51,7 @@ Status: **vereinbart** (entschieden, wartet auf „Ja“ zum Bauen) · **offen**
 
 | Nr. | Thema | Version | Datum |
 |---|---|---|---|
+| E-06 | Reiselogbuch 2.1.2: F-06 Seitenleiste beim Start eingeblendet, F-07 Abstand unten 4 px | Reiselogbuch 2.1.2 · allgemein 3.2.1 | 08.10.2026 |
 | E-05 | Reiselogbuch 2.1.1: F-01 PDF ohne Seitenleiste, F-02 Suche, F-03 Wetter in der Ausgabe, F-04 Betragsfeld dynamisch, F-05 Auswahl-Kapseln | Reiselogbuch 2.1.1 · allgemein 3.2.0 · Reiselogbuch-Richtlinie 2.1.1 | 08.10.2026 |
 | E-04 | Reiselogbuch 2.1.0: B-01 bis B-12 (schwebende Seitenleiste, immer „Alle Tage“, Kalender-Icon, ellipsis bleibt blau, „Backup erstellen“, Statistik „Nächte“, Beträge „4.850,00 €“ rechtsbündig, Tabellenüberschriften 17 px halbfett) | Reiselogbuch 2.1.0 · allgemein 3.1.0 · Reiselogbuch-Richtlinie 2.1.0 | 08.10.2026 |
 | E-01 | Links zu den Apple Human Interface Guidelines je Abschnitt und Komponente | Designrichtlinie allgemein 3.0.1 | 08.10.2026 |

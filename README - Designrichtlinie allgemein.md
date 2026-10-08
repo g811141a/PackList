@@ -1,6 +1,6 @@
 # Designrichtlinie allgemein
 
-**Version 3.2.0** · Stand 08.10.2026
+**Version 3.2.1** · Stand 08.10.2026
 
 Allgemeine Gestaltungs- und Bedienregeln für alle iPad-Web-Apps von g811141a.
 Diese Datei liegt vorerst im Repo ReiseLogBuch und **wandert später ins Design-Repo**;
@@ -397,11 +397,12 @@ programmiert (`design.css`, `ui.js`) und von allen Apps übernommen.
   runde Schaltfläche panel-left (ausblenden). Darunter die Einträge: Titel fett, darunter
   grau Zeitraum · Status; gewählter Eintrag blau gefüllt (wie eine Hauptaktion). Unten
   dezente Hinweise (z. B. Backup).
-- **Maße und Aussehen:** schwebend wie in Safari – eigenes Rechteck mit 10 px Abstand zum
-  Bildschirmrand, Radius 22 px, Lichtkante `--btn-rim` und Schatten `--float` wie die
+- **Maße und Aussehen:** schwebend wie in Safari – eigenes Rechteck mit 10 px Abstand oben und
+  links und 4 px unten (der Schatten endet fast am unteren Bildschirmrand), Radius 22 px, Lichtkante `--btn-rim` und Schatten `--float` wie die
   Schaltflächen; so breit wie Kopf bzw. längster Titel, 340–420 px; Hintergrund `--card`.
-- **Verhalten:** quer fest links neben dem Inhalt, mit panel-left aus- und einblendbar
-  (wird gemerkt); im Hochformat über den Inhalt gelegt (abgedunkelt dahinter), schließt sich
+- **Verhalten:** beim Start immer eingeblendet (quer fest links, hoch über den Inhalt gelegt) mit
+  dem aktuellen Eintrag geöffnet; quer fest links neben dem Inhalt, mit panel-left aus- und
+  einblendbar (bis zum nächsten Start); im Hochformat über den Inhalt gelegt (abgedunkelt dahinter), schließt sich
   nach der Auswahl.
 - **Mehr-Menü der Seitenleiste:** Backup erstellen (darunter grau „Letztes Backup erstellt am …“) ·
   Backup laden · ganz unten grau die Versionszeile „<App> · Version X.Y.Z · erstellt am …“.
@@ -493,6 +494,7 @@ programmiert (`design.css`, `ui.js`) und von allen Apps übernommen.
 
 | Version | Datum | Art | Inhalt |
 |---|---|---|---|
+| 3.2.1 | 08.10.2026 | Korrektur | Seitenleiste beim Start immer eingeblendet (auch hoch, darübergelegt); unten 4 px Abstand wie Safari |
 | 3.2.0 | 08.10.2026 | Neben | Auswahl-Kapsel (Smileys, Wetter, Reisemittel in einer wischbaren Kapsel); Suche springt nach Tipp-Pause und zeigt den Treffer unter der Suchzeile, Kopfzeile bleibt bei Tastatur fest; Betragsfelder dynamisch breit (mind. „100.000,00“); Drucken ohne Seitenleiste und ohne deren Abstand |
 | 3.1.0 | 08.10.2026 | Neben | Schwebende Seitenleiste wie in Safari; Kalender-Icon in Datumsfeldern; Beträge „4.850,00 €“, rechtsbündig, „,00“ wird ergänzt; Tabellenüberschriften 17 px halbfett (Headline); Filter beim Öffnen auf „Alle“; gedrückte Schaltfläche bleibt auch bei Folgeschritten blau; „Backup erstellen“ / „Letztes Backup erstellt am …“ |
 | 3.0.1 | 08.10.2026 | Korrektur | Links zu den Apple Human Interface Guidelines bei den Abschnitten und bei jeder Komponente |

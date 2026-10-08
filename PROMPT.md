@@ -1,6 +1,6 @@
-# Reiselogbuch – Prompt (Stand 08.10.2026, Version 2.1.1)
+# Reiselogbuch – Prompt (Stand 08.10.2026, Version 2.1.2)
 
-Reiselogbuch 2.1.1 · Designrichtlinie allgemein 3.2.0 · Designrichtlinie Reiselogbuch 2.1.1 · Zusammenarbeit allgemein 1.4.0
+Reiselogbuch 2.1.2 · Designrichtlinie allgemein 3.2.1 · Designrichtlinie Reiselogbuch 2.1.2 · Zusammenarbeit allgemein 1.4.0
 (Gestaltungsregeln: `README - Designrichtlinie allgemein.md` und
 `README - Designrichtlinie Reiselogbuch.md`; Zusammenarbeit: `README - Zusammenarbeit
 allgemein.md`; Einstieg für Claude: `CLAUDE.md`. Bei jeder Design-Änderung mit aktualisieren.)
@@ -43,8 +43,9 @@ RAHMEN
     beginnende zuerst): Titel fett, darunter grau "TT.MM.JJJJ - TT.MM.JJJJ ·
     läuft gerade/beendet/geplant"; das geöffnete ist blau gefüllt. Antippen
     öffnet es. Die Seitenleiste schwebt wie in Safari (runde Ecken, Schatten wie die
-    Schaltflächen, Abstand zum Rand). Quer steht sie fest links (aus-/einblendbar, wird
-    gemerkt); im Hochformat wird sie über den Inhalt gelegt und schließt sich
+    Schaltflächen, Abstand zum Rand, unten nur 4 px). Beim Start ist sie immer
+    eingeblendet, die laufende Reise ist geöffnet. Quer steht sie fest links
+    (aus-/einblendbar bis zum nächsten Start); im Hochformat wird sie über den Inhalt gelegt und schließt sich
     nach der Auswahl. Ist sie ausgeblendet, steht panel-left links in der
     Kopfzeile.
   - plus öffnet "Neues Reiselogbuch". ellipsis der Seitenleiste: Backup

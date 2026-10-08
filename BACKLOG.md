@@ -14,11 +14,12 @@ Status: **vereinbart** (entschieden, wartet auf „Ja“ zum Bauen) · **offen**
 
 ---
 
-## 1. Fehler
+## 1. Fehler – geplant als Reiselogbuch 2.1.1 (wartet auf „Ja“ zum Bauen)
 
 | Nr. | Prio | Thema | Gilt | Status |
 |---|---|---|---|---|
 | F-01 | 1 | PDF-Ausgabe bei eingeblendeter Seitenleiste fehlerhaft (quer): Beim Drucken bleibt der linke Platz der Seitenleiste frei, das Reiselogbuch ist verschoben/abgeschnitten. Ursache: Abstand `body.docked` gilt auch beim Drucken. Lösung: beim Drucken nur das Reiselogbuch, ohne Seitenleiste und ohne deren Abstand (Druck-Regel `body.docked { padding: 0 }`); prüfen quer und hoch, mit und ohne Seitenleiste | allgemein | vereinbart |
+| F-02 | 1 | Suche: Nach jedem Buchstaben springt die Ansicht zum Treffer (Bildmitte) und die Kopfzeile mit dem Suchfeld verrutscht (iPad mit Tastatur). Lösung: Kopf- und Suchzeile bleiben fest oben (auch bei offener Tastatur); Sprung erst nach kurzer Tipp-Pause (ca. 0,5 s); Treffer direkt unter der Suchzeile statt in der Mitte; gleich für ⌃ ⌄ und Eingabetaste | allgemein | vereinbart |
 
 ## 2. Auf dem iPad prüfen
 

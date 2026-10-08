@@ -1,6 +1,6 @@
 # Designrichtlinie allgemein
 
-**Version 3.0.0** · Stand 08.10.2026
+**Version 3.0.1** · Stand 08.10.2026
 
 Allgemeine Gestaltungs- und Bedienregeln für alle iPad-Web-Apps von g811141a.
 Diese Datei liegt vorerst im Repo ReiseLogBuch und **wandert später ins Design-Repo**;
@@ -8,6 +8,11 @@ ihre Versionsnummer wird dann zur Versionsnummer des Design-Repos.
 App-spezifische Regeln stehen in einer eigenen Datei je App
 (z. B. `README - Designrichtlinie Reiselogbuch.md`). Regeln zur Zusammenarbeit stehen in
 `README - Zusammenarbeit allgemein.md`.
+
+> **Vorbild Apple:** Grundlage sind die Apple Human Interface Guidelines
+> ([HIG](https://developer.apple.com/design/human-interface-guidelines)) und die [Apple Design Resources](https://developer.apple.com/design/resources/)
+> (Vorlagen mit Maßen). Bei jedem Abschnitt bzw. jeder Komponente steht der Link zur
+> passenden Apple-Richtlinie („**Apple:** …“).
 
 > **Hinweis für Claude:** Diese Regeln gelten verbindlich für jede Weiterentwicklung.
 > Bei jeder Design-Änderung wird diese Datei aktualisiert und ihre Versionsnummer erhöht
@@ -36,6 +41,8 @@ App-spezifische Regeln stehen in einer eigenen Datei je App
   Glas-Leiste (schlechter lesbar).
 
 ## 2. Farben
+
+**Apple:** [HIG – Color](https://developer.apple.com/design/human-interface-guidelines/color) · [HIG – Dark Mode](https://developer.apple.com/design/human-interface-guidelines/dark-mode)
 
 CSS-Variablen auf `:root`; Dunkelmodus über `data-theme="dark"`. Helligkeitsstufen wie bei
 Apple: Hintergrund → Kasten/Fenster → Schaltfläche (im Dunkelmodus Schwarz → Dunkelgrau →
@@ -74,6 +81,8 @@ heller).
 
 ## 3. Schrift und Abstände
 
+**Apple:** [HIG – Typography](https://developer.apple.com/design/human-interface-guidelines/typography) · [HIG – Layout](https://developer.apple.com/design/human-interface-guidelines/layout)
+
 - Systemschrift `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`,
   17 px, Zeilenhöhe 1,45.
 - h1 28 px, h2 20 px, Fenstertitel 19 px zentriert; Hinweise 14 px in `--muted`.
@@ -86,6 +95,8 @@ heller).
 - **Text steht in Schaltflächen in der Höhe genau mittig zum Icon** (Zeilenhöhe 20 px wie das Icon).
 
 ## 4. Schaltflächen
+
+**Apple:** [HIG – Buttons](https://developer.apple.com/design/human-interface-guidelines/buttons)
 
 - **Alle Schaltflächen 44 px hoch** (auch lange Texte, Vorschläge, Auswahl-Chips).
   Ausnahmen: mehrzeilige Listeneinträge (z. B. umbrochene Titel) und Textkästen.
@@ -119,6 +130,8 @@ heller).
   Icon-Schaltflächen; ausgeblendet, wenn es nichts zu scrollen gibt.
 
 ## 5. Icons
+
+**Apple:** [HIG – Icons](https://developer.apple.com/design/human-interface-guidelines/icons) · [HIG – SF Symbols](https://developer.apple.com/design/human-interface-guidelines/sf-symbols) (im Web nicht erlaubt, daher Lucide)
 
 - Schaltflächen-Icons aus **Lucide** (Liniengrafiken, Strichstärke 2, `currentColor`),
   als SVG eingebettet (offline). SF Symbols dürfen im Web nicht verwendet werden.
@@ -166,6 +179,8 @@ heller).
 
 ## 7. Fenster (Dialoge)
 
+**Apple:** [HIG – Sheets](https://developer.apple.com/design/human-interface-guidelines/sheets) · [HIG – Modality](https://developer.apple.com/design/human-interface-guidelines/modality)
+
 - Aufbau: Kopfzeile (Komponente Fenster-Kopfzeile) · Inhalt (scrollbar).
 - Breite passt sich dem Inhalt an: höchstens 90 % der Bildschirmbreite, Mindestbreite
   480 px. Erfassungs- und Vorschaufenster fast bildschirmbreit (bis 1100 px).
@@ -187,6 +202,8 @@ heller).
   ein zweiter Dialog nur für Meldungen.
 
 ## 8. Eingaben, Pflichtfelder und Fehlermeldungen
+
+**Apple:** [HIG – Text fields](https://developer.apple.com/design/human-interface-guidelines/text-fields) · [HIG – Pickers](https://developer.apple.com/design/human-interface-guidelines/pickers)
 
 - Eingaben in nummerierten Schritten (blaue runde Nummer 26 px), jeder Schritt als
   Kasten ohne Rand; Nummern laufen fortlaufend über die sichtbaren Schritte.
@@ -219,6 +236,8 @@ heller).
 - Zahlenfelder rechtsbündig, Tausenderpunkt schon beim Tippen.
 
 ## 9. Tabellen (App, HTML und PDF)
+
+**Apple:** [HIG – Lists and tables](https://developer.apple.com/design/human-interface-guidelines/lists-and-tables)
 
 - Kopfzeile grau (`--th-bg`) mit Rändern `--th-line`; die Tabelle selbst ohne äußeren Rand,
   mit Schatten `--table-shadow`, damit die seitlichen Grenzen gut zu sehen sind.
@@ -316,6 +335,7 @@ Verhalten · technischer Name). Im Design-Repo wird jede Komponente später einm
 programmiert (`design.css`, `ui.js`) und von allen Apps übernommen.
 
 ### 15.1 Schwebende Schaltfläche
+- **Apple:** [HIG – Buttons](https://developer.apple.com/design/human-interface-guidelines/buttons)
 - **Zweck:** jede Aktion. **Technisch:** `button` (Hauptaktion `.primary`, Löschen
   `.danger`, eingeschaltet `aria-pressed="true"`, nur Icon `.iconbtn`).
 - **Aufbau:** Icon (20 px) links, dann Text; oder nur Icon bzw. Emoji (24 px).
@@ -325,6 +345,7 @@ programmiert (`design.css`, `ui.js`) und von allen Apps übernommen.
   eingeschaltet und Löschen siehe Abschnitt 4; gesperrt 40 % Deckkraft.
 
 ### 15.2 Suchfeld
+- **Apple:** [HIG – Search fields](https://developer.apple.com/design/human-interface-guidelines/search-fields)
 - **Zweck:** Suchen in der aktuellen Ansicht. **Technisch:** `.searchbox`, `.navgrp`.
 - **Aufbau:** Lupe (search) · Eingabe „Suchen“ · Trefferanzeige · x-Schaltfläche;
   rechts daneben Kapsel-Gruppe chevron-up / chevron-down.
@@ -344,6 +365,7 @@ programmiert (`design.css`, `ui.js`) und von allen Apps übernommen.
   mit Treffern.
 
 ### 15.3 Kopfzeile
+- **Apple:** [HIG – Toolbars](https://developer.apple.com/design/human-interface-guidelines/toolbars)
 - **Zweck:** oberste Zeile des Inhalts. **Technisch:** `.nb`.
 - **Aufbau:** links panel-left (nur wenn die Seitenleiste ausgeblendet ist) · Titel in der
   Mitte (17 px, fett) · rechts eine Kapsel mit den wichtigsten Aktionen, zuletzt ellipsis
@@ -353,6 +375,7 @@ programmiert (`design.css`, `ui.js`) und von allen Apps übernommen.
   Haarlinie unten); keine Glas-Leiste.
 
 ### 15.4 Seitenleiste
+- **Apple:** [HIG – Sidebars](https://developer.apple.com/design/human-interface-guidelines/sidebars)
 - **Zweck:** zentrale Liste der App. **Technisch:** `#side`.
 - **Aufbau:** Kopf: Überschrift (20 px, fett, linksbündig) · Kapsel [plus | ellipsis] ·
   runde Schaltfläche panel-left (ausblenden). Darunter die Einträge: Titel fett, darunter
@@ -367,10 +390,12 @@ programmiert (`design.css`, `ui.js`) und von allen Apps übernommen.
   Backup laden · ganz unten grau die Versionszeile „<App> · Version X.Y.Z · erstellt am …“.
 
 ### 15.5 Kapsel
+- **Apple:** [HIG – Toolbars](https://developer.apple.com/design/human-interface-guidelines/toolbars)
 - Mehrere Schaltflächen in einer schwebenden Kapsel (44 px hoch, je Icon 48 px breit);
   Text-Schaltflächen darin mit Innenabstand 14 px. Technisch `.grp` (`.navgrp`).
 
 ### 15.6 Menü
+- **Apple:** [HIG – Menus](https://developer.apple.com/design/human-interface-guidelines/menus)
 - **Zweck:** weitere Aktionen hinter ellipsis bzw. Auswahl hinter einer Schaltfläche.
   **Technisch:** `.menu` (öffnen mit `openMenu`).
 - **Aussehen:** Karte 340 px, Radius 14 px, Lichtkante und Schatten wie die Schaltflächen;
@@ -381,40 +406,49 @@ programmiert (`design.css`, `ui.js`) und von allen Apps übernommen.
   hinausragen); die Schaltfläche ist so lange gedrückt (blau getönt); daneben tippen schließt.
 
 ### 15.7 Sprechblase (Abfrage)
+- **Apple:** [HIG – Popovers](https://developer.apple.com/design/human-interface-guidelines/popovers) · [HIG – Action sheets](https://developer.apple.com/design/human-interface-guidelines/action-sheets) · [HIG – Alerts](https://developer.apple.com/design/human-interface-guidelines/alerts)
 - **Zweck:** jede Abfrage mit Entscheidung. **Technisch:** `.pop` (`confirmPop`).
 - **Aufbau:** grauer Text · rote Schaltfläche mit dem Verb der Aktion · darunter der Weg
   zurück („Abbrechen“ mit rotem ban bzw. „Weiter bearbeiten“ mit pencil); Breite 320 px.
 - **Verhalten:** an der angetippten Schaltfläche (diese ist gedrückt); daneben tippen bricht ab.
 
 ### 15.8 Fenster-Kopfzeile
+- **Apple:** [HIG – Sheets](https://developer.apple.com/design/human-interface-guidelines/sheets)
 - **Aufbau:** links rundes x (44 × 44) · Mitte Titel (19 px) mit grauer Zusatzzeile (13 px) ·
   rechts ggf. eine Kapsel und das runde Häkchen. Häkchen grau, nach einer Änderung blau
   gefüllt. Technisch `dlgHead()`.
 
 ### 15.9 Fenster
+- **Apple:** [HIG – Sheets](https://developer.apple.com/design/human-interface-guidelines/sheets)
 - Typen: **Bearbeiten** (z. B. Neu, Einstellungen), **Erfassung**, **Vorschau**, **Meldung**
   – Aufbau und Verhalten siehe Abschnitt 7.
 
 ### 15.10 Kasten (Schritt)
+- **Apple:** [HIG – Boxes](https://developer.apple.com/design/human-interface-guidelines/boxes)
 - Fläche `--dlg-card` bzw. `--card`, Radius 14 px, ohne Rand, Innenabstand 14 px;
   Kopfzeile mit blauer Schritt-Nummer, Titel, rechts Options-Kapseln und Icon-Schaltflächen.
 
 ### 15.11 Eingabefeld mit Fehlermeldung
+- **Apple:** [HIG – Text fields](https://developer.apple.com/design/human-interface-guidelines/text-fields)
 - Fläche weiß bzw. `--dlg-field`, Lichtkante `--btn-rim` und Schatten `--float` wie die
   schwebenden Schaltflächen (auch Zahlenfelder wie Gesamtkosten), Radius 10 px, 44 px hoch
   (Textfelder mehrzeilig); Fehler: 1 px roter Rand und rote Meldung darunter
   (Abschnitt 8). Textfelder wachsen mit dem Inhalt; Datumsfelder so breit wie das Datum.
 
 ### 15.12 Smiley-Leiste
+- **Apple:** [HIG – Collections](https://developer.apple.com/design/human-interface-guidelines/collections)
 - Siehe Abschnitt 8; Smileys als runde schwebende 44 × 44-Schaltflächen, Abstand 12 px.
 
 ### 15.13 Tabelle
+- **Apple:** [HIG – Lists and tables](https://developer.apple.com/design/human-interface-guidelines/lists-and-tables)
 - Siehe Abschnitt 9.
 
 ### 15.14 Info-Icon mit Hinweis
+- **Apple:** [HIG – Buttons](https://developer.apple.com/design/human-interface-guidelines/buttons)
 - Runde Icon-Schaltfläche `info`; ein Tippen blendet einen grauen Hinweis ein bzw. aus.
 
 ### 15.15 Schalter (Einstellungen ein/aus)
+- **Apple:** [HIG – Toggles](https://developer.apple.com/design/human-interface-guidelines/toggles)
 - **Zweck:** Ein/Aus-Einstellungen, z. B. in Bearbeiten-Fenstern. **Technisch:** `.swlist`,
   `label.check.sw` mit `input[type=checkbox]`.
 - **Aufbau:** Zeile mit Text links und Apple-Schalter rechts; Zeilen 52 px hoch, dazwischen
@@ -423,6 +457,7 @@ programmiert (`design.css`, `ui.js`) und von allen Apps übernommen.
   gesperrt 40 % Deckkraft (Text und Schalter). Kein Schein.
 
 ### 15.16 Options-Kapsel (Optionen beim Erfassen)
+- **Apple:** [HIG – Toggles](https://developer.apple.com/design/human-interface-guidelines/toggles)
 - **Zweck:** einzelne Ein/Aus-Optionen in der Kopfzeile eines Kastens. **Technisch:**
   `label.check.chip` mit verstecktem `input[type=checkbox]`.
 - **Aussehen:** wie eine schwebende Schaltfläche (Kapsel, 44 px, Schrift 15 px); ein =
@@ -435,6 +470,7 @@ programmiert (`design.css`, `ui.js`) und von allen Apps übernommen.
 
 | Version | Datum | Art | Inhalt |
 |---|---|---|---|
+| 3.0.1 | 08.10.2026 | Korrektur | Links zu den Apple Human Interface Guidelines bei den Abschnitten und bei jeder Komponente |
 | 3.0.0 | 08.10.2026 | Haupt | Neues Bedienkonzept wie Apple-Apps: Seitenleiste, Kopfzeile mit Kapsel und Mehr-Menü, Suche als zweite Zeile; Fenster ohne Fußleiste mit rundem x und Häkchen (grau bis zur Änderung); Abfragen als Sprechblase, „Änderungen verwerfen“ beim x; gedrückte Schaltfläche blau getönt; Hauptaktion nur in Fenstern blau; share immer ohne Text; Icons in Menüs vor dem Text; Text mittig zum Icon; Textfelder wachsen mit; Datumsfelder so breit wie das Datum; Backup-Hinweis einmal am Tag; neue Komponenten Kopfzeile, Seitenleiste, Kapsel, Menü, Sprechblase, Fenster-Kopfzeile |
 | 2.1.0 | 07.10.2026 | Neben | Akzentfarbe Apple-Blau (Hauptaktion, Auswahl, Nummern, Links, Rahmen); Auswahl mit Haarlinie ohne Breitenänderung und leuchtenderem Schein; Schatten um Tabellen und bei allen Eingabefeldern; neue Komponenten Schalter (Apple-Grün) und Options-Kapsel statt Checkboxen |
 | 2.0.0 | 07.10.2026 | Haupt | Apple-Look: neue Farben (Hellgrau, Weiß, Apple-Dunkel), schwebende Schaltflächen und Suchfelder, Haarlinien, Abstände 12 px; Farbbedeutungen Grün/Auswahl/Rot; neuer Abschnitt „Komponenten“ (u. a. Suchfeld mit Treffer-Navigation); Zusammenarbeit in eigene Datei ausgelagert |

@@ -1,6 +1,6 @@
 # Zusammenarbeit allgemein
 
-**Version 1.1.0** · Stand 08.10.2026
+**Version 1.2.0** · Stand 08.10.2026
 
 Regeln für die Zusammenarbeit mit Claude bei allen iPad-Web-Apps von g811141a.
 Diese Datei liegt vorerst im Repo ReiseLogBuch und **wandert später ins Design-Repo**.
@@ -26,7 +26,20 @@ App-spezifische Punkte stehen in der `CLAUDE.md` des jeweiligen App-Repos.
   - Fragen nummerieren (1, 2, 3 …), damit die Antwort „1) a, 2) ja“ lauten kann.
 - Eigene Empfehlung jeweils kurz dazuschreiben.
 
-## 3. Ablauf einer Änderung
+## 3. Apple-like entwickeln
+
+- Alle Apps werden **Apple-like** entwickelt: Aussehen, Aufbau und Bedienung wie in den
+  Apple-Apps auf dem iPad (iPadOS).
+- Bei **jeder neuen Anforderung** recherchiert Claude, wie Apple das in seinen eigenen Apps
+  (z. B. Notizen, Erinnerungen, Kontakte, Dateien, Safari, Mail, Numbers) und in den Human
+  Interface Guidelines löst, und nennt das kurz („So macht es Apple: …“).
+- Daraus macht Claude **Vorschläge bzw. Empfehlungen**, auch ungefragt, wenn eine Anforderung
+  vom Apple-Standard abweicht oder Apple eine bessere Lösung hat. Entschieden wird wie immer
+  per Rückfrage.
+- Was im Web nicht geht (z. B. SF Symbols, echte Systemmenüs), wird so nah wie möglich
+  nachgebaut und als Abweichung genannt.
+
+## 4. Ablauf einer Änderung
 
 1. Ideen sammeln und **nachfragen** („Frag nach“), bis alles geklärt ist.
 2. Bei Gestaltungsfragen zuerst ein **Muster** (Screenshot) zeigen, bei Bedarf mit
@@ -43,7 +56,7 @@ App-spezifische Punkte stehen in der `CLAUDE.md` des jeweiligen App-Repos.
    etwas auf, es nennen statt es eigenmächtig zu ändern (Ausnahme: offensichtliche
    Fehler, dann ausdrücklich erwähnen).
 
-## 4. Nach jeder Version
+## 5. Nach jeder Version
 
 - Testen (hell und dunkel, iPad quer und hoch, alle betroffenen Abläufe).
 - PROMPT.md, CHANGELOG.md und betroffene Designrichtlinien aktualisieren; in PROMPT.md und
@@ -54,13 +67,13 @@ App-spezifische Punkte stehen in der `CLAUDE.md` des jeweiligen App-Repos.
 - Screenshots in Viererpaketen schicken und die Änderungen auf Deutsch zusammenfassen; an
   den Neustart der App erinnern.
 
-## 5. Versionen
+## 6. Versionen
 
 - Dreistufig **Hauptversion.Nebenversion.Korrektur** für Apps, Richtlinien und diese
   Datei (Bedeutung siehe Designrichtlinie allgemein, Abschnitt 11).
 - Jede Datei mit eigener Versionsnummer und Versionsgeschichte am Ende.
 
-## 6. Ablage
+## 7. Ablage
 
 - Ein Repo pro App, Bereitstellung über GitHub Pages aus `main`/Hauptordner.
 - Allgemeines (diese Datei, Designrichtlinie allgemein) wandert später ins Design-Repo.
@@ -75,5 +88,6 @@ App-spezifische Punkte stehen in der `CLAUDE.md` des jeweiligen App-Repos.
 
 | Version | Datum | Art | Inhalt |
 |---|---|---|---|
+| 1.2.0 | 08.10.2026 | Neben | Neu: Apple-like entwickeln – bei jeder Anforderung recherchieren, wie Apple es löst, und Vorschläge/Empfehlungen machen |
 | 1.1.0 | 08.10.2026 | Neben | Muster zuerst nur hell und quer; Muster und Screenshots in Viererpaketen |
 | 1.0.0 | 07.10.2026 | erste Fassung | Aus der Designrichtlinie allgemein ausgelagert; neu: Antwortformat (ja/nein, a/b/c), Frage „allgemein oder App?“ |

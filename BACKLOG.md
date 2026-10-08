@@ -22,6 +22,7 @@ Status: **vereinbart** (entschieden, wartet auf „Ja“ zum Bauen) · **offen**
 | F-02 | 1 | Suche: Nach jedem Buchstaben springt die Ansicht zum Treffer (Bildmitte) und die Kopfzeile mit dem Suchfeld verrutscht (iPad mit Tastatur). Lösung: Kopf- und Suchzeile bleiben fest oben (auch bei offener Tastatur); Sprung erst nach kurzer Tipp-Pause (ca. 0,5 s); Treffer direkt unter der Suchzeile statt in der Mitte; gleich für ⌃ ⌄ und Eingabetaste | allgemein | vereinbart |
 | F-03 | 1 | Ausgabe (Vorschau, HTML, PDF): Wetter in der Spalte „Tag“ in eigener Zeile unter dem Datum („Mo, 24.08.“ / „☀️“), damit die Spalte schmäler wird – wie in der App | Reiselogbuch | vereinbart |
 | F-04 | 1 | Betragsfeld (Gesamtkosten) dynamisch: leer bzw. bei kleinen Beträgen genau so breit, dass „100.000,00“ vollständig passt (statt 150 px); bei längeren Beträgen wächst es beim Tippen mit; Breite aus der echten Schriftbreite berechnet | allgemein | vereinbart |
+| F-05 | 1 | Auswahl-Leisten als **eine Kapsel** (schwebend, Lichtkante, Schatten, ohne Ränder dazwischen), Inhalt bei knappem Platz nach links/rechts wischbar mit weichem Verlauf am Rand: Smileys („Wie war was?“, „Essen und Trinken“, Fazit), Wetter-Symbole und Reisemittel; gewählte Einträge in der Kapsel blau getönt; „Zurücksetzen“ (rotate-ccw) bleibt eigene runde Schaltfläche rechts daneben; Antippen, lange drücken und Sortierung wie bisher ([HIG – Toolbars](https://developer.apple.com/design/human-interface-guidelines/toolbars), Vorbild Tapback in Nachrichten) | allgemein | vereinbart |
 
 ## 2. Auf dem iPad prüfen
 

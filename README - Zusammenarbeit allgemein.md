@@ -1,6 +1,6 @@
 # Zusammenarbeit allgemein
 
-**Version 1.2.0** · Stand 08.10.2026
+**Version 1.3.0** · Stand 08.10.2026
 
 Regeln für die Zusammenarbeit mit Claude bei allen iPad-Web-Apps von g811141a.
 Diese Datei liegt vorerst im Repo ReiseLogBuch und **wandert später ins Design-Repo**.
@@ -39,7 +39,16 @@ App-spezifische Punkte stehen in der `CLAUDE.md` des jeweiligen App-Repos.
 - Was im Web nicht geht (z. B. SF Symbols, echte Systemmenüs), wird so nah wie möglich
   nachgebaut und als Abweichung genannt.
 
-## 4. Ablauf einer Änderung
+## 4. Backlog
+
+- Jedes App-Repo hat eine `BACKLOG.md` mit allen offenen Themen (Nummer, Thema, allgemein
+  oder App, Status: vereinbart · offen · prüfen · später) und einem Abschnitt „Erledigt“.
+- Neue Wünsche, offene Fragen und Prüfpunkte trägt Claude sofort ein; Erledigtes wandert mit
+  Version und Datum nach „Erledigt“.
+- **Claude erinnert an die offenen Themen:** zu Beginn einer Sitzung (kurze Liste) und am Ende
+  jeder Antwort, in der etwas gebaut oder entschieden wurde („Offen im Backlog: …“).
+
+## 5. Ablauf einer Änderung
 
 1. Ideen sammeln und **nachfragen** („Frag nach“), bis alles geklärt ist.
 2. Bei Gestaltungsfragen zuerst ein **Muster** (Screenshot) zeigen, bei Bedarf mit
@@ -56,7 +65,7 @@ App-spezifische Punkte stehen in der `CLAUDE.md` des jeweiligen App-Repos.
    etwas auf, es nennen statt es eigenmächtig zu ändern (Ausnahme: offensichtliche
    Fehler, dann ausdrücklich erwähnen).
 
-## 5. Nach jeder Version
+## 6. Nach jeder Version
 
 - Testen (hell und dunkel, iPad quer und hoch, alle betroffenen Abläufe).
 - PROMPT.md, CHANGELOG.md und betroffene Designrichtlinien aktualisieren; in PROMPT.md und
@@ -67,17 +76,17 @@ App-spezifische Punkte stehen in der `CLAUDE.md` des jeweiligen App-Repos.
 - Screenshots in Viererpaketen schicken und die Änderungen auf Deutsch zusammenfassen; an
   den Neustart der App erinnern.
 
-## 6. Versionen
+## 7. Versionen
 
 - Dreistufig **Hauptversion.Nebenversion.Korrektur** für Apps, Richtlinien und diese
   Datei (Bedeutung siehe Designrichtlinie allgemein, Abschnitt 11).
 - Jede Datei mit eigener Versionsnummer und Versionsgeschichte am Ende.
 
-## 7. Ablage
+## 8. Ablage
 
 - Ein Repo pro App, Bereitstellung über GitHub Pages aus `main`/Hauptordner.
 - Allgemeines (diese Datei, Designrichtlinie allgemein) wandert später ins Design-Repo.
-- App-Spezifisches: `CLAUDE.md`, `PROMPT.md`, `CHANGELOG.md`,
+- App-Spezifisches: `CLAUDE.md`, `PROMPT.md`, `CHANGELOG.md`, `BACKLOG.md`,
   `README - Designrichtlinie <App>.md` im App-Repo.
 - Keine Wiederholungen: App-Dateien verweisen auf die allgemeinen Dateien und enthalten nur
   Abweichungen und Ausprägungen.
@@ -88,6 +97,7 @@ App-spezifische Punkte stehen in der `CLAUDE.md` des jeweiligen App-Repos.
 
 | Version | Datum | Art | Inhalt |
 |---|---|---|---|
+| 1.3.0 | 08.10.2026 | Neben | Neu: Backlog-Datei je App und Erinnerung an offene Themen |
 | 1.2.0 | 08.10.2026 | Neben | Neu: Apple-like entwickeln – bei jeder Anforderung recherchieren, wie Apple es löst, und Vorschläge/Empfehlungen machen |
 | 1.1.0 | 08.10.2026 | Neben | Muster zuerst nur hell und quer; Muster und Screenshots in Viererpaketen |
 | 1.0.0 | 07.10.2026 | erste Fassung | Aus der Designrichtlinie allgemein ausgelagert; neu: Antwortformat (ja/nein, a/b/c), Frage „allgemein oder App?“ |

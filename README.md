@@ -8,3 +8,4 @@ Einfaches Reiselogbuch als Web-App (PWA) für das iPad – offline nutzbar, alle
 - `index.html` – die komplette App (HTML, CSS, JavaScript)
 - `sw.js`, `manifest.json`, `icon-*.png` – Offline-Betrieb und Home-Bildschirm
 - `PROMPT.md` – die abgestimmten Anforderungen (aktueller Stand)
+- `BACKLOG.md` – offene Themen

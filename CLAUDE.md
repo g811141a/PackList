@@ -1,6 +1,6 @@
 # Reiselogbuch – Hinweise für Claude
 
-**Version 1.1.0** · Stand 08.10.2026
+**Version 1.2.0** · Stand 08.10.2026
 
 ## Zuerst lesen
 
@@ -12,6 +12,7 @@ Lies zu Beginn jeder Sitzung diese Dateien und halte dich daran:
 3. `README - Designrichtlinie Reiselogbuch.md` – Reiselogbuch-spezifische Gestaltung
 4. `PROMPT.md` – vollständige Funktionsbeschreibung der App
 5. `CHANGELOG.md` – Versionsgeschichte (aktuelle Versionen stehen oben)
+6. `BACKLOG.md` – offene Themen; zu Beginn kurz daran erinnern und laufend pflegen
 
 ## App-spezifisch
 
@@ -36,5 +37,6 @@ Lies zu Beginn jeder Sitzung diese Dateien und halte dich daran:
 
 | Version | Datum | Inhalt |
 |---|---|---|
+| 1.2.0 | 08.10.2026 | BACKLOG.md in die Liste „Zuerst lesen“ |
 | 1.1.0 | 08.10.2026 | Hinweise zur Bedienung ab Reiselogbuch 2.0.0 |
 | 1.0.0 | 07.10.2026 | erste Fassung |

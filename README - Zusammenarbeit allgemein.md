@@ -1,6 +1,6 @@
 # Zusammenarbeit allgemein
 
-**Version 1.7.0** · Stand 09.10.2026
+**Version 1.7.1** · Stand 09.10.2026
 
 Regeln für die Zusammenarbeit mit Claude bei allen iPad-Web-Apps von g811141a.
 Diese Datei liegt vorerst im Repo ReiseLogBuch und **wandert später ins Design-Repo**.
@@ -56,7 +56,10 @@ App-spezifische Punkte stehen in der `CLAUDE.md` des jeweiligen App-Repos.
   „entspricht HIG“ oder „weicht ab, weil …“, dazu das Ergebnis des HIG-Prüfskripts.
 - **Vergleichsbilder:** Claude bittet bei Bedarf **konkret** um 1–4 Screenshots aus
   Apple-Apps (iPad oder iPhone) zum jeweiligen Thema. Sie liegen im App-Repo im Ordner
-  `apple-referenz/` (später im Design-Repo); Muster werden neben das Vorbild gestellt.
+  `apple-referenz/<Gerät>/<App>/` mit einer `README.md` (je Bild: was es zeigt, was wir daraus
+  lernen; später im Design-Repo); Muster werden neben das Vorbild gestellt.
+  **Das Repo ist öffentlich:** Claude verpixelt private Inhalte (Namen, Ordner, Texte) **vor**
+  dem Ablegen und zeigt die Bilder vorher zur Freigabe.
 
 ## 4. Backlog
 
@@ -153,6 +156,7 @@ App-spezifische Punkte stehen in der `CLAUDE.md` des jeweiligen App-Repos.
 
 | Version | Datum | Art | Inhalt |
 |---|---|---|---|
+| 1.7.1 | 09.10.2026 | Korrektur | Vergleichsbilder: Ablage `apple-referenz/<Gerät>/<App>/` mit README; private Inhalte vorher verpixeln und zur Freigabe zeigen |
 | 1.7.0 | 09.10.2026 | Neben | Pflicht: Apple-Abgleich vor jedem Muster (HIG-Checkliste) und Apple-Review nach jeder Version; Vergleichsbilder aus Apple-Apps auf Anfrage (`apple-referenz/`); HIG-Prüfskript bei jedem Test |
 | 1.6.0 | 09.10.2026 | Neben | Verpflichtend: Sammelversionen – geklärte Punkte in „0. Nächste Version“ sammeln, Version erst bei größerem Thema, etwa 5 Punkten oder auf Wunsch; Sofort-Korrektur nur bei Datenverlust/unbenutzbarer App; eine Prüfliste je Version; Status „bereit“ statt „vereinbart“ |
 | 1.5.0 | 08.10.2026 | Neben | Verpflichtend: nie selbst entscheiden, eine Version zu bauen – immer vorher fragen, auch bei Korrekturen |

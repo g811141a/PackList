@@ -94,6 +94,8 @@
   .searchbox input[type=search] { width: 100%; height: 44px; border-radius: 22px; padding: 0 14px 0 38px;
     background: var(--btn); border: .5px solid var(--btn-rim); box-shadow: var(--float); -webkit-appearance: none; appearance: none; }
   .searchbox input[type=search]::-webkit-search-cancel-button { display: none; }
+  /* Wie Apple: kein blauer Fokus-Rahmen – der Cursor zeigt, dass man tippen kann */
+  .searchbox input[type=search]:focus, .searchbox input[type=search]:focus-visible { outline: none; }
   .searchbox .smeta { position: absolute; right: 6px; display: flex; align-items: center; gap: 4px; }
   .searchbox .scount { font-size: 15px; color: var(--muted); font-variant-numeric: tabular-nums; pointer-events: none; }
   /* Antippfläche 44 px (unsichtbar), das Zeichen bleibt so groß und am selben Platz wie bisher */
@@ -184,23 +186,21 @@
   .layer { position: fixed; inset: 0; z-index: 29; }
   .menu { position: fixed; z-index: 30; width: 340px; background: var(--card); border-radius: 14px; border: .5px solid var(--btn-rim); box-shadow: var(--float); overflow: hidden; }
   .menu .mi { display: flex; justify-content: flex-start; align-items: center; gap: 10px; width: 100%; min-height: 46px; padding: 0 16px; font-size: 17px; text-align: left;
-    border: none; border-bottom: .5px solid var(--line); border-radius: 0; background: none; box-shadow: none; }
-  .menu .mi:last-child, .menu .mi.has-sub { border-bottom: none; }
+    border: none; border-radius: 0; background: none; box-shadow: none; }
+  /* Wie Apple (iOS 26): keine Linien zwischen einzelnen Punkten – nur die eingerückte Linie zwischen Gruppen */
   .menu .mi.red { color: var(--danger); }
   .menu .tick { width: 20px; display: inline-flex; color: var(--accent); }
   .menu .mi .val { margin-left: auto; color: var(--muted); font-size: 15px; }
   .menu .mi .chev { margin-left: auto; color: var(--muted); }
   .menu .mi .val + .chev { margin-left: 6px; }
-  .menu .mi.on { background: var(--sel-bg); border-color: var(--line); }
+  .menu .mi.on { background: var(--sel-bg); }
   .menu .mi.on .val { color: var(--ink); }
   .menu.submenu { width: 260px; }
-  .menu .sub { font-size: 13px; color: var(--muted); padding: 0 16px 10px 46px; margin-top: -8px; border-bottom: .5px solid var(--line); }
+  .menu .sub { font-size: 13px; color: var(--muted); padding: 0 16px 10px 46px; margin-top: -8px; }
   /* Gruppen getrennt durch eine dünne, links und rechts eingerückte Linie (wie Apple, iOS 26) */
   .menu .sep, .menu .line { height: 0; border-top: 1px solid var(--line); margin: 6px 20px; background: none; }
-  .menu .mi:has(+ .sep), .menu .sub:has(+ .sep) { border-bottom: none; }
   .menu .note { font-size: 13px; color: var(--muted); padding: 10px 16px; }
   /* 'line': durchgehender Strich vor den technischen Informationen, diese ohne Leerzeilen */
-  .menu .mi:has(+ .line), .menu .sub:has(+ .line) { border-bottom: none; }
   .menu .line ~ .note { padding: 2px 16px; line-height: 1.35; }
   .menu .line + .note { padding-top: 8px; }
   .menu .line ~ .note:last-child { padding-bottom: 10px; }
@@ -426,8 +426,8 @@ const ic = (name, cls = '') => `<svg class="ic ${cls}" viewBox="0 0 24 24" aria-
 
 // Version und Erstellungszeitpunkt, werden bei jeder neuen Version angepasst.
 // Versionsnummer Hauptversion.Nebenversion.Korrektur (siehe CHANGELOG.md).
-const APP_VERSION = '2.3.0';
-const APP_BUILT = '09.10.2026 um 14:46';
+const APP_VERSION = '2.4.0';
+const APP_BUILT = '09.10.2026 um 15:42';
 
 const app = document.getElementById('app');
 const side = document.getElementById('side');

@@ -1,6 +1,6 @@
 # Zusammenarbeit allgemein
 
-**Version 1.7.1** · Stand 09.10.2026
+**Version 1.8.0** · Stand 09.10.2026
 
 Regeln für die Zusammenarbeit mit Claude bei allen iPad-Web-Apps von g811141a.
 Diese Datei liegt vorerst im Repo ReiseLogBuch und **wandert später ins Design-Repo**.
@@ -35,6 +35,12 @@ App-spezifische Punkte stehen in der `CLAUDE.md` des jeweiligen App-Repos.
   - Bei mehreren Möglichkeiten eine **Aufzählung mit a, b, c, d …**
   - Fragen nummerieren (1, 2, 3 …), damit die Antwort „1) a, 2) ja“ lauten kann.
 - Eigene Empfehlung jeweils kurz dazuschreiben.
+- **Antwortvorschläge zum Übernehmen (Pflicht, immer beides):**
+  - Die Fragen kommen zusätzlich im **Auswahlfenster** (bis zu 4 Fragen, je 2–4 Möglichkeiten);
+    die Empfehlung steht immer an erster Stelle mit „(Empfohlen)“ und kann einfach angetippt werden.
+  - Am Ende jeder Antwort mit Fragen steht eine fertige **Antwortzeile zum Kopieren** mit den
+    empfohlenen Antworten, z. B. `1 ja · 2 a · 3 ja` – bei mehr als 4 Fragen ist sie der einzige Weg.
+  - Den Vorschlag im Eingabefeld der App erzeugt die App selbst; Claude kann ihn nicht befüllen.
 
 ## 3. Apple-like entwickeln
 
@@ -156,6 +162,7 @@ App-spezifische Punkte stehen in der `CLAUDE.md` des jeweiligen App-Repos.
 
 | Version | Datum | Art | Inhalt |
 |---|---|---|---|
+| 1.8.0 | 09.10.2026 | Neben | Pflicht: Antwortvorschläge immer im Auswahlfenster (Empfehlung zuerst) und als Antwortzeile zum Kopieren |
 | 1.7.1 | 09.10.2026 | Korrektur | Vergleichsbilder: Ablage `apple-referenz/<Gerät>/<App>/` mit README; private Inhalte vorher verpixeln und zur Freigabe zeigen |
 | 1.7.0 | 09.10.2026 | Neben | Pflicht: Apple-Abgleich vor jedem Muster (HIG-Checkliste) und Apple-Review nach jeder Version; Vergleichsbilder aus Apple-Apps auf Anfrage (`apple-referenz/`); HIG-Prüfskript bei jedem Test |
 | 1.6.0 | 09.10.2026 | Neben | Verpflichtend: Sammelversionen – geklärte Punkte in „0. Nächste Version“ sammeln, Version erst bei größerem Thema, etwa 5 Punkten oder auf Wunsch; Sofort-Korrektur nur bei Datenverlust/unbenutzbarer App; eine Prüfliste je Version; Status „bereit“ statt „vereinbart“ |

@@ -1,6 +1,6 @@
 # Backlog – offene Themen
 
-**Stand 09.10.2026** · Aktuelle Version: Reiselogbuch 2.3.0
+**Stand 09.10.2026** · Aktuelle Version: Reiselogbuch 2.4.0
 
 Hier stehen alle offenen Themen. Erledigte Punkte wandern mit Version und Datum nach unten
 in „Erledigt“. Claude erinnert zu Beginn und am Ende jeder Sitzung an die offenen Punkte
@@ -18,20 +18,19 @@ sind (oder auf Wunsch); siehe `README - Zusammenarbeit allgemein.md`, Abschnitt 
 
 ---
 
-## 0. Nächste Version 2.4.0 – gesammelt, noch nicht gebaut
+## 0. Nächste Version 2.5.0 – gesammelt, noch nicht gebaut
 
 | Nr. | Prio | Thema | Gilt | bereit seit |
 |---|---|---|---|---|
-| T-20 | 1 | Menüs ohne Linien zwischen den einzelnen Punkten, nur die eingerückte Linie zwischen Gruppen (wie Apple, Vergleichsbilder 2 und 4; aus P-12/3) – Muster M240-1, M240-2 bestätigt | allgemein | 09.10.2026 |
-| T-21 | 1 | Suchfeld ohne blauen Fokus-Rahmen (wie Apple; aus P-12/4); beim Blättern mit ⌃ ⌄ geht die Tastatur zu wie bisher – Muster M240-3 bestätigt | allgemein | 09.10.2026 |
+| – | – | zurzeit nichts | – | – |
 
-**2 Punkte bereit** · gebaut wird erst nach „Ja“
+**0 Punkte bereit** · gebaut wird erst nach „Ja“
 
 ## 1. Auf dem iPad prüfen
 
 | Nr. | Prio | Thema | Status |
 |---|---|---|---|
-| – | – | zurzeit nichts zu prüfen | – |
+| P-13 | 1 | **Version 2.4.0 – Prüfliste:** 1) Menüs (Seitenleiste ••• , Mehr-Menü, Teilen, langes Drücken): keine Linien zwischen den einzelnen Punkten, nur die eingerückte Linie zwischen Gruppen · 2) Suche öffnen: Suchfeld ohne blauen Rahmen · 3) mit ⌄ blättern: Tastatur geht zu, Feld sieht gleich aus | prüfen |
 
 ## 2. Weitere Themen (in Klärung)
 
@@ -56,6 +55,7 @@ sind (oder auf Wunsch); siehe `README - Zusammenarbeit allgemein.md`, Abschnitt 
 
 | Nr. | Thema | Version | Datum |
 |---|---|---|---|
+| E-19 | Reiselogbuch 2.4.0: T-20 Menüs ohne Linien zwischen Punkten, T-21 Suchfeld ohne blauen Rahmen | Reiselogbuch 2.4.0 · allgemein 3.6.1 · Reiselogbuch-Richtlinie 2.4.0 | 09.10.2026 |
 | E-18 | Auf dem iPad geprüft: P-12 Version 2.3.0 ok bis auf 3 (Linien → T-20) und 4 (Suchfeld → T-21); Punkt 7 hat sich erledigt (verschaut) · T-19 Essen-Links mit mehr Abstand: **verworfen**, bleibt als bewusste Abweichung | Reiselogbuch 2.3.0 | 09.10.2026 |
 | E-17 | Reiselogbuch 2.3.0 (Sammelversion HIG-Prüfung): T-07, T-10, T-11, T-12, T-13, T-14, T-15, T-16, T-17, T-18 | Reiselogbuch 2.3.0 · allgemein 3.6.0 · Reiselogbuch-Richtlinie 2.3.0 | 09.10.2026 |
 | E-16 | Auf dem iPad geprüft und ok: P-11 Anführungszeichen ‚…‘, Teilen-Menü mit Strich | Reiselogbuch 2.2.2 | 09.10.2026 |

@@ -1,8 +1,8 @@
 # Designrichtlinie Reiselogbuch
 
-**Version 2.3.0** · Stand 09.10.2026
+**Version 2.4.0** · Stand 09.10.2026
 
-> **Es gilt die `README - Designrichtlinie allgemein.md` (Version 3.6.0).**
+> **Es gilt die `README - Designrichtlinie allgemein.md` (Version 3.6.1).**
 > Hier stehen nur **Abweichungen** (bewusst anders als dort) und **Ausprägungen**
 > (konkrete Ausgestaltung einer allgemeinen Regel für das Reiselogbuch).
 > Die vollständige Funktionsbeschreibung steht in `PROMPT.md`.
@@ -116,10 +116,17 @@ Spaltenköpfe 🙂☹️😉 (Wie war was?), 🍽️🍷☕️ (Essen und Trinke
 
 ---
 
+## Bewusste Abweichungen von der HIG-Checkliste
+
+| Was | Grund | Entschieden |
+|---|---|---|
+| Maps-Links der Lokale in der Spalte ‚Essen und Trinken‘ nur so hoch wie der Text (ca. 19 px) | mehr Zeilenabstand in der Tabelle nicht gewünscht; das HIG-Prüfskript zählt es nicht | 09.10.2026 |
+
 ## Versionsgeschichte
 
 | Version | Datum | Art | Inhalt |
 |---|---|---|---|
+| 2.4.0 | 09.10.2026 | Neben | Angepasst an allgemein 3.6.1 (Menüs ohne Linien zwischen Punkten, Suchfeld ohne blauen Rahmen); bewusste Abweichung Essen-Links |
 | 2.3.0 | 09.10.2026 | Neben | Angepasst an allgemein 3.5.0–3.6.0 (HIG-Prüfung): Darstellung ›, Kontextmenü ohne ‚Öffnen‘, Trennlinien eingerückt, Sprechblasen ohne Icons, kontrastreicheres Grau, Maps-Links mit 44 px Antippfläche, Texte (Überschneidung, Quartier-Hinweis, Download) |
 | 2.2.2 | 09.10.2026 | Korrektur | Angepasst an allgemein 3.4.0/3.4.1: Anführungszeichen ‚…‘ in allen Texten der App; Teilen-Menü mit Strich |
 | 2.2.1 | 09.10.2026 | Korrektur | Angepasst an allgemein 3.3.1: Reiselogbuch, Tag und Fazit bleiben blau, solange ihr Fenster offen ist; Menü der Seitenleiste mit Strich und Satz zum Speicher |

@@ -1,6 +1,6 @@
 # Designrichtlinie allgemein
 
-**Version 3.6.0** · Stand 09.10.2026
+**Version 3.6.1** · Stand 09.10.2026
 
 Allgemeine Gestaltungs- und Bedienregeln für alle iPad-Web-Apps von g811141a.
 Diese Datei liegt vorerst im Repo ReiseLogBuch und **wandert später ins Design-Repo**;
@@ -391,6 +391,8 @@ programmiert (`design.css`, `ui.js`) und von allen Apps übernommen.
   unter die Suchzeile gescrollt. Pfeile und Eingabetaste springen weiter, ohne Umlauf vom letzten
   zum ersten. x löscht die Eingabe, der Cursor bleibt im Feld. Gefiltert wird auf Einträge
   mit Treffern.
+- **Fokus:** kein blauer Fokus-Rahmen (wie Apple) – der Cursor zeigt, dass man tippen kann; beim
+  Blättern mit ⌃ ⌄ geht die Tastatur zu.
 
 ### 15.3 Kopfzeile
 - **Apple:** [HIG – Toolbars](https://developer.apple.com/design/human-interface-guidelines/toolbars)
@@ -442,7 +444,7 @@ programmiert (`design.css`, `ui.js`) und von allen Apps übernommen.
 - **Zweck:** weitere Aktionen hinter ellipsis bzw. Auswahl hinter einer Schaltfläche.
   **Technisch:** `.menu` (öffnen mit `openMenu`).
 - **Aussehen:** Karte 340 px, Radius 14 px, Lichtkante und Schatten wie die Schaltflächen;
-  Einträge 46 px hoch, Icon **vor** dem Text, Haarlinien; Gruppen durch eine **dünne, links und
+  Einträge 46 px hoch, Icon **vor** dem Text, **keine Linien zwischen einzelnen Punkten**; Gruppen durch eine **dünne, links und
   rechts eingerückte Linie** getrennt (wie Apple, iOS 26 – `'sep'`/`'line'`, 1 px, 20 px Einzug);
   Auswahl mit blauem Häkchen vorne; graue Zusatzzeile unter einem Eintrag; graue Notizen und
   technische Informationen (Version, Speicher, Zahl der Tage, Dateiname) ganz unten nach der
@@ -566,6 +568,7 @@ Messbare Punkte prüft das HIG-Prüfskript automatisch.
 
 | Version | Datum | Art | Inhalt |
 |---|---|---|---|
+| 3.6.1 | 09.10.2026 | Korrektur | Menüs ohne Linien zwischen einzelnen Punkten (wie iOS 26); Suchfeld ohne blauen Fokus-Rahmen |
 | 3.6.0 | 09.10.2026 | Neben | Darstellung folgt dem iPad (Untermenü zum Übersteuern); Untermenüs; Trennlinie in Menüs dünn und eingerückt; alle Kapseln gleich gebaut; Sprechblasen ohne Icons; Kontextmenü ohne ‚Öffnen‘; `--muted` und Rot im Dunkelmodus kontrastreicher; unsichtbar vergrößerte Antippflächen; HIG-Prüfskript `tests/hig.mjs` |
 | 3.5.1 | 09.10.2026 | Korrektur | HIG-Checkliste: kein „…“ in Menüs (wie Apples iPhone-/iPad-Apps); Liste der bewussten Abweichungen (Weiß auf Systemblau, Orange) |
 | 3.5.0 | 09.10.2026 | Neben | Neuer Abschnitt 16 HIG-Checkliste (Antippflächen, Schrift, Kontrast, Auswahl, Menüs, Kontextmenüs, Abfragen, Texte, Fenster) mit Links zu den Apple-Seiten |

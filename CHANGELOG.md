@@ -12,6 +12,18 @@ Versionsnummer **Hauptversion.Nebenversion.Korrektur** (z. B. 1.2.1):
 Steigt eine Stufe, beginnen die Stufen dahinter wieder bei 0.
 Die aktuelle Version steht in der App im Mehr-Menü (ellipsis) der Seitenleiste „Reiselogbücher“.
 
+## 2.4.0 – 09.10.2026 (Nebenversion)
+
+Reiselogbuch 2.4.0 · Designrichtlinie allgemein 3.6.1 · Designrichtlinie Reiselogbuch 2.4.0 · Zusammenarbeit allgemein 1.8.0
+
+Sammelversion aus der Prüfung von 2.3.0:
+
+- T-20: Menüs ohne Linien zwischen den einzelnen Punkten – nur die eingerückte Linie zwischen
+  Gruppen (wie iOS 26).
+- T-21: Suchfeld ohne blauen Fokus-Rahmen; beim Blättern mit ⌃ ⌄ geht die Tastatur zu wie bisher.
+- HIG-Prüfskript prüft zusätzlich Linien in Menüs und den Fokus-Rahmen des Suchfelds;
+  Essen-Links als bewusste Abweichung.
+
 ## 2.3.0 – 09.10.2026 (Nebenversion)
 
 Reiselogbuch 2.3.0 · Designrichtlinie allgemein 3.6.0 · Designrichtlinie Reiselogbuch 2.3.0 · Zusammenarbeit allgemein 1.7.1

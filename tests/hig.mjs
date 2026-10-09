@@ -70,6 +70,8 @@ async function measure(p, where) {
     document.querySelectorAll('.menu').forEach(m => {
       const items = [...m.querySelectorAll('.mi')]; const i = items.findIndex(x => x.classList.contains('red'));
       if (i >= 0 && i !== items.length - 1) res.menu.push(`‚${items[i].textContent.trim()}‘ steht nicht am Ende`);
+      // Wie Apple: keine Linien zwischen einzelnen Punkten
+      if ([...m.querySelectorAll('.mi, .sub')].some(x => parseFloat(getComputedStyle(x).borderBottomWidth) > 0)) res.menu.push('Linie zwischen einzelnen Menüpunkten');
     });
     return res;
   });
@@ -98,6 +100,7 @@ for (const scheme of ['light', 'dark']) for (const [w, h] of [[1180, 820], [820,
   await p.locator('.menu .mi', { hasText: 'Darstellung' }).click(); await p.waitForTimeout(150); await M('Untermenü Darstellung'); await away();
   await p.click('#shareBtn'); await p.waitForTimeout(150); await stays('#shareBtn', 'Teilen-Menü'); await M('Teilen-Menü'); await away();
   await p.click('#searchBtn'); await p.waitForTimeout(150); await p.fill('#search', 'Oper'); await p.waitForTimeout(700); await M('Suche');
+  if (await p.locator('#search').evaluate(e => e === document.activeElement && getComputedStyle(e).outlineStyle !== 'none')) note('Suchfeld', 'blauer Fokus-Rahmen', `Suche (${tag})`);
   await p.click('#searchBtn').catch(() => {}); await p.waitForTimeout(150);
   const dialog = async (open, s, opener) => {
     await open(); await p.waitForTimeout(350);

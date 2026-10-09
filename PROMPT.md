@@ -1,6 +1,6 @@
-# Reiselogbuch – Prompt (Stand 09.10.2026, Version 2.2.0)
+# Reiselogbuch – Prompt (Stand 09.10.2026, Version 2.2.1)
 
-Reiselogbuch 2.2.0 · Designrichtlinie allgemein 3.3.0 · Designrichtlinie Reiselogbuch 2.2.0 · Zusammenarbeit allgemein 1.5.0
+Reiselogbuch 2.2.1 · Designrichtlinie allgemein 3.3.1 · Designrichtlinie Reiselogbuch 2.2.1 · Zusammenarbeit allgemein 1.5.0
 (Gestaltungsregeln: `README - Designrichtlinie allgemein.md` und
 `README - Designrichtlinie Reiselogbuch.md`; Zusammenarbeit: `README - Zusammenarbeit
 allgemein.md`; Einstieg für Claude: `CLAUDE.md`. Bei jeder Design-Änderung mit aktualisieren.)
@@ -50,11 +50,12 @@ RAHMEN
     nach der Auswahl. Ist sie ausgeblendet, steht panel-left links in der
     Kopfzeile.
   - plus öffnet "Neues Reiselogbuch". ellipsis der Seitenleiste: Backup
-    erstellen (darunter grau "Letztes Backup erstellt am …") · Backup laden · grau
-    "Reiselogbuch · Version X.Y.Z · erstellt am TT.MM.JJJJ um hh:mm",
-    darunter "Speicher: dauerhaft" (bzw. "nicht dauerhaft – bitte regelmäßig ein
-    Backup erstellen.") und "Achtung: Wird das Reiselogbuch vom Home-Bildschirm
-    entfernt, gehen alle Daten verloren – vorher ein Backup erstellen."
+    erstellen (darunter grau "Letztes Backup erstellt am …") · Backup laden ·
+    durchgehender Strich · darunter ohne Leerzeilen grau "Reiselogbuch · Version
+    X.Y.Z · erstellt am TT.MM.JJJJ um hh:mm" und "Die Daten bleiben in Safari
+    gespeichert, solange das Reiselogbuch auf dem Home-Bildschirm nicht entfernt
+    wird." (bzw. "Safari kann die Daten bei Speichermangel löschen – bitte
+    regelmäßig ein Backup erstellen.")
   - Langes Drücken auf ein Reiselogbuch in der Seitenleiste öffnet ein Menü:
     Öffnen · Einstellungen · Reiselogbuch löschen (rot, mit Abfrage).
   - Wurde heute noch kein Backup erstellt, steht unten in der Seitenleiste

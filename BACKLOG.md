@@ -1,6 +1,6 @@
 # Backlog – offene Themen
 
-**Stand 09.10.2026** · Aktuelle Version: Reiselogbuch 2.2.0
+**Stand 09.10.2026** · Aktuelle Version: Reiselogbuch 2.2.1
 
 Hier stehen alle offenen Themen. Erledigte Punkte wandern mit Version und Datum nach unten
 in „Erledigt“. Claude erinnert zu Beginn und am Ende jeder Sitzung an die offenen Punkte
@@ -18,7 +18,8 @@ Status: **vereinbart** (entschieden, wartet auf „Ja“ zum Bauen) · **offen**
 
 | Nr. | Prio | Thema | Status |
 |---|---|---|---|
-| P-09 | 1 | Version 2.2.0: langes Drücken auf ein Reiselogbuch (Menü, Einstellungen, Löschen); im Menü der Seitenleiste „Speicher: dauerhaft“ (sollte auf dem iPad als Home-Bildschirm-App erscheinen) | prüfen |
+| P-09 | 1 | Version 2.2.0/2.2.1: langes Drücken auf ein Reiselogbuch (Menü, Einstellungen, Löschen); im Menü der Seitenleiste „Die Daten bleiben in Safari gespeichert …“ (sollte in der Home-Bildschirm-App erscheinen) | prüfen |
+| P-10 | 1 | Version 2.2.1: Reiselogbuch (Einstellungen über langes Drücken), Tageszeile und Fazit bleiben blau, solange ihr Fenster offen ist; Menü der Seitenleiste mit Strich, ohne Leerzeilen | prüfen |
 
 ## 2. Weitere Themen
 
@@ -44,6 +45,7 @@ Status: **vereinbart** (entschieden, wartet auf „Ja“ zum Bauen) · **offen**
 
 | Nr. | Thema | Version | Datum |
 |---|---|---|---|
+| E-13 | Reiselogbuch 2.2.1: F-11 Gewähltes bleibt blau, solange es sichtbar ist (Seitenleiste, Tag, Fazit), F-12 Menü der Seitenleiste mit Strich und verständlichem Satz zum Speicher | Reiselogbuch 2.2.1 · allgemein 3.3.1 · Reiselogbuch-Richtlinie 2.2.1 | 09.10.2026 |
 | E-12 | Reiselogbuch 2.2.0: T-01 Kontextmenü in der Seitenleiste, T-04 dauerhafter Speicher mit Hinweisen | Reiselogbuch 2.2.0 · allgemein 3.3.0 · Reiselogbuch-Richtlinie 2.2.0 | 09.10.2026 |
 | E-11 | Auf dem iPad geprüft und ok: P-08 Tastatur offen – Kopfzeilen bleiben sichtbar | Reiselogbuch 2.1.5 | 08.10.2026 |
 | E-10 | Reiselogbuch 2.1.5: F-10 Kopfzeilen bei sichtbarer Tastatur sichtbar | Reiselogbuch 2.1.5 · allgemein 3.2.3 | 08.10.2026 |

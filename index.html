@@ -184,6 +184,12 @@
   .menu .sub { font-size: 13px; color: var(--muted); padding: 0 16px 10px 46px; margin-top: -8px; border-bottom: .5px solid var(--line); }
   .menu .sep { height: 8px; background: var(--bg); }
   .menu .note { font-size: 13px; color: var(--muted); padding: 10px 16px; }
+  /* 'line': durchgehender Strich vor den technischen Informationen, diese ohne Leerzeilen */
+  .menu .line { border-top: 1px solid var(--line); }
+  .menu .mi:has(+ .line), .menu .sub:has(+ .line) { border-bottom: none; }
+  .menu .line ~ .note { padding: 2px 16px; line-height: 1.35; }
+  .menu .line + .note { padding-top: 8px; }
+  .menu .line ~ .note:last-child { padding-bottom: 10px; }
   /* Komponente Sprechblase (Abfrage): an der angetippten Schaltfläche; roter Knopf, darunter der Weg zurück */
   .pop { position: fixed; z-index: 30; width: 320px; background: var(--card); border-radius: 14px; border: .5px solid var(--btn-rim); box-shadow: var(--float); padding: 16px; text-align: center; }
   .pop p { margin: 0 0 14px; font-size: 15px; color: var(--muted); }
@@ -210,6 +216,7 @@
   table.days tbody tr.alt { background: var(--zebra); }
   @media (hover: hover) { table.days tbody tr:hover { background: var(--row-hover); } }
   table.days tbody tr.gap { background: var(--focus); box-shadow: inset 4px 0 0 var(--accent); }
+  table.days tbody tr.on { background: var(--sel-bg); }
   td.day { white-space: nowrap; width: 1%; }
   td.day .wx { display: block; font-size: 18px; }
   td.day .wx.empty { opacity: .25; }
@@ -402,8 +409,8 @@ const ic = (name, cls = '') => `<svg class="ic ${cls}" viewBox="0 0 24 24" aria-
 
 // Version und Erstellungszeitpunkt, werden bei jeder neuen Version angepasst.
 // Versionsnummer Hauptversion.Nebenversion.Korrektur (siehe CHANGELOG.md).
-const APP_VERSION = '2.2.0';
-const APP_BUILT = '09.10.2026 um 12:28';
+const APP_VERSION = '2.2.1';
+const APP_BUILT = '09.10.2026 um 13:05';
 
 const app = document.getElementById('app');
 const side = document.getElementById('side');
@@ -495,10 +502,10 @@ let autosaveTimer = null;
 let searchOpen = false;
 let searchJump = null;     // Zeitgeber für den Sprung zum ersten Treffer    // Suchzeile unter der Kopfzeile eingeblendet
 let sideOverlay = false;   // Hochformat: Seitenleiste über den Inhalt gelegt
-let dlgOpener = '';        // Schaltfläche, von der das offene Fenster kommt (bleibt blau hinterlegt)
+let dlgOpener = '';        // Schaltfläche oder Zeile, von der das offene Fenster kommt (bleibt blau hinterlegt)
 let dlgDirty = null;       // Prüft, ob im offenen Fenster etwas geändert wurde
-let emptyPrompted = false;
-let storagePersistent = false; // Safari löscht dauerhaften Speicher nicht von selbst (z. B. bei knappem Speicher) // Ohne Reiselogbuch öffnet sich "Neues Reiselogbuch" einmal von selbst
+let emptyPrompted = false; // Ohne Reiselogbuch öffnet sich "Neues Reiselogbuch" einmal von selbst
+let storagePersistent = false; // Safari löscht dauerhaften Speicher nicht von selbst (z. B. bei knappem Speicher)
 
 /* ---------- Datum ---------- */
 
@@ -1009,7 +1016,7 @@ function render({ scrollToGap = false } = {}) {
   }
   markOpener();
   app.querySelectorAll('tbody tr').forEach(tr => tr.onclick = () => openDayDialog(trip, tr.dataset.day));
-  app.querySelector('#fazit').onclick = () => openFazitDialog(trip);
+  app.querySelector('#fazit').onclick = () => { setOpener('#fazit'); openFazitDialog(trip); };
   // Betrag: Tausenderpunkt beim Tippen, Komma für Cent (höchstens zwei Stellen); beim Verlassen wird ",00" ergänzt.
   const kosten = app.querySelector('#kosten');
   kosten.oninput = () => {
@@ -1149,14 +1156,15 @@ function renderSide() {
   side.querySelector('#sideMore').onclick = e => openMenu(e.currentTarget, [
     { icon: 'save', label: 'Backup erstellen', sub: lastBackupText(), disabled: !db.trips.length, act: () => saveBackup('#sideMore') },
     { icon: 'folder-open', label: 'Backup laden', act: () => { hold('#sideMore'); importFile.click(); } },
-    'sep',
+    'line',
     { note: `Reiselogbuch · Version ${APP_VERSION} · erstellt am ${APP_BUILT}` },
-    { note: storagePersistent ? 'Speicher: dauerhaft' : 'Speicher: nicht dauerhaft – bitte regelmäßig ein Backup erstellen.' },
-    { note: 'Achtung: Wird das Reiselogbuch vom Home-Bildschirm entfernt, gehen alle Daten verloren – vorher ein Backup erstellen.' },
+    { note: storagePersistent ? 'Die Daten bleiben in Safari gespeichert, solange das Reiselogbuch auf dem Home-Bildschirm nicht entfernt wird.'
+      : 'Safari kann die Daten bei Speichermangel löschen – bitte regelmäßig ein Backup erstellen.' },
   ], 'left');
   side.querySelector('#sideHide').onclick = toggleSide;
   side.querySelector('#hintBackup')?.addEventListener('click', () => saveBackup('#hintBackup'));
   held.forEach(sel => side.querySelector(sel)?.classList.add('on'));
+  markOpener();
   // Kurz tippen öffnet; lange drücken zeigt das Kontextmenü (Öffnen · Einstellungen · Reiselogbuch löschen).
   side.querySelectorAll('[data-id]').forEach(b => onLongPress(b,
     () => tripContextMenu(b, getTrip(b.dataset.id)),
@@ -1179,7 +1187,7 @@ function placeAt(el, anchor, align) {
   el.style.top = top + 'px';
 }
 
-// Einträge: { icon, label, sub, red, tick, disabled, act } · 'sep' (Abstand) · { note } (graue Zeile).
+// Einträge: { icon, label, sub, red, tick, disabled, act } · 'sep' (Abstand) · 'line' (Strich) · { note } (graue Zeile).
 function openMenu(anchor, items, align = 'right') {
   const host = anchor.closest('dialog') || document.body;
   const layer = document.createElement('div');
@@ -1187,7 +1195,7 @@ function openMenu(anchor, items, align = 'right') {
   const menu = document.createElement('div');
   menu.className = 'menu';
   menu.setAttribute('role', 'menu');
-  menu.innerHTML = items.map((it, i) => it === 'sep' ? '<div class="sep"></div>'
+  menu.innerHTML = items.map((it, i) => it === 'sep' ? '<div class="sep"></div>' : it === 'line' ? '<div class="line"></div>'
     : it.note ? `<div class="note">${esc(it.note)}</div>`
     : `<button type="button" class="mi ${it.red ? 'red' : ''} ${it.sub ? 'has-sub' : ''}" data-i="${i}" ${it.disabled ? 'disabled' : ''} role="menuitem">${
         'tick' in it ? `<span class="tick">${it.tick ? ic('check') : ''}</span>` : ic(it.icon)}${esc(it.label)}</button>${
@@ -1242,7 +1250,7 @@ function tripContextMenu(row, trip) {
   if (!trip) return;
   openMenu(row, [
     { icon: 'book-open', label: 'Öffnen', act: () => { sideOverlay = false; showTrip(trip.id); } },
-    { icon: 'settings', label: 'Einstellungen', act: () => openTripDialog(trip) },
+    { icon: 'settings', label: 'Einstellungen', act: () => { setOpener(`#side .side-row[data-id="${trip.id}"]`); openTripDialog(trip); } },
     'sep',
     { icon: 'trash', label: 'Reiselogbuch löschen', red: true, act: () => { row.classList.add('on'); deleteTrip(trip, row); } },
   ], 'beside');
@@ -1275,8 +1283,9 @@ const held = new Set();
 function hold(sel) { if (!sel) return; held.add(sel); document.querySelector(sel)?.classList.add('on'); }
 function release(sel) { if (!sel) return; held.delete(sel); document.querySelector(sel)?.classList.remove('on'); }
 
-// Die Schaltfläche, von der ein Fenster kommt, bleibt blau hinterlegt, solange es offen ist.
+// Die Schaltfläche oder Zeile, von der ein Fenster kommt, bleibt blau hinterlegt, solange es offen ist.
 function setOpener(sel) {
+  if (dlgOpener && dlgOpener !== sel) document.querySelector(dlgOpener)?.classList.remove('on');
   dlgOpener = sel;
   markOpener();
 }
@@ -1585,6 +1594,7 @@ function openTripDialog(trip) {
 
 // Einen Tag in 2 bis 5 Schritten erfassen (je nach sichtbaren Spalten); speichert automatisch alle 10 Sekunden.
 function openDayDialog(trip, iso) {
+  setOpener(`table.days tbody tr[data-day="${iso}"]`); // auch beim Blättern zum nächsten Tag
   const days = tripDays(trip);
   const idx = days.indexOf(iso);
   const isFirst = idx <= 0;

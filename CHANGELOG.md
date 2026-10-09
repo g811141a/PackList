@@ -12,6 +12,18 @@ Versionsnummer **Hauptversion.Nebenversion.Korrektur** (z. B. 1.2.1):
 Steigt eine Stufe, beginnen die Stufen dahinter wieder bei 0.
 Die aktuelle Version steht in der App im Mehr-Menü (ellipsis) der Seitenleiste „Reiselogbücher“.
 
+## 2.2.1 – 09.10.2026 (Korrektur)
+
+Reiselogbuch 2.2.1 · Designrichtlinie allgemein 3.3.1 · Designrichtlinie Reiselogbuch 2.2.1 · Zusammenarbeit allgemein 1.5.0
+
+- F-11: Ein Reiselogbuch bleibt in der Seitenleiste blau, solange seine Einstellungen (über
+  langes Drücken geöffnet) offen sind; ebenso die Tageszeile (wandert beim Blättern mit) und
+  das Fazit, solange ihr Fenster offen ist.
+- F-12: Menü der Seitenleiste: technische Informationen nach einem durchgehenden Strich, ohne
+  Leerzeilen; statt „Speicher: dauerhaft“ der Satz „Die Daten bleiben in Safari gespeichert,
+  solange das Reiselogbuch auf dem Home-Bildschirm nicht entfernt wird.“ (sonst „Safari kann
+  die Daten bei Speichermangel löschen – bitte regelmäßig ein Backup erstellen.“).
+
 ## 2.2.0 – 09.10.2026 (Nebenversion)
 
 Reiselogbuch 2.2.0 · Designrichtlinie allgemein 3.3.0 · Designrichtlinie Reiselogbuch 2.2.0 · Zusammenarbeit allgemein 1.5.0

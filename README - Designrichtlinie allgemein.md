@@ -1,6 +1,6 @@
 # Designrichtlinie allgemein
 
-**Version 3.3.0** · Stand 09.10.2026
+**Version 3.3.1** · Stand 09.10.2026
 
 Allgemeine Gestaltungs- und Bedienregeln für alle iPad-Web-Apps von g811141a.
 Diese Datei liegt vorerst im Repo ReiseLogBuch und **wandert später ins Design-Repo**;
@@ -122,6 +122,12 @@ heller).
     oder ein Fenster kommt, ist so lange `--sel-bg` mit Haarlinie `--accent`, wie es offen ist –
     man sieht, woher man kommt (Klasse `.on`). Das gilt auch für Folgeschritte (Teilen-Menü,
   Dateiauswahl, Meldung danach): die Schaltfläche bleibt blau, bis alles abgeschlossen ist.
+  - **Grundsatz: Gewähltes bleibt eingefärbt, solange es sichtbar ist.** Ein angetippter Punkt
+    oder eine Schaltfläche bleibt blau getönt, solange das, was er geöffnet hat, offen ist und er
+    selbst sichtbar bleibt – auch Listenzeilen (Eintrag der Seitenleiste, z. B. über das
+    Kontextmenü → Einstellungen), Tabellenzeilen (Tag, beim Blättern wandert die Markierung mit)
+    und Kästen (Fazit). Technisch: `setOpener(selector)`.
+    [HIG – Lists and tables](https://developer.apple.com/design/human-interface-guidelines/lists-and-tables)
   - **Apple-Grün** nur für eingeschaltete **Schalter**.
   - **Rot gefüllt = Löschen/Verwerfen** (endgültige Aktionen, z. B. in Sprechblasen):
     `--danger-fill`, weiße Schrift und Icon, Schatten `--glow-danger`. In Menüs steht
@@ -410,10 +416,11 @@ programmiert (`design.css`, `ui.js`) und von allen Apps übernommen.
   einblendbar (bis zum nächsten Start); im Hochformat über den Inhalt gelegt (abgedunkelt dahinter), schließt sich
   nach der Auswahl.
 - **Mehr-Menü der Seitenleiste:** Backup erstellen (darunter grau „Letztes Backup erstellt am …“) ·
-  Backup laden · ganz unten grau die Versionszeile „<App> · Version X.Y.Z · erstellt am …“, darunter
-  „Speicher: dauerhaft“ bzw. „Speicher: nicht dauerhaft – bitte regelmäßig ein Backup erstellen.“ und
-  der Hinweis „Achtung: Wird <App> vom Home-Bildschirm entfernt, gehen alle Daten verloren – vorher
-  ein Backup erstellen.“
+  Backup laden · durchgehender Strich · darunter ohne Leerzeilen grau die Versionszeile
+  „<App> · Version X.Y.Z · erstellt am …“ und ein verständlicher Satz zum Speicher: „Die Daten
+  bleiben in Safari gespeichert, solange <App> auf dem Home-Bildschirm nicht entfernt wird.“ bzw.
+  (nicht dauerhaft) „Safari kann die Daten bei Speichermangel löschen – bitte regelmäßig ein
+  Backup erstellen.“
 - **Kontextmenü:** Langes Drücken (ca. 0,6 s) auf einen Eintrag öffnet rechts daneben ein Menü
   (Komponente Menü) mit Öffnen (book-open) · Einstellungen (settings) · … löschen (rot, Sprechblase);
   der Eintrag ist dabei blau getönt. Kurzes Tippen öffnet wie bisher; kein Wischen, kein Hinweistext.
@@ -431,7 +438,8 @@ programmiert (`design.css`, `ui.js`) und von allen Apps übernommen.
 - **Aussehen:** Karte 340 px, Radius 14 px, Lichtkante und Schatten wie die Schaltflächen;
   Einträge 46 px hoch, Icon **vor** dem Text, Haarlinien; Gruppen durch 8 px Abstand
   getrennt; Auswahl mit blauem Häkchen vorne; graue Zusatzzeile unter einem Eintrag; graue
-  Notiz ganz unten. Nichts blau eingefärbt, „… löschen“ rot.
+  Notiz ganz unten. Technische Informationen (Version, Speicher) stehen nach einem
+  **durchgehenden Strich** (`'line'`) ohne Leerzeilen dazwischen. Nichts blau eingefärbt, „… löschen“ rot.
 - **Verhalten:** erscheint unter der Schaltfläche (darf über die Seitenleiste
   hinausragen); die Schaltfläche ist so lange gedrückt (blau getönt); daneben tippen schließt.
 
@@ -508,6 +516,7 @@ programmiert (`design.css`, `ui.js`) und von allen Apps übernommen.
 
 | Version | Datum | Art | Inhalt |
 |---|---|---|---|
+| 3.3.1 | 09.10.2026 | Korrektur | Grundsatz „Gewähltes bleibt eingefärbt, solange es sichtbar ist“ (auch Listen- und Tabellenzeilen, Kästen); Menü: technische Informationen nach durchgehendem Strich ohne Leerzeilen; verständlicher Satz zum Speicher statt „Speicher: dauerhaft“ |
 | 3.3.0 | 09.10.2026 | Neben | Kontextmenü in der Seitenleiste (langes Drücken); dauerhafter Speicher mit Anzeige im Menü der Seitenleiste und Hinweis zum Entfernen vom Home-Bildschirm |
 | 3.2.3 | 08.10.2026 | Korrektur | Fenster und Kopfzeilen bleiben bei sichtbarer Tastatur sichtbar (Ausrichtung am sichtbaren Bereich) |
 | 3.2.2 | 08.10.2026 | Korrektur | Auswahl-Kapsel: Markierung als Kreis bzw. Kapsel innerhalb der Schaltfläche mit Abstand; Schaltflächen so hoch wie der Innenraum |

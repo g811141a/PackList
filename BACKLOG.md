@@ -1,6 +1,6 @@
 # Backlog – offene Themen
 
-**Stand 09.10.2026** · Aktuelle Version: Reiselogbuch 2.4.0
+**Stand 09.10.2026** · Aktuelle Version: Reiselogbuch 3.0.0 · AppDesign 4.0.0
 
 Hier stehen alle offenen Themen. Erledigte Punkte wandern mit Version und Datum nach unten
 in „Erledigt“. Claude erinnert zu Beginn und am Ende jeder Sitzung an die offenen Punkte
@@ -30,7 +30,7 @@ sind (oder auf Wunsch); siehe `README - Zusammenarbeit allgemein.md`, Abschnitt 
 
 | Nr. | Prio | Thema | Status |
 |---|---|---|---|
-| – | – | zurzeit nichts zu prüfen | – |
+| P-14 | 1 | **Version 3.0.0 (mit AppDesign 4.0.0) – Prüfliste:** vorher **Backup erstellen** · 1) App startet, sieht aus wie 2.4.0 (hell und dunkel) · 2) Menüs, Untermenü ‚Darstellung ›‘, Teilen, langes Drücken funktionieren · 3) Fenster (Tag, Einstellungen, Fazit) öffnen, ändern, Häkchen und x mit ‚Änderungen verwerfen‘ · 4) Suche mit ⌃ ⌄ · 5) **offline:** Flugmodus ein, App ganz schließen und neu öffnen → startet und sieht gleich aus | prüfen |
 
 ## 2. Weitere Themen (in Klärung)
 
@@ -40,13 +40,12 @@ sind (oder auf Wunsch); siehe `README - Zusammenarbeit allgemein.md`, Abschnitt 
 | T-03 | 2 | Daten zwischen iPad und iPhone abgleichen (Ablage in iCloud, Weiterbearbeitung auf dem iPhone): a) Datei in iCloud Drive mit Zusammenführen (kostenlos) · b) CloudKit JS (Entwicklerkonto) · c) echte App mit iCloud (Mac + Entwicklerkonto); Empfehlung a jetzt, c später – offen: Mac vorhanden? Entwicklerkonto? Arbeitsweise? | allgemein | offen |
 | T-05 | 2 | Bestehende (alte) Reiselogbücher aufbereiten und importierbar machen: Dateien (Word/PDF/Excel/HTML/Fotos) auslesen, Unklarheiten nachfragen, Vorschau zeigen, Datei erstellen; Überschneidungen prüfen. Offen: Form der Unterlagen, Anzahl, Weg (a: in aktuelles Backup einfügen · b: neue Funktion „Reiselogbuch importieren“, die hinzufügt statt ersetzt) | Reiselogbuch | offen |
 | T-06 | 3 | Ausschreibungstexte (Reiseveranstalter) in Reiselogbücher umwandeln – für erledigte **und** geplante Reisen: Titel, Zeitraum, Reisemittel; je Tag das Programm („1. Tag“ → echtes Datum, Text wie in der Ausschreibung); Quartiere mit Ort, falls genannt; übrige Felder bleiben leer | Reiselogbuch | offen |
-| T-23 | 1 | Design-Repo **g811141a/AppDesign** (öffentlich, legt der Nutzer an): S-01 allgemeine Dateien umziehen (Designrichtlinie allgemein, Zusammenarbeit allgemein, Apple-Vergleichsbilder, HIG-Prüfskript; Version der Designrichtlinie = Version des Repos) **und** S-02 gemeinsames `design.css` und `ui.js` (Komponenten einmal programmiert, Vorlage für neue Apps); Reiselogbuch verweist darauf. Entschieden: Apps laden `design.css`/`ui.js` **versioniert aus AppDesign** (z. B. `/AppDesign/v4/…`, offline über den Service Worker); AppDesign startet mit **4.0.0** (= Designrichtlinie allgemein); Reiselogbuch wird gleich mit umgestellt als **Version 3.0.0**. Wartet darauf, dass der Nutzer das Repo anlegt | allgemein | offen |
 
 ## 3. Später
 
 | Nr. | Prio | Thema | Gilt | Status |
 |---|---|---|---|---|
-| S-03 | 3 | Startseite g811141a.github.io mit allen Apps | allgemein | später |
+| – | – | allgemeine Themen (z. B. Startseite) stehen jetzt im Backlog von AppDesign | – | – |
 
 ---
 
@@ -54,6 +53,7 @@ sind (oder auf Wunsch); siehe `README - Zusammenarbeit allgemein.md`, Abschnitt 
 
 | Nr. | Thema | Version | Datum |
 |---|---|---|---|
+| E-21 | Reiselogbuch 3.0.0: T-23 gemeinsame Bausteine aus dem Design-Repo AppDesign 4.0.0 (S-01, S-02) | Reiselogbuch 3.0.0 · AppDesign 4.0.0 | 09.10.2026 |
 | E-20 | Auf dem iPad geprüft und ok: P-13 Version 2.4.0 (Menüs ohne Linien zwischen Punkten, Suchfeld ohne blauen Rahmen) | Reiselogbuch 2.4.0 | 09.10.2026 |
 | E-19 | Reiselogbuch 2.4.0: T-20 Menüs ohne Linien zwischen Punkten, T-21 Suchfeld ohne blauen Rahmen | Reiselogbuch 2.4.0 · allgemein 3.6.1 · Reiselogbuch-Richtlinie 2.4.0 | 09.10.2026 |
 | E-18 | Auf dem iPad geprüft: P-12 Version 2.3.0 ok bis auf 3 (Linien → T-20) und 4 (Suchfeld → T-21); Punkt 7 hat sich erledigt (verschaut) · T-19 Essen-Links mit mehr Abstand: **verworfen**, bleibt als bewusste Abweichung | Reiselogbuch 2.3.0 | 09.10.2026 |

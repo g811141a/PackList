@@ -12,6 +12,19 @@ Versionsnummer **Hauptversion.Nebenversion.Korrektur** (z. B. 1.2.1):
 Steigt eine Stufe, beginnen die Stufen dahinter wieder bei 0.
 Die aktuelle Version steht in der App im Mehr-Menü (ellipsis) der Seitenleiste „Reiselogbücher“.
 
+## 3.0.0 – 09.10.2026 (Hauptversion)
+
+Reiselogbuch 3.0.0 · AppDesign 4.0.0 (Designrichtlinie allgemein 4.0.0) · Designrichtlinie Reiselogbuch 3.0.0 · Zusammenarbeit allgemein 1.10.0
+
+- T-23: Gemeinsame Bausteine kommen aus dem neuen Design-Repo **AppDesign**:
+  `../AppDesign/v4/design.css` (Farben und Komponenten) und `../AppDesign/v4/ui.js` (Icons, Menüs,
+  Sprechblasen, Fenster, Darstellung …). `index.html` enthält nur noch, was zum Reiselogbuch gehört.
+- Aussehen und Bedienung **unverändert** – 40 Ansichten (hell/dunkel, quer/hoch) pixelgenau mit 2.4.0
+  verglichen. Daten unverändert.
+- Offline: Der Service Worker speichert auch die AppDesign-Dateien.
+- Designrichtlinie allgemein, Zusammenarbeit allgemein und Apple-Vergleichsbilder sind nach
+  AppDesign umgezogen; das HIG-Prüfskript nutzt `AppDesign/tests/hig.mjs`.
+
 ## 2.4.0 – 09.10.2026 (Nebenversion)
 
 Reiselogbuch 2.4.0 · Designrichtlinie allgemein 3.6.1 · Designrichtlinie Reiselogbuch 2.4.0 · Zusammenarbeit allgemein 1.8.0

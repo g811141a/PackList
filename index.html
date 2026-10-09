@@ -11,208 +11,9 @@
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-180.png">
 <title>Reiselogbuch</title>
+<link rel="stylesheet" href="../AppDesign/v4/design.css">
 <style>
-  /* Farben im Apple-Look: Hintergrund Hellgrau, Kästen weiß ohne Rand, schwebende Schaltflächen */
-  :root {
-    --bg: #f2f2f7;
-    --card: #ffffff;
-    --ink: #1c1c1e;
-    --muted: #6e6e73;
-    --line: #d1d1d6;
-    --accent: #007aff;
-    --accent-ink: #ffffff;
-    --sw-on: #34c759;
-    --sw-off: #e9e9eb;
-    --danger: #b3261e;
-    --danger-fill: #d70015;
-    --warn: #c07a12;
-    --focus: #fff1c2;
-    --row-hover: #ececf1;
-    --th-bg: #e5e5ea;
-    --th-line: #c7c7cc;
-    --zebra: #f7f7f9;
-    --field-line: #c7c7cc;
-    --dlg-bg: #f2f2f7;
-    --dlg-card: #ffffff;
-    --dlg-field: #ffffff;
-    --btn: #f9f9f9;
-    --btn-rim: #ffffff;
-    --sel-bg: #dcebff;
-    --mark: #ffe45c;
-    --mark-cur: #ffc46b;
-    --mark-cur-ink: inherit;
-    --float: 0 3px 28px rgba(0,0,0,.16);
-    --glow-accent: 0 2px 4px rgba(0,0,0,.10), 0 5px 18px rgba(0,122,255,.50);
-    --table-shadow: 0 1px 3px rgba(0,0,0,.12), 0 8px 24px rgba(0,0,0,.12);
-    --glow-danger: 0 2px 4px rgba(0,0,0,.12), 0 5px 14px rgba(215,0,21,.35);
-    --rim-color: rgba(255,255,255,.5);
-    --bar-h: 64px;
-    --side-w: 0px;
-    --vv-top: 0px;
-    color-scheme: light;
-  }
-  :root[data-theme="dark"] {
-    --bg: #000000; --card: #1c1c1e; --ink: #ffffff; --muted: #98989d; --line: #38383a;
-    --accent: #0a84ff; --accent-ink: #ffffff; --sw-on: #30d158; --sw-off: #39393d; --danger: #ff6961; --danger-fill: #d70015; --warn: #e2a64b;
-    --focus: #45391a; --row-hover: #2c2c2e;
-    --th-bg: #2c2c2e; --th-line: #48484a; --zebra: #161618; --field-line: #48484a;
-    --dlg-bg: #1c1c1e; --dlg-card: #2c2c2e; --dlg-field: #1c1c1e;
-    --btn: #3a3a3c; --btn-rim: rgba(255,255,255,.16); --sel-bg: #10335c;
-    --mark: #8a6d00; --mark-cur: #e08a1e; --mark-cur-ink: #000;
-    --float: 0 3px 28px rgba(0,0,0,.7);
-    --glow-accent: 0 2px 4px rgba(0,0,0,.5), 0 5px 18px rgba(10,132,255,.50);
-    --table-shadow: 0 0 0 .5px rgba(255,255,255,.12), 0 1px 3px rgba(0,0,0,.6), 0 8px 24px rgba(0,0,0,.6);
-    --glow-danger: 0 2px 4px rgba(0,0,0,.5), 0 5px 16px rgba(255,69,58,.35);
-    --rim-color: rgba(255,255,255,.4);
-    color-scheme: dark;
-  }
-  * { box-sizing: border-box; }
-  html, body { margin: 0; background: var(--bg); color: var(--ink); }
-  body {
-    font: 17px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    padding: 0 max(16px, env(safe-area-inset-right)) 100px max(16px, env(safe-area-inset-left));
-    -webkit-text-size-adjust: 100%;
-  }
-  h1 { font-size: 28px; margin: 12px 0 6px; }
-  h2 { font-size: 20px; margin: 28px 0 8px; }
-  a { color: var(--accent); }
-  button, input, textarea { font: inherit; color: inherit; }
-  /* Schwebende Schaltfläche: fast weiße Fläche, weiße Lichtkante (Haarlinie), weicher Schatten, Kapselform */
-  button {
-    border: .5px solid var(--btn-rim); background: var(--btn); border-radius: 22px; box-shadow: var(--float);
-    padding: 8px 14px; cursor: pointer; min-height: 44px; line-height: 20px;
-  }
-  button:disabled, button[aria-disabled="true"] { opacity: .4; cursor: default; }
-  button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
-  .ic { width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-  .ic.red { color: var(--danger); }
-  button.primary .ic.red { color: inherit; }
-  /* Komponente Suchfeld: schwebende Kapsel mit Lupe, Trefferanzeige "3 von 57" und x; daneben Treffer-Navigation */
-  .searchbox { position: relative; display: inline-flex; align-items: center; flex: 0 1 200px; }
-  .searchbox.active { flex-basis: 300px; }
-  .searchbox > .ic { position: absolute; left: 12px; color: var(--muted); pointer-events: none; }
-  .searchbox input[type=search] { width: 100%; height: 44px; border-radius: 22px; padding: 0 14px 0 38px;
-    background: var(--btn); border: .5px solid var(--btn-rim); box-shadow: var(--float); -webkit-appearance: none; appearance: none; }
-  .searchbox input[type=search]::-webkit-search-cancel-button { display: none; }
-  /* Wie Apple: kein blauer Fokus-Rahmen – der Cursor zeigt, dass man tippen kann */
-  .searchbox input[type=search]:focus, .searchbox input[type=search]:focus-visible { outline: none; }
-  .searchbox .smeta { position: absolute; right: 6px; display: flex; align-items: center; gap: 4px; }
-  .searchbox .scount { font-size: 15px; color: var(--muted); font-variant-numeric: tabular-nums; pointer-events: none; }
-  /* Antippfläche 44 px (unsichtbar), das Zeichen bleibt so groß und am selben Platz wie bisher */
-  .searchbox .sclear { width: 44px; height: 44px; margin: -6px; min-height: 0; min-width: 0; padding: 0; border: none; box-shadow: none; background: none; color: #a1a1a6; border-radius: 50%; }
-  .searchbox .sclear svg { width: 20px; height: 20px; }
-  /* Komponente Kapsel: mehrere Schaltflächen in einer schwebenden Kapsel */
-  .grp, .navgrp { display: inline-flex; flex: none; height: 44px; border-radius: 22px; background: var(--btn); border: .5px solid var(--btn-rim); box-shadow: var(--float); }
-  /* Alle Kapseln gleich gebaut: Schaltflächen genau so hoch wie der Innenraum (44 px minus Rand); die Markierung
-     „gedrückt“ ist eine eigene Kapsel mit 3 px Luft und liegt damit immer innerhalb des Randes. */
-  .grp button, .navgrp button { background: none; border: none; box-shadow: none; width: 48px; min-width: 48px; padding: 0; border-radius: 22px;
-    height: 100%; min-height: 0; position: relative; isolation: isolate; }
-  .grp button.txt { width: auto; padding: 0 14px; }
-  .grp button.fill { background: none; color: var(--accent-ink); }
-  .grp button.fill::before { content: ''; position: absolute; z-index: -1; inset: 3px; border-radius: 999px; background: var(--accent); }
-  .grp button:disabled, .navgrp button:disabled { opacity: .3; }
-  /* Gedrückt: Die Schaltfläche, von der ein offenes Menü, eine Sprechblase oder ein Fenster kommt, ist blau hinterlegt. */
-  button.on { background: var(--sel-bg); border-color: var(--accent); }
-  .grp button.on, .navgrp button.on { background: none; box-shadow: none; }
-  .grp button.on::before, .navgrp button.on::before { content: ''; position: absolute; z-index: -1; inset: 3px; border-radius: 999px;
-    background: var(--sel-bg); box-shadow: inset 0 0 0 .5px var(--accent); }
-  .round { width: 44px; min-width: 44px; height: 44px; padding: 0; border-radius: 50%; flex: none; }
-  /* Grün gefüllt = Hauptaktion; grün getönt mit Rand = eingeschaltet; rot gefüllt = Löschen (jeweils mit farbigem Schein) */
-  button.primary { background: var(--accent); color: var(--accent-ink); border: .5px solid var(--rim-color); box-shadow: var(--glow-accent); }
-  button.link { border: none; background: none; box-shadow: none; color: var(--accent); padding: 6px 8px; }
-  button.danger { background: var(--danger-fill); color: #fff; border: .5px solid var(--rim-color); box-shadow: var(--glow-danger); }
-  button.danger .ic.red { color: inherit; }
-  button[aria-pressed="true"] { background: var(--sel-bg); border: .5px solid var(--accent); color: var(--ink); box-shadow: var(--glow-accent); }
-  input[type=text], input[type=search], input[type=date], input[type=number], textarea {
-    width: 100%; border: .5px solid var(--btn-rim); border-radius: 10px; background: var(--card); box-shadow: var(--float);
-    padding: 10px 12px; min-height: 44px;
-  }
-  input:disabled { opacity: .6; }
-  input.invalid { border: 1px solid var(--danger); }
-  .step.off .hint { opacity: .5; }
-  /* Textfelder wachsen mit dem Inhalt; man muss nie innerhalb eines Feldes scrollen. */
-  textarea { resize: none; overflow: hidden; min-height: 96px; }
-  /* Datumsfelder sind so breit wie das Datum (wird beim Öffnen berechnet). */
-  input[type=date] { -webkit-appearance: none; appearance: none; text-align: left; }
-  input[type=date]::-webkit-date-and-time-value { text-align: left; }
-  dialog input[type=date] { flex: none; }
-  .dates { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-  .dates .dl { color: var(--muted); }
-  .dates .dl + .datebox + .dl { margin-left: 14px; }
-  .datebox { position: relative; display: inline-flex; align-items: center; flex: none; }
-  .datebox input[type=date] { padding-right: 40px; }
-  .datebox > .ic { position: absolute; right: 12px; pointer-events: none; }
-  .datebox input::-webkit-calendar-picker-indicator { position: absolute; inset: 0; width: auto; height: auto; opacity: 0; cursor: pointer; }
-  label { display: block; font-weight: 600; margin: 0 0 6px; }
-  .muted { color: var(--muted); }
-  .spacer { flex: 1; }
-
-  /* Komponente Kopfzeile: fest oben, Titel in der Mitte, rechts eine Kapsel; die Suche erscheint als zweite Zeile */
-  .nb { position: sticky; top: var(--vv-top); z-index: 6; background: var(--bg); margin: 0 -16px; padding: calc(env(safe-area-inset-top) + 10px) 16px 10px; border-bottom: .5px solid transparent; }
-  .nb.line { border-bottom-color: var(--line); }
-  .nb1 { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; min-height: 44px; }
-  .nb1 > .r { justify-self: end; }
-  .nb-title { font-weight: 600; font-size: 17px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .nb2 { display: flex; gap: 12px; align-items: center; margin-top: 10px; }
-  .nb2 .searchbox { flex: 1 1 auto; }
-  .emptymain { margin-top: 120px; text-align: center; color: var(--muted); font-size: 19px; }
-
-  /* Komponente Seitenleiste: quer fest links neben dem Inhalt, im Hochformat über den Inhalt gelegt */
-  /* Schwebend wie in Safari: runde Ecken, Lichtkante und Schatten wie die Schaltflächen, Abstand zum Rand */
-  body.docked { padding-left: calc(var(--side-w) + max(10px, env(safe-area-inset-left)) + 20px); }
-  #side { position: fixed; z-index: 7; top: calc(env(safe-area-inset-top) + 10px); bottom: calc(env(safe-area-inset-bottom) + 4px); left: max(10px, env(safe-area-inset-left));
-    width: max-content; min-width: 340px; max-width: 420px; overflow-y: auto;
-    background: var(--card); border: .5px solid var(--btn-rim); border-radius: 22px; box-shadow: var(--float);
-    display: flex; flex-direction: column; padding: 10px 12px 14px; }
-  #side[hidden] { display: none; }
-  #side.over { z-index: 25; }
-  .side-shade { position: fixed; inset: 0; z-index: 24; background: rgba(0,0,0,.25); }
-  .side-head { display: flex; align-items: center; gap: 12px; min-height: 44px; margin-bottom: 14px; padding-left: 8px; }
-  .side-head h2 { margin: 0 4px 0 0; flex: 1; font-size: 20px; white-space: nowrap; }
-  #side .side-row { display: block; width: 100%; text-align: left; border: none; box-shadow: none; background: none; border-radius: 12px; padding: 9px 12px; margin-bottom: 4px; min-height: 0;
-    -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
-  /* Langes Drücken (Kontextmenü): Eintrag blau getönt, solange das Menü bzw. die Abfrage offen ist */
-  #side .side-row.on { background: var(--sel-bg); box-shadow: inset 0 0 0 .5px var(--accent); color: var(--ink); }
-  #side .side-row.on small { color: var(--muted); }
-  .side-row b { display: block; font-size: 17px; font-weight: 600; overflow-wrap: anywhere; }
-  .side-row small { display: block; color: var(--muted); font-size: 14px; white-space: nowrap; }
-  #side .side-row.current { background: var(--accent); color: var(--accent-ink); box-shadow: var(--glow-accent); }
-  .side-row.current small { color: rgba(255,255,255,.85); }
-  .side-empty { color: var(--muted); padding: 8px 12px; }
-  .bhint { margin-top: auto; padding: 16px 12px 0; font-size: 13px; color: var(--muted); display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
-  .bhint button { color: var(--ink); font-size: 17px; }
-
-  /* Komponente Menü: Karte mit Schatten wie die Schaltflächen, Icons vor dem Text; antippen daneben schließt */
-  .layer { position: fixed; inset: 0; z-index: 29; }
-  .menu { position: fixed; z-index: 30; width: 340px; background: var(--card); border-radius: 14px; border: .5px solid var(--btn-rim); box-shadow: var(--float); overflow: hidden; }
-  .menu .mi { display: flex; justify-content: flex-start; align-items: center; gap: 10px; width: 100%; min-height: 46px; padding: 0 16px; font-size: 17px; text-align: left;
-    border: none; border-radius: 0; background: none; box-shadow: none; }
-  /* Wie Apple (iOS 26): keine Linien zwischen einzelnen Punkten – nur die eingerückte Linie zwischen Gruppen */
-  .menu .mi.red { color: var(--danger); }
-  .menu .tick { width: 20px; display: inline-flex; color: var(--accent); }
-  .menu .mi .val { margin-left: auto; color: var(--muted); font-size: 15px; }
-  .menu .mi .chev { margin-left: auto; color: var(--muted); }
-  .menu .mi .val + .chev { margin-left: 6px; }
-  .menu .mi.on { background: var(--sel-bg); }
-  .menu .mi.on .val { color: var(--ink); }
-  .menu.submenu { width: 260px; }
-  .menu .sub { font-size: 13px; color: var(--muted); padding: 0 16px 10px 46px; margin-top: -8px; }
-  /* Gruppen getrennt durch eine dünne, links und rechts eingerückte Linie (wie Apple, iOS 26) */
-  .menu .sep, .menu .line { height: 0; border-top: 1px solid var(--line); margin: 6px 20px; background: none; }
-  .menu .note { font-size: 13px; color: var(--muted); padding: 10px 16px; }
-  /* 'line': durchgehender Strich vor den technischen Informationen, diese ohne Leerzeilen */
-  .menu .line ~ .note { padding: 2px 16px; line-height: 1.35; }
-  .menu .line + .note { padding-top: 8px; }
-  .menu .line ~ .note:last-child { padding-bottom: 10px; }
-  /* Komponente Sprechblase (Abfrage): an der angetippten Schaltfläche; roter Knopf, darunter der Weg zurück */
-  .pop { position: fixed; z-index: 30; width: 320px; background: var(--card); border-radius: 14px; border: .5px solid var(--btn-rim); box-shadow: var(--float); padding: 16px; text-align: center; }
-  .pop p { margin: 0 0 14px; font-size: 15px; color: var(--muted); }
-  .pop .btns { display: flex; flex-direction: column; gap: 10px; }
-  .pop .btns button { width: 100%; }
-  :root[data-theme="dark"] .menu, :root[data-theme="dark"] .pop { background: #2c2c2e; }
-
-
-
+  /* Reiselogbuch: nur, was zur App gehört – die gemeinsamen Bausteine kommen aus AppDesign (design.css) */
   .meta { display: grid; grid-template-columns: max-content 1fr; gap: 2px 14px; margin: 4px 0 6px; }
   .meta dt { font-weight: 600; }
   .meta dd { margin: 0; }
@@ -251,7 +52,6 @@
   mark.cur { background: var(--mark-cur); color: var(--mark-cur-ink); }
 
   .fazit-box { display: inline-block; width: auto; max-width: 100%; text-align: left; padding: 12px 14px; min-height: 60px; border-radius: 14px; background: var(--card); }
-  .msg-text { padding: 8px 2px; }
   .kosten { display: flex; align-items: center; gap: 10px; }
   .kosten span { font-size: 20px; }
   #kosten { text-align: right; width: 130px; flex: none; }
@@ -266,102 +66,8 @@
   /* Maps-Links: Antippfläche unsichtbar auf 44 px Höhe vergrößert (Innenabstand eines Inline-Links ändert das Layout nicht) */
   .ln.q a, #qHint a { padding: 12px 0; }
 
-  .fab { position: fixed; right: max(16px, env(safe-area-inset-right)); bottom: calc(16px + env(safe-area-inset-bottom)); display: flex; flex-direction: column; gap: 12px; z-index: 4; }
-  .fab button { padding: 0; font-size: 20px; }
-  .fab[hidden] { display: none; }
-
-  /* Dialoge */
-  dialog {
-    border: none; border-radius: 18px; padding: 0;
-    width: fit-content; min-width: min(480px, 90vw); max-width: 90vw;
-    max-height: var(--dlg-max, calc(100vh - 40px)); background: var(--dlg-bg); color: var(--ink);
-    box-shadow: 0 20px 60px rgba(0,0,0,.3);
-  }
-  dialog.wide { width: min(1100px, 100vw - 24px); max-width: none; }
-  dialog::backdrop { background: rgba(0,0,0,.35); }
-  dialog form { display: flex; flex-direction: column; max-height: var(--dlg-max, calc(100vh - 40px)); }
-  .dlg-head { flex: none; }
-  .dlg-head { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: .5px solid var(--line); }
-  .dlg-head h3 { margin: 0; flex: 1; text-align: center; font-size: 19px; min-height: 28px; line-height: 28px; }
-  /* Fenster-Kopfzeile: rundes x links, Titel (mit Zusatzzeile) in der Mitte, rechts weitere Schaltflächen und rundes Häkchen.
-     Das Häkchen ist grau, bis etwas geändert wurde; dann blau. */
-  .dlg-head .hl, .dlg-head .hr { flex: 1 1 0; display: flex; align-items: center; gap: 12px; }
-  .dlg-head .hr { justify-content: flex-end; }
-  .dlg-head .mid { flex: none; max-width: 60%; text-align: center; }
-  .dlg-head .mid .sub { display: block; font-size: 13px; color: var(--muted); line-height: 1.2; }
-  .dlg-head .mid .sub:empty { display: none; }
-  #msg { width: 360px; min-width: 0; }
-  #msg .dlg-head { border: none; }
-  #msg .msg-text { text-align: center; padding: 0 4px 10px; }
-  .dlg-body { padding: 8px 16px 20px; overflow-y: auto; flex: 1; }
-  .dlg-foot { display: flex; gap: 12px; align-items: center; padding: 14px 16px 16px; border-top: .5px solid var(--line); }
-  .step { background: var(--dlg-card); border-radius: 14px; padding: 14px; margin-top: 12px; }
-  dialog input[type=text], dialog input[type=date], dialog textarea { background: var(--dlg-field); }
-  .step-head { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
-  .step-head label { margin: 0; flex: 1; }
-  .step-num {
-    display: inline-flex; width: 26px; height: 26px; border-radius: 50%; background: var(--accent); color: var(--accent-ink);
-    align-items: center; justify-content: center; font-size: 14px; margin-right: 8px;
-  }
-  .chips { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 10px; }
-  .chips button { font-size: 15px; padding: 6px 10px; min-height: 44px; }
-  .emoji-row { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 10px; }
-  .emoji-row button {
-    font-size: 24px; line-height: 1; padding: 0; width: 44px; min-width: 44px; height: 44px;
-    -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; touch-action: manipulation;
-  }
-  .emoji-row button.reset { font-size: 20px; color: var(--muted); flex: none; }
-  /* Reine Icon-, Wetter- und Smiley-Schaltflächen einheitlich quadratisch 44 × 44 px */
-  .fab button, .mic, .emoji-row button.reset, .iconbtn { width: 44px; min-width: 44px; height: 44px; padding: 0; border-radius: 50%; }
-  .emoji-row button { border-radius: 50%; }
-  /* Komponente Auswahl-Kapsel: Smileys, Wetter, Reisemittel in einer Kapsel; bei knappem Platz wischbar */
-  .emoji-row.strip { flex-wrap: nowrap; align-items: center; }
-  .cap { flex: 0 1 auto; min-width: 0; display: flex; height: 44px; border-radius: 22px; overflow: hidden;
-    background: var(--btn); border: .5px solid var(--btn-rim); box-shadow: var(--float); }
-  .cap .scroll { display: flex; min-width: 0; height: 100%; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
-  .cap .scroll::-webkit-scrollbar { display: none; }
-  /* Schaltflächen füllen genau den Innenraum der Kapsel (44 px minus Rand), damit nichts abgeschnitten wird */
-  .cap .scroll button { flex: none; background: none; border: none; box-shadow: none; border-radius: 22px; min-height: 0; height: 100%; }
-  /* Markierung wie bei Apple (Tapback): eigene Form innerhalb der Schaltfläche, mit Luft rundherum –
-     bei Emojis ein Kreis (36 px), bei Text eine Kapsel; markierte Nachbarn stoßen nie aneinander. */
-  .cap .scroll button { position: relative; isolation: isolate; }
-  .cap .scroll button[aria-pressed="true"]::before { content: ''; position: absolute; z-index: -1; inset: 3px; border-radius: 999px;
-    background: var(--sel-bg); box-shadow: inset 0 0 0 .5px var(--accent); }
-  .emoji-row .cap .scroll button[aria-pressed="true"]::before { inset: 50% auto auto 50%; width: 36px; height: 36px; transform: translate(-50%, -50%); }
-  .emoji-row .cap .scroll button { width: 48px; min-width: 48px; }
-  .chips .cap .scroll button { padding: 0 14px; white-space: nowrap; }
-  .strip > .reset { margin-left: auto; }
-  .cap .scroll.fr { -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 48px), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 48px), transparent); }
-  .cap .scroll.fl { -webkit-mask-image: linear-gradient(to left, #000 calc(100% - 48px), transparent); mask-image: linear-gradient(to left, #000 calc(100% - 48px), transparent); }
-  .cap .scroll.fl.fr { -webkit-mask-image: linear-gradient(to right, transparent, #000 48px, #000 calc(100% - 48px), transparent); mask-image: linear-gradient(to right, transparent, #000 48px, #000 calc(100% - 48px), transparent); }
-  .mic { font-size: 18px; padding: 0; min-height: 44px; }
-  .mic[aria-pressed="true"] { animation: pulse 1s infinite; }
-  @keyframes pulse { 50% { opacity: .5; } }
-  .hint { font-size: 14px; color: var(--muted); margin-top: 6px; }
-  .warn { font-size: 15px; color: var(--danger); margin-top: 10px; }
-  .check { display: flex; align-items: center; gap: 10px; font-weight: 400; margin: 0 0 10px; min-height: 44px; cursor: pointer; }
-  .check input { width: 24px; height: 24px; accent-color: var(--accent); }
-  /* Komponente Schalter (Einstellungen): Zeile mit Text links, Apple-Schalter rechts, Haarlinie dazwischen */
-  .swlist { margin: 4px 0 10px; }
-  .swlist .check { justify-content: space-between; gap: 12px; min-height: 52px; margin: 0; border-bottom: .5px solid var(--line); }
-  .swlist .check:last-child { border-bottom: none; }
-  .check.sw input { order: 2; -webkit-appearance: none; appearance: none; flex: none; width: 51px; height: 31px; margin: 0; border-radius: 16px; cursor: pointer;
-    background: radial-gradient(circle at 15.5px 50%, #fff 13.5px, transparent 14px), var(--sw-off); transition: background .2s; }
-  .check.sw input:checked { background: radial-gradient(circle at calc(100% - 15.5px) 50%, #fff 13.5px, transparent 14px), var(--sw-on); }
-  .check.sw:has(input:disabled) { opacity: .4; cursor: default; }
-  /* Komponente Options-Kapsel (Optionen beim Erfassen): wie eine Auswahl-Schaltfläche, eingeschaltet mit Häkchen */
-  .check.chip { display: inline-flex; gap: 8px; height: 44px; min-height: 44px; margin: 0; padding: 0 16px; border-radius: 22px; font-size: 15px;
-    background: var(--btn); border: .5px solid var(--btn-rim); box-shadow: var(--float); -webkit-user-select: none; user-select: none; }
-  .check.chip input { position: absolute; opacity: 0; width: 0; height: 0; pointer-events: none; }
-  .check.chip:has(input:checked) { background: var(--sel-bg); border-color: var(--accent); box-shadow: var(--glow-accent); }
-  .check.chip:has(input:checked)::before { content: ''; width: 16px; height: 16px; flex: none; background: var(--accent);
-    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center/contain no-repeat;
-    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center/contain no-repeat; }
-  .check.chip:has(input:disabled) { opacity: .4; cursor: default; }
-  .step-head .head-check { flex: none; margin: 0 0 0 4px; }
   .qrow { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
   .dlg-body.preview { margin: 0; padding: 24px; background: #fff; color: #000; color-scheme: light; }
-  .saved { font-size: 13px; color: var(--muted); }
 
   #printout { display: none; }
   @media print {
@@ -384,55 +90,18 @@
 <dialog id="msg"></dialog>
 <input type="file" id="importFile" accept="application/json,.json" hidden>
 
+<script src="../AppDesign/v4/ui.js"></script>
 <script>
 'use strict';
 
-// Schaltflächen-Icons aus Lucide (ISC-Lizenz), direkt eingebettet, damit die App offline funktioniert.
-const ICONS = {
-  'eye': '<path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/>',
-  'info': '<circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>',
-  'book-open': '<path d="M12 5v16"/><path d="M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z"/>',
-  'fold-vertical': '<path d="M12 22v-6"/><path d="M12 8V2"/><path d="M4 12H2"/><path d="M10 12H8"/><path d="M16 12h-2"/><path d="M22 12h-2"/><path d="m15 19-3-3-3 3"/><path d="m15 5-3 3-3-3"/>',
-  'list-chevrons-up-down': '<path d="M3 5h8"/><path d="M3 12h8"/><path d="M3 19h8"/><path d="m15 8 3-3 3 3"/><path d="m15 16 3 3 3-3"/>',
-  'moon': '<path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/>',
-  'sun': '<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>',
-  'share': '<path d="M12 2v13"/><path d="m16 6-4-4-4 4"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>',
-  'search': '<path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/>',
-  'arrow-up-to-line': '<path d="M5 3h14"/><path d="m18 13-6-6-6 6"/><path d="M12 7v14"/>',
-  'arrow-down-to-line': '<path d="M12 17V3"/><path d="m6 11 6 6 6-6"/><path d="M19 21H5"/>',
-  'check': '<path d="M20 6 9 17l-5-5"/>',
-  'sun-moon': '<path d="M12 8a2.83 2.83 0 0 0 4 4 4 4 0 1 1-4-4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.9 4.9 1.4 1.4"/><path d="m17.7 17.7 1.4 1.4"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.3 17.7-1.4 1.4"/><path d="m19.1 4.9-1.4 1.4"/>',
-  'ban': '<circle cx="12" cy="12" r="10"/><path d="M4.929 4.929 19.07 19.071"/>',
-  'x': '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
-  'save': '<path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7"/><path d="M7 3v4a1 1 0 0 0 1 1h7"/>',
-  'folder-open': '<path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"/>',
-  'plus': '<path d="M5 12h14"/><path d="M12 5v14"/>',
-  'pencil': '<path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/>',
-  'trash': '<path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>',
-  'mic': '<path d="M12 19v3"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><rect x="9" y="2" width="6" height="13" rx="3"/>',
-  'chevron-up': '<path d="m18 15-6-6-6 6"/>',
-  'chevron-down': '<path d="m6 9 6 6 6-6"/>',
-  'chevron-left': '<path d="m15 18-6-6 6-6"/>',
-  'chevron-right': '<path d="m9 18 6-6-6-6"/>',
-  'file-code': '<path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 12.5 8 15l2 2.5"/><path d="m14 12.5 2 2.5-2 2.5"/>',
-  'file-text': '<path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>',
-  'rotate-ccw': '<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>',
-  'calendar': '<path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/>',
-  'panel-left': '<rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/>',
-  'ellipsis': '<circle cx="12" cy="12" r="1.3"/><circle cx="19" cy="12" r="1.3"/><circle cx="5" cy="12" r="1.3"/>',
-  'settings': '<path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/>'
-};
-const ic = (name, cls = '') => `<svg class="ic ${cls}" viewBox="0 0 24 24" aria-hidden="true">${ICONS[name]}</svg>`;
 
 // Version und Erstellungszeitpunkt, werden bei jeder neuen Version angepasst.
 // Versionsnummer Hauptversion.Nebenversion.Korrektur (siehe CHANGELOG.md).
-const APP_VERSION = '2.4.0';
-const APP_BUILT = '09.10.2026 um 15:42';
+const APP_VERSION = '3.0.0';
+const APP_BUILT = '09.10.2026 um 16:24';
 
 const app = document.getElementById('app');
 const side = document.getElementById('side');
-const dlg = document.getElementById('dlg');
-const msg = document.getElementById('msg');
 const fab = document.getElementById('fab');
 const printout = document.getElementById('printout');
 const importFile = document.getElementById('importFile');
@@ -467,6 +136,10 @@ const PROGRAM_SUGGESTIONS = [
 ];
 const AUTOSAVE_MS = 10000;
 const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+// Gemeinsame Bausteine (Icons, Menüs, Sprechblasen, Fenster, Darstellung …) kommen aus AppDesign (ui.js).
+// Haken für ui.js: beim Öffnen eines Fensters das automatische Speichern des vorigen beenden.
+function onDialogOpen() { clearInterval(autosaveTimer); }
 
 /* ---------- Speicher ---------- */
 
@@ -518,8 +191,6 @@ let autosaveTimer = null;
 let searchOpen = false;
 let searchJump = null;     // Zeitgeber für den Sprung zum ersten Treffer    // Suchzeile unter der Kopfzeile eingeblendet
 let sideOverlay = false;   // Hochformat: Seitenleiste über den Inhalt gelegt
-let dlgOpener = '';        // Schaltfläche oder Zeile, von der das offene Fenster kommt (bleibt blau hinterlegt)
-let dlgDirty = null;       // Prüft, ob im offenen Fenster etwas geändert wurde
 let emptyPrompted = false; // Ohne Reiselogbuch öffnet sich "Neues Reiselogbuch" einmal von selbst
 let storagePersistent = false; // Safari löscht dauerhaften Speicher nicht von selbst (z. B. bei knappem Speicher)
 
@@ -773,24 +444,9 @@ function countMoods(before, after, kind = 'mood') {
 
 /* ---------- Hilfen ---------- */
 
-function esc(s) {
-  return String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-}
 function mapsUrl({ name, place }) {
   const query = [name, place].map(s => (s || '').trim()).filter(Boolean).join(', ');
   return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(query);
-}
-// Ganze Zahl mit Tausenderpunkt, z. B. 4850 → "4.850".
-function thousands(n) {
-  return String(Math.round(Number(n) || 0)).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-}
-// Betrag mit zwei Nachkommastellen wie bei Apple: "4.850,00" (ohne Währung).
-function money(n) {
-  const [i, d] = (Math.round((Number(n) || 0) * 100) / 100).toFixed(2).split('.');
-  return thousands(i) + ',' + d;
-}
-function formatEuro(value) {
-  return money(value) + ' €';
 }
 
 function insertAtCursor(ta, text, ownLine) {
@@ -805,12 +461,6 @@ function insertAtCursor(ta, text, ownLine) {
   autoGrow(ta);
 }
 
-// Textfeld so hoch wie sein Inhalt (mindestens die eingestellte Höhe).
-function autoGrow(ta) {
-  ta.style.height = 'auto';
-  ta.style.height = (ta.scrollHeight + 2) + 'px';
-}
-const growAll = () => dlg.querySelectorAll('textarea').forEach(autoGrow);
 
 // Datumsfeld so breit wie das Datum, mit kurzem Abstand zum eigenen Kalender-Icon (auf allen Geräten gleich).
 const dateBox = (id, value, label) => `<span class="datebox"><input type="date" id="${id}" value="${value}" aria-label="${label}">${ic('calendar')}</span>`;
@@ -854,39 +504,7 @@ function insertEmoji(ta, emoji) {
   autoGrow(ta);
 }
 
-function onLongPress(btn, onLong, onTap) {
-  let timer = null;
-  let fired = false;
-  btn.addEventListener('pointerdown', () => {
-    fired = false;
-    timer = setTimeout(() => { fired = true; onLong(); }, 600);
-  });
-  ['pointerup', 'pointerleave', 'pointercancel'].forEach(ev => btn.addEventListener(ev, () => clearTimeout(timer)));
-  btn.addEventListener('contextmenu', e => e.preventDefault());
-  btn.addEventListener('click', e => {
-    e.preventDefault();
-    if (fired) { fired = false; return; }
-    onTap();
-  });
-}
 
-/* ---------- Darstellung ---------- */
-
-// Wie Apple: die App folgt der Darstellung des iPads; im Mehr-Menü lässt sie sich übersteuern.
-const darkQuery = window.matchMedia?.('(prefers-color-scheme: dark)');
-function applyTheme() {
-  const a = db.settings.appearance;
-  document.documentElement.setAttribute('data-theme', a === 'auto' ? (darkQuery?.matches ? 'dark' : 'light') : a);
-}
-darkQuery?.addEventListener?.('change', () => { if (db.settings.appearance === 'auto') applyTheme(); });
-
-function setAppearance(a) {
-  db.settings.appearance = a;
-  save();
-  applyTheme();
-  render();
-}
-const APPEARANCES = { auto: 'Automatisch', light: 'Hell', dark: 'Dunkel' };
 
 /* ---------- Hauptansicht ---------- */
 
@@ -1193,86 +811,6 @@ function renderSide() {
   document.documentElement.style.setProperty('--side-w', side.offsetWidth + 'px');
 }
 
-/* ---------- Menüs und Sprechblasen ---------- */
-
-// Menü oder Sprechblase unter (bzw. über) der Schaltfläche, im Bildschirm gehalten.
-function placeAt(el, anchor, align) {
-  const r = anchor.getBoundingClientRect();
-  const w = el.offsetWidth, h = el.offsetHeight;
-  // 'beside': rechts neben dem Eintrag (Kontextmenü in der Seitenleiste), oben bündig.
-  let left = align === 'right' ? r.right - w : align === 'beside' ? r.right - 40 : r.left;
-  left = Math.max(12, Math.min(left, innerWidth - w - 12));
-  let top = align === 'beside' ? r.top : r.bottom + 8;
-  if (top + h > innerHeight - 12) top = Math.max(12, align === 'beside' ? innerHeight - h - 12 : r.top - h - 8);
-  el.style.left = left + 'px';
-  el.style.top = top + 'px';
-}
-
-// Einträge: { icon, label, sub, red, tick, disabled, act } · { …, value, submenu: [Einträge] } (Untermenü ›, eine Ebene)
-// · 'sep' (Abstand) · 'line' (Strich) · { note } (graue Zeile).
-const menuHtml = items => items.map((it, i) => it === 'sep' ? '<div class="sep"></div>' : it === 'line' ? '<div class="line"></div>'
-  : it.note ? `<div class="note">${esc(it.note)}</div>`
-  : `<button type="button" class="mi ${it.red ? 'red' : ''} ${it.sub ? 'has-sub' : ''}" data-i="${i}" ${it.disabled ? 'disabled' : ''} role="menuitem">${
-      'tick' in it ? `<span class="tick">${it.tick ? ic('check') : ''}</span>` : ic(it.icon)}${esc(it.label)}${
-      it.value ? `<span class="val">${esc(it.value)}</span>` : ''}${it.submenu ? ic('chevron-right', 'chev') : ''}</button>${
-      it.sub ? `<div class="sub">${esc(it.sub)}</div>` : ''}`).join('');
-function openMenu(anchor, items, align = 'right') {
-  const host = anchor.closest('dialog') || document.body;
-  const layer = document.createElement('div');
-  layer.className = 'layer';
-  const menu = document.createElement('div');
-  menu.className = 'menu';
-  menu.setAttribute('role', 'menu');
-  menu.innerHTML = menuHtml(items);
-  let subMenu = null;
-  const closeSub = () => { subMenu?.remove(); subMenu = null; menu.querySelector('.mi.on')?.classList.remove('on'); };
-  anchor.classList.add('on');
-  const close = () => { closeSub(); layer.remove(); menu.remove(); anchor.classList.remove('on'); };
-  layer.onclick = close;
-  menu.querySelectorAll('[data-i]').forEach(b => b.onclick = () => {
-    const it = items[b.dataset.i];
-    if (!it.submenu) { close(); it.act(); return; }
-    // Untermenü neben dem Menü, oben bündig mit dem Eintrag; der Eintrag bleibt blau.
-    const again = b.classList.contains('on');
-    closeSub();
-    if (again) return;
-    b.classList.add('on');
-    subMenu = document.createElement('div');
-    subMenu.className = 'menu submenu';
-    subMenu.setAttribute('role', 'menu');
-    subMenu.innerHTML = menuHtml(it.submenu);
-    subMenu.querySelectorAll('[data-i]').forEach(sb => sb.onclick = () => { close(); it.submenu[sb.dataset.i].act(); });
-    host.append(subMenu);
-    const mr = menu.getBoundingClientRect(), br = b.getBoundingClientRect(), w = subMenu.offsetWidth;
-    subMenu.style.left = (mr.left - w - 8 >= 12 ? mr.left - w - 8 : Math.min(mr.right + 8, innerWidth - w - 12)) + 'px';
-    subMenu.style.top = Math.max(12, Math.min(br.top, innerHeight - subMenu.offsetHeight - 12)) + 'px';
-  });
-  host.append(layer, menu);
-  placeAt(menu, anchor, align);
-}
-
-// Abfrage als Sprechblase an der angetippten Schaltfläche; daneben tippen bricht ab.
-// Schaltflächen ohne Icons wie in Apple-Abfragen: die Aktion rot gefüllt, darunter der Weg zurück in normaler Schrift.
-function confirmPop(anchor, html, act, back = { label: 'Abbrechen' }) {
-  return new Promise(resolve => {
-    const visible = anchor?.isConnected && anchor.getClientRects().length;
-    const host = (visible && anchor.closest('dialog')) || (dlg.open ? dlg : document.body);
-    const layer = document.createElement('div');
-    layer.className = 'layer';
-    const pop = document.createElement('div');
-    pop.className = 'pop';
-    pop.innerHTML = `<p>${html}</p><div class="btns">
-      <button type="button" class="${act.cls || 'danger'}" data-v="1">${esc(act.label)}</button>
-      <button type="button" data-v="0">${esc(back.label)}</button></div>`;
-    if (visible) anchor.classList.add('on');
-    const done = v => { layer.remove(); pop.remove(); if (visible) anchor.classList.remove('on'); resolve(v); };
-    layer.onclick = () => done(false);
-    pop.querySelectorAll('[data-v]').forEach(b => b.onclick = () => done(b.dataset.v === '1'));
-    host.append(layer, pop);
-    if (visible) placeAt(pop, anchor, anchor.classList.contains('side-row') ? 'beside' : anchor.getBoundingClientRect().left > innerWidth / 2 ? 'right' : 'left');
-    else { pop.style.left = (innerWidth - pop.offsetWidth) / 2 + 'px'; pop.style.top = '120px'; }
-  });
-}
 
 // Mehr-Menü der Hauptansicht.
 function openMainMenu(anchor, trip) {
@@ -1321,115 +859,17 @@ function openShareMenu(anchor, trip) {
   ]);
 }
 
-// Schaltflächen, von denen eine noch laufende Aktion kommt (Teilen-Menü, Meldung, Dateiauswahl), bleiben blau.
-const held = new Set();
-function hold(sel) { if (!sel) return; held.add(sel); document.querySelector(sel)?.classList.add('on'); }
-function release(sel) { if (!sel) return; held.delete(sel); document.querySelector(sel)?.classList.remove('on'); }
-
-// Die Schaltfläche oder Zeile, von der ein Fenster kommt, bleibt blau hinterlegt, solange es offen ist.
-function setOpener(sel) {
-  if (dlgOpener && dlgOpener !== sel) document.querySelector(dlgOpener)?.classList.remove('on');
-  dlgOpener = sel;
-  markOpener();
-}
-function markOpener() {
-  if (dlgOpener) document.querySelector(dlgOpener)?.classList.add('on');
-}
 
 document.getElementById('toTop').innerHTML = ic('arrow-up-to-line');
 document.getElementById('toEnd').innerHTML = ic('arrow-down-to-line');
 document.getElementById('toTop').onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 document.getElementById('toEnd').onclick = () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
 
-/* ---------- Meldungen und Sicherheitsabfragen ---------- */
-
-// Kleines Fenster mit rundem x; Abfragen mit Entscheidung sind Sprechblasen (confirmPop).
-function inform(title, html) {
-  return new Promise(resolve => {
-    msg.innerHTML = `
-      <form method="dialog">
-        <div class="dlg-head"><div class="hl"><button type="button" class="round" data-x aria-label="Schließen">${ic('x')}</button></div>
-          <div class="mid"><h3>${esc(title)}</h3></div><div class="hr"></div></div>
-        <div class="dlg-body"><div class="msg-text">${html}</div></div>
-      </form>`;
-    const done = () => { if (msg.open) msg.close(); resolve(); };
-    msg.querySelector('[data-x]').onclick = done;
-    msg.oncancel = e => { e.preventDefault(); done(); };
-    msg.showModal();
-    placeDialogs();
-  });
-}
-
-/* ---------- Dialoge ---------- */
-
-// Der Dialog bleibt offen und bekommt nur neuen Inhalt; so kommt kein verspätetes Schließ-Ereignis an.
-function openDialog(html, wide = false) {
-  clearInterval(autosaveTimer);
-  dlg.classList.toggle('wide', wide);
-  dlg.onclose = null;
-  dlgDirty = null;
-  dlg.innerHTML = html;
-  dlg.returnValue = '';
-  if (!dlg.open) dlg.showModal();
-  placeDialogs();
-  dlg.querySelector('.dlg-body')?.scrollTo(0, 0);
-  const x = dlg.querySelector('#dlgX');
-  // x schließt; wurde etwas geändert, fragt eine Sprechblase, ob die Änderungen verworfen werden sollen.
-  if (x) x.onclick = async () => {
-    if (dlgDirty?.() && !await confirmPop(x, 'Die Änderungen in diesem Fenster gehen verloren.',
-      { label: 'Änderungen verwerfen', icon: 'trash' }, { label: 'Weiter bearbeiten', icon: 'pencil' })) return;
-    dlg.close('cancel');
-  };
-  markOpener();
-  mountCap(dlg);
-  growAll();
-  requestAnimationFrame(growAll);
-}
-
-// Kopfzeile der Fenster: rundes x links, Titel (mit grauer Zusatzzeile) in der Mitte,
-// rechts weitere Schaltflächen und das runde Häkchen (grau, bis etwas geändert wurde).
-function dlgHead(title, { sub = '', right = '', check = true } = {}) {
-  return `<div class="dlg-head">
-      <div class="hl"><button type="button" class="round" id="dlgX" aria-label="${check ? 'Abbrechen' : 'Schließen'}">${ic('x')}</button></div>
-      <div class="mid"><h3>${title}</h3><span class="sub" id="dlgSub">${sub}</span></div>
-      <div class="hr">${right}${check ? `<button class="round" value="ok" id="dlgOk" aria-label="Fertig">${ic('check')}</button>` : ''}</div>
-    </div>`;
-}
-
-// Häkchen blau, sobald etwas geändert wurde; Textfelder wachsen mit.
-function refreshOk() {
-  dlg.querySelector('#dlgOk')?.classList.toggle('primary', Boolean(dlgDirty?.()));
-  growAll();
-  placeDialogs();
-}
-dlg.addEventListener('input', refreshOk);
-dlg.addEventListener('change', refreshOk);
-dlg.addEventListener('click', () => setTimeout(refreshOk));
-// Escape wirkt wie das x.
-dlg.addEventListener('cancel', e => { e.preventDefault(); dlg.querySelector('#dlgX')?.click(); });
-dlg.addEventListener('close', () => {
-  if (dlg.open) return;
-  if (dlgOpener) document.querySelector(dlgOpener)?.classList.remove('on');
-  dlgOpener = '';
-});
 
 const MOOD_HINT = 'Leiste nach links/rechts wischen für weitere Smileys. Lange drücken entfernt einen Smiley aus der Leiste. ↺ stellt die Standard-Smileys wieder her. Weitere Smileys über die Emoji-Taste der Tastatur.';
 const micButton = id => SpeechRec ? `<button type="button" class="mic" data-mic="${id}" aria-pressed="false" aria-label="Diktieren">${ic('mic')}</button>` : '';
 const micHint = () => SpeechRec ? '' : '<div class="hint" style="margin-top:12px">🎤 Zum Diktieren die Mikrofon-Taste auf der Tastatur verwenden.</div>';
 
-// Auswahl-Kapsel: Schaltflächen in einer Kapsel; ist sie zu schmal, lässt sich der Inhalt wischen,
-// ein Verlauf am Rand zeigt, wo es weitergeht.
-const capHtml = (buttons, id = '') => `<div class="cap"><div class="scroll" ${id ? `id="${id}"` : ''}>${buttons}</div></div>`;
-function mountCap(root) {
-  root.querySelectorAll('.cap .scroll').forEach(strip => {
-    const fade = () => {
-      strip.classList.toggle('fl', strip.scrollLeft > 2);
-      strip.classList.toggle('fr', strip.scrollLeft + strip.clientWidth < strip.scrollWidth - 2);
-    };
-    strip.addEventListener('scroll', fade, { passive: true });
-    requestAnimationFrame(fade);
-  });
-}
 
 // Smiley-Schnellauswahl: Antippen fügt ein, lange drücken entfernt, ↺ setzt zurück.
 function mountMoodRow(row, ta, onReset, kind = 'mood') {
@@ -2191,32 +1631,6 @@ window.addEventListener('resize', () => {
   const bar = document.getElementById('bar');
   if (bar) document.documentElement.style.setProperty('--bar-h', bar.offsetHeight + 'px');
   if (!side.hidden) document.documentElement.style.setProperty('--side-w', side.offsetWidth + 'px');
-});
-// Bei offener Tastatur verkleinert und verschiebt Safari den sichtbaren Bereich. Kopfzeile, Tabellenkopf
-// und alle Fenster richten sich danach: die Kopfzeilen bleiben sichtbar, nur der Inhalt scrollt.
-function placeDialogs() {
-  const vv = window.visualViewport;
-  const top = vv ? Math.max(0, vv.offsetTop) : 0;
-  const h = vv ? vv.height : innerHeight;
-  const root = document.documentElement.style;
-  root.setProperty('--vv-top', top + 'px');
-  root.setProperty('--dlg-max', Math.max(200, h - 20) + 'px');
-  [dlg, msg].forEach(d => {
-    if (!d.open) return;
-    // Fenster im sichtbaren Bereich zentrieren (bei offener Tastatur oberhalb der Tastatur).
-    d.style.margin = '0 auto';
-    d.style.bottom = 'auto';
-    d.style.top = Math.round(top + Math.max(10, (h - d.offsetHeight) / 2)) + 'px';
-  });
-}
-if (window.visualViewport) {
-  visualViewport.addEventListener('scroll', placeDialogs);
-  visualViewport.addEventListener('resize', placeDialogs);
-}
-// Das angetippte Feld im Fenster in den sichtbaren Teil rollen, sobald die Tastatur offen ist.
-dlg.addEventListener('focusin', e => {
-  if (!e.target.matches('input, textarea')) return;
-  setTimeout(() => { placeDialogs(); e.target.scrollIntoView({ block: 'nearest' }); }, 350);
 });
 // Beim Scrollen bekommt die Kopfzeile eine Haarlinie.
 window.addEventListener('scroll', () => document.getElementById('bar')?.classList.toggle('line', scrollY > 4), { passive: true });

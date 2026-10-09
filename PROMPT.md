@@ -1,9 +1,10 @@
-# Reiselogbuch – Prompt (Stand 09.10.2026, Version 2.4.0)
+# Reiselogbuch – Prompt (Stand 09.10.2026, Version 3.0.0)
 
-Reiselogbuch 2.4.0 · Designrichtlinie allgemein 3.6.1 · Designrichtlinie Reiselogbuch 2.4.0 · Zusammenarbeit allgemein 1.9.0
-(Gestaltungsregeln: `README - Designrichtlinie allgemein.md` und
-`README - Designrichtlinie Reiselogbuch.md`; Zusammenarbeit: `README - Zusammenarbeit
-allgemein.md`; Einstieg für Claude: `CLAUDE.md`. Bei jeder Design-Änderung mit aktualisieren.)
+Reiselogbuch 3.0.0 · AppDesign 4.0.0 (Designrichtlinie allgemein 4.0.0) · Designrichtlinie Reiselogbuch 3.0.0 · Zusammenarbeit allgemein 1.10.0
+(Gestaltungsregeln: Designrichtlinie allgemein im Design-Repo AppDesign und
+`README - Designrichtlinie Reiselogbuch.md`; Zusammenarbeit: in AppDesign; Einstieg für Claude:
+`CLAUDE.md`. Gemeinsame Bausteine `design.css`/`ui.js` kommen aus AppDesign v4. Bei jeder
+Design-Änderung mit aktualisieren.)
 
 ```text
 Baue mir ein einfaches Reiselogbuch als Web-App für das iPad.

@@ -1,6 +1,6 @@
 # Reiselogbuch – Hinweise für Claude
 
-**Version 1.7.0** · Stand 09.10.2026
+**Version 2.0.0** · Stand 09.10.2026
 
 ## Verpflichtend
 
@@ -30,9 +30,13 @@ Abweichungen mit Grund); nach jeder Version Apple-Review und HIG-Prüfskript. De
 
 Lies zu Beginn jeder Sitzung diese Dateien und halte dich daran:
 
-1. `README - Zusammenarbeit allgemein.md` – wie wir zusammenarbeiten (Antwortformat,
+Die allgemeinen Regeln liegen im Design-Repo **AppDesign** (g811141a/AppDesign, lokal neben
+diesem Repo klonen):
+
+1. `AppDesign/README - Zusammenarbeit allgemein.md` – wie wir zusammenarbeiten (Antwortformat,
    Ablauf, Versionen)
-2. `README - Designrichtlinie allgemein.md` – allgemeine Gestaltung und Komponenten
+2. `AppDesign/README - Designrichtlinie allgemein.md` – allgemeine Gestaltung, Komponenten,
+   Abschnitt 14 Aufbau von AppDesign, Abschnitt 16 HIG-Checkliste
 3. `README - Designrichtlinie Reiselogbuch.md` – Reiselogbuch-spezifische Gestaltung
 4. `PROMPT.md` – vollständige Funktionsbeschreibung der App
 5. `CHANGELOG.md` – Versionsgeschichte (aktuelle Versionen stehen oben)
@@ -40,8 +44,11 @@ Lies zu Beginn jeder Sitzung diese Dateien und halte dich daran:
 
 ## App-spezifisch
 
-- App: Reiselogbuch, iPad-Web-App (PWA), eine Datei `index.html` plus `sw.js`,
-  `manifest.json`, Icons.
+- App: Reiselogbuch, iPad-Web-App (PWA), `index.html` plus `sw.js`, `manifest.json`, Icons.
+- Ab 3.0.0 kommen die gemeinsamen Bausteine aus AppDesign: `../AppDesign/v4/design.css` und
+  `../AppDesign/v4/ui.js` (Schnittstelle: `db.settings.appearance`, `save()`, `render()`,
+  `onDialogOpen()`). `index.html` enthält nur, was zum Reiselogbuch gehört. Gemeinsames wird in
+  AppDesign geändert – **erst AppDesign veröffentlichen, dann das Reiselogbuch.**
 - Repo: `g811141a/ReiseLogBuch`, Branch `main`, GitHub Pages:
   https://g811141a.github.io/ReiseLogBuch/
 - Bei jeder Version in `index.html` `APP_VERSION` und `APP_BUILT` (Zeitpunkt in
@@ -56,7 +63,8 @@ Lies zu Beginn jeder Sitzung diese Dateien und halte dich daran:
   `dlgDirty`), gedrückte Schaltflächen `.on`. Seitenleiste ein/aus: `settings.sidebar`.
 - Darstellung ab 2.3.0: `settings.appearance` (`auto` folgt dem iPad, `light`, `dark`); Untermenüs
   in `openMenu` über `submenu`.
-- Bei jeder Version `node tests/hig.mjs` laufen lassen (HIG-Prüfskript, siehe `tests/README.md`).
+- Bei jeder Version `node tests/hig.mjs` laufen lassen (HIG-Prüfskript, siehe `tests/README.md`;
+  nutzt `AppDesign/tests/hig.mjs`).
 
 ---
 
@@ -64,6 +72,7 @@ Lies zu Beginn jeder Sitzung diese Dateien und halte dich daran:
 
 | Version | Datum | Inhalt |
 |---|---|---|
+| 2.0.0 | 09.10.2026 | Allgemeine Regeln und Bausteine im Design-Repo AppDesign |
 | 1.7.0 | 09.10.2026 | Verpflichtend: erst Prüfpunkte, dann Neues; Auswahlfenster immer wieder |
 | 1.6.0 | 09.10.2026 | Pflicht: Antwortvorschläge im Auswahlfenster und als Antwortzeile |
 | 1.5.1 | 09.10.2026 | Darstellung `settings.appearance`, HIG-Prüfskript |

@@ -1,8 +1,8 @@
 # Designrichtlinie Reiselogbuch
 
-**Version 2.2.1** · Stand 09.10.2026
+**Version 2.2.2** · Stand 09.10.2026
 
-> **Es gilt die `README - Designrichtlinie allgemein.md` (Version 3.4.0).**
+> **Es gilt die `README - Designrichtlinie allgemein.md` (Version 3.4.1).**
 > Hier stehen nur **Abweichungen** (bewusst anders als dort) und **Ausprägungen**
 > (konkrete Ausgestaltung einer allgemeinen Regel für das Reiselogbuch).
 > Die vollständige Funktionsbeschreibung steht in `PROMPT.md`.
@@ -49,8 +49,8 @@ Spaltenköpfe 🙂☹️😉 (Wie war was?), 🍽️🍷☕️ (Essen und Trinke
   erstellen“. Mehr-Menü: Backup erstellen · Backup laden · Strich · Versionszeile · Satz zum Speicher.
   Langes Drücken auf ein Reiselogbuch: Öffnen · Einstellungen · Reiselogbuch löschen.
 - **Kopfzeile** (Komponente): Titel der Reise; Kapsel [share | search | ellipsis].
-  - share → Menü: Vorschau · HTML · PDF (jeweils mit grauem Hinweis), darunter
-    „N erfasste Tage · Dateiname: …“.
+  - share → Menü: Vorschau · HTML · PDF (jeweils mit grauem Hinweis), Strich, darunter
+    ‚N erfasste Tage · Dateiname: …‘. Anführungszeichen in der App immer ‚…‘.
   - search → Suchzeile; die Suche durchsucht Programm und die sichtbaren Spalten.
   - ellipsis → Mehr-Menü: Alle Tage / Nur erfasste Tage · Einstellungen · Modus dunkel/hell ·
     Reiselogbuch löschen (rot, Sprechblase mit Tipp zum Backup).
@@ -120,6 +120,7 @@ Spaltenköpfe 🙂☹️😉 (Wie war was?), 🍽️🍷☕️ (Essen und Trinke
 
 | Version | Datum | Art | Inhalt |
 |---|---|---|---|
+| 2.2.2 | 09.10.2026 | Korrektur | Angepasst an allgemein 3.4.0/3.4.1: Anführungszeichen ‚…‘ in allen Texten der App; Teilen-Menü mit Strich |
 | 2.2.1 | 09.10.2026 | Korrektur | Angepasst an allgemein 3.3.1: Reiselogbuch, Tag und Fazit bleiben blau, solange ihr Fenster offen ist; Menü der Seitenleiste mit Strich und Satz zum Speicher |
 | 2.2.0 | 09.10.2026 | Neben | Angepasst an allgemein 3.3.0: Kontextmenü der Reiselogbücher, Speicher-Hinweise |
 | 2.1.2 | 08.10.2026 | Korrektur | Angepasst an allgemein 3.2.1 (Seitenleiste beim Start, Abstand unten) |

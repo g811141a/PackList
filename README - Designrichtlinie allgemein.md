@@ -1,6 +1,6 @@
 # Designrichtlinie allgemein
 
-**Version 3.4.0** · Stand 09.10.2026
+**Version 3.4.1** · Stand 09.10.2026
 
 Allgemeine Gestaltungs- und Bedienregeln für alle iPad-Web-Apps von g811141a.
 Diese Datei liegt vorerst im Repo ReiseLogBuch und **wandert später ins Design-Repo**;
@@ -440,8 +440,9 @@ programmiert (`design.css`, `ui.js`) und von allen Apps übernommen.
 - **Aussehen:** Karte 340 px, Radius 14 px, Lichtkante und Schatten wie die Schaltflächen;
   Einträge 46 px hoch, Icon **vor** dem Text, Haarlinien; Gruppen durch 8 px Abstand
   getrennt; Auswahl mit blauem Häkchen vorne; graue Zusatzzeile unter einem Eintrag; graue
-  Notiz ganz unten. Technische Informationen (Version, Speicher) stehen nach einem
-  **durchgehenden Strich** (`'line'`) ohne Leerzeilen dazwischen. Nichts blau eingefärbt, „… löschen“ rot.
+  Notiz ganz unten. Graue Notizen und technische Informationen (Version, Speicher, Zahl der
+  Tage, Dateiname) stehen in allen Menüs nach einem **durchgehenden Strich** (`'line'`) ohne
+  Leerzeilen dazwischen. Nichts blau eingefärbt, „… löschen“ rot.
 - **Verhalten:** erscheint unter der Schaltfläche (darf über die Seitenleiste
   hinausragen); die Schaltfläche ist so lange gedrückt (blau getönt); daneben tippen schließt.
 
@@ -518,6 +519,7 @@ programmiert (`design.css`, `ui.js`) und von allen Apps übernommen.
 
 | Version | Datum | Art | Inhalt |
 |---|---|---|---|
+| 3.4.1 | 09.10.2026 | Korrektur | Menü: graue Notizen in allen Menüs (auch Teilen-Menü) nach durchgehendem Strich |
 | 3.4.0 | 09.10.2026 | Neben | Vorgabe: in den Texten der Apps einfache Anführungszeichen ‚…‘ statt doppelter „…“ |
 | 3.3.1 | 09.10.2026 | Korrektur | Grundsatz „Gewähltes bleibt eingefärbt, solange es sichtbar ist“ (auch Listen- und Tabellenzeilen, Kästen); Menü: technische Informationen nach durchgehendem Strich ohne Leerzeilen; verständlicher Satz zum Speicher statt „Speicher: dauerhaft“ |
 | 3.3.0 | 09.10.2026 | Neben | Kontextmenü in der Seitenleiste (langes Drücken); dauerhafter Speicher mit Anzeige im Menü der Seitenleiste und Hinweis zum Entfernen vom Home-Bildschirm |

@@ -12,6 +12,15 @@ Versionsnummer **Hauptversion.Nebenversion.Korrektur** (z. B. 1.2.1):
 Steigt eine Stufe, beginnen die Stufen dahinter wieder bei 0.
 Die aktuelle Version steht in der App im Mehr-Menü (ellipsis) der Seitenleiste „Reiselogbücher“.
 
+## 2.2.2 – 09.10.2026 (Korrektur)
+
+Reiselogbuch 2.2.2 · Designrichtlinie allgemein 3.4.1 · Designrichtlinie Reiselogbuch 2.2.2 · Zusammenarbeit allgemein 1.5.0
+
+- T-09: Alle Texte der App verwenden einfache Anführungszeichen ‚…‘ statt doppelter (z. B.
+  ‚In Dateien sichern‘, ‚Tag‘ und ‚Programm‘, ‚keinen Google-Maps Link‘, Reisetitel in Abfragen).
+- T-08: Teilen-Menü wie das Menü der Seitenleiste: durchgehender Strich vor der grauen Zeile
+  ‚N erfasste Tage · Dateiname …‘, ohne Leerzeilen.
+
 ## 2.2.1 – 09.10.2026 (Korrektur)
 
 Reiselogbuch 2.2.1 · Designrichtlinie allgemein 3.3.1 · Designrichtlinie Reiselogbuch 2.2.1 · Zusammenarbeit allgemein 1.5.0

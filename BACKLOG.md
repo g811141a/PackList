@@ -1,6 +1,6 @@
 # Backlog – offene Themen
 
-**Stand 09.10.2026** · Aktuelle Version: Reiselogbuch 2.2.1
+**Stand 09.10.2026** · Aktuelle Version: Reiselogbuch 2.2.2
 
 Hier stehen alle offenen Themen. Erledigte Punkte wandern mit Version und Datum nach unten
 in „Erledigt“. Claude erinnert zu Beginn und am Ende jeder Sitzung an die offenen Punkte
@@ -18,19 +18,17 @@ Status: **vereinbart** (entschieden, wartet auf „Ja“ zum Bauen) · **offen**
 
 | Nr. | Prio | Thema | Status |
 |---|---|---|---|
-| – | – | zurzeit nichts zu prüfen | – |
+| P-11 | 1 | Version 2.2.2: Anführungszeichen ‚…‘ in allen Texten (z. B. Teilen-Menü, Einstellungen, Löschen-Abfrage); Teilen-Menü mit Strich vor ‚N erfasste Tage · Dateiname …‘ | prüfen |
 
 ## 2. Weitere Themen
 
 | Nr. | Prio | Thema | Gilt | Status |
 |---|---|---|---|---|
-| T-09 | 1 | Anführungszeichen in der App auf ‚…‘ umstellen (9 Stellen, z. B. ‚In Dateien sichern‘, ‚Tag‘, ‚Programm‘, ‚keinen Google-Maps Link‘, Reisetitel in Abfragen) – Vorgabe Designrichtlinie allgemein 3.4.0, gilt nur für Texte in den Apps | Reiselogbuch | vereinbart |
 | T-02 | 2 | Responsive in drei Stufen: ab 1100 px wie jetzt (iPad quer) · 700–1100 px Seitenleiste darübergelegt (iPad hoch, Split View) · unter 700 px wie Apple auf dem iPhone: Startliste „Reiselogbücher“ als Seite mit „‹ Reiselogbücher“ zurück, Tage als Liste (je Tag ein Kasten), Fenster bildschirmfüllend, Abfragen von unten ([HIG – Layout](https://developer.apple.com/design/human-interface-guidelines/layout), [HIG – Action sheets](https://developer.apple.com/design/human-interface-guidelines/action-sheets)). Muster iPhone gezeigt (Startliste, Tageliste, Tageserfassung, Abfrage von unten); offen: Bezeichnungen in den Tageskästen (Vorschlag: „Programm“ als Wort, sonst Emoji), „Gespeichert um …“ auf dem iPhone, Wetter-Symbole 40 px nur auf dem iPhone | allgemein | offen |
 | T-03 | 2 | Daten zwischen iPad und iPhone abgleichen (Ablage in iCloud, Weiterbearbeitung auf dem iPhone): a) Datei in iCloud Drive mit Zusammenführen (kostenlos) · b) CloudKit JS (Entwicklerkonto) · c) echte App mit iCloud (Mac + Entwicklerkonto); Empfehlung a jetzt, c später – offen: Mac vorhanden? Entwicklerkonto? Arbeitsweise? | allgemein | offen |
 | T-05 | 2 | Bestehende (alte) Reiselogbücher aufbereiten und importierbar machen: Dateien (Word/PDF/Excel/HTML/Fotos) auslesen, Unklarheiten nachfragen, Vorschau zeigen, Datei erstellen; Überschneidungen prüfen. Offen: Form der Unterlagen, Anzahl, Weg (a: in aktuelles Backup einfügen · b: neue Funktion „Reiselogbuch importieren“, die hinzufügt statt ersetzt) | Reiselogbuch | offen |
 | T-06 | 3 | Ausschreibungstexte (Reiseveranstalter) in Reiselogbücher umwandeln – für erledigte **und** geplante Reisen: Titel, Zeitraum, Reisemittel; je Tag das Programm („1. Tag“ → echtes Datum, Text wie in der Ausschreibung); Quartiere mit Ort, falls genannt; übrige Felder bleiben leer | Reiselogbuch | offen |
 | T-07 | 3 | Alle Kapseln technisch gleich bauen: auch Kopfzeilen-Kapsel [share \| search \| ellipsis], Seitenleisten-Kapsel und Treffer-Pfeile ⌃ ⌄ – Schaltflächen genau so hoch wie der Innenraum (44 px minus Rand), Markierung liegt immer innerhalb des Randes | allgemein | vereinbart |
-| T-08 | 3 | Teilen-Menü (share) wie das Menü der Seitenleiste: durchgehender Strich statt grauem Abstand vor der grauen Zeile ‚N erfasste Tage · Dateiname …‘, ohne Leerzeilen | allgemein | vereinbart |
 
 ## 3. Später
 
@@ -46,6 +44,7 @@ Status: **vereinbart** (entschieden, wartet auf „Ja“ zum Bauen) · **offen**
 
 | Nr. | Thema | Version | Datum |
 |---|---|---|---|
+| E-15 | Reiselogbuch 2.2.2: T-09 Anführungszeichen ‚…‘ in der App, T-08 Teilen-Menü mit Strich | Reiselogbuch 2.2.2 · allgemein 3.4.1 · Reiselogbuch-Richtlinie 2.2.2 | 09.10.2026 |
 | E-14 | Auf dem iPad geprüft und ok: P-09 Kontextmenü und Satz zum Speicher · P-10 Gewähltes bleibt blau, Menü mit Strich | Reiselogbuch 2.2.1 | 09.10.2026 |
 | E-13 | Reiselogbuch 2.2.1: F-11 Gewähltes bleibt blau, solange es sichtbar ist (Seitenleiste, Tag, Fazit), F-12 Menü der Seitenleiste mit Strich und verständlichem Satz zum Speicher | Reiselogbuch 2.2.1 · allgemein 3.3.1 · Reiselogbuch-Richtlinie 2.2.1 | 09.10.2026 |
 | E-12 | Reiselogbuch 2.2.0: T-01 Kontextmenü in der Seitenleiste, T-04 dauerhafter Speicher mit Hinweisen | Reiselogbuch 2.2.0 · allgemein 3.3.0 · Reiselogbuch-Richtlinie 2.2.0 | 09.10.2026 |

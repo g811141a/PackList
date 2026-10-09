@@ -1,6 +1,6 @@
-# Reiselogbuch – Prompt (Stand 09.10.2026, Version 2.2.1)
+# Reiselogbuch – Prompt (Stand 09.10.2026, Version 2.2.2)
 
-Reiselogbuch 2.2.1 · Designrichtlinie allgemein 3.4.0 · Designrichtlinie Reiselogbuch 2.2.1 · Zusammenarbeit allgemein 1.5.0
+Reiselogbuch 2.2.2 · Designrichtlinie allgemein 3.4.1 · Designrichtlinie Reiselogbuch 2.2.2 · Zusammenarbeit allgemein 1.5.0
 (Gestaltungsregeln: `README - Designrichtlinie allgemein.md` und
 `README - Designrichtlinie Reiselogbuch.md`; Zusammenarbeit: `README - Zusammenarbeit
 allgemein.md`; Einstieg für Claude: `CLAUDE.md`. Bei jeder Design-Änderung mit aktualisieren.)
@@ -328,7 +328,9 @@ ABSCHLUSS
 
 AUSGABE
 - share in der Kopfzeile öffnet das Teilen-Menü: Vorschau · HTML · PDF (mit
-  grauen Hinweisen zum Speichern), darunter "N erfasste Tage · Dateiname: …".
+  grauen Hinweisen zum Speichern), durchgehender Strich, darunter "N erfasste
+  Tage · Dateiname: …".
+- Anführungszeichen in allen Texten der App: einfache ‚…‘, keine doppelten.
 - HTML: Speichern über das Teilen-Menü ("In Dateien sichern", Ordner
   frei wählbar).
 - PDF: direkt über das Drucken-Menü von Safari (dort Teilen → "In Dateien

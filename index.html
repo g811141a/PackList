@@ -409,8 +409,8 @@ const ic = (name, cls = '') => `<svg class="ic ${cls}" viewBox="0 0 24 24" aria-
 
 // Version und Erstellungszeitpunkt, werden bei jeder neuen Version angepasst.
 // Versionsnummer Hauptversion.Nebenversion.Korrektur (siehe CHANGELOG.md).
-const APP_VERSION = '2.2.1';
-const APP_BUILT = '09.10.2026 um 13:05';
+const APP_VERSION = '2.2.2';
+const APP_BUILT = '09.10.2026 um 13:30';
 
 const app = document.getElementById('app');
 const side = document.getElementById('side');
@@ -1080,7 +1080,7 @@ function renderEmpty() {
   renderSide();
   app.innerHTML = `
     <div class="nb" id="bar"><div class="nb1"><span>${sideToggleHtml()}</span><span></span><span></span></div></div>
-    <div class="emptymain">Noch kein Reiselogbuch angelegt.<br>Mit „plus“ in der Seitenleiste ein neues anlegen.</div>`;
+    <div class="emptymain">Noch kein Reiselogbuch angelegt.<br>Mit ‚plus‘ in der Seitenleiste ein neues anlegen.</div>`;
   bindSideToggle(app);
   if (!emptyPrompted && !dlg.open) { emptyPrompted = true; openTripDialog(null); }
 }
@@ -1258,7 +1258,7 @@ function tripContextMenu(row, trip) {
 
 async function deleteTrip(trip, anchor = app.querySelector('#mainMore')) {
   const yes = await confirmPop(anchor,
-    `„${esc(trip.title)}“ mit allen Einträgen löschen? Das kann nicht rückgängig gemacht werden. Tipp: Vorher ein Backup erstellen.`,
+    `‚${esc(trip.title)}‘ mit allen Einträgen löschen? Das kann nicht rückgängig gemacht werden. Tipp: Vorher ein Backup erstellen.`,
     { label: 'Reiselogbuch löschen', icon: 'trash' });
   if (!yes) return;
   db.trips = db.trips.filter(x => x.id !== trip.id);
@@ -1271,9 +1271,9 @@ function openShareMenu(anchor, trip) {
   const count = tripDays(trip).filter(iso => isRecorded(trip, iso)).length;
   openMenu(anchor, [
     { icon: 'eye', label: 'Vorschau', act: () => { setOpener('#shareBtn'); openPreview(trip); } },
-    { icon: 'file-code', label: 'HTML', sub: 'Im Teilen-Menü „In Dateien sichern“ wählen', act: () => exportHtml(trip) },
-    { icon: 'file-text', label: 'PDF', sub: 'Im Drucken-Menü Teilen, dann „In Dateien sichern“', act: () => exportPdf(trip) },
-    'sep',
+    { icon: 'file-code', label: 'HTML', sub: 'Im Teilen-Menü ‚In Dateien sichern‘ wählen', act: () => exportHtml(trip) },
+    { icon: 'file-text', label: 'PDF', sub: 'Im Drucken-Menü Teilen, dann ‚In Dateien sichern‘', act: () => exportPdf(trip) },
+    'line',
     { note: `${count} erfasste${count === 1 ? 'r Tag' : ' Tage'} · Dateiname: ${outputName(trip, (trip.outputCounter || 0) + 1)}` },
   ]);
 }
@@ -1473,7 +1473,7 @@ function openTripDialog(trip) {
           <div class="warn" id="transportWarn" hidden style="margin-top:2px"></div>
         </div>
         <div class="step"><label>Konfiguration Tabellenspalten</label>
-          <div class="hint" style="margin:0 0 6px">Die Spalten „Tag“ und „Programm“ werden immer angezeigt.</div>
+          <div class="hint" style="margin:0 0 6px">Die Spalten ‚Tag‘ und ‚Programm‘ werden immer angezeigt.</div>
           <div class="swlist">
             <label class="check sw"><input type="checkbox" id="fMood" ${t.moodColumn !== false ? 'checked' : ''}> Spalte 🙂☹️😉 ‚Wie war was?‘</label>
             <label class="check sw"><input type="checkbox" id="fFood" ${t.foodColumn ? 'checked' : ''}> Spalte 🍽️🍷☕️ ‚Essen und Trinken‘</label>
@@ -1510,7 +1510,7 @@ function openTripDialog(trip) {
     dates: { box: warn, fields: [fStart, fEnd], touched: false, text: () => {
       if (!fStart.value || !fEnd.value) return 'Bitte Beginn und Ende der Reise wählen.';
       const other = overlappingTrip(fStart.value, fEnd.value, trip?.id);
-      return other ? `Der Zeitraum überschneidet sich mit „${other.title}“ (${fullDate(other.start)} - ${fullDate(other.end)}). Bitte korrigieren.` : '';
+      return other ? `Der Zeitraum überschneidet sich mit ‚${other.title}‘ (${fullDate(other.start)} - ${fullDate(other.end)}). Bitte korrigieren.` : '';
     } },
     transport: { box: dlg.querySelector('#transportWarn'), fields: [], touched: false,
       text: () => transport.size ? '' : 'Bitte mindestens ein Reisemittel wählen.' },
@@ -1637,7 +1637,7 @@ function openDayDialog(trip, iso) {
           <div class="step-head"><label for="fFoodText"><span class="step-num">${nextNo()}</span>Essen und Trinken</label><label class="check chip head-check"><input type="checkbox" id="noLink"> keinen Google-Maps Link</label>${micButton('fFoodText')}</div>
           <div class="emoji-row" id="foodMoods"></div>
           <textarea id="fFoodText" placeholder="Eine Zeile pro Lokal: Smileys, Name – Kommentar">${esc(e.food || '')}</textarea>
-          <div class="hint">Format: „🕛😋 Hard Rock Café – Steak war super“. Der Name wird zum Maps-Link (mit dem Ort des Quartiers). „keinen Google-Maps Link“ gilt für die Zeile, in der der Cursor steht (markiert mit ⊘).</div>
+          <div class="hint">Format: ‚🕛😋 Hard Rock Café – Steak war super‘. Der Name wird zum Maps-Link (mit dem Ort des Quartiers). ‚keinen Google-Maps Link‘ gilt für die Zeile, in der der Cursor steht (markiert mit ⊘).</div>
         </div>` : ''}
         <div class="step" ${c.quarter ? '' : 'hidden'}>
           <div class="step-head"><label for="fQuarter"><span class="step-num">${c.quarter ? nextNo() : ''}</span>Quartier</label>${isFirst ? '' : `<label class="check chip head-check"><input type="checkbox" id="fSame" ${same ? 'checked' : ''}> Quartier wie Vortag</label>`}<label class="check chip head-check"><input type="checkbox" id="fNoMap" ${e.noMap && !same ? 'checked' : ''}> keinen Google-Maps Link</label></div>
@@ -2015,11 +2015,11 @@ function exportPdf(trip) {
 }
 
 const RESULT_TEXT = {
-  shared: name => `Teilen-Menü abgeschlossen für <b>${esc(name)}</b>.<div class="hint">Wenn du „In Dateien sichern“ gewählt hast, liegt die Datei im gewählten Ordner.</div>`,
-  downloaded: name => `Download von <b>${esc(name)}</b> angestoßen.<div class="hint">Bitte in der Dateien-App unter „Downloads“ prüfen.</div>`,
+  shared: name => `Teilen-Menü abgeschlossen für <b>${esc(name)}</b>.<div class="hint">Wenn du ‚In Dateien sichern‘ gewählt hast, liegt die Datei im gewählten Ordner.</div>`,
+  downloaded: name => `Download von <b>${esc(name)}</b> angestoßen.<div class="hint">Bitte in der Dateien-App unter ‚Downloads‘ prüfen.</div>`,
   aborted: name => `Teilen-Menü abgebrochen – <b>${esc(name)}</b> wurde nicht gespeichert.`,
   error: name => `<b>${esc(name)}</b> konnte nicht übergeben werden.`,
-  print: name => `Drucken-Menü geöffnet für <b>${esc(name)}</b>.<div class="hint">Dort über „Teilen“ → „In Dateien sichern“ als PDF ablegen.</div>`,
+  print: name => `Drucken-Menü geöffnet für <b>${esc(name)}</b>.<div class="hint">Dort über ‚Teilen‘ → ‚In Dateien sichern‘ als PDF ablegen.</div>`,
 };
 
 function showOutputResult(title, name, result) {

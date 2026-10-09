@@ -26,8 +26,11 @@ sind (oder auf Wunsch); siehe `README - Zusammenarbeit allgemein.md`, Abschnitt 
 | T-10 | 1 | HIG-Prüfskript im Repo (`tests/`), läuft bei jeder Version mit: Antippflächen ≥ 44 px, Schriftgrößen ≥ 11 px (Fließtext 17), Kontrast ≥ 4,5 : 1 (hell und dunkel), Markierung `.on` bleibt, solange Menü/Fenster offen ist, keine doppelten Anführungszeichen, Löschen rot am Ende von Menüs; Ergebnis als Abweichungsliste | allgemein | 09.10.2026 |
 | T-11 | 1 | Hinweis bei überschneidenden Reisezeiträumen sagt, was zu tun ist (HIG Writing): statt ‚… Bitte korrigieren.‘ → ‚Wähle einen Zeitraum, der sich nicht mit ‚Toskana‘ (03.05.2027 - 17.05.2027) überschneidet.‘ | Reiselogbuch | 09.10.2026 |
 | T-12 | 2 | Trennlinie in Menüs wie Apple (iOS 26 Notizen, Vergleichsbilder 2 und 4): dünn und links/rechts eingerückt statt durchgehendem Strich – in allen Menüs (Seitenleiste, Teilen, Mehr, Kontextmenü) | allgemein | 09.10.2026 |
+| T-13 | 2 | HIG-Prüfung – Antippflächen: Maps-Links (Quartier in der Tabelle, ‚In Google Maps prüfen‘) und ⓧ ‚Suche leeren‘ unsichtbar auf 44 px vergrößern | Maps: Reiselogbuch · ⓧ: allgemein | 09.10.2026 |
+| T-14 | 2 | HIG-Prüfung – Texte: Quartier-Hinweis ‚… gilt für die Zeile, in der du gerade schreibst‘, ‚Der Name wird zum Link in Google Maps‘; Meldung ‚… wird geladen. Du findest die Datei in der Dateien-App unter ‚Downloads‘.‘ | Reiselogbuch | 09.10.2026 |
+| T-15 | 2 | HIG-Prüfung – Kontextmenü ohne ‚Öffnen‘ (Tippen öffnet; wie Notizen) | allgemein | 09.10.2026 |
 
-**4 Punkte bereit** · gebaut wird erst nach „Ja“
+**7 Punkte bereit** · gebaut wird erst nach „Ja“
 
 ## 1. Auf dem iPad prüfen
 
@@ -43,6 +46,10 @@ sind (oder auf Wunsch); siehe `README - Zusammenarbeit allgemein.md`, Abschnitt 
 | T-03 | 2 | Daten zwischen iPad und iPhone abgleichen (Ablage in iCloud, Weiterbearbeitung auf dem iPhone): a) Datei in iCloud Drive mit Zusammenführen (kostenlos) · b) CloudKit JS (Entwicklerkonto) · c) echte App mit iCloud (Mac + Entwicklerkonto); Empfehlung a jetzt, c später – offen: Mac vorhanden? Entwicklerkonto? Arbeitsweise? | allgemein | offen |
 | T-05 | 2 | Bestehende (alte) Reiselogbücher aufbereiten und importierbar machen: Dateien (Word/PDF/Excel/HTML/Fotos) auslesen, Unklarheiten nachfragen, Vorschau zeigen, Datei erstellen; Überschneidungen prüfen. Offen: Form der Unterlagen, Anzahl, Weg (a: in aktuelles Backup einfügen · b: neue Funktion „Reiselogbuch importieren“, die hinzufügt statt ersetzt) | Reiselogbuch | offen |
 | T-06 | 3 | Ausschreibungstexte (Reiseveranstalter) in Reiselogbücher umwandeln – für erledigte **und** geplante Reisen: Titel, Zeitraum, Reisemittel; je Tag das Programm („1. Tag“ → echtes Datum, Text wie in der Ausschreibung); Quartiere mit Ort, falls genannt; übrige Felder bleiben leer | Reiselogbuch | offen |
+
+| T-16 | 2 | HIG-Prüfung – Kontrast: graue Hinweistexte hell `#6e6e73`, dunkel `#98989d`; Löschen-Schaltfläche im Dunkelmodus `#d70015` (Muster M230-1, M230-4 gezeigt) | allgemein | offen |
+| T-17 | 2 | HIG-Prüfung – ‚Abbrechen‘ in Sprechblasen ohne rotes Icon; Variante: alle Schaltflächen in Sprechblasen ohne Icons wie Apple (Muster M230-2, M230-3 gezeigt) | allgemein | offen |
+| T-18 | 2 | HIG-Prüfung – Darstellung folgt automatisch dem iPad; Menüpunkt bleibt zum Übersteuern (Automatisch · Hell · Dunkel) – als Untermenü oder direkt im Menü (Muster M230-5, M230-6 gezeigt) | allgemein | offen |
 
 ## 3. Später
 

@@ -1,6 +1,6 @@
 # Designrichtlinie allgemein
 
-**Version 3.5.0** · Stand 09.10.2026
+**Version 3.5.1** · Stand 09.10.2026
 
 Allgemeine Gestaltungs- und Bedienregeln für alle iPad-Web-Apps von g811141a.
 Diese Datei liegt vorerst im Repo ReiseLogBuch und **wandert später ins Design-Repo**;
@@ -531,8 +531,8 @@ Messbare Punkte prüft das HIG-Prüfskript automatisch.
    gibt sichtbare Rückmeldung.
 5. **Menüs** ([Menus](https://developer.apple.com/design/human-interface-guidelines/menus)): Gruppen durch Strich getrennt, Wichtigstes oben; Icons in
    einer Gruppe alle oder keine, für Standardaktionen die bekannten Symbole (Teilen, Suchen,
-   Löschen); Beschriftung mit Verb; „…“ am Ende, wenn danach noch eine Eingabe oder Auswahl
-   folgt; nicht verfügbare Punkte grau; Untermenüs nur eine Ebene, höchstens etwa 5 Punkte.
+   Löschen); Beschriftung mit Verb; **kein „…“** am Ende (die HIG nennt es für weitere Eingaben,
+   Apples iPhone-/iPad-Apps verwenden es nicht, z. B. ‚Move Note‘); nicht verfügbare Punkte grau; Untermenüs nur eine Ebene, höchstens etwa 5 Punkte.
 6. **Kontextmenüs** ([Context menus](https://developer.apple.com/design/human-interface-guidelines/context-menus)): wenige Punkte, höchstens etwa 3 Gruppen;
    Häufigstes nah am Finger, Löschen rot am Ende; nicht verfügbare Punkte **ausblenden** statt
    grau; alles auch ohne Kontextmenü erreichbar; in der ganzen App einheitlich.
@@ -545,12 +545,20 @@ Messbare Punkte prüft das HIG-Prüfskript automatisch.
 9. **Fenster:** links x (Abbrechen), rechts Häkchen (Fertig), hervorgehoben sobald etwas
    geändert wurde; Schließen mit Änderungen fragt nach.
 
+**Bewusste Abweichungen** (entschieden, werden vom HIG-Prüfskript nicht als Fehler gezählt):
+
+| Was | Messwert | Grund | Entschieden |
+|---|---|---|---|
+| Weiße Schrift auf Systemblau (`--accent`): gewählte Zeile, ‚heute‘, Schrittnummern, Häkchen | 4,0 : 1 hell · 3,7 : 1 dunkel | Apple-Systemblau wie in allen Apple-Apps | 09.10.2026 |
+| Orange `--warn` (z. B. ‚fehlt‘) | 3,1–3,5 : 1 | bleibt wie es ist | 09.10.2026 |
+
 ---
 
 ## Versionsgeschichte
 
 | Version | Datum | Art | Inhalt |
 |---|---|---|---|
+| 3.5.1 | 09.10.2026 | Korrektur | HIG-Checkliste: kein „…“ in Menüs (wie Apples iPhone-/iPad-Apps); Liste der bewussten Abweichungen (Weiß auf Systemblau, Orange) |
 | 3.5.0 | 09.10.2026 | Neben | Neuer Abschnitt 16 HIG-Checkliste (Antippflächen, Schrift, Kontrast, Auswahl, Menüs, Kontextmenüs, Abfragen, Texte, Fenster) mit Links zu den Apple-Seiten |
 | 3.4.1 | 09.10.2026 | Korrektur | Menü: graue Notizen in allen Menüs (auch Teilen-Menü) nach durchgehendem Strich |
 | 3.4.0 | 09.10.2026 | Neben | Vorgabe: in den Texten der Apps einfache Anführungszeichen ‚…‘ statt doppelter „…“ |

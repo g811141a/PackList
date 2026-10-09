@@ -1,6 +1,6 @@
 # Reiselogbuch – Prompt (Stand 09.10.2026, Version 2.2.2)
 
-Reiselogbuch 2.2.2 · Designrichtlinie allgemein 3.5.0 · Designrichtlinie Reiselogbuch 2.2.2 · Zusammenarbeit allgemein 1.7.1
+Reiselogbuch 2.2.2 · Designrichtlinie allgemein 3.5.1 · Designrichtlinie Reiselogbuch 2.2.2 · Zusammenarbeit allgemein 1.7.1
 (Gestaltungsregeln: `README - Designrichtlinie allgemein.md` und
 `README - Designrichtlinie Reiselogbuch.md`; Zusammenarbeit: `README - Zusammenarbeit
 allgemein.md`; Einstieg für Claude: `CLAUDE.md`. Bei jeder Design-Änderung mit aktualisieren.)

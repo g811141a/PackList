@@ -1,6 +1,6 @@
 # Designrichtlinie allgemein
 
-**Version 3.3.1** · Stand 09.10.2026
+**Version 3.4.0** · Stand 09.10.2026
 
 Allgemeine Gestaltungs- und Bedienregeln für alle iPad-Web-Apps von g811141a.
 Diese Datei liegt vorerst im Repo ReiseLogBuch und **wandert später ins Design-Repo**;
@@ -186,6 +186,8 @@ heller).
   „Ersetzen“, „Änderungen verwerfen“.
 - Menüpunkt und Fenster heißen gleich (z. B. „Einstellungen“).
 - Systembeschriftungen (z. B. „Reset“ der iPad-Datumsauswahl) bleiben.
+- **Anführungszeichen:** In den Texten der Apps immer **einfache** Anführungszeichen ‚…‘
+  (z. B. ‚In Dateien sichern‘, Spalte ‚Wie war was?‘), **keine doppelten** „…“.
 
 ## 7. Fenster (Dialoge)
 
@@ -516,6 +518,7 @@ programmiert (`design.css`, `ui.js`) und von allen Apps übernommen.
 
 | Version | Datum | Art | Inhalt |
 |---|---|---|---|
+| 3.4.0 | 09.10.2026 | Neben | Vorgabe: in den Texten der Apps einfache Anführungszeichen ‚…‘ statt doppelter „…“ |
 | 3.3.1 | 09.10.2026 | Korrektur | Grundsatz „Gewähltes bleibt eingefärbt, solange es sichtbar ist“ (auch Listen- und Tabellenzeilen, Kästen); Menü: technische Informationen nach durchgehendem Strich ohne Leerzeilen; verständlicher Satz zum Speicher statt „Speicher: dauerhaft“ |
 | 3.3.0 | 09.10.2026 | Neben | Kontextmenü in der Seitenleiste (langes Drücken); dauerhafter Speicher mit Anzeige im Menü der Seitenleiste und Hinweis zum Entfernen vom Home-Bildschirm |
 | 3.2.3 | 08.10.2026 | Korrektur | Fenster und Kopfzeilen bleiben bei sichtbarer Tastatur sichtbar (Ausrichtung am sichtbaren Bereich) |

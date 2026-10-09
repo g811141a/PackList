@@ -40,13 +40,12 @@ sind (oder auf Wunsch); siehe `README - Zusammenarbeit allgemein.md`, Abschnitt 
 | T-03 | 2 | Daten zwischen iPad und iPhone abgleichen (Ablage in iCloud, Weiterbearbeitung auf dem iPhone): a) Datei in iCloud Drive mit Zusammenführen (kostenlos) · b) CloudKit JS (Entwicklerkonto) · c) echte App mit iCloud (Mac + Entwicklerkonto); Empfehlung a jetzt, c später – offen: Mac vorhanden? Entwicklerkonto? Arbeitsweise? | allgemein | offen |
 | T-05 | 2 | Bestehende (alte) Reiselogbücher aufbereiten und importierbar machen: Dateien (Word/PDF/Excel/HTML/Fotos) auslesen, Unklarheiten nachfragen, Vorschau zeigen, Datei erstellen; Überschneidungen prüfen. Offen: Form der Unterlagen, Anzahl, Weg (a: in aktuelles Backup einfügen · b: neue Funktion „Reiselogbuch importieren“, die hinzufügt statt ersetzt) | Reiselogbuch | offen |
 | T-06 | 3 | Ausschreibungstexte (Reiseveranstalter) in Reiselogbücher umwandeln – für erledigte **und** geplante Reisen: Titel, Zeitraum, Reisemittel; je Tag das Programm („1. Tag“ → echtes Datum, Text wie in der Ausschreibung); Quartiere mit Ort, falls genannt; übrige Felder bleiben leer | Reiselogbuch | offen |
+| T-23 | 1 | Design-Repo **g811141a/AppDesign** (öffentlich, legt der Nutzer an): S-01 allgemeine Dateien umziehen (Designrichtlinie allgemein, Zusammenarbeit allgemein, Apple-Vergleichsbilder, HIG-Prüfskript; Version der Designrichtlinie = Version des Repos) **und** S-02 gemeinsames `design.css` und `ui.js` (Komponenten einmal programmiert, Vorlage für neue Apps); Reiselogbuch verweist darauf. Offen: Einbindung, Startversion, Umstellung des Reiselogbuchs | allgemein | offen |
 
 ## 3. Später
 
 | Nr. | Prio | Thema | Gilt | Status |
 |---|---|---|---|---|
-| S-01 | 3 | Design-Repo anlegen: allgemeine Dateien (Designrichtlinie allgemein, Zusammenarbeit allgemein) umziehen; Version der Designrichtlinie = Version des Design-Repos | allgemein | später |
-| S-02 | 3 | Im Design-Repo: gemeinsames `design.css` und `ui.js` (Komponenten einmal programmiert), Vorlage für neue Apps | allgemein | später |
 | S-03 | 3 | Startseite g811141a.github.io mit allen Apps | allgemein | später |
 
 ---

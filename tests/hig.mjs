@@ -31,6 +31,8 @@ async function measure(p, where) {
     // Antippflächen: 44 pt Standard; Knöpfe in Kapseln und Schalter wie bei Apple ab 28 pt.
     document.querySelectorAll('button, a[href], input:not([type=hidden]):not([type=file]), textarea, select, [role=menuitem]').forEach(e => {
       if (!vis(e) || !onTop(e)) return;
+      // Bewusste Abweichung (Reiselogbuch, 09.10.2026): Essen-Links in der Tabelle bleiben so eng wie der Text.
+      if (e.matches('table.days .ln:not(.q) a')) return;
       const b = e.getBoundingClientRect(), s = getComputedStyle(e);
       // Inline-Links: die Antippfläche schließt den (unsichtbaren) Innenabstand ein.
       const h = s.display === 'inline' ? b.height + parseFloat(s.paddingTop) + parseFloat(s.paddingBottom) : b.height;

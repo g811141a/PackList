@@ -22,15 +22,16 @@ sind (oder auf Wunsch); siehe `README - Zusammenarbeit allgemein.md`, Abschnitt 
 
 | Nr. | Prio | Thema | Gilt | bereit seit |
 |---|---|---|---|---|
-| – | – | zurzeit nichts bereit (Muster M240 zur Bestätigung gezeigt) | – | – |
+| T-20 | 1 | Menüs ohne Linien zwischen den einzelnen Punkten, nur die eingerückte Linie zwischen Gruppen (wie Apple, Vergleichsbilder 2 und 4; aus P-12/3) – Muster M240-1, M240-2 bestätigt | allgemein | 09.10.2026 |
+| T-21 | 1 | Suchfeld ohne blauen Fokus-Rahmen (wie Apple; aus P-12/4); beim Blättern mit ⌃ ⌄ geht die Tastatur zu wie bisher – Muster M240-3 bestätigt | allgemein | 09.10.2026 |
 
-**0 Punkte bereit** · gebaut wird erst nach „Ja“
+**2 Punkte bereit** · gebaut wird erst nach „Ja“
 
 ## 1. Auf dem iPad prüfen
 
 | Nr. | Prio | Thema | Status |
 |---|---|---|---|
-| P-12 | 1 | **Version 2.3.0 – Prüfliste:** 1, 2, 5, 6, 8, 9, 10 ok (09.10.2026) · offen: 3) noch durchgehende Linien in Menüs → T-20 · 4) blauer Rahmen am Suchfeld → T-21 · 7) graue Texte (Version, Speicher u. a.) fehlen auf dem iPad → T-22 | prüfen |
+| – | – | zurzeit nichts zu prüfen | – |
 
 ## 2. Weitere Themen (in Klärung)
 
@@ -40,10 +41,6 @@ sind (oder auf Wunsch); siehe `README - Zusammenarbeit allgemein.md`, Abschnitt 
 | T-03 | 2 | Daten zwischen iPad und iPhone abgleichen (Ablage in iCloud, Weiterbearbeitung auf dem iPhone): a) Datei in iCloud Drive mit Zusammenführen (kostenlos) · b) CloudKit JS (Entwicklerkonto) · c) echte App mit iCloud (Mac + Entwicklerkonto); Empfehlung a jetzt, c später – offen: Mac vorhanden? Entwicklerkonto? Arbeitsweise? | allgemein | offen |
 | T-05 | 2 | Bestehende (alte) Reiselogbücher aufbereiten und importierbar machen: Dateien (Word/PDF/Excel/HTML/Fotos) auslesen, Unklarheiten nachfragen, Vorschau zeigen, Datei erstellen; Überschneidungen prüfen. Offen: Form der Unterlagen, Anzahl, Weg (a: in aktuelles Backup einfügen · b: neue Funktion „Reiselogbuch importieren“, die hinzufügt statt ersetzt) | Reiselogbuch | offen |
 | T-06 | 3 | Ausschreibungstexte (Reiseveranstalter) in Reiselogbücher umwandeln – für erledigte **und** geplante Reisen: Titel, Zeitraum, Reisemittel; je Tag das Programm („1. Tag“ → echtes Datum, Text wie in der Ausschreibung); Quartiere mit Ort, falls genannt; übrige Felder bleiben leer | Reiselogbuch | offen |
-| T-19 | 3 | Essen-Links in der Tabelle: etwas mehr Zeilenabstand zwischen den Lokalen (10 px) und Antippfläche je Link ≥ 28 px, ohne Überlappung (HIG-Prüfskript) – Muster M240-4 | Reiselogbuch | offen |
-| T-20 | 1 | Menüs ohne Linien zwischen den einzelnen Punkten, nur die eingerückte Linie zwischen Gruppen (wie Apple, Vergleichsbilder 2 und 4; aus P-12/3) – Muster M240-1, M240-2 | allgemein | offen |
-| T-21 | 1 | Suchfeld ohne blauen Fokus-Rahmen (wie Apple; aus P-12/4) – Muster M240-3 | allgemein | offen |
-| T-22 | 1 | Graue Texte im Menü (Version, Speicher u. a.) fehlen auf dem iPad – im Test sichtbar, Screenshot vom iPad angefragt (aus P-12/7) | allgemein | offen |
 
 ## 3. Später
 
@@ -59,6 +56,7 @@ sind (oder auf Wunsch); siehe `README - Zusammenarbeit allgemein.md`, Abschnitt 
 
 | Nr. | Thema | Version | Datum |
 |---|---|---|---|
+| E-18 | Auf dem iPad geprüft: P-12 Version 2.3.0 ok bis auf 3 (Linien → T-20) und 4 (Suchfeld → T-21); Punkt 7 hat sich erledigt (verschaut) · T-19 Essen-Links mit mehr Abstand: **verworfen**, bleibt als bewusste Abweichung | Reiselogbuch 2.3.0 | 09.10.2026 |
 | E-17 | Reiselogbuch 2.3.0 (Sammelversion HIG-Prüfung): T-07, T-10, T-11, T-12, T-13, T-14, T-15, T-16, T-17, T-18 | Reiselogbuch 2.3.0 · allgemein 3.6.0 · Reiselogbuch-Richtlinie 2.3.0 | 09.10.2026 |
 | E-16 | Auf dem iPad geprüft und ok: P-11 Anführungszeichen ‚…‘, Teilen-Menü mit Strich | Reiselogbuch 2.2.2 | 09.10.2026 |
 | E-15 | Reiselogbuch 2.2.2: T-09 Anführungszeichen ‚…‘ in der App, T-08 Teilen-Menü mit Strich | Reiselogbuch 2.2.2 · allgemein 3.4.1 · Reiselogbuch-Richtlinie 2.2.2 | 09.10.2026 |

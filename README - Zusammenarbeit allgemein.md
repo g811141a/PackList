@@ -1,6 +1,6 @@
 # Zusammenarbeit allgemein
 
-**Version 1.8.0** · Stand 09.10.2026
+**Version 1.9.0** · Stand 09.10.2026
 
 Regeln für die Zusammenarbeit mit Claude bei allen iPad-Web-Apps von g811141a.
 Diese Datei liegt vorerst im Repo ReiseLogBuch und **wandert später ins Design-Repo**.
@@ -15,6 +15,11 @@ App-spezifische Punkte stehen in der `CLAUDE.md` des jeweiligen App-Repos.
 > **VERPFLICHTEND – Sammelversionen:** Geklärte Punkte werden **gesammelt** (Backlog-Abschnitt
 > „0. Nächste Version“) und gemeinsam in **einer** Version gebaut und getestet – nie eine
 > eigene Version für ein oder zwei Kleinigkeiten (Abschnitt 6).
+>
+> **VERPFLICHTEND – erst prüfen, dann Neues:** Nach jeder neuen Version werden **unbedingt alle
+> Prüfpunkte** getestet und gefundene Fehler beseitigt, bevor neue Punkte umgesetzt werden. Claude
+> weist nach jeder Version **ausdrücklich** darauf hin. Ausnahme: Der Nutzer besteht nach diesem
+> Hinweis trotzdem darauf, zuerst Neues umzusetzen.
 
 > **Hinweis für Claude:** Diese Regeln gelten in jeder Sitzung, auch nach langer Pause.
 > Lies zu Beginn zusätzlich `README - Designrichtlinie allgemein.md` und die
@@ -38,6 +43,8 @@ App-spezifische Punkte stehen in der `CLAUDE.md` des jeweiligen App-Repos.
 - **Antwortvorschläge zum Übernehmen (Pflicht, immer beides):**
   - Die Fragen kommen zusätzlich im **Auswahlfenster** (bis zu 4 Fragen, je 2–4 Möglichkeiten);
     die Empfehlung steht immer an erster Stelle mit „(Empfohlen)“ und kann einfach angetippt werden.
+  - Schließt der Nutzer das Auswahlfenster und antwortet im Text, gilt die Antwort; bei den
+    **nächsten** Fragen kommt **trotzdem wieder automatisch** das Auswahlfenster.
   - Am Ende jeder Antwort mit Fragen steht eine fertige **Antwortzeile zum Kopieren** mit den
     empfohlenen Antworten, z. B. `1 ja · 2 a · 3 ja` – bei mehr als 4 Fragen ist sie der einzige Weg.
   - Den Vorschlag im Eingabefeld der App erzeugt die App selbst; Claude kann ihn nicht befüllen.
@@ -140,6 +147,8 @@ App-spezifische Punkte stehen in der `CLAUDE.md` des jeweiligen App-Repos.
 - Auf `main` hochladen, prüfen, ob GitHub Pages die Version online gestellt hat.
 - Screenshots in Viererpaketen schicken und die Änderungen auf Deutsch zusammenfassen; an
   den Neustart der App erinnern.
+- **Ausdrücklicher Hinweis** am Ende des Berichts: „Bitte zuerst alle Prüfpunkte testen – neue
+  Punkte setze ich erst um, wenn die Prüfliste erledigt und gefundene Fehler beseitigt sind.“
 
 ## 8. Versionen
 
@@ -162,6 +171,7 @@ App-spezifische Punkte stehen in der `CLAUDE.md` des jeweiligen App-Repos.
 
 | Version | Datum | Art | Inhalt |
 |---|---|---|---|
+| 1.9.0 | 09.10.2026 | Neben | Verpflichtend: nach jeder Version erst alle Prüfpunkte testen und Fehler beseitigen, dann Neues (Hinweis, Ausnahme nur auf Wunsch); Auswahlfenster auch nach einem geschlossenen Fenster wieder verwenden |
 | 1.8.0 | 09.10.2026 | Neben | Pflicht: Antwortvorschläge immer im Auswahlfenster (Empfehlung zuerst) und als Antwortzeile zum Kopieren |
 | 1.7.1 | 09.10.2026 | Korrektur | Vergleichsbilder: Ablage `apple-referenz/<Gerät>/<App>/` mit README; private Inhalte vorher verpixeln und zur Freigabe zeigen |
 | 1.7.0 | 09.10.2026 | Neben | Pflicht: Apple-Abgleich vor jedem Muster (HIG-Checkliste) und Apple-Review nach jeder Version; Vergleichsbilder aus Apple-Apps auf Anfrage (`apple-referenz/`); HIG-Prüfskript bei jedem Test |

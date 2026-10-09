@@ -1,6 +1,6 @@
 # Reiselogbuch – Hinweise für Claude
 
-**Version 1.6.0** · Stand 09.10.2026
+**Version 1.7.0** · Stand 09.10.2026
 
 ## Verpflichtend
 
@@ -14,8 +14,12 @@ gemeinsam bauen. Nach einer Version erst fragen, wenn ein größeres Thema ferti
 Datenverlust oder unbenutzbarer App. Details: `README - Zusammenarbeit allgemein.md`,
 Abschnitt 6.
 
+**Erst prüfen, dann Neues:** Nach jeder Version ausdrücklich darauf hinweisen, dass zuerst alle
+Prüfpunkte getestet und Fehler beseitigt werden; Neues erst danach (außer der Nutzer besteht darauf).
+
 **Antwortvorschläge:** Fragen immer zusätzlich im Auswahlfenster (Empfehlung zuerst, „(Empfohlen)“)
-und am Ende eine Antwortzeile zum Kopieren (z. B. `1 ja · 2 a`). Details: `README - Zusammenarbeit
+und am Ende eine Antwortzeile zum Kopieren (z. B. `1 ja · 2 a`). Auch nach einem geschlossenen
+Auswahlfenster bei den nächsten Fragen wieder das Auswahlfenster verwenden. Details: `README - Zusammenarbeit
 allgemein.md`, Abschnitt 2.
 
 **Apple-like:** Vor jedem Muster Apple-Abgleich (HIG-Checkliste, Apple-App als Vorbild,
@@ -60,6 +64,7 @@ Lies zu Beginn jeder Sitzung diese Dateien und halte dich daran:
 
 | Version | Datum | Inhalt |
 |---|---|---|
+| 1.7.0 | 09.10.2026 | Verpflichtend: erst Prüfpunkte, dann Neues; Auswahlfenster immer wieder |
 | 1.6.0 | 09.10.2026 | Pflicht: Antwortvorschläge im Auswahlfenster und als Antwortzeile |
 | 1.5.1 | 09.10.2026 | Darstellung `settings.appearance`, HIG-Prüfskript |
 | 1.5.0 | 09.10.2026 | Pflicht: Apple-Abgleich vor Mustern, Apple-Review nach Versionen |

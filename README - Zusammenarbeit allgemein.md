@@ -50,7 +50,7 @@ App-spezifische Punkte stehen in der `CLAUDE.md` des jeweiligen App-Repos.
   nachgebaut und als Abweichung genannt.
 - **Apple-Abgleich vor jedem Muster (Pflicht):** Bevor Claude ein Muster zeigt, steht kurz
   dabei: welche Apple-App es so löst (z. B. Notizen, Dateien, Erinnerungen), welche Punkte der
-  **HIG-Checkliste** (Designrichtlinie allgemein) betroffen sind und wo bewusst abgewichen
+  **HIG-Checkliste** (Designrichtlinie allgemein, Abschnitt 16) betroffen sind und wo bewusst abgewichen
   wird – mit Grund. Die HIG wird **vorher** geprüft, nicht erst nach einer Meldung.
 - **Apple-Review nach jeder Version (Pflicht):** In der Zusammenfassung steht je Punkt
   „entspricht HIG“ oder „weicht ab, weil …“, dazu das Ergebnis des HIG-Prüfskripts.

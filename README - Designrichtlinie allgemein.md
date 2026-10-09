@@ -1,6 +1,6 @@
 # Designrichtlinie allgemein
 
-**Version 3.4.1** · Stand 09.10.2026
+**Version 3.5.0** · Stand 09.10.2026
 
 Allgemeine Gestaltungs- und Bedienregeln für alle iPad-Web-Apps von g811141a.
 Diese Datei liegt vorerst im Repo ReiseLogBuch und **wandert später ins Design-Repo**;
@@ -513,12 +513,45 @@ programmiert (`design.css`, `ui.js`) und von allen Apps übernommen.
   `--sel-bg`, Haarlinie `--accent`, Schein `--glow-accent` und **Häkchen in Akzentfarbe vor
   dem Text**; aus = neutral ohne Häkchen; gesperrt 40 % Deckkraft.
 
+## 16. HIG-Checkliste
+
+Jedes Muster und jede Version wird **vorher** an dieser Liste gemessen (Apple-Abgleich, siehe
+`README - Zusammenarbeit allgemein.md`, Abschnitt 3). Abweichungen werden genannt und begründet.
+Messbare Punkte prüft das HIG-Prüfskript automatisch.
+
+1. **Antippflächen** ([Accessibility](https://developer.apple.com/design/human-interface-guidelines/accessibility)): Standard 44 × 44 pt, nie kleiner
+   als 28 × 28 pt.
+2. **Schrift:** Fließtext 17 pt, kleinste Schrift 11 pt, Hinweise 13 pt grau; Überschriften nach
+   Apple-Textstilen (17 halbfett, 20, 22, 28, 34 pt).
+3. **Kontrast und Farbe:** Kontrast mindestens 4,5 : 1 bis 17 pt, 3 : 1 ab 18 pt oder fett –
+   immer hell **und** dunkel prüfen. Farbe nie als einziges Merkmal. Blau = Aktion/Auswahl,
+   Rot = Löschen.
+4. **Auswahl** ([Lists and tables](https://developer.apple.com/design/human-interface-guidelines/lists-and-tables)): Was zu einem Inhalt führt, bleibt
+   markiert, solange dieser offen ist; Optionen kurz markieren, dann Häkchen. Jede Berührung
+   gibt sichtbare Rückmeldung.
+5. **Menüs** ([Menus](https://developer.apple.com/design/human-interface-guidelines/menus)): Gruppen durch Strich getrennt, Wichtigstes oben; Icons in
+   einer Gruppe alle oder keine, für Standardaktionen die bekannten Symbole (Teilen, Suchen,
+   Löschen); Beschriftung mit Verb; „…“ am Ende, wenn danach noch eine Eingabe oder Auswahl
+   folgt; nicht verfügbare Punkte grau; Untermenüs nur eine Ebene, höchstens etwa 5 Punkte.
+6. **Kontextmenüs** ([Context menus](https://developer.apple.com/design/human-interface-guidelines/context-menus)): wenige Punkte, höchstens etwa 3 Gruppen;
+   Häufigstes nah am Finger, Löschen rot am Ende; nicht verfügbare Punkte **ausblenden** statt
+   grau; alles auch ohne Kontextmenü erreichbar; in der ganzen App einheitlich.
+7. **Abfragen:** Löschen und Verwerfen immer bestätigen; die Schaltfläche heißt wie die Aktion
+   (‚Löschen‘), ‚Abbrechen‘ ist immer da.
+8. **Texte** ([Writing](https://developer.apple.com/design/human-interface-guidelines/writing)): einfach, ohne Fachbegriffe, so kurz wie möglich; kein
+   ‚wir‘; ‚tippen‘ statt ‚klicken‘; Fehlermeldungen sagen, **was zu tun ist** – ohne Vorwurf,
+   direkt beim Problem; ein leerer Bildschirm nennt den nächsten Schritt; ein Schalter beschreibt,
+   was er eingeschaltet tut; Anführungszeichen ‚…‘.
+9. **Fenster:** links x (Abbrechen), rechts Häkchen (Fertig), hervorgehoben sobald etwas
+   geändert wurde; Schließen mit Änderungen fragt nach.
+
 ---
 
 ## Versionsgeschichte
 
 | Version | Datum | Art | Inhalt |
 |---|---|---|---|
+| 3.5.0 | 09.10.2026 | Neben | Neuer Abschnitt 16 HIG-Checkliste (Antippflächen, Schrift, Kontrast, Auswahl, Menüs, Kontextmenüs, Abfragen, Texte, Fenster) mit Links zu den Apple-Seiten |
 | 3.4.1 | 09.10.2026 | Korrektur | Menü: graue Notizen in allen Menüs (auch Teilen-Menü) nach durchgehendem Strich |
 | 3.4.0 | 09.10.2026 | Neben | Vorgabe: in den Texten der Apps einfache Anführungszeichen ‚…‘ statt doppelter „…“ |
 | 3.3.1 | 09.10.2026 | Korrektur | Grundsatz „Gewähltes bleibt eingefärbt, solange es sichtbar ist“ (auch Listen- und Tabellenzeilen, Kästen); Menü: technische Informationen nach durchgehendem Strich ohne Leerzeilen; verständlicher Satz zum Speicher statt „Speicher: dauerhaft“ |

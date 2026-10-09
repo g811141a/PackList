@@ -24,8 +24,9 @@ sind (oder auf Wunsch); siehe `README - Zusammenarbeit allgemein.md`, Abschnitt 
 |---|---|---|---|---|
 | T-07 | 3 | Alle Kapseln technisch gleich bauen: auch Kopfzeilen-Kapsel [share \| search \| ellipsis], Seitenleisten-Kapsel und Treffer-Pfeile ⌃ ⌄ – Schaltflächen genau so hoch wie der Innenraum (44 px minus Rand), Markierung liegt immer innerhalb des Randes | allgemein | 08.10.2026 |
 | T-10 | 1 | HIG-Prüfskript im Repo (`tests/`), läuft bei jeder Version mit: Antippflächen ≥ 44 px, Schriftgrößen ≥ 11 px (Fließtext 17), Kontrast ≥ 4,5 : 1 (hell und dunkel), Markierung `.on` bleibt, solange Menü/Fenster offen ist, keine doppelten Anführungszeichen, Löschen rot am Ende von Menüs; Ergebnis als Abweichungsliste | allgemein | 09.10.2026 |
+| T-11 | 1 | Hinweis bei überschneidenden Reisezeiträumen sagt, was zu tun ist (HIG Writing): statt ‚… Bitte korrigieren.‘ → ‚Wähle einen Zeitraum, der sich nicht mit ‚Toskana‘ (03.05.2027 - 17.05.2027) überschneidet.‘ | Reiselogbuch | 09.10.2026 |
 
-**2 Punkte bereit** · gebaut wird erst nach „Ja“
+**3 Punkte bereit** · gebaut wird erst nach „Ja“
 
 ## 1. Auf dem iPad prüfen
 

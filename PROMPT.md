@@ -1,6 +1,6 @@
-# Reiselogbuch – Prompt (Stand 08.10.2026, Version 2.1.5)
+# Reiselogbuch – Prompt (Stand 09.10.2026, Version 2.2.0)
 
-Reiselogbuch 2.1.5 · Designrichtlinie allgemein 3.2.3 · Designrichtlinie Reiselogbuch 2.1.2 · Zusammenarbeit allgemein 1.5.0
+Reiselogbuch 2.2.0 · Designrichtlinie allgemein 3.3.0 · Designrichtlinie Reiselogbuch 2.2.0 · Zusammenarbeit allgemein 1.5.0
 (Gestaltungsregeln: `README - Designrichtlinie allgemein.md` und
 `README - Designrichtlinie Reiselogbuch.md`; Zusammenarbeit: `README - Zusammenarbeit
 allgemein.md`; Einstieg für Claude: `CLAUDE.md`. Bei jeder Design-Änderung mit aktualisieren.)
@@ -25,7 +25,8 @@ Ein Tagebuch in Tabellenform, genau wie in meinem Beispiel:
 RAHMEN
 - Läuft nur auf dem iPad, nur ich nutze es (kein Teilen, kein Login).
 - Nur Text, Icons und Smileys – keine Fotos.
-- Daten bleiben lokal auf dem iPad.
+- Daten bleiben lokal auf dem iPad; die App fordert beim Start dauerhaften
+  Speicher an, damit Safari die Daten nicht von selbst löscht.
 - Auch offline nutzbar. Beim Start fragt die App immer bei GitHub nach
   einer neuen Version (kein 10-Minuten-Zwischenspeicher); ohne Netz läuft
   die gespeicherte Version.
@@ -50,7 +51,12 @@ RAHMEN
     Kopfzeile.
   - plus öffnet "Neues Reiselogbuch". ellipsis der Seitenleiste: Backup
     erstellen (darunter grau "Letztes Backup erstellt am …") · Backup laden · grau
-    "Reiselogbuch · Version X.Y.Z · erstellt am TT.MM.JJJJ um hh:mm".
+    "Reiselogbuch · Version X.Y.Z · erstellt am TT.MM.JJJJ um hh:mm",
+    darunter "Speicher: dauerhaft" (bzw. "nicht dauerhaft – bitte regelmäßig ein
+    Backup erstellen.") und "Achtung: Wird das Reiselogbuch vom Home-Bildschirm
+    entfernt, gehen alle Daten verloren – vorher ein Backup erstellen."
+  - Langes Drücken auf ein Reiselogbuch in der Seitenleiste öffnet ein Menü:
+    Öffnen · Einstellungen · Reiselogbuch löschen (rot, mit Abfrage).
   - Wurde heute noch kein Backup erstellt, steht unten in der Seitenleiste
     dezent "Letztes Backup erstellt am …" (bzw. "Noch kein Backup erstellt.")
     und die Schaltfläche "Backup erstellen".

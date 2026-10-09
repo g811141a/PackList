@@ -1,6 +1,6 @@
 # Designrichtlinie allgemein
 
-**Version 3.2.3** · Stand 08.10.2026
+**Version 3.3.0** · Stand 09.10.2026
 
 Allgemeine Gestaltungs- und Bedienregeln für alle iPad-Web-Apps von g811141a.
 Diese Datei liegt vorerst im Repo ReiseLogBuch und **wandert später ins Design-Repo**;
@@ -25,7 +25,9 @@ App-spezifische Regeln stehen in einer eigenen Datei je App
 
 - Zielgerät iPad (Safari, zum Home-Bildschirm hinzugefügt, PWA, offline nutzbar);
   eine Person nutzt die App, kein Login, kein Teilen.
-- Daten bleiben lokal (localStorage); Sicherung über eine Backup-Datei.
+- Daten bleiben lokal (localStorage); beim Start fordert die App **dauerhaften Speicher** an
+  (`navigator.storage.persist()`), damit Safari die Daten nicht von selbst löscht; Sicherung über
+  eine Backup-Datei.
 - Oberfläche Deutsch, schlicht und klar.
 - Eine HTML-Datei (HTML + CSS + JS), dazu `sw.js`, `manifest.json`, Icons 180/512 px.
 - Keine Hilfeseite – die Oberfläche ist selbsterklärend; Hinweise bei Bedarf hinter einem
@@ -408,7 +410,14 @@ programmiert (`design.css`, `ui.js`) und von allen Apps übernommen.
   einblendbar (bis zum nächsten Start); im Hochformat über den Inhalt gelegt (abgedunkelt dahinter), schließt sich
   nach der Auswahl.
 - **Mehr-Menü der Seitenleiste:** Backup erstellen (darunter grau „Letztes Backup erstellt am …“) ·
-  Backup laden · ganz unten grau die Versionszeile „<App> · Version X.Y.Z · erstellt am …“.
+  Backup laden · ganz unten grau die Versionszeile „<App> · Version X.Y.Z · erstellt am …“, darunter
+  „Speicher: dauerhaft“ bzw. „Speicher: nicht dauerhaft – bitte regelmäßig ein Backup erstellen.“ und
+  der Hinweis „Achtung: Wird <App> vom Home-Bildschirm entfernt, gehen alle Daten verloren – vorher
+  ein Backup erstellen.“
+- **Kontextmenü:** Langes Drücken (ca. 0,6 s) auf einen Eintrag öffnet rechts daneben ein Menü
+  (Komponente Menü) mit Öffnen (book-open) · Einstellungen (settings) · … löschen (rot, Sprechblase);
+  der Eintrag ist dabei blau getönt. Kurzes Tippen öffnet wie bisher; kein Wischen, kein Hinweistext.
+  [HIG – Context menus](https://developer.apple.com/design/human-interface-guidelines/context-menus)
 
 ### 15.5 Kapsel
 - **Apple:** [HIG – Toolbars](https://developer.apple.com/design/human-interface-guidelines/toolbars)
@@ -499,6 +508,7 @@ programmiert (`design.css`, `ui.js`) und von allen Apps übernommen.
 
 | Version | Datum | Art | Inhalt |
 |---|---|---|---|
+| 3.3.0 | 09.10.2026 | Neben | Kontextmenü in der Seitenleiste (langes Drücken); dauerhafter Speicher mit Anzeige im Menü der Seitenleiste und Hinweis zum Entfernen vom Home-Bildschirm |
 | 3.2.3 | 08.10.2026 | Korrektur | Fenster und Kopfzeilen bleiben bei sichtbarer Tastatur sichtbar (Ausrichtung am sichtbaren Bereich) |
 | 3.2.2 | 08.10.2026 | Korrektur | Auswahl-Kapsel: Markierung als Kreis bzw. Kapsel innerhalb der Schaltfläche mit Abstand; Schaltflächen so hoch wie der Innenraum |
 | 3.2.1 | 08.10.2026 | Korrektur | Seitenleiste beim Start immer eingeblendet (auch hoch, darübergelegt); unten 4 px Abstand wie Safari |

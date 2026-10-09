@@ -160,7 +160,11 @@
   .side-shade { position: fixed; inset: 0; z-index: 24; background: rgba(0,0,0,.25); }
   .side-head { display: flex; align-items: center; gap: 12px; min-height: 44px; margin-bottom: 14px; padding-left: 8px; }
   .side-head h2 { margin: 0 4px 0 0; flex: 1; font-size: 20px; white-space: nowrap; }
-  #side .side-row { display: block; width: 100%; text-align: left; border: none; box-shadow: none; background: none; border-radius: 12px; padding: 9px 12px; margin-bottom: 4px; min-height: 0; }
+  #side .side-row { display: block; width: 100%; text-align: left; border: none; box-shadow: none; background: none; border-radius: 12px; padding: 9px 12px; margin-bottom: 4px; min-height: 0;
+    -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
+  /* Langes Drücken (Kontextmenü): Eintrag blau getönt, solange das Menü bzw. die Abfrage offen ist */
+  #side .side-row.on { background: var(--sel-bg); box-shadow: inset 0 0 0 .5px var(--accent); color: var(--ink); }
+  #side .side-row.on small { color: var(--muted); }
   .side-row b { display: block; font-size: 17px; font-weight: 600; overflow-wrap: anywhere; }
   .side-row small { display: block; color: var(--muted); font-size: 14px; white-space: nowrap; }
   #side .side-row.current { background: var(--accent); color: var(--accent-ink); box-shadow: var(--glow-accent); }
@@ -398,8 +402,8 @@ const ic = (name, cls = '') => `<svg class="ic ${cls}" viewBox="0 0 24 24" aria-
 
 // Version und Erstellungszeitpunkt, werden bei jeder neuen Version angepasst.
 // Versionsnummer Hauptversion.Nebenversion.Korrektur (siehe CHANGELOG.md).
-const APP_VERSION = '2.1.5';
-const APP_BUILT = '08.10.2026 um 21:18';
+const APP_VERSION = '2.2.0';
+const APP_BUILT = '09.10.2026 um 12:28';
 
 const app = document.getElementById('app');
 const side = document.getElementById('side');
@@ -493,7 +497,8 @@ let searchJump = null;     // Zeitgeber für den Sprung zum ersten Treffer    //
 let sideOverlay = false;   // Hochformat: Seitenleiste über den Inhalt gelegt
 let dlgOpener = '';        // Schaltfläche, von der das offene Fenster kommt (bleibt blau hinterlegt)
 let dlgDirty = null;       // Prüft, ob im offenen Fenster etwas geändert wurde
-let emptyPrompted = false; // Ohne Reiselogbuch öffnet sich "Neues Reiselogbuch" einmal von selbst
+let emptyPrompted = false;
+let storagePersistent = false; // Safari löscht dauerhaften Speicher nicht von selbst (z. B. bei knappem Speicher) // Ohne Reiselogbuch öffnet sich "Neues Reiselogbuch" einmal von selbst
 
 /* ---------- Datum ---------- */
 
@@ -1146,11 +1151,16 @@ function renderSide() {
     { icon: 'folder-open', label: 'Backup laden', act: () => { hold('#sideMore'); importFile.click(); } },
     'sep',
     { note: `Reiselogbuch · Version ${APP_VERSION} · erstellt am ${APP_BUILT}` },
+    { note: storagePersistent ? 'Speicher: dauerhaft' : 'Speicher: nicht dauerhaft – bitte regelmäßig ein Backup erstellen.' },
+    { note: 'Achtung: Wird das Reiselogbuch vom Home-Bildschirm entfernt, gehen alle Daten verloren – vorher ein Backup erstellen.' },
   ], 'left');
   side.querySelector('#sideHide').onclick = toggleSide;
   side.querySelector('#hintBackup')?.addEventListener('click', () => saveBackup('#hintBackup'));
   held.forEach(sel => side.querySelector(sel)?.classList.add('on'));
-  side.querySelectorAll('[data-id]').forEach(b => b.onclick = () => { sideOverlay = false; showTrip(b.dataset.id); });
+  // Kurz tippen öffnet; lange drücken zeigt das Kontextmenü (Öffnen · Einstellungen · Reiselogbuch löschen).
+  side.querySelectorAll('[data-id]').forEach(b => onLongPress(b,
+    () => tripContextMenu(b, getTrip(b.dataset.id)),
+    () => { sideOverlay = false; showTrip(b.dataset.id); }));
   document.documentElement.style.setProperty('--side-w', side.offsetWidth + 'px');
 }
 
@@ -1160,10 +1170,11 @@ function renderSide() {
 function placeAt(el, anchor, align) {
   const r = anchor.getBoundingClientRect();
   const w = el.offsetWidth, h = el.offsetHeight;
-  let left = align === 'right' ? r.right - w : r.left;
+  // 'beside': rechts neben dem Eintrag (Kontextmenü in der Seitenleiste), oben bündig.
+  let left = align === 'right' ? r.right - w : align === 'beside' ? r.right - 40 : r.left;
   left = Math.max(12, Math.min(left, innerWidth - w - 12));
-  let top = r.bottom + 8;
-  if (top + h > innerHeight - 12) top = Math.max(12, r.top - h - 8);
+  let top = align === 'beside' ? r.top : r.bottom + 8;
+  if (top + h > innerHeight - 12) top = Math.max(12, align === 'beside' ? innerHeight - h - 12 : r.top - h - 8);
   el.style.left = left + 'px';
   el.style.top = top + 'px';
 }
@@ -1206,7 +1217,7 @@ function confirmPop(anchor, html, act, back = { label: 'Abbrechen', icon: 'ban',
     layer.onclick = () => done(false);
     pop.querySelectorAll('[data-v]').forEach(b => b.onclick = () => done(b.dataset.v === '1'));
     host.append(layer, pop);
-    if (visible) placeAt(pop, anchor, anchor.getBoundingClientRect().left > innerWidth / 2 ? 'right' : 'left');
+    if (visible) placeAt(pop, anchor, anchor.classList.contains('side-row') ? 'beside' : anchor.getBoundingClientRect().left > innerWidth / 2 ? 'right' : 'left');
     else { pop.style.left = (innerWidth - pop.offsetWidth) / 2 + 'px'; pop.style.top = '120px'; }
   });
 }
@@ -1226,8 +1237,19 @@ function openMainMenu(anchor, trip) {
   ]);
 }
 
-async function deleteTrip(trip) {
-  const yes = await confirmPop(app.querySelector('#mainMore'),
+// Kontextmenü eines Reiselogbuchs in der Seitenleiste (wie in Notizen, Mail, Dateien).
+function tripContextMenu(row, trip) {
+  if (!trip) return;
+  openMenu(row, [
+    { icon: 'book-open', label: 'Öffnen', act: () => { sideOverlay = false; showTrip(trip.id); } },
+    { icon: 'settings', label: 'Einstellungen', act: () => openTripDialog(trip) },
+    'sep',
+    { icon: 'trash', label: 'Reiselogbuch löschen', red: true, act: () => { row.classList.add('on'); deleteTrip(trip, row); } },
+  ], 'beside');
+}
+
+async function deleteTrip(trip, anchor = app.querySelector('#mainMore')) {
+  const yes = await confirmPop(anchor,
     `„${esc(trip.title)}“ mit allen Einträgen löschen? Das kann nicht rückgängig gemacht werden. Tipp: Vorher ein Backup erstellen.`,
     { label: 'Reiselogbuch löschen', icon: 'trash' });
   if (!yes) return;
@@ -2097,6 +2119,13 @@ importFile.onchange = async () => {
 /* ---------- Start ---------- */
 
 applyTheme();
+// Dauerhaften Speicher anfordern (einmalig, ohne Rückfrage); das Ergebnis steht im Menü der Seitenleiste.
+if (navigator.storage?.persist) {
+  navigator.storage.persisted()
+    .then(p => p || navigator.storage.persist())
+    .then(p => { storagePersistent = Boolean(p); })
+    .catch(() => {});
+}
 // Beim Start ist die Seitenleiste immer eingeblendet (im Hochformat über den Inhalt gelegt).
 db.settings.sidebar = true;
 sideOverlay = !isWide();

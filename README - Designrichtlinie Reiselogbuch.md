@@ -1,8 +1,8 @@
 # Designrichtlinie Reiselogbuch
 
-**Version 2.1.2** · Stand 08.10.2026
+**Version 2.2.0** · Stand 09.10.2026
 
-> **Es gilt die `README - Designrichtlinie allgemein.md` (Version 3.2.3).**
+> **Es gilt die `README - Designrichtlinie allgemein.md` (Version 3.3.0).**
 > Hier stehen nur **Abweichungen** (bewusst anders als dort) und **Ausprägungen**
 > (konkrete Ausgestaltung einer allgemeinen Regel für das Reiselogbuch).
 > Die vollständige Funktionsbeschreibung steht in `PROMPT.md`.
@@ -46,7 +46,8 @@ Spaltenköpfe 🙂☹️😉 (Wie war was?), 🍽️🍷☕️ (Essen und Trinke
 - **Seitenleiste** (Komponente): Reiselogbücher, zuletzt beginnende Reise zuerst; je Eintrag
   Titel · „TT.MM.JJJJ - TT.MM.JJJJ · läuft gerade / beendet / geplant“. Unten (nur wenn
   heute noch kein Backup erstellt wurde) „Letztes Backup erstellt am …“ mit „Backup
-  erstellen“. Mehr-Menü: Backup erstellen · Backup laden · Versionszeile.
+  erstellen“. Mehr-Menü: Backup erstellen · Backup laden · Versionszeile · Speicher-Hinweise.
+  Langes Drücken auf ein Reiselogbuch: Öffnen · Einstellungen · Reiselogbuch löschen.
 - **Kopfzeile** (Komponente): Titel der Reise; Kapsel [share | search | ellipsis].
   - share → Menü: Vorschau · HTML · PDF (jeweils mit grauem Hinweis), darunter
     „N erfasste Tage · Dateiname: …“.
@@ -119,6 +120,7 @@ Spaltenköpfe 🙂☹️😉 (Wie war was?), 🍽️🍷☕️ (Essen und Trinke
 
 | Version | Datum | Art | Inhalt |
 |---|---|---|---|
+| 2.2.0 | 09.10.2026 | Neben | Angepasst an allgemein 3.3.0: Kontextmenü der Reiselogbücher, Speicher-Hinweise |
 | 2.1.2 | 08.10.2026 | Korrektur | Angepasst an allgemein 3.2.1 (Seitenleiste beim Start, Abstand unten) |
 | 2.1.1 | 08.10.2026 | Korrektur | Ausgabe: Wetter in der Spalte „Tag“ unter dem Datum; Auswahl-Kapseln für Smileys, Wetter, Reisemittel; Betragsfeld dynamisch |
 | 2.1.0 | 08.10.2026 | Neben | Angepasst an allgemein 3.1.0: Backup-Texte („Backup erstellen“, „Letztes Backup erstellt am …“), Gesamtkosten „4.850,00 €“, Statistik mit Nächten |

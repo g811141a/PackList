@@ -12,6 +12,16 @@ Versionsnummer **Hauptversion.Nebenversion.Korrektur** (z. B. 1.2.1):
 Steigt eine Stufe, beginnen die Stufen dahinter wieder bei 0.
 Die aktuelle Version steht in der App im Mehr-Menü (ellipsis) der Seitenleiste „Reiselogbücher“.
 
+## 2.2.0 – 09.10.2026 (Nebenversion)
+
+Reiselogbuch 2.2.0 · Designrichtlinie allgemein 3.3.0 · Designrichtlinie Reiselogbuch 2.2.0 · Zusammenarbeit allgemein 1.5.0
+
+- T-01: Langes Drücken auf ein Reiselogbuch in der Seitenleiste öffnet ein Kontextmenü:
+  Öffnen · Einstellungen (für genau dieses Reiselogbuch) · Reiselogbuch löschen.
+- T-04: Die App fordert dauerhaften Speicher an, damit Safari die Daten nicht von selbst löscht;
+  im Menü der Seitenleiste steht, ob der Speicher dauerhaft ist, und ein Hinweis, dass beim
+  Entfernen vom Home-Bildschirm alle Daten verloren gehen.
+
 ## 2.1.5 – 08.10.2026 (Korrektur)
 
 Reiselogbuch 2.1.5 · Designrichtlinie allgemein 3.2.3 · Designrichtlinie Reiselogbuch 2.1.2 · Zusammenarbeit allgemein 1.5.0

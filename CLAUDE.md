@@ -1,6 +1,6 @@
 # Reiselogbuch – Hinweise für Claude
 
-**Version 1.5.0** · Stand 09.10.2026
+**Version 1.5.1** · Stand 09.10.2026
 
 ## Verpflichtend
 
@@ -46,6 +46,9 @@ Lies zu Beginn jeder Sitzung diese Dateien und halte dich daran:
 - Bedienung ab 2.0.0: Seitenleiste `#side` (`renderSide`), Kopfzeile `.nb` mit Kapsel,
   Menüs `openMenu`, Sprechblasen `confirmPop`, Fenster-Kopfzeile `dlgHead` (Häkchen blau über
   `dlgDirty`), gedrückte Schaltflächen `.on`. Seitenleiste ein/aus: `settings.sidebar`.
+- Darstellung ab 2.3.0: `settings.appearance` (`auto` folgt dem iPad, `light`, `dark`); Untermenüs
+  in `openMenu` über `submenu`.
+- Bei jeder Version `node tests/hig.mjs` laufen lassen (HIG-Prüfskript, siehe `tests/README.md`).
 
 ---
 
@@ -53,6 +56,7 @@ Lies zu Beginn jeder Sitzung diese Dateien und halte dich daran:
 
 | Version | Datum | Inhalt |
 |---|---|---|
+| 1.5.1 | 09.10.2026 | Darstellung `settings.appearance`, HIG-Prüfskript |
 | 1.5.0 | 09.10.2026 | Pflicht: Apple-Abgleich vor Mustern, Apple-Review nach Versionen |
 | 1.4.0 | 09.10.2026 | Verpflichtend: Sammelversionen |
 | 1.3.0 | 08.10.2026 | Verpflichtend: nie ohne Freigabe bauen |

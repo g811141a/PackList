@@ -1,6 +1,6 @@
 # Designrichtlinie allgemein
 
-**Version 3.5.1** · Stand 09.10.2026
+**Version 3.6.0** · Stand 09.10.2026
 
 Allgemeine Gestaltungs- und Bedienregeln für alle iPad-Web-Apps von g811141a.
 Diese Datei liegt vorerst im Repo ReiseLogBuch und **wandert später ins Design-Repo**;
@@ -59,7 +59,7 @@ heller).
 | `--btn-rim` | `#ffffff` | `rgba(255,255,255,.16)` | Lichtkante (Haarlinie 0,5 px) |
 | `--float` | `0 3px 28px rgba(0,0,0,.16)` | `0 3px 28px rgba(0,0,0,.7)` | Schatten „schwebend“ (Apple Mail gemessen) |
 | `--ink` | `#1c1c1e` | `#ffffff` | Text |
-| `--muted` | `#8a8a8e` | `#8e8e93` | dezente Texte, Hinweise |
+| `--muted` | `#6e6e73` | `#98989d` | dezente Texte, Hinweise (Kontrast ≥ 4,5 : 1) |
 | `--line` | `#d1d1d6` | `#38383a` | Trennlinien (Haarlinie) |
 | `--field-line` | `#c7c7cc` | `#48484a` | Haarlinie um Eingabefelder |
 | `--accent` | `#007aff` | `#0a84ff` | **Akzentfarbe Apple-Blau:** Hauptaktion, Auswahl, Schritt-Nummern, Links, Rahmen und Markierungen |
@@ -69,7 +69,7 @@ heller).
 | `--glow-accent` | `0 2px 4px rgba(0,0,0,.10), 0 5px 18px rgba(0,122,255,.50)` | `0 2px 4px rgba(0,0,0,.5), 0 5px 18px rgba(10,132,255,.50)` | leuchtender Schein der Hauptaktion und eingeschalteter Elemente |
 | `--table-shadow` | `0 1px 3px rgba(0,0,0,.12), 0 8px 24px rgba(0,0,0,.12)` | zusätzlich `0 0 0 .5px rgba(255,255,255,.12)`, Schatten `.6` | Schatten um Tabellen |
 | `--danger` | `#b3261e` | `#ff6961` | Fehlermeldungen, Icon ban, roter Feldrahmen |
-| `--danger-fill` | `#d70015` | `#ff453a` | Lösch-Schaltfläche (gefüllt) |
+| `--danger-fill` | `#d70015` | `#d70015` | Lösch-Schaltfläche (gefüllt; dunkel gleiches Rot, damit Weiß lesbar bleibt) |
 | `--glow-danger` | `0 2px 4px rgba(0,0,0,.12), 0 5px 14px rgba(215,0,21,.35)` | `0 2px 4px rgba(0,0,0,.5), 0 5px 16px rgba(255,69,58,.35)` | Schatten der Lösch-Schaltfläche |
 | `--warn` | `#c07a12` | `#e2a64b` | Markierungen („fehlt“) |
 | `--focus` | `#fff1c2` | `#45391a` | markierte Zeile (gelb) |
@@ -77,9 +77,11 @@ heller).
 | `--zebra` | `#f7f7f9` | `#161618` | jede 2. sichtbare Tabellenzeile |
 | `--mark` / `--mark-cur` | `#ffe45c` / `#ffc46b` | `#8a6d00` / `#e08a1e` (schwarze Schrift) | Suchtreffer / Treffer im Fokus |
 
-- Darstellung Hell/Dunkel in **2 Stufen** (kein „Automatisch“); im Mehr-Menü als
-  „Modus dunkel“ (moon) bzw. „Modus hell“ (sun) – der Eintrag zeigt die *Aktion*; die
-  Einstellung wird gemerkt. Beim ersten Start gilt die Systemeinstellung.
+- **Darstellung wie Apple:** Die App folgt automatisch der Hell/Dunkel-Einstellung des iPads
+  (Voreinstellung ‚Automatisch‘, wechselt sofort mit). Im Mehr-Menü lässt sie sich übersteuern:
+  Untermenü ‚Darstellung ›‘ (sun-moon, rechts grau der aktuelle Wert) mit Automatisch · Hell ·
+  Dunkel (Häkchen). Gespeichert in `settings.appearance` (`auto` | `light` | `dark`).
+  [HIG – Dark Mode](https://developer.apple.com/design/human-interface-guidelines/dark-mode)
 
 ## 3. Schrift und Abstände
 
@@ -130,10 +132,10 @@ heller).
     [HIG – Lists and tables](https://developer.apple.com/design/human-interface-guidelines/lists-and-tables)
   - **Apple-Grün** nur für eingeschaltete **Schalter**.
   - **Rot gefüllt = Löschen/Verwerfen** (endgültige Aktionen, z. B. in Sprechblasen):
-    `--danger-fill`, weiße Schrift und Icon, Schatten `--glow-danger`. In Menüs steht
+    `--danger-fill`, weiße Schrift, Schatten `--glow-danger`. In Menüs steht
     „… löschen“ als roter Text mit rotem Icon.
   - Alle übrigen Schaltflächen neutral (schwebend).
-- „Abbrechen“ (in Sprechblasen): neutral, nur das Icon ban ist rot.
+- „Abbrechen“ (in Sprechblasen): neutral, ohne Icon, normale Schrift.
 - Gesperrte Schaltflächen: ausgegraut (Deckkraft 40 %).
 - Keine Hover-Farbe auf dem iPad – Hover nur in `@media (hover: hover)`.
 - Schaltflächen unten rechts (z. B. nach oben / ans Ende): runde schwebende
@@ -160,14 +162,13 @@ heller).
 | Suchen | `search` | in der Kapsel und im Suchfeld |
 | Voriger / nächster Treffer | `chevron-up` / `chevron-down` | nur Icon, als Kapsel |
 | Zurück / Weiter (Blättern) | `chevron-left` / `chevron-right` | nur Icon, als Kapsel |
-| Abbrechen (Sprechblase) | `ban` | Icon rot, Text normal |
 | Löschen / Entfernen / Verwerfen | `trash` | weiß auf Rot (Sprechblase), rot (Menü) |
 | Weiter bearbeiten | `pencil` | Icon + Text |
 | Backup sichern / laden | `save` / `folder-open` | Icon + Text |
 | Vorschau | `eye` | Icon + Text |
 | HTML / PDF | `file-code` / `file-text` | Icon + Text |
 | Info / Hinweis ein-/ausblenden | `info` | nur Icon |
-| Modus dunkel / hell | `moon` / `sun` | im Mehr-Menü, zeigt die Aktion |
+| Darstellung | `sun-moon` | im Mehr-Menü, Untermenü Automatisch · Hell · Dunkel |
 | Nach oben / Ans Ende | `arrow-up-to-line` / `arrow-down-to-line` | nur Icon |
 | Diktieren | `mic` | nur Icon, pulsiert während der Aufnahme |
 | Zurücksetzen | `rotate-ccw` | nur Icon, gedämpft |
@@ -424,25 +425,30 @@ programmiert (`design.css`, `ui.js`) und von allen Apps übernommen.
   (nicht dauerhaft) „Safari kann die Daten bei Speichermangel löschen – bitte regelmäßig ein
   Backup erstellen.“
 - **Kontextmenü:** Langes Drücken (ca. 0,6 s) auf einen Eintrag öffnet rechts daneben ein Menü
-  (Komponente Menü) mit Öffnen (book-open) · Einstellungen (settings) · … löschen (rot, Sprechblase);
-  der Eintrag ist dabei blau getönt. Kurzes Tippen öffnet wie bisher; kein Wischen, kein Hinweistext.
+  (Komponente Menü) mit Einstellungen (settings) · … löschen (rot, Sprechblase) – **ohne ‚Öffnen‘**,
+  weil Tippen öffnet (wie Notizen); der Eintrag ist dabei blau getönt. Kein Wischen, kein Hinweistext.
   [HIG – Context menus](https://developer.apple.com/design/human-interface-guidelines/context-menus)
 
 ### 15.5 Kapsel
 - **Apple:** [HIG – Toolbars](https://developer.apple.com/design/human-interface-guidelines/toolbars)
 - Mehrere Schaltflächen in einer schwebenden Kapsel (44 px hoch, je Icon 48 px breit);
   Text-Schaltflächen darin mit Innenabstand 14 px. Technisch `.grp` (`.navgrp`).
+- **Alle Kapseln gleich gebaut** (Kopfzeile, Seitenleiste, Treffer-Pfeile, Blättern, Auswahl-Kapseln):
+  Schaltflächen genau so hoch wie der Innenraum (44 px minus Rand); die Markierung (gedrückt bzw.
+  blau gefüllt) ist eine eigene Kapsel mit 3 px Luft und liegt immer innerhalb des Randes.
 
 ### 15.6 Menü
 - **Apple:** [HIG – Menus](https://developer.apple.com/design/human-interface-guidelines/menus)
 - **Zweck:** weitere Aktionen hinter ellipsis bzw. Auswahl hinter einer Schaltfläche.
   **Technisch:** `.menu` (öffnen mit `openMenu`).
 - **Aussehen:** Karte 340 px, Radius 14 px, Lichtkante und Schatten wie die Schaltflächen;
-  Einträge 46 px hoch, Icon **vor** dem Text, Haarlinien; Gruppen durch 8 px Abstand
-  getrennt; Auswahl mit blauem Häkchen vorne; graue Zusatzzeile unter einem Eintrag; graue
-  Notiz ganz unten. Graue Notizen und technische Informationen (Version, Speicher, Zahl der
-  Tage, Dateiname) stehen in allen Menüs nach einem **durchgehenden Strich** (`'line'`) ohne
-  Leerzeilen dazwischen. Nichts blau eingefärbt, „… löschen“ rot.
+  Einträge 46 px hoch, Icon **vor** dem Text, Haarlinien; Gruppen durch eine **dünne, links und
+  rechts eingerückte Linie** getrennt (wie Apple, iOS 26 – `'sep'`/`'line'`, 1 px, 20 px Einzug);
+  Auswahl mit blauem Häkchen vorne; graue Zusatzzeile unter einem Eintrag; graue Notizen und
+  technische Informationen (Version, Speicher, Zahl der Tage, Dateiname) ganz unten nach der
+  Linie, ohne Leerzeilen. Nichts blau eingefärbt, „… löschen“ rot.
+- **Untermenü** (`submenu`, eine Ebene, höchstens etwa 5 Punkte): Eintrag mit grauem Wert und ›;
+  öffnet neben dem Menü, oben bündig; der Eintrag bleibt blau, solange es offen ist.
 - **Verhalten:** erscheint unter der Schaltfläche (darf über die Seitenleiste
   hinausragen); die Schaltfläche ist so lange gedrückt (blau getönt); daneben tippen schließt.
 
@@ -450,7 +456,8 @@ programmiert (`design.css`, `ui.js`) und von allen Apps übernommen.
 - **Apple:** [HIG – Popovers](https://developer.apple.com/design/human-interface-guidelines/popovers) · [HIG – Action sheets](https://developer.apple.com/design/human-interface-guidelines/action-sheets) · [HIG – Alerts](https://developer.apple.com/design/human-interface-guidelines/alerts)
 - **Zweck:** jede Abfrage mit Entscheidung. **Technisch:** `.pop` (`confirmPop`).
 - **Aufbau:** grauer Text · rote Schaltfläche mit dem Verb der Aktion · darunter der Weg
-  zurück („Abbrechen“ mit rotem ban bzw. „Weiter bearbeiten“ mit pencil); Breite 320 px.
+  zurück („Abbrechen“ bzw. „Weiter bearbeiten“, normale Schrift); **Schaltflächen ohne Icons**
+  wie in Apple-Abfragen; Breite 320 px.
 - **Verhalten:** an der angetippten Schaltfläche (diese ist gedrückt); daneben tippen bricht ab.
 
 ### 15.8 Fenster-Kopfzeile
@@ -520,7 +527,8 @@ Jedes Muster und jede Version wird **vorher** an dieser Liste gemessen (Apple-Ab
 Messbare Punkte prüft das HIG-Prüfskript automatisch.
 
 1. **Antippflächen** ([Accessibility](https://developer.apple.com/design/human-interface-guidelines/accessibility)): Standard 44 × 44 pt, nie kleiner
-   als 28 × 28 pt.
+   als 28 × 28 pt (Knöpfe in Kapseln und Schalter wie bei Apple ab 28 pt). Kleine Zeichen und
+   Links bekommen eine unsichtbar größere Antippfläche (Innenabstand), das Layout bleibt gleich.
 2. **Schrift:** Fließtext 17 pt, kleinste Schrift 11 pt, Hinweise 13 pt grau; Überschriften nach
    Apple-Textstilen (17 halbfett, 20, 22, 28, 34 pt).
 3. **Kontrast und Farbe:** Kontrast mindestens 4,5 : 1 bis 17 pt, 3 : 1 ab 18 pt oder fett –
@@ -558,6 +566,7 @@ Messbare Punkte prüft das HIG-Prüfskript automatisch.
 
 | Version | Datum | Art | Inhalt |
 |---|---|---|---|
+| 3.6.0 | 09.10.2026 | Neben | Darstellung folgt dem iPad (Untermenü zum Übersteuern); Untermenüs; Trennlinie in Menüs dünn und eingerückt; alle Kapseln gleich gebaut; Sprechblasen ohne Icons; Kontextmenü ohne ‚Öffnen‘; `--muted` und Rot im Dunkelmodus kontrastreicher; unsichtbar vergrößerte Antippflächen; HIG-Prüfskript `tests/hig.mjs` |
 | 3.5.1 | 09.10.2026 | Korrektur | HIG-Checkliste: kein „…“ in Menüs (wie Apples iPhone-/iPad-Apps); Liste der bewussten Abweichungen (Weiß auf Systemblau, Orange) |
 | 3.5.0 | 09.10.2026 | Neben | Neuer Abschnitt 16 HIG-Checkliste (Antippflächen, Schrift, Kontrast, Auswahl, Menüs, Kontextmenüs, Abfragen, Texte, Fenster) mit Links zu den Apple-Seiten |
 | 3.4.1 | 09.10.2026 | Korrektur | Menü: graue Notizen in allen Menüs (auch Teilen-Menü) nach durchgehendem Strich |

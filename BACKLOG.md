@@ -1,6 +1,6 @@
 # Backlog – offene Themen
 
-**Stand 09.10.2026** · Aktuelle Version: Reiselogbuch 2.2.2
+**Stand 09.10.2026** · Aktuelle Version: Reiselogbuch 2.3.0
 
 Hier stehen alle offenen Themen. Erledigte Punkte wandern mit Version und Datum nach unten
 in „Erledigt“. Claude erinnert zu Beginn und am Ende jeder Sitzung an die offenen Punkte
@@ -18,28 +18,19 @@ sind (oder auf Wunsch); siehe `README - Zusammenarbeit allgemein.md`, Abschnitt 
 
 ---
 
-## 0. Nächste Version 2.3.0 – gesammelt, noch nicht gebaut
+## 0. Nächste Version 2.4.0 – gesammelt, noch nicht gebaut
 
 | Nr. | Prio | Thema | Gilt | bereit seit |
 |---|---|---|---|---|
-| T-07 | 3 | Alle Kapseln technisch gleich bauen: auch Kopfzeilen-Kapsel [share \| search \| ellipsis], Seitenleisten-Kapsel und Treffer-Pfeile ⌃ ⌄ – Schaltflächen genau so hoch wie der Innenraum (44 px minus Rand), Markierung liegt immer innerhalb des Randes | allgemein | 08.10.2026 |
-| T-10 | 1 | HIG-Prüfskript im Repo (`tests/`), läuft bei jeder Version mit: Antippflächen ≥ 44 px, Schriftgrößen ≥ 11 px (Fließtext 17), Kontrast ≥ 4,5 : 1 (hell und dunkel), Markierung `.on` bleibt, solange Menü/Fenster offen ist, keine doppelten Anführungszeichen, Löschen rot am Ende von Menüs; Ergebnis als Abweichungsliste | allgemein | 09.10.2026 |
-| T-11 | 1 | Hinweis bei überschneidenden Reisezeiträumen sagt, was zu tun ist (HIG Writing): statt ‚… Bitte korrigieren.‘ → ‚Wähle einen Zeitraum, der sich nicht mit ‚Toskana‘ (03.05.2027 - 17.05.2027) überschneidet.‘ | Reiselogbuch | 09.10.2026 |
-| T-12 | 2 | Trennlinie in Menüs wie Apple (iOS 26 Notizen, Vergleichsbilder 2 und 4): dünn und links/rechts eingerückt statt durchgehendem Strich – in allen Menüs (Seitenleiste, Teilen, Mehr, Kontextmenü) | allgemein | 09.10.2026 |
-| T-13 | 2 | HIG-Prüfung – Antippflächen: Maps-Links (Quartier in der Tabelle, ‚In Google Maps prüfen‘) und ⓧ ‚Suche leeren‘ unsichtbar auf 44 px vergrößern | Maps: Reiselogbuch · ⓧ: allgemein | 09.10.2026 |
-| T-14 | 2 | HIG-Prüfung – Texte: Quartier-Hinweis ‚… gilt für die Zeile, in der du gerade schreibst‘, ‚Der Name wird zum Link in Google Maps‘; Meldung ‚… wird geladen. Du findest die Datei in der Dateien-App unter ‚Downloads‘.‘ | Reiselogbuch | 09.10.2026 |
-| T-15 | 2 | HIG-Prüfung – Kontextmenü ohne ‚Öffnen‘ (Tippen öffnet; wie Notizen) | allgemein | 09.10.2026 |
-| T-16 | 2 | HIG-Prüfung – Kontrast: graue Hinweistexte hell `#6e6e73`, dunkel `#98989d`; Löschen-Schaltfläche im Dunkelmodus `#d70015` (Muster M230-1, M230-4 bestätigt) | allgemein | 09.10.2026 |
-| T-17 | 2 | HIG-Prüfung – Schaltflächen in Sprechblasen ohne Icons wie Apple (‚Reiselogbuch löschen‘ rot, ‚Abbrechen‘ normal; ebenso ‚Änderungen verwerfen‘ / ‚Weiter bearbeiten‘) (Muster M230-3 bestätigt) | allgemein | 09.10.2026 |
-| T-18 | 2 | HIG-Prüfung – Darstellung folgt automatisch dem iPad; im Mehr-Menü Untermenü ‚Darstellung ›‘ mit Automatisch · Hell · Dunkel (Voreinstellung Automatisch) (Muster M230-5 bestätigt) | allgemein | 09.10.2026 |
+| – | – | zurzeit nichts | – | – |
 
-**10 Punkte bereit** · gebaut wird erst nach „Ja“
+**0 Punkte bereit** · gebaut wird erst nach „Ja“
 
 ## 1. Auf dem iPad prüfen
 
 | Nr. | Prio | Thema | Status |
 |---|---|---|---|
-| – | – | zurzeit nichts zu prüfen | – |
+| P-12 | 1 | **Version 2.3.0 – Prüfliste:** 1) iPad auf Dunkel stellen (Kontrollzentrum) → App wechselt sofort mit · 2) Mehr-Menü → ‚Darstellung ›‘ → Hell / Dunkel / Automatisch · 3) Menüs: Gruppen durch dünne, eingerückte Linie getrennt · 4) Kapseln (Kopfzeile, Seitenleiste, ‹ › im Tag, ⌃ ⌄ in der Suche): blaue Markierung liegt innerhalb des Randes · 5) Langes Drücken auf ein Reiselogbuch: nur ‚Einstellungen‘ und ‚Reiselogbuch löschen‘ · 6) Löschen-Abfrage ohne Icons, im Dunkelmodus gut lesbar · 7) graue Texte (Hinweise, Daten in der Seitenleiste) besser lesbar · 8) Quartier-Link in der Tabelle und ‚In Google Maps prüfen‘ leicht antippbar, ⓧ in der Suche · 9) überschneidenden Zeitraum eingeben → ‚Wähle einen Zeitraum, …‘ · 10) Hinweis unter ‚Essen und Trinken‘ ohne ‚Cursor‘ | prüfen |
 
 ## 2. Weitere Themen (in Klärung)
 
@@ -64,6 +55,7 @@ sind (oder auf Wunsch); siehe `README - Zusammenarbeit allgemein.md`, Abschnitt 
 
 | Nr. | Thema | Version | Datum |
 |---|---|---|---|
+| E-17 | Reiselogbuch 2.3.0 (Sammelversion HIG-Prüfung): T-07, T-10, T-11, T-12, T-13, T-14, T-15, T-16, T-17, T-18 | Reiselogbuch 2.3.0 · allgemein 3.6.0 · Reiselogbuch-Richtlinie 2.3.0 | 09.10.2026 |
 | E-16 | Auf dem iPad geprüft und ok: P-11 Anführungszeichen ‚…‘, Teilen-Menü mit Strich | Reiselogbuch 2.2.2 | 09.10.2026 |
 | E-15 | Reiselogbuch 2.2.2: T-09 Anführungszeichen ‚…‘ in der App, T-08 Teilen-Menü mit Strich | Reiselogbuch 2.2.2 · allgemein 3.4.1 · Reiselogbuch-Richtlinie 2.2.2 | 09.10.2026 |
 | E-14 | Auf dem iPad geprüft und ok: P-09 Kontextmenü und Satz zum Speicher · P-10 Gewähltes bleibt blau, Menü mit Strich | Reiselogbuch 2.2.1 | 09.10.2026 |

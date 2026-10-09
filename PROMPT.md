@@ -1,6 +1,6 @@
-# Reiselogbuch – Prompt (Stand 09.10.2026, Version 2.2.2)
+# Reiselogbuch – Prompt (Stand 09.10.2026, Version 2.3.0)
 
-Reiselogbuch 2.2.2 · Designrichtlinie allgemein 3.5.1 · Designrichtlinie Reiselogbuch 2.2.2 · Zusammenarbeit allgemein 1.7.1
+Reiselogbuch 2.3.0 · Designrichtlinie allgemein 3.6.0 · Designrichtlinie Reiselogbuch 2.3.0 · Zusammenarbeit allgemein 1.7.1
 (Gestaltungsregeln: `README - Designrichtlinie allgemein.md` und
 `README - Designrichtlinie Reiselogbuch.md`; Zusammenarbeit: `README - Zusammenarbeit
 allgemein.md`; Einstieg für Claude: `CLAUDE.md`. Bei jeder Design-Änderung mit aktualisieren.)
@@ -35,8 +35,9 @@ RAHMEN
 - Bereitstellung über GitHub Pages aus dem Repo "ReiseLogBuch" (Branch
   main, Hauptordner): https://g811141a.github.io/ReiseLogBuch/
   (Repo öffentlich, die Einträge bleiben trotzdem nur auf dem iPad).
-- Darstellung Hell / Dunkel (2 Stufen), im Mehr-Menü als "Modus dunkel"
-  bzw. "Modus hell" (zeigt die Aktion). Die letzte Einstellung wird gemerkt.
+- Darstellung wie Apple: folgt automatisch der Hell/Dunkel-Einstellung des
+  iPads (Voreinstellung "Automatisch"). Im Mehr-Menü Untermenü "Darstellung ›"
+  (sun-moon) mit Automatisch · Hell · Dunkel zum Übersteuern; wird gemerkt.
 - Aufbau wie Apple-Apps:
   - Links die Seitenleiste "Reiselogbücher": Überschrift linksbündig,
     daneben die Kapsel [plus | ellipsis] und rechts die runde Schaltfläche
@@ -57,7 +58,8 @@ RAHMEN
     wird." (bzw. "Safari kann die Daten bei Speichermangel löschen – bitte
     regelmäßig ein Backup erstellen.")
   - Langes Drücken auf ein Reiselogbuch in der Seitenleiste öffnet ein Menü:
-    Öffnen · Einstellungen · Reiselogbuch löschen (rot, mit Abfrage).
+    Einstellungen · Reiselogbuch löschen (rot, mit Abfrage) – ohne "Öffnen",
+    weil kurzes Tippen öffnet.
   - Wurde heute noch kein Backup erstellt, steht unten in der Seitenleiste
     dezent "Letztes Backup erstellt am …" (bzw. "Noch kein Backup erstellt.")
     und die Schaltfläche "Backup erstellen".
@@ -66,7 +68,7 @@ RAHMEN
     ellipsis]. share öffnet das Teilen-Menü (Vorschau · HTML · PDF), search
     blendet darunter eine zweite Zeile mit dem Suchfeld über die volle
     Breite ein, ellipsis öffnet das Mehr-Menü: "Alle Tage" / "Nur erfasste
-    Tage" (Häkchen) · "Einstellungen" · "Modus dunkel/hell" ·
+    Tage" (Häkchen) · "Einstellungen" · "Darstellung ›" ·
     "Reiselogbuch löschen" (rot).
   - Menüs: Icons vor dem Text, Schatten wie die Schaltflächen; daneben tippen
     schließt. Die Schaltfläche, von der ein Menü, eine Abfrage oder ein
@@ -74,7 +76,8 @@ RAHMEN
 - Abfragen (Löschen, Backup laden, Smiley entfernen, Smileys zurücksetzen,
   Änderungen verwerfen) als Sprechblase an der angetippten Schaltfläche:
   grauer Text, rote Schaltfläche mit dem Verb der Aktion, darunter
-  "Abbrechen" (bzw. "Weiter bearbeiten"); daneben tippen bricht ab. Reine
+  "Abbrechen" (bzw. "Weiter bearbeiten") in normaler Schrift – Schaltflächen
+  ohne Icons wie in Apple-Abfragen; daneben tippen bricht ab. Reine
   Meldungen (z. B. Fehler) in einem kleinen Fenster mit rundem x. Keine
   iPad-Systemfenster mit "Close"/"OK".
 - Alle Aktionen sind echte Schaltflächen (kein reiner Text als Link).
@@ -131,8 +134,8 @@ RAHMEN
   📍, Spaltenköpfe) bleiben Emojis. Zuordnung:
   Seitenleiste panel-left · Neues Reiselogbuch plus · Mehr-Menü ellipsis ·
   Einstellungen settings · Ausgabe/Teilen share (immer ohne Text) · Suchen
-  search · Modus dunkel/hell moon/sun · Fertig check (rund) · Abbrechen/
-  Schließen x (rund) · Abbrechen in Sprechblasen ban (rot) · Löschen/
+  search · Darstellung sun-moon · Fertig check (rund) · Abbrechen/
+  Schließen x (rund) · Löschen/
   Entfernen/Verwerfen trash · Weiter bearbeiten pencil · Backup sichern save
   · Backup laden folder-open · Vorschau eye · HTML file-code · PDF file-text
   · Nach oben/Ans Ende arrow-up-to-line/arrow-down-to-line · Diktieren mic ·
@@ -181,8 +184,9 @@ REISEN
   - Wie war was? aus: Statistik zählt nur die Smileys des Fazits.
   - Erfasst ist ein Tag, wenn Wetter, Programm oder eine sichtbare Spalte
     (außer Essen) ausgefüllt ist.
-- Reisezeiträume dürfen sich nicht überschneiden (Hinweis, Speichern
-  erst nach Korrektur möglich).
+- Reisezeiträume dürfen sich nicht überschneiden (Hinweis "Wähle einen
+  Zeitraum, der sich nicht mit ‚…‘ (…) überschneidet.", Speichern erst nach
+  Korrektur möglich).
 - Frühere Reisen bleiben gespeichert und können jederzeit wieder
   geöffnet und geändert werden.
 - Reisen können gelöscht werden, nur nach einer Sicherheitsabfrage.

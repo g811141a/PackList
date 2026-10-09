@@ -12,6 +12,24 @@ Versionsnummer **Hauptversion.Nebenversion.Korrektur** (z. B. 1.2.1):
 Steigt eine Stufe, beginnen die Stufen dahinter wieder bei 0.
 Die aktuelle Version steht in der App im Mehr-Menü (ellipsis) der Seitenleiste „Reiselogbücher“.
 
+## 2.3.0 – 09.10.2026 (Nebenversion)
+
+Reiselogbuch 2.3.0 · Designrichtlinie allgemein 3.6.0 · Designrichtlinie Reiselogbuch 2.3.0 · Zusammenarbeit allgemein 1.7.1
+
+Sammelversion aus der HIG-Prüfung der ganzen App:
+
+- T-18: Darstellung folgt automatisch dem iPad; im Mehr-Menü Untermenü ‚Darstellung ›‘ mit
+  Automatisch · Hell · Dunkel (ersetzt ‚Modus dunkel/hell‘).
+- T-12: Gruppen in allen Menüs durch eine dünne, eingerückte Linie getrennt (wie iOS 26).
+- T-07: Alle Kapseln gleich gebaut – die Markierung liegt immer innerhalb des Randes.
+- T-15: Kontextmenü in der Seitenleiste ohne ‚Öffnen‘ (Tippen öffnet).
+- T-17: Schaltflächen in Sprechblasen ohne Icons; ‚Abbrechen‘ in normaler Schrift.
+- T-16: Graue Hinweistexte kontrastreicher; Löschen-Schaltfläche im Dunkelmodus gut lesbar.
+- T-13: Größere Antippflächen für Maps-Links (Quartier, ‚In Google Maps prüfen‘) und ⓧ in der Suche.
+- T-11/T-14: Verständlichere Texte – Überschneidung (‚Wähle einen Zeitraum, …‘),
+  Quartier-Hinweis ohne ‚Cursor‘, Download-Meldung.
+- T-10: HIG-Prüfskript `tests/hig.mjs` prüft jede Version (hell/dunkel, quer/hoch).
+
 ## 2.2.2 – 09.10.2026 (Korrektur)
 
 Reiselogbuch 2.2.2 · Designrichtlinie allgemein 3.4.1 · Designrichtlinie Reiselogbuch 2.2.2 · Zusammenarbeit allgemein 1.5.0

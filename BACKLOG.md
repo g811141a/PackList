@@ -22,7 +22,7 @@ sind (oder auf Wunsch); siehe `README - Zusammenarbeit allgemein.md`, Abschnitt 
 
 | Nr. | Prio | Thema | Gilt | bereit seit |
 |---|---|---|---|---|
-| – | – | zurzeit nichts | – | – |
+| – | – | zurzeit nichts bereit (Muster M240 zur Bestätigung gezeigt) | – | – |
 
 **0 Punkte bereit** · gebaut wird erst nach „Ja“
 
@@ -30,7 +30,7 @@ sind (oder auf Wunsch); siehe `README - Zusammenarbeit allgemein.md`, Abschnitt 
 
 | Nr. | Prio | Thema | Status |
 |---|---|---|---|
-| P-12 | 1 | **Version 2.3.0 – Prüfliste:** 1) iPad auf Dunkel stellen (Kontrollzentrum) → App wechselt sofort mit · 2) Mehr-Menü → ‚Darstellung ›‘ → Hell / Dunkel / Automatisch · 3) Menüs: Gruppen durch dünne, eingerückte Linie getrennt · 4) Kapseln (Kopfzeile, Seitenleiste, ‹ › im Tag, ⌃ ⌄ in der Suche): blaue Markierung liegt innerhalb des Randes · 5) Langes Drücken auf ein Reiselogbuch: nur ‚Einstellungen‘ und ‚Reiselogbuch löschen‘ · 6) Löschen-Abfrage ohne Icons, im Dunkelmodus gut lesbar · 7) graue Texte (Hinweise, Daten in der Seitenleiste) besser lesbar · 8) Quartier-Link in der Tabelle und ‚In Google Maps prüfen‘ leicht antippbar, ⓧ in der Suche · 9) überschneidenden Zeitraum eingeben → ‚Wähle einen Zeitraum, …‘ · 10) Hinweis unter ‚Essen und Trinken‘ ohne ‚Cursor‘ | prüfen |
+| P-12 | 1 | **Version 2.3.0 – Prüfliste:** 1, 2, 5, 6, 8, 9, 10 ok (09.10.2026) · offen: 3) noch durchgehende Linien in Menüs → T-20 · 4) blauer Rahmen am Suchfeld → T-21 · 7) graue Texte (Version, Speicher u. a.) fehlen auf dem iPad → T-22 | prüfen |
 
 ## 2. Weitere Themen (in Klärung)
 
@@ -40,6 +40,10 @@ sind (oder auf Wunsch); siehe `README - Zusammenarbeit allgemein.md`, Abschnitt 
 | T-03 | 2 | Daten zwischen iPad und iPhone abgleichen (Ablage in iCloud, Weiterbearbeitung auf dem iPhone): a) Datei in iCloud Drive mit Zusammenführen (kostenlos) · b) CloudKit JS (Entwicklerkonto) · c) echte App mit iCloud (Mac + Entwicklerkonto); Empfehlung a jetzt, c später – offen: Mac vorhanden? Entwicklerkonto? Arbeitsweise? | allgemein | offen |
 | T-05 | 2 | Bestehende (alte) Reiselogbücher aufbereiten und importierbar machen: Dateien (Word/PDF/Excel/HTML/Fotos) auslesen, Unklarheiten nachfragen, Vorschau zeigen, Datei erstellen; Überschneidungen prüfen. Offen: Form der Unterlagen, Anzahl, Weg (a: in aktuelles Backup einfügen · b: neue Funktion „Reiselogbuch importieren“, die hinzufügt statt ersetzt) | Reiselogbuch | offen |
 | T-06 | 3 | Ausschreibungstexte (Reiseveranstalter) in Reiselogbücher umwandeln – für erledigte **und** geplante Reisen: Titel, Zeitraum, Reisemittel; je Tag das Programm („1. Tag“ → echtes Datum, Text wie in der Ausschreibung); Quartiere mit Ort, falls genannt; übrige Felder bleiben leer | Reiselogbuch | offen |
+| T-19 | 3 | Essen-Links in der Tabelle: etwas mehr Zeilenabstand zwischen den Lokalen (10 px) und Antippfläche je Link ≥ 28 px, ohne Überlappung (HIG-Prüfskript) – Muster M240-4 | Reiselogbuch | offen |
+| T-20 | 1 | Menüs ohne Linien zwischen den einzelnen Punkten, nur die eingerückte Linie zwischen Gruppen (wie Apple, Vergleichsbilder 2 und 4; aus P-12/3) – Muster M240-1, M240-2 | allgemein | offen |
+| T-21 | 1 | Suchfeld ohne blauen Fokus-Rahmen (wie Apple; aus P-12/4) – Muster M240-3 | allgemein | offen |
+| T-22 | 1 | Graue Texte im Menü (Version, Speicher u. a.) fehlen auf dem iPad – im Test sichtbar, Screenshot vom iPad angefragt (aus P-12/7) | allgemein | offen |
 
 ## 3. Später
 

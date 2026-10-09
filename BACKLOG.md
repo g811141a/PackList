@@ -29,8 +29,11 @@ sind (oder auf Wunsch); siehe `README - Zusammenarbeit allgemein.md`, Abschnitt 
 | T-13 | 2 | HIG-Prüfung – Antippflächen: Maps-Links (Quartier in der Tabelle, ‚In Google Maps prüfen‘) und ⓧ ‚Suche leeren‘ unsichtbar auf 44 px vergrößern | Maps: Reiselogbuch · ⓧ: allgemein | 09.10.2026 |
 | T-14 | 2 | HIG-Prüfung – Texte: Quartier-Hinweis ‚… gilt für die Zeile, in der du gerade schreibst‘, ‚Der Name wird zum Link in Google Maps‘; Meldung ‚… wird geladen. Du findest die Datei in der Dateien-App unter ‚Downloads‘.‘ | Reiselogbuch | 09.10.2026 |
 | T-15 | 2 | HIG-Prüfung – Kontextmenü ohne ‚Öffnen‘ (Tippen öffnet; wie Notizen) | allgemein | 09.10.2026 |
+| T-16 | 2 | HIG-Prüfung – Kontrast: graue Hinweistexte hell `#6e6e73`, dunkel `#98989d`; Löschen-Schaltfläche im Dunkelmodus `#d70015` (Muster M230-1, M230-4 bestätigt) | allgemein | 09.10.2026 |
+| T-17 | 2 | HIG-Prüfung – Schaltflächen in Sprechblasen ohne Icons wie Apple (‚Reiselogbuch löschen‘ rot, ‚Abbrechen‘ normal; ebenso ‚Änderungen verwerfen‘ / ‚Weiter bearbeiten‘) (Muster M230-3 bestätigt) | allgemein | 09.10.2026 |
+| T-18 | 2 | HIG-Prüfung – Darstellung folgt automatisch dem iPad; im Mehr-Menü Untermenü ‚Darstellung ›‘ mit Automatisch · Hell · Dunkel (Voreinstellung Automatisch) (Muster M230-5 bestätigt) | allgemein | 09.10.2026 |
 
-**7 Punkte bereit** · gebaut wird erst nach „Ja“
+**10 Punkte bereit** · gebaut wird erst nach „Ja“
 
 ## 1. Auf dem iPad prüfen
 
@@ -46,9 +49,6 @@ sind (oder auf Wunsch); siehe `README - Zusammenarbeit allgemein.md`, Abschnitt 
 | T-03 | 2 | Daten zwischen iPad und iPhone abgleichen (Ablage in iCloud, Weiterbearbeitung auf dem iPhone): a) Datei in iCloud Drive mit Zusammenführen (kostenlos) · b) CloudKit JS (Entwicklerkonto) · c) echte App mit iCloud (Mac + Entwicklerkonto); Empfehlung a jetzt, c später – offen: Mac vorhanden? Entwicklerkonto? Arbeitsweise? | allgemein | offen |
 | T-05 | 2 | Bestehende (alte) Reiselogbücher aufbereiten und importierbar machen: Dateien (Word/PDF/Excel/HTML/Fotos) auslesen, Unklarheiten nachfragen, Vorschau zeigen, Datei erstellen; Überschneidungen prüfen. Offen: Form der Unterlagen, Anzahl, Weg (a: in aktuelles Backup einfügen · b: neue Funktion „Reiselogbuch importieren“, die hinzufügt statt ersetzt) | Reiselogbuch | offen |
 | T-06 | 3 | Ausschreibungstexte (Reiseveranstalter) in Reiselogbücher umwandeln – für erledigte **und** geplante Reisen: Titel, Zeitraum, Reisemittel; je Tag das Programm („1. Tag“ → echtes Datum, Text wie in der Ausschreibung); Quartiere mit Ort, falls genannt; übrige Felder bleiben leer | Reiselogbuch | offen |
-| T-16 | 2 | HIG-Prüfung – Kontrast: graue Hinweistexte hell `#6e6e73`, dunkel `#98989d`; Löschen-Schaltfläche im Dunkelmodus `#d70015` (Muster M230-1, M230-4 gezeigt) | allgemein | offen |
-| T-17 | 2 | HIG-Prüfung – ‚Abbrechen‘ in Sprechblasen ohne rotes Icon; Variante: alle Schaltflächen in Sprechblasen ohne Icons wie Apple (Muster M230-2, M230-3 gezeigt) | allgemein | offen |
-| T-18 | 2 | HIG-Prüfung – Darstellung folgt automatisch dem iPad; Menüpunkt bleibt zum Übersteuern (Automatisch · Hell · Dunkel) – als Untermenü oder direkt im Menü (Muster M230-5, M230-6 gezeigt) | allgemein | offen |
 
 ## 3. Später
 

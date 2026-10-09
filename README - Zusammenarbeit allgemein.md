@@ -1,6 +1,6 @@
 # Zusammenarbeit allgemein
 
-**Version 1.6.0** · Stand 09.10.2026
+**Version 1.7.0** · Stand 09.10.2026
 
 Regeln für die Zusammenarbeit mit Claude bei allen iPad-Web-Apps von g811141a.
 Diese Datei liegt vorerst im Repo ReiseLogBuch und **wandert später ins Design-Repo**.
@@ -48,6 +48,15 @@ App-spezifische Punkte stehen in der `CLAUDE.md` des jeweiligen App-Repos.
   per Rückfrage.
 - Was im Web nicht geht (z. B. SF Symbols, echte Systemmenüs), wird so nah wie möglich
   nachgebaut und als Abweichung genannt.
+- **Apple-Abgleich vor jedem Muster (Pflicht):** Bevor Claude ein Muster zeigt, steht kurz
+  dabei: welche Apple-App es so löst (z. B. Notizen, Dateien, Erinnerungen), welche Punkte der
+  **HIG-Checkliste** (Designrichtlinie allgemein) betroffen sind und wo bewusst abgewichen
+  wird – mit Grund. Die HIG wird **vorher** geprüft, nicht erst nach einer Meldung.
+- **Apple-Review nach jeder Version (Pflicht):** In der Zusammenfassung steht je Punkt
+  „entspricht HIG“ oder „weicht ab, weil …“, dazu das Ergebnis des HIG-Prüfskripts.
+- **Vergleichsbilder:** Claude bittet bei Bedarf **konkret** um 1–4 Screenshots aus
+  Apple-Apps (iPad oder iPhone) zum jeweiligen Thema. Sie liegen im App-Repo im Ordner
+  `apple-referenz/` (später im Design-Repo); Muster werden neben das Vorbild gestellt.
 
 ## 4. Backlog
 
@@ -110,7 +119,9 @@ App-spezifische Punkte stehen in der `CLAUDE.md` des jeweiligen App-Repos.
 
 ## 7. Nach jeder Version
 
-- Testen (hell und dunkel, iPad quer und hoch, alle betroffenen Abläufe).
+- Testen (hell und dunkel, iPad quer und hoch, alle betroffenen Abläufe) und das
+  HIG-Prüfskript laufen lassen (Antippflächen, Schriftgrößen, Kontraste, Markierung bleibt,
+  Anführungszeichen …).
 - Im Backlog die gebauten Punkte aus „0. Nächste Version“ entfernen, die Prüfliste unter
   „1. Auf dem iPad prüfen“ anlegen und „Erledigt“ ergänzen.
 - PROMPT.md, CHANGELOG.md und betroffene Designrichtlinien aktualisieren; in PROMPT.md und
@@ -142,6 +153,7 @@ App-spezifische Punkte stehen in der `CLAUDE.md` des jeweiligen App-Repos.
 
 | Version | Datum | Art | Inhalt |
 |---|---|---|---|
+| 1.7.0 | 09.10.2026 | Neben | Pflicht: Apple-Abgleich vor jedem Muster (HIG-Checkliste) und Apple-Review nach jeder Version; Vergleichsbilder aus Apple-Apps auf Anfrage (`apple-referenz/`); HIG-Prüfskript bei jedem Test |
 | 1.6.0 | 09.10.2026 | Neben | Verpflichtend: Sammelversionen – geklärte Punkte in „0. Nächste Version“ sammeln, Version erst bei größerem Thema, etwa 5 Punkten oder auf Wunsch; Sofort-Korrektur nur bei Datenverlust/unbenutzbarer App; eine Prüfliste je Version; Status „bereit“ statt „vereinbart“ |
 | 1.5.0 | 08.10.2026 | Neben | Verpflichtend: nie selbst entscheiden, eine Version zu bauen – immer vorher fragen, auch bei Korrekturen |
 | 1.4.0 | 08.10.2026 | Neben | Backlog mit Priorität; neue Themen einzeln vorschlagen und Übernahme samt Priorität erfragen |

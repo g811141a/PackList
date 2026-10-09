@@ -23,8 +23,9 @@ sind (oder auf Wunsch); siehe `README - Zusammenarbeit allgemein.md`, Abschnitt 
 | Nr. | Prio | Thema | Gilt | bereit seit |
 |---|---|---|---|---|
 | T-07 | 3 | Alle Kapseln technisch gleich bauen: auch Kopfzeilen-Kapsel [share \| search \| ellipsis], Seitenleisten-Kapsel und Treffer-Pfeile ⌃ ⌄ – Schaltflächen genau so hoch wie der Innenraum (44 px minus Rand), Markierung liegt immer innerhalb des Randes | allgemein | 08.10.2026 |
+| T-10 | 1 | HIG-Prüfskript im Repo (`tests/`), läuft bei jeder Version mit: Antippflächen ≥ 44 px, Schriftgrößen ≥ 11 px (Fließtext 17), Kontrast ≥ 4,5 : 1 (hell und dunkel), Markierung `.on` bleibt, solange Menü/Fenster offen ist, keine doppelten Anführungszeichen, Löschen rot am Ende von Menüs; Ergebnis als Abweichungsliste | allgemein | 09.10.2026 |
 
-**1 Punkt bereit** · gebaut wird erst nach „Ja“
+**2 Punkte bereit** · gebaut wird erst nach „Ja“
 
 ## 1. Auf dem iPad prüfen
 

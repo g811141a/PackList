@@ -1,6 +1,6 @@
 # Zusammenarbeit allgemein
 
-**Version 1.5.0** · Stand 08.10.2026
+**Version 1.6.0** · Stand 09.10.2026
 
 Regeln für die Zusammenarbeit mit Claude bei allen iPad-Web-Apps von g811141a.
 Diese Datei liegt vorerst im Repo ReiseLogBuch und **wandert später ins Design-Repo**.
@@ -11,6 +11,10 @@ App-spezifische Punkte stehen in der `CLAUDE.md` des jeweiligen App-Repos.
 > die Bitte „korrigieren“, „verbessern“ oder „ausbessern“ lautet. Vorher wird **immer** gefragt:
 > „Soll ich Version X.Y.Z mit … erstellen? Ja/Nein“ – gebaut wird erst nach einem
 > ausdrücklichen „Ja“. Bis dahin: erklären, Vorschlag machen, ins Backlog eintragen.
+>
+> **VERPFLICHTEND – Sammelversionen:** Geklärte Punkte werden **gesammelt** (Backlog-Abschnitt
+> „0. Nächste Version“) und gemeinsam in **einer** Version gebaut und getestet – nie eine
+> eigene Version für ein oder zwei Kleinigkeiten (Abschnitt 6).
 
 > **Hinweis für Claude:** Diese Regeln gelten in jeder Sitzung, auch nach langer Pause.
 > Lies zu Beginn zusätzlich `README - Designrichtlinie allgemein.md` und die
@@ -48,8 +52,17 @@ App-spezifische Punkte stehen in der `CLAUDE.md` des jeweiligen App-Repos.
 ## 4. Backlog
 
 - Jedes App-Repo hat eine `BACKLOG.md` mit allen offenen Themen (Nummer, **Priorität**, Thema,
-  allgemein oder App, Status: vereinbart · offen · prüfen · später) und einem Abschnitt
+  allgemein oder App, Status: offen · bereit · prüfen · später) und einem Abschnitt
   „Erledigt“.
+- **Aufbau der BACKLOG.md** – ein Punkt wandert von unten nach oben:
+  - **0. Nächste Version X.Y.Z** (ganz oben): fertig geklärte Punkte (Status **bereit**), die
+    in die nächste Sammelversion kommen – mit Spalte „bereit seit“ und einer Zeile „N Punkte
+    bereit“. Fertig geklärt heißt: Muster bestätigt, allgemein/App geklärt, Texte fest.
+  - **1. Auf dem iPad prüfen:** je gebauter Version **ein** Prüfpunkt mit Prüfliste.
+  - **2. Weitere Themen (in Klärung):** Status **offen**.
+  - **3. Später:** Ideen.
+  - **Erledigt:** mit Version und Datum.
+  - Weg eines Punktes: 2. in Klärung → 0. Nächste Version → 1. Prüfen → Erledigt.
 - **Priorität:** 1 hoch (als Nächstes) · 2 mittel · 3 niedrig. Gearbeitet wird immer an den
   Themen mit der höchsten Priorität zuerst; Claude schlägt die nächsten Schritte danach vor.
 - **Neue Themen:** Claude schlägt Verbesserungen einzeln vor (mit „So macht es Apple“) und
@@ -58,7 +71,8 @@ App-spezifische Punkte stehen in der `CLAUDE.md` des jeweiligen App-Repos.
 - Neue Wünsche, offene Fragen und Prüfpunkte trägt Claude sofort ein; Erledigtes wandert mit
   Version und Datum nach „Erledigt“.
 - **Claude erinnert an die offenen Themen:** zu Beginn einer Sitzung (kurze Liste) und am Ende
-  jeder Antwort, in der etwas gebaut oder entschieden wurde („Offen im Backlog: …“).
+  jeder Antwort, in der etwas gebaut oder entschieden wurde – zuerst die Zeile „Nächste
+  Version X.Y.Z: N Punkte bereit (…)“, danach „Offen im Backlog: …“.
 
 ## 5. Ablauf einer Änderung
 
@@ -70,17 +84,35 @@ App-spezifische Punkte stehen in der `CLAUDE.md` des jeweiligen App-Repos.
      damit man sie nacheinander durchsehen kann.
 3. **Bei jeder Design-Änderung fragen, ob sie allgemein gilt oder nur für die App**
    (eigene Einschätzung als Vorschlag).
-4. Zusammenfassen und fragen: „Soll ich die neue Version X.Y.Z erstellen?“ – mit
-   vorgeschlagener Versionsnummer der App und der betroffenen Richtlinien.
-5. **Erst nach ausdrücklichem „Ja“ bauen – verpflichtend, ohne Ausnahme** (siehe Hinweis oben).
-   Eine Bitte um Korrektur ist kein „Ja“ zum Bauen.
+4. Zusammenfassen und in den Backlog-Abschnitt **„0. Nächste Version“** eintragen (Status
+   bereit) – **nicht** sofort bauen. Auch kleine Fehler aus dem Testen kommen dorthin.
+5. Gebaut wird nur nach Abschnitt 6 und **erst nach ausdrücklichem „Ja“ – verpflichtend,
+   ohne Ausnahme** (siehe Hinweis oben). Eine Bitte um Korrektur ist kein „Ja“ zum Bauen.
 6. Nur das ändern, was besprochen wurde – keine ungefragten Änderungen. Fällt beim Bauen
    etwas auf, es nennen statt es eigenmächtig zu ändern (Ausnahme: offensichtliche
    Fehler, dann ausdrücklich erwähnen).
 
-## 6. Nach jeder Version
+## 6. Sammelversionen
+
+- **Wann Claude nach einer Version fragt:** erst, wenn sich eine Version lohnt –
+  - ein **größeres Thema** ist fertig geklärt, **oder**
+  - etwa **5 Punkte** sind in „0. Nächste Version“ gesammelt, **oder**
+  - der Nutzer sagt jederzeit „Version bauen“.
+  Dann: „Soll ich Version X.Y.Z mit [Liste aller bereiten Punkte] erstellen? Ja/Nein“.
+- **Sofort-Korrektur** (eigene kleine Version außer der Reihe) nur bei schweren Fehlern:
+  **Datenverlust** droht oder die App ist **nicht benutzbar**. Claude fragt auch dann vorher.
+  Alles andere wartet auf die nächste Sammelversion.
+- **Versionsnummer:** Sammelversion = in der Regel **Nebenversion** (z. B. 2.3.0);
+  Korrekturversion (z. B. 2.3.1) nur für Sofort-Korrekturen.
+- **Eine Prüfrunde je Version:** Claude legt einen Prüfpunkt mit nummerierter Prüfliste an
+  (je Punkt der Version: was auf dem iPad zu prüfen ist). Antwort z. B. „alles ok“ oder
+  „ok bis auf 3“; Abweichungen kommen wieder in „0. Nächste Version“.
+
+## 7. Nach jeder Version
 
 - Testen (hell und dunkel, iPad quer und hoch, alle betroffenen Abläufe).
+- Im Backlog die gebauten Punkte aus „0. Nächste Version“ entfernen, die Prüfliste unter
+  „1. Auf dem iPad prüfen“ anlegen und „Erledigt“ ergänzen.
 - PROMPT.md, CHANGELOG.md und betroffene Designrichtlinien aktualisieren; in PROMPT.md und
   CHANGELOG.md die Versionen vermerken (z. B. „Reiselogbuch 1.1.0 · Designrichtlinie
   allgemein 2.0.0 · Designrichtlinie Reiselogbuch 1.1.0 · Zusammenarbeit allgemein 1.0.0“).
@@ -89,13 +121,13 @@ App-spezifische Punkte stehen in der `CLAUDE.md` des jeweiligen App-Repos.
 - Screenshots in Viererpaketen schicken und die Änderungen auf Deutsch zusammenfassen; an
   den Neustart der App erinnern.
 
-## 7. Versionen
+## 8. Versionen
 
 - Dreistufig **Hauptversion.Nebenversion.Korrektur** für Apps, Richtlinien und diese
   Datei (Bedeutung siehe Designrichtlinie allgemein, Abschnitt 11).
 - Jede Datei mit eigener Versionsnummer und Versionsgeschichte am Ende.
 
-## 8. Ablage
+## 9. Ablage
 
 - Ein Repo pro App, Bereitstellung über GitHub Pages aus `main`/Hauptordner.
 - Allgemeines (diese Datei, Designrichtlinie allgemein) wandert später ins Design-Repo.
@@ -110,6 +142,7 @@ App-spezifische Punkte stehen in der `CLAUDE.md` des jeweiligen App-Repos.
 
 | Version | Datum | Art | Inhalt |
 |---|---|---|---|
+| 1.6.0 | 09.10.2026 | Neben | Verpflichtend: Sammelversionen – geklärte Punkte in „0. Nächste Version“ sammeln, Version erst bei größerem Thema, etwa 5 Punkten oder auf Wunsch; Sofort-Korrektur nur bei Datenverlust/unbenutzbarer App; eine Prüfliste je Version; Status „bereit“ statt „vereinbart“ |
 | 1.5.0 | 08.10.2026 | Neben | Verpflichtend: nie selbst entscheiden, eine Version zu bauen – immer vorher fragen, auch bei Korrekturen |
 | 1.4.0 | 08.10.2026 | Neben | Backlog mit Priorität; neue Themen einzeln vorschlagen und Übernahme samt Priorität erfragen |
 | 1.3.0 | 08.10.2026 | Neben | Neu: Backlog-Datei je App und Erinnerung an offene Themen |

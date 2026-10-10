@@ -18,13 +18,13 @@ sind (oder auf Wunsch); siehe `README - Zusammenarbeit allgemein.md`, Abschnitt 
 
 ---
 
-## 0. Nächste Version 2.5.0 – gesammelt, noch nicht gebaut
+## 0. Nächste Version 3.1.0 – gesammelt, noch nicht gebaut
 
 | Nr. | Prio | Thema | Gilt | bereit seit |
 |---|---|---|---|---|
-| – | – | zurzeit nichts | – | – |
+| T-24 | 2 | Mehr-Menü: ‚Alle Tage‘ und ‚Nur erfasste Tage‘ wieder mit den ursprünglichen Icons (`list-chevrons-up-down`, `fold-vertical`); Häkchen vorne wie bisher, dann Icon und Text (Muster M301-1 bestätigt) | Reiselogbuch | 10.10.2026 |
 
-**0 Punkte bereit** · gebaut wird erst nach „Ja“
+**1 Punkt bereit** · gebaut wird erst nach „Ja“
 
 ## 1. Auf dem iPad prüfen
 

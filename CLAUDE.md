@@ -1,6 +1,6 @@
 # Reiselogbuch – Hinweise für Claude
 
-**Version 2.0.0** · Stand 09.10.2026
+**Version 2.1.0** · Stand 10.10.2026
 
 ## Verpflichtend
 
@@ -13,6 +13,9 @@ gemeinsam bauen. Nach einer Version erst fragen, wenn ein größeres Thema ferti
 5 Punkte gesammelt sind (oder auf Wunsch). Eigene Version außer der Reihe nur bei
 Datenverlust oder unbenutzbarer App. Details: `README - Zusammenarbeit allgemein.md`,
 Abschnitt 6.
+
+**Zeitmessung:** Bei jeder Antwort die Zeit der Aktionen messen und am Ende im Format mm:ss mit
+aussagekräftigem Text ausgeben (je Aktion und gesamt). Details: Zusammenarbeit allgemein in AppDesign.
 
 **Erst prüfen, dann Neues:** Nach jeder Version ausdrücklich darauf hinweisen, dass zuerst alle
 Prüfpunkte getestet und Fehler beseitigt werden; Neues erst danach (außer der Nutzer besteht darauf).
@@ -72,6 +75,7 @@ diesem Repo klonen):
 
 | Version | Datum | Inhalt |
 |---|---|---|
+| 2.1.0 | 10.10.2026 | Pflicht: Zeitmessung je Aktion |
 | 2.0.0 | 09.10.2026 | Allgemeine Regeln und Bausteine im Design-Repo AppDesign |
 | 1.7.0 | 09.10.2026 | Verpflichtend: erst Prüfpunkte, dann Neues; Auswahlfenster immer wieder |
 | 1.6.0 | 09.10.2026 | Pflicht: Antwortvorschläge im Auswahlfenster und als Antwortzeile |

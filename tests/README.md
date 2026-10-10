@@ -15,3 +15,20 @@ node tests/hig.mjs                   # im Repo-Ordner; Ergebnis: Abweichungslist
 ```
 
 Claude lässt das Skript bei jeder Version laufen und nennt das Ergebnis im Apple-Review.
+
+## Ablauf-Tests
+
+`sh tests/alle.sh` führt alle Tests nacheinander aus (Ergebnis: `ERR []` = keine Skriptfehler).
+
+| Datei | prüft |
+|---|---|
+| `ablauf-gesamt.mjs` | Gesamtablauf: Reiselogbuch anlegen, Tage erfassen, Darstellung, Menüs, Ausgabe |
+| `ablauf-suche-tabelle.mjs` | Suche, Trefferanzeige und Springen in der Tabelle |
+| `ablauf-fenster.mjs` | Fenster (Tag, Einstellungen, Fazit), Häkchen und ‚Änderungen verwerfen‘ |
+| `ablauf-seitenleiste-kontextmenue.mjs` | Seitenleiste, langes Drücken, Löschen-Abfrage |
+| `ablauf-markierung-menues.mjs` | blaue Markierung bleibt, Menüs mit Strich und Speicher-Satz |
+| `tastatur.mjs` | Fenster und Kopfzeilen bei sichtbarer Tastatur |
+| `pixelvergleich.mjs` | 40 Ansichten pixelgenau gegen eine ältere Fassung (`_alt.html`) |
+| `hig.mjs` | HIG-Prüfung (mit `AppDesign/tests/hig.mjs`) |
+
+Bildschirmfotos landen in `tests/out/` (nicht hochgeladen).

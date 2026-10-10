@@ -1,6 +1,6 @@
 # Backlog – offene Themen
 
-**Stand 09.10.2026** · Aktuelle Version: Reiselogbuch 3.0.0 · AppDesign 4.0.0
+**Stand 10.10.2026** · Aktuelle Version: Reiselogbuch 3.0.0 · AppDesign 4.0.0
 
 Hier stehen alle offenen Themen. Erledigte Punkte wandern mit Version und Datum nach unten
 in „Erledigt“. Claude erinnert zu Beginn und am Ende jeder Sitzung an die offenen Punkte
@@ -23,8 +23,9 @@ sind (oder auf Wunsch); siehe `README - Zusammenarbeit allgemein.md`, Abschnitt 
 | Nr. | Prio | Thema | Gilt | bereit seit |
 |---|---|---|---|---|
 | T-24 | 2 | Mehr-Menü: ‚Alle Tage‘ und ‚Nur erfasste Tage‘ wieder mit den ursprünglichen Icons (`list-chevrons-up-down`, `fold-vertical`); Häkchen vorne wie bisher, dann Icon und Text (Muster M301-1 bestätigt) | Reiselogbuch | 10.10.2026 |
+| T-02 | 2 | Responsive in drei Stufen: ab 1100 px wie jetzt (iPad quer) · 700–1100 px Seitenleiste darübergelegt (iPad hoch, Split View; besteht schon) · iPhone (unter 700 px breit, auch quer): Startliste ‚Reiselogbücher‘ als eigene Seite mit großem Titel und Anzahl darunter, rechts oben `ellipsis`, rechts unten runder `plus`-Knopf · Tageliste mit rundem `chevron-left` zurück (ohne Text), Kapsel [`share` \| `ellipsis`], Tage als Kästen (‚Programm‘ als Wort, sonst Emoji) · Suche unten wie Notizen, mit Anzahl ‚n gefunden‘ und rundem `x` · Tageserfassung bildschirmfüllend mit ‚Gespeichert um …‘, Wetter-Symbole 40 px · Abfragen als Sprechblase am Knopf wie auf dem iPad. Apple-Abgleich mit Notizen (iOS 26, apple-referenz/iphone/notizen); Muster T02-1 bis T02-8 bestätigt | allgemein (AppDesign) | 10.10.2026 |
 
-**1 Punkt bereit** · gebaut wird erst nach „Ja“
+**2 Punkte bereit** · gebaut wird erst nach „Ja“
 
 ## 1. Auf dem iPad prüfen
 
@@ -36,8 +37,7 @@ sind (oder auf Wunsch); siehe `README - Zusammenarbeit allgemein.md`, Abschnitt 
 
 | Nr. | Prio | Thema | Gilt | Status |
 |---|---|---|---|---|
-| T-02 | 2 | Responsive in drei Stufen: ab 1100 px wie jetzt (iPad quer) · 700–1100 px Seitenleiste darübergelegt (iPad hoch, Split View) · unter 700 px wie Apple auf dem iPhone: Startliste „Reiselogbücher“ als Seite mit „‹ Reiselogbücher“ zurück, Tage als Liste (je Tag ein Kasten), Fenster bildschirmfüllend, Abfragen von unten ([HIG – Layout](https://developer.apple.com/design/human-interface-guidelines/layout), [HIG – Action sheets](https://developer.apple.com/design/human-interface-guidelines/action-sheets)). Muster iPhone gezeigt (Startliste, Tageliste, Tageserfassung, Abfrage von unten). Geklärt 10.10.2026: in den Tageskästen ‚Programm‘ als Wort, sonst Emoji · ‚Gespeichert um …‘ auch auf dem iPhone · Wetter-Symbole 40 px nur auf dem iPhone. Nächster Schritt: Apple-Abgleich und Muster aller drei Stufen | allgemein | geklärt, Muster folgt |
-| T-03 | 2 | Daten zwischen iPad und iPhone abgleichen über eine Datei in iCloud Drive (kostenlos; Mac vorhanden, kein Entwicklerkonto). Geklärt 10.10.2026: abwechselnd arbeiten · gleicher Tag auf beiden Geräten geändert → neuere Änderung gilt · gelöschte Reiselogbücher werden beim Abgleich auch gelöscht · Start über ‚Backup laden‘, danach Auswahl ‚Abgleichen‘ oder ‚Ersetzen‘. Erst nach T-02 umsetzen (iPhone-Ansicht nötig); Muster folgt | allgemein | geklärt, wartet auf T-02 |
+| T-03 | 2 | Daten zwischen iPad und iPhone abgleichen über eine Datei in iCloud Drive (kostenlos; Mac vorhanden, kein Entwicklerkonto). Geklärt 10.10.2026: abwechselnd arbeiten · gleicher Tag auf beiden Geräten geändert → neuere Änderung gilt · gelöschte Reiselogbücher werden beim Abgleich auch gelöscht · Start über ‚Backup laden‘, danach Auswahl ‚Abgleichen‘ oder ‚Ersetzen‘. Erst nach T-02 umsetzen (iPhone-Ansicht nötig); Muster folgt nach T-02 | allgemein | geklärt, wartet auf T-02 |
 | T-05 | 2 | Bestehende (alte) Reiselogbücher aufbereiten und importierbar machen: Dateien (Word/PDF/Excel/HTML/Fotos) auslesen, Unklarheiten nachfragen, Vorschau zeigen, Datei erstellen; Überschneidungen prüfen. Offen: Form der Unterlagen, Anzahl, Weg (a: in aktuelles Backup einfügen · b: neue Funktion „Reiselogbuch importieren“, die hinzufügt statt ersetzt) | Reiselogbuch | offen |
 | T-06 | 3 | Ausschreibungstexte (Reiseveranstalter) in Reiselogbücher umwandeln – für erledigte **und** geplante Reisen: Titel, Zeitraum, Reisemittel; je Tag das Programm („1. Tag“ → echtes Datum, Text wie in der Ausschreibung); Quartiere mit Ort, falls genannt; übrige Felder bleiben leer | Reiselogbuch | offen |
 

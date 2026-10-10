@@ -14,8 +14,8 @@ gemeinsam bauen. Nach einer Version erst fragen, wenn ein größeres Thema ferti
 Datenverlust oder unbenutzbarer App. Details: `README - Zusammenarbeit allgemein.md`,
 Abschnitt 6.
 
-**Zeitmessung:** Bei jeder Antwort die Zeit der Aktionen messen und am Ende im Format mm:ss mit
-aussagekräftigem Text ausgeben (je Aktion und gesamt). Details: Zusammenarbeit allgemein in AppDesign.
+**Zeit und Token:** Am Ende jeder Antwort eine kompakte, kleine Zeile
+`<sub>⏱ Gesamt mm:ss · Token vorige Antwort: …</sub>`. Details: Zusammenarbeit allgemein in AppDesign.
 
 **Erst prüfen, dann Neues:** Nach jeder Version ausdrücklich darauf hinweisen, dass zuerst alle
 Prüfpunkte getestet und Fehler beseitigt werden; Neues erst danach (außer der Nutzer besteht darauf).

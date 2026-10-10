@@ -1,6 +1,6 @@
-# Reiselogbuch – Prompt (Stand 09.10.2026, Version 3.0.0)
+# Reiselogbuch – Prompt (Stand 10.10.2026, Version 3.1.0)
 
-Reiselogbuch 3.0.0 · AppDesign 4.0.0 (Designrichtlinie allgemein 4.0.0) · Designrichtlinie Reiselogbuch 3.0.0 · Zusammenarbeit allgemein 1.12.5
+Reiselogbuch 3.1.0 · AppDesign 4.1.0 (Designrichtlinie allgemein 4.1.0) · Designrichtlinie Reiselogbuch 3.1.0 · Zusammenarbeit allgemein 1.12.5
 (Gestaltungsregeln: Designrichtlinie allgemein im Design-Repo AppDesign und
 `README - Designrichtlinie Reiselogbuch.md`; Zusammenarbeit: in AppDesign; Einstieg für Claude:
 `CLAUDE.md`. Gemeinsame Bausteine `design.css`/`ui.js` kommen aus AppDesign v4. Bei jeder
@@ -68,9 +68,29 @@ RAHMEN
     Titel der Reise in der Mitte, rechts die Kapsel [share | search |
     ellipsis]. share öffnet das Teilen-Menü (Vorschau · HTML · PDF), search
     blendet darunter eine zweite Zeile mit dem Suchfeld über die volle
-    Breite ein, ellipsis öffnet das Mehr-Menü: "Alle Tage" / "Nur erfasste
-    Tage" (Häkchen) · "Einstellungen" · "Darstellung ›" ·
-    "Reiselogbuch löschen" (rot).
+    Breite ein, ellipsis öffnet das Mehr-Menü: "Alle Tage" (list-chevrons-up-down) /
+    "Nur erfasste Tage" (fold-vertical) – Häkchen vorne, dann Icon und Text ·
+    "Einstellungen" · "Darstellung ›" · "Reiselogbuch löschen" (rot).
+  - iPhone (hoch und quer, auch sehr schmale Fenster; AppDesign html.phone) – wie
+    Notizen auf dem iPhone, eine Seite nach der anderen statt Seitenleiste:
+    - Start wie auf dem iPad im laufenden Reiselogbuch beim ersten offenen Tag.
+      Oben links runder chevron-left zur Startliste, rechts die Kapsel
+      [share | ellipsis] mit denselben Menüs wie auf dem iPad.
+    - Großer Titel (Reisetitel), darunter grau "Teilnehmer · Zeitraum", die
+      Reisemittel und die Fortschrittsanzeige. Die Tage stehen als Kästen
+      untereinander: Kopf "Mo, 24.08." mit "heute"/"fehlt" und dem Wetter rechts,
+      darunter die Zeilen "Programm" (als Wort) und 🙂☹️😉 · 🍽️🍷☕️ · 😴💤 (nur
+      sichtbare Spalten mit Inhalt). Erster offener Tag gelb mit blauem Rand.
+      Antippen öffnet die Tageserfassung (bildschirmfüllend, Titel kurz
+      "Di, 25.08.2026", Wetter-Symbole 40 px). Darunter Fazit, Gesamtkosten,
+      Quartierliste als Liste und Statistik.
+    - Suche unten wie in Notizen: beim Tippen nur passende Tage, oben "Tage ·
+      2 gefunden", Treffer gelb; ⓧ leert, rundes x daneben beendet die Suche.
+    - Startliste "Reiselogbücher": großer Titel, darunter "3 Reiselogbücher",
+      Liste wie die Seitenleiste mit ›, darunter der Backup-Hinweis; oben rechts
+      ellipsis (Menü der Seitenleiste), unten rechts runder plus (Neues
+      Reiselogbuch); langes Drücken: Einstellungen · Reiselogbuch löschen. Nach
+      dem Löschen eines Reiselogbuchs geht es zur Startliste.
   - Menüs: Icons vor dem Text, Schatten wie die Schaltflächen; daneben tippen
     schließt. Die Schaltfläche, von der ein Menü, eine Abfrage oder ein
     Fenster kommt, ist so lange blau getönt.

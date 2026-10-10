@@ -1,8 +1,8 @@
 # Designrichtlinie Reiselogbuch
 
-**Version 3.0.0** · Stand 09.10.2026
+**Version 3.1.0** · Stand 10.10.2026
 
-> **Es gilt die Designrichtlinie allgemein aus AppDesign (Version 4.0.0)** – die Komponenten kommen
+> **Es gilt die Designrichtlinie allgemein aus AppDesign (Version 4.1.0)** – die Komponenten kommen
 > fertig aus `AppDesign/v4/design.css` und `ui.js`.
 > Hier stehen nur **Abweichungen** (bewusst anders als dort) und **Ausprägungen**
 > (konkrete Ausgestaltung einer allgemeinen Regel für das Reiselogbuch).
@@ -26,7 +26,8 @@
 - Options-Kapseln (Tageserfassung): „Quartier wie Vortag“, „keinen Google-Maps Link“; Schalter (Bearbeiten):
   „Quartierliste in der Ausgabe“.
 - Blättern in der Tageserfassung: chevron-left / chevron-right (Vortag / Folgetag, nur Icon).
-- Filter im Mehr-Menü: „Alle Tage“ / „Nur erfasste Tage“ (Häkchen vor der Auswahl).
+- Filter im Mehr-Menü: ‚Alle Tage‘ (`list-chevrons-up-down`) / ‚Nur erfasste Tage‘ (`fold-vertical`) –
+  Häkchen vor der Auswahl, dann Icon und Text.
 - Leer: „Noch kein Reiselogbuch angelegt.“ (Seitenleiste) bzw. zusätzlich „Mit „plus“ in der
   Seitenleiste ein neues anlegen.“ (Inhalt).
 
@@ -62,6 +63,32 @@ Spaltenköpfe 🙂☹️😉 (Wie war was?), 🍽️🍷☕️ (Essen und Trinke
 - Darunter: Fazit (Kasten passt sich dem Inhalt an), Gesamtkosten (Betragsfeld 150 px,
   „[ 4.850,00 ] €“), Quartierliste (nur mit Spalte Quartier), Statistik (Reisetage · Quartiere ·
   Nächte · Wetter · Smileys).
+
+## 3a. iPhone — Ausprägung der iPhone-Ansicht (allgemein 15.17)
+
+- **Start** im laufenden (sonst zuletzt beendeten, sonst nächsten) Reiselogbuch, gesprungen wird
+  zum ersten offenen Tag – wie auf dem iPad. Runder `chevron-left` führt zur Startliste.
+- **Startliste ‚Reiselogbücher‘:** großer Titel, darunter ‚3 Reiselogbücher‘; Liste wie die
+  Seitenleiste (Titel · Zeitraum · Zustand, ›); darunter der Backup-Hinweis; rechts oben
+  `ellipsis` (Menü wie in der Seitenleiste: Backup erstellen · Backup laden · Strich ·
+  Versionszeile · Satz zum Speicher), rechts unten runder `plus` (Neues Reiselogbuch). Langes
+  Drücken auf ein Reiselogbuch: Einstellungen · Reiselogbuch löschen. Leer: ‚Mit ‚plus‘ unten
+  rechts ein neues Reiselogbuch anlegen.‘
+- **Reiselogbuch:** Kopf mit rundem `chevron-left` und Kapsel [`share` | `ellipsis`] (Menüs wie
+  auf dem iPad); großer Titel (nur der Reisetitel); grau ‚Teilnehmer · Zeitraum‘ und die
+  Reisemittel, darunter die Fortschrittsanzeige.
+- **Tage als Kästen:** Kopf ‚Mo, 24.08.‘ mit ‚heute‘/‚fehlt‘ und Wetter rechts (leer: blasse
+  Platzhalter); Zeilen ‚Programm‘ als Wort, sonst die Spalten-Emojis 🙂☹️😉 · 🍽️🍷☕️ · 😴💤 –
+  nur sichtbare Spalten und nur mit Inhalt. Erster offener Tag gelb mit blauem Rand links; der
+  angetippte Kasten bleibt blau, solange die Tageserfassung offen ist.
+- Darunter Fazit (volle Breite), Gesamtkosten, Quartierliste als Liste (Quartier mit Maps-Link,
+  darunter ‚24.08. - 25.08.2026 · 1 Nacht‘), Statistik.
+- **Suche unten** wie in Notizen: beim Tippen nur passende Tage, oben ‚Tage · 2 gefunden‘,
+  Treffer gelb; ⓧ im Feld leert, rundes `x` daneben beendet die Suche.
+- **Tageserfassung** bildschirmfüllend, Titel kurz ‚Di, 25.08.2026‘ mit ‚Gespeichert um …‘;
+  Wetter-Symbole 40 px breit, damit alle sieben ohne Wischen passen.
+- Abfragen als Sprechblase an der Schaltfläche wie auf dem iPad; ‚Backup laden‘ nennt das Gerät
+  (‚… auf diesem iPhone werden ersetzt.‘). Nach dem Löschen geht es zur Startliste.
 
 ## 4. Tageserfassung — Ausprägung des Erfassungsfensters
 
@@ -121,12 +148,14 @@ Spaltenköpfe 🙂☹️😉 (Wie war was?), 🍽️🍷☕️ (Essen und Trinke
 
 | Was | Grund | Entschieden |
 |---|---|---|
-| Maps-Links der Lokale in der Spalte ‚Essen und Trinken‘ nur so hoch wie der Text (ca. 19 px) | mehr Zeilenabstand in der Tabelle nicht gewünscht; das HIG-Prüfskript zählt es nicht | 09.10.2026 |
+| Maps-Links der Lokale in der Spalte ‚Essen und Trinken‘ nur so hoch wie der Text (ca. 19 px) – auf dem iPhone auch in den Tageskästen | mehr Zeilenabstand in der Tabelle nicht gewünscht; im Kasten würde eine größere Fläche das Antippen des Tages behindern; das HIG-Prüfskript zählt es nicht | 09.10.2026 · iPhone 10.10.2026 |
+| Wetter-Symbole in der Tageserfassung auf dem iPhone 40 px breit (in der Kapsel, über dem Minimum von 28 pt) | alle sieben passen ohne Wischen | 10.10.2026 |
 
 ## Versionsgeschichte
 
 | Version | Datum | Art | Inhalt |
 |---|---|---|---|
+| 3.1.0 | 10.10.2026 | Neben | iPhone-Ansicht (Abschnitt 3a, allgemein 15.17); Mehr-Menü ‚Alle Tage‘/‚Nur erfasste Tage‘ mit Icons |
 | 3.0.0 | 09.10.2026 | Haupt | Gemeinsame Bausteine aus AppDesign 4.0.0 (design.css, ui.js); Aussehen unverändert |
 | 2.4.0 | 09.10.2026 | Neben | Angepasst an allgemein 3.6.1 (Menüs ohne Linien zwischen Punkten, Suchfeld ohne blauen Rahmen); bewusste Abweichung Essen-Links |
 | 2.3.0 | 09.10.2026 | Neben | Angepasst an allgemein 3.5.0–3.6.0 (HIG-Prüfung): Darstellung ›, Kontextmenü ohne ‚Öffnen‘, Trennlinien eingerückt, Sprechblasen ohne Icons, kontrastreicheres Grau, Maps-Links mit 44 px Antippfläche, Texte (Überschneidung, Quartier-Hinweis, Download) |

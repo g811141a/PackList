@@ -10,7 +10,44 @@ Versionsnummer **Hauptversion.Nebenversion.Korrektur** (z. B. 1.2.1):
 - **Korrektur** (1.0.1): Fehlerbehebung ohne neue Funktion.
 
 Steigt eine Stufe, beginnen die Stufen dahinter wieder bei 0.
-Die aktuelle Version steht in der App im Mehr-Menü (ellipsis) der Seitenleiste „Reiselogbücher“.
+Die aktuelle Version steht in der App im Mehr-Menü (ellipsis) der Seitenleiste „Reiselogbücher“
+(iPhone: im Mehr-Menü der Startliste).
+
+## 3.1.0 – 10.10.2026 (Nebenversion)
+
+Reiselogbuch 3.1.0 · AppDesign 4.1.0 (Designrichtlinie allgemein 4.1.0) · Designrichtlinie Reiselogbuch 3.1.0 · Zusammenarbeit allgemein 1.12.5
+
+Sammelversion:
+
+- T-02: **iPhone-Ansicht** (hoch und quer) wie Notizen auf dem iPhone – Startliste
+  ‚Reiselogbücher‘ als eigene Seite mit großem Titel, rundem `plus` unten rechts und Menü oben
+  rechts; ein Reiselogbuch zeigt die Tage als Kästen, die Suche steht unten; Tageserfassung und
+  alle Fenster bildschirmfüllend; runder Zurück-Knopf ohne Text. Bausteine dafür neu in AppDesign
+  4.1.0. iPad unverändert (Fenster ‚Hochformat‘ legt die Seitenleiste wie bisher darüber).
+- T-24: Mehr-Menü ‚Alle Tage‘ / ‚Nur erfasste Tage‘ wieder mit Icons – Häkchen vorne, dann Icon
+  und Text.
+- Beim Start springt die App auch nach einem Neuladen zuverlässig zum ersten offenen Tag.
+- Tests: neuer Ablauf-Test `ablauf-iphone.mjs`; HIG-Prüfung zusätzlich für iPhone hoch/quer.
+
+Prüfliste P-15 (auf dem iPad und dem iPhone, jeweils hell und dunkel):
+
+1. iPad: Mehr-Menü – ‚Alle Tage‘ / ‚Nur erfasste Tage‘ mit Häkchen vorne, dann Icon und Text.
+2. iPad quer und hoch: sonst alles wie bisher.
+3. iPhone: Reiselogbuch in Safari öffnen und über Teilen → ‚Zum Home-Bildschirm‘ hinzufügen.
+4. iPhone: Start im laufenden Reiselogbuch, der erste offene Tag ist gelb und sichtbar.
+5. iPhone: Tage als Kästen; Antippen öffnet die Tageserfassung bildschirmfüllend, der Kasten
+   bleibt blau; ‹ › blättert, das Häkchen speichert.
+6. iPhone: Wetter – alle sieben Symbole ohne Wischen; Options-Kapseln unter dem Kasten-Titel.
+7. iPhone: Suche unten – beim Tippen steht das Suchfeld über der Tastatur; ‚n gefunden‘;
+   ⓧ leert, rundes x beendet.
+8. iPhone: runder ‹ führt zur Startliste ‚Reiselogbücher‘ (Anzahl, Liste, Backup-Hinweis).
+9. iPhone: Startliste – ellipsis-Menü (Backup, Version), plus legt ein Reiselogbuch an,
+   langes Drücken zeigt Einstellungen · Reiselogbuch löschen.
+10. iPhone: Teilen-Menü (Vorschau, HTML, PDF) und Mehr-Menü inkl. Darstellung ›; Löschen führt
+    zur Startliste.
+11. iPhone quer: gleiche Ansicht, nichts abgeschnitten.
+12. iPhone: Backup erstellen und Backup laden (z. B. das Backup vom iPad über iCloud Drive) –
+    die Abfrage nennt ‚auf diesem iPhone‘.
 
 ## 3.0.0 – 09.10.2026 (Hauptversion)
 

@@ -11,7 +11,7 @@
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-180.png">
 <title>Reiselogbuch</title>
-<link rel="stylesheet" href="../AppDesign/v4/design.css">
+<link rel="stylesheet" href="../AppDesign-alt/v4/design.css">
 <style>
   /* Reiselogbuch: nur, was zur App gehört – die gemeinsamen Bausteine kommen aus AppDesign (design.css) */
   .meta { display: grid; grid-template-columns: max-content 1fr; gap: 2px 14px; margin: 4px 0 6px; }
@@ -66,22 +66,6 @@
   /* Maps-Links: Antippfläche unsichtbar auf 44 px Höhe vergrößert (Innenabstand eines Inline-Links ändert das Layout nicht) */
   .ln.q a, #qHint a { padding: 12px 0; }
 
-  /* iPhone: Tage als Kästen (AppDesign .box) – Kopf mit Datum, Hinweisen und Wetter */
-  .box.day { cursor: pointer; }
-  .box.day .h { display: flex; align-items: center; gap: 4px; font-weight: 600; }
-  .box.day .h .wx { margin-left: auto; font-size: 18px; font-weight: 400; }
-  .box.day .wx.empty { opacity: .25; }
-  .box.day.gap { background: var(--focus); box-shadow: inset 4px 0 0 var(--accent), var(--table-shadow); }
-  .box.day.on { background: var(--sel-bg); }
-  .box.day a { text-decoration: none; }
-  .pmeta { font-size: 15px; color: var(--muted); margin: 0 0 4px; }
-  .found { display: flex; justify-content: space-between; align-items: baseline; margin: 6px 4px 0; }
-  .found b { font-size: 20px; }
-  .found span { color: var(--muted); font-size: 15px; }
-  html.phone .fazit-box { width: 100%; }
-  /* Wetter auf dem iPhone 40 px breit, damit alle sieben ohne Wischen nebeneinander passen (bewusste Abweichung) */
-  html.phone #wx button { width: 40px; min-width: 40px; }
-
   .qrow { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
   .dlg-body.preview { margin: 0; padding: 24px; background: #fff; color: #000; color-scheme: light; }
 
@@ -106,15 +90,15 @@
 <dialog id="msg"></dialog>
 <input type="file" id="importFile" accept="application/json,.json" hidden>
 
-<script src="../AppDesign/v4/ui.js"></script>
+<script src="../AppDesign-alt/v4/ui.js"></script>
 <script>
 'use strict';
 
 
 // Version und Erstellungszeitpunkt, werden bei jeder neuen Version angepasst.
 // Versionsnummer Hauptversion.Nebenversion.Korrektur (siehe CHANGELOG.md).
-const APP_VERSION = '3.1.0';
-const APP_BUILT = '10.10.2026 um 14:04';
+const APP_VERSION = '3.0.0';
+const APP_BUILT = '09.10.2026 um 23:01';
 
 const app = document.getElementById('app');
 const side = document.getElementById('side');
@@ -525,7 +509,6 @@ function insertEmoji(ta, emoji) {
 /* ---------- Hauptansicht ---------- */
 
 function render({ scrollToGap = false } = {}) {
-  if (isPhone()) return renderPhone({ scrollToGap });
   const trip = getTrip(currentTripId);
   if (!trip) return renderEmpty();
   emptyPrompted = false;
@@ -534,6 +517,7 @@ function render({ scrollToGap = false } = {}) {
   const days = tripDays(trip);
   const gap = firstGap(trip);
   const term = searchTerm.trim().toLocaleLowerCase('de');
+  const recorded = days.filter(d => isRecorded(trip, d)).length;
 
   const visible = days.filter(iso => {
     if (term) return matchesSearch(trip, iso, term);
@@ -562,7 +546,11 @@ function render({ scrollToGap = false } = {}) {
     </tr>`;
   }).join('');
 
-  const progress = progressText(trip);
+  let progress;
+  if (today < trip.start) progress = `Reise beginnt in ${Math.round((parseISO(trip.start) - parseISO(today)) / 864e5)} Tagen`;
+  else if (today > trip.end) progress = `Reise beendet · ${days.length} Tage`;
+  else progress = `Tag ${days.indexOf(today) + 1} von ${days.length}`;
+  progress += ` · ${recorded} erfasst`;
 
   const transport = transportText(trip);
   const stays = c.quarter ? quarterStays(trip) : [];
@@ -599,7 +587,16 @@ function render({ scrollToGap = false } = {}) {
       ${visible.length ? '' : `<div class="empty-note">${term ? 'Keine Treffer.' : 'Noch keine Tage erfasst.'}</div>`}
     </div>
 
-    ${fazitHtml(trip)}
+    <h2>Fazit</h2>
+    <button type="button" class="fazit-box" id="fazit">${trip.fazit
+      ? linesHtml(commentItems(trip.fazit))
+      : `<span class="muted" style="display:inline-flex;gap:6px;align-items:center">${ic('pencil')}Antippen, um das Fazit zu schreiben.</span>`}</button>
+
+    <h2>Gesamtkosten</h2>
+    <div class="kosten">
+      <input type="text" id="kosten" inputmode="decimal" placeholder="0,00" value="${trip.kosten == null ? '' : money(trip.kosten)}">
+      <span>€</span>
+    </div>
 
     ${stays.length ? `
       <h2>Quartierliste</h2>
@@ -658,27 +655,6 @@ function render({ scrollToGap = false } = {}) {
   }
   markOpener();
   app.querySelectorAll('tbody tr').forEach(tr => tr.onclick = () => openDayDialog(trip, tr.dataset.day));
-  bindTripEnd(trip);
-
-  if (scrollToGap) {
-    const row = app.querySelector('tr.gap');
-    if (row) row.scrollIntoView({ block: 'center' });
-  }
-}
-
-function progressText(trip) {
-  const today = todayISO();
-  const days = tripDays(trip);
-  const recorded = days.filter(d => isRecorded(trip, d)).length;
-  let progress;
-  if (today < trip.start) progress = `Reise beginnt in ${Math.round((parseISO(trip.start) - parseISO(today)) / 864e5)} Tagen`;
-  else if (today > trip.end) progress = `Reise beendet · ${days.length} Tage`;
-  else progress = `Tag ${days.indexOf(today) + 1} von ${days.length}`;
-  return progress + ` · ${recorded} erfasst`;
-}
-
-// Fazit und Gesamtkosten (iPad und iPhone).
-function bindTripEnd(trip) {
   app.querySelector('#fazit').onclick = () => { setOpener('#fazit'); openFazitDialog(trip); };
   // Betrag: Tausenderpunkt beim Tippen, Komma für Cent (höchstens zwei Stellen); beim Verlassen wird ",00" ergänzt.
   const kosten = app.querySelector('#kosten');
@@ -695,142 +671,11 @@ function bindTripEnd(trip) {
   kosten.onblur = () => { kosten.value = trip.kosten == null ? '' : money(trip.kosten); fitMoney(kosten); };
   kosten.addEventListener('input', () => fitMoney(kosten));
   fitMoney(kosten);
-}
 
-const fazitHtml = trip => `<h2>Fazit</h2>
-    <button type="button" class="fazit-box" id="fazit">${trip.fazit
-      ? linesHtml(commentItems(trip.fazit))
-      : `<span class="muted" style="display:inline-flex;gap:6px;align-items:center">${ic('pencil')}Antippen, um das Fazit zu schreiben.</span>`}</button>
-    <h2>Gesamtkosten</h2>
-    <div class="kosten">
-      <input type="text" id="kosten" inputmode="decimal" placeholder="0,00" value="${trip.kosten == null ? '' : money(trip.kosten)}">
-      <span>€</span>
-    </div>`;
-
-/* ---------- iPhone ---------- */
-
-// Wie Apple (Notizen, iOS 26): Startliste ‚Reiselogbücher‘ als eigene Seite; ein Reiselogbuch zeigt die Tage als Kästen,
-// die Suche steht unten. Fenster sind bildschirmfüllend (AppDesign, html.phone).
-let phoneList = false;   // iPhone: Startliste statt eines Reiselogbuchs
-
-function renderPhone({ scrollToGap = false } = {}) {
-  side.hidden = true;
-  side.classList.remove('over');
-  document.body.classList.remove('docked');
-  document.querySelector('.side-shade')?.remove();
-  fab.hidden = true;
-  const trip = getTrip(currentTripId);
-  if (phoneList || !trip) return renderPhoneList();
-  emptyPrompted = false;
-  const transport = transportText(trip);
-  app.innerHTML = `
-    <div class="pnav" id="bar">
-      <button type="button" class="round" id="back" aria-label="Reiselogbücher">${ic('chevron-left')}</button>
-      <span class="spacer"></span>
-      <span class="grp">
-        <button type="button" id="shareBtn" aria-label="Ausgabe">${ic('share')}</button>
-        <button type="button" id="mainMore" aria-label="Mehr">${ic('ellipsis')}</button>
-      </span>
-    </div>
-    <h1 class="ltitle">${esc(trip.title)}</h1>
-    <div id="phead" data-meta="${esc(`${trip.participants} · ${fullDate(trip.start)} - ${fullDate(trip.end)}`)}" data-transport="${esc(transport)}"></div>
-    <div id="pdays"></div>
-    <div id="prest">
-      ${fazitHtml(trip)}
-      ${phoneStaysHtml(trip)}
-      <h2>Statistik</h2>
-      <dl class="meta">${tripStats(trip).map(([k, v]) => `<dt>${k}:</dt><dd>${esc(v)}</dd>`).join('')}</dl>
-    </div>
-    <div class="bbar">
-      <span class="searchbox active">${ic('search')}<input type="search" id="search" placeholder="Suchen" value="${esc(searchTerm)}" autocomplete="off" enterkeyhint="search">
-        <span class="smeta"><button type="button" class="sclear" id="sclear" aria-label="Suche löschen"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M15 9l-6 6M9 9l6 6" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></button></span></span>
-      <button type="button" class="round" id="searchEnd" aria-label="Suche beenden">${ic('x')}</button>
-    </div>`;
-  const bar = app.querySelector('#bar');
-  bar.classList.toggle('line', scrollY > 4);
-  app.querySelector('#back').onclick = () => { phoneList = true; searchOpen = false; searchTerm = ''; render(); window.scrollTo(0, 0); };
-  app.querySelector('#shareBtn').onclick = e => openShareMenu(e.currentTarget, trip);
-  app.querySelector('#mainMore').onclick = e => openMainMenu(e.currentTarget, trip);
-  bindTripEnd(trip);
-
-  // Suche wie in Notizen: Feld unten, beim Tippen werden nur die passenden Tage gezeigt; rundes x beendet die Suche.
-  const search = app.querySelector('#search');
-  search.onfocus = () => { if (!searchOpen) { searchOpen = true; fillPhoneDays(trip); } };
-  search.oninput = () => { searchTerm = search.value; fillPhoneDays(trip); };
-  search.onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); search.blur(); } };
-  app.querySelector('#sclear').onclick = () => { searchTerm = ''; search.value = ''; fillPhoneDays(trip); search.focus(); };
-  app.querySelector('#searchEnd').onclick = () => { searchOpen = false; searchTerm = ''; search.value = ''; search.blur(); fillPhoneDays(trip); };
-  fillPhoneDays(trip);
-  markOpener();
-  if (scrollToGap) app.querySelector('.box.gap')?.scrollIntoView({ block: 'center' });
-}
-
-// Kästen der Tage (und Kopf darüber) neu füllen, ohne die Suchleiste anzufassen – die Tastatur bleibt offen.
-function fillPhoneDays(trip) {
-  const today = todayISO();
-  const gap = firstGap(trip);
-  const term = searchTerm.trim().toLocaleLowerCase('de');
-  const c = cols(trip);
-  const visible = tripDays(trip).filter(iso => term ? matchesSearch(trip, iso, term) : !db.settings.hideEmpty || isRecorded(trip, iso));
-  const line = (k, v) => v ? `<div class="kv"><span class="k">${k}</span><span class="v">${v}</span></div>` : '';
-  const head = app.querySelector('#phead');
-  head.innerHTML = term
-    ? `<div class="found"><b>Tage</b><span>${visible.length} gefunden</span></div>`
-    : `<p class="pmeta">${head.dataset.meta}${head.dataset.transport ? `<br>${head.dataset.transport}` : ''}</p><p class="progress">${progressText(trip)}</p>`;
-  app.querySelector('#pdays').innerHTML = visible.map(iso => {
-    const e = rawEntry(trip, iso);
-    const q = quarterOf(trip, iso);
-    const tags = (iso === today ? '<span class="tag today">heute</span>' : '')
-      + (!isRecorded(trip, iso) && iso < today ? '<span class="tag miss">fehlt</span>' : '');
-    return `<div class="box day ${iso === gap && !term ? 'gap' : ''}" data-day="${iso}" role="button" tabindex="0">
-      <div class="h">${dayLabel(iso)}${tags}${e.weather ? `<span class="wx">${esc(e.weather)}</span>` : '<span class="wx empty">☀️🌤🌦🌧</span>'}</div>
-      ${line('Programm', e.program ? linesHtml(programItems(e.program), term) : '')}
-      ${c.mood ? line('🙂☹️😉', e.comment ? linesHtml(commentItems(e.comment), term) : '') : ''}
-      ${c.food ? line('🍽️🍷☕️', e.food ? foodHtml(foodItems(e.food, q.place), term, true) : '') : ''}
-      ${c.quarter ? line('😴💤', quarterHtml(q, term, true)) : ''}
-    </div>`;
-  }).join('') || `<div class="empty-note">${term ? 'Keine Treffer.' : 'Noch keine Tage erfasst.'}</div>`;
-  app.querySelector('#prest').hidden = Boolean(term);
-  app.querySelector('#sclear').hidden = !term;
-  app.querySelector('#searchEnd').hidden = !searchOpen;
-  app.querySelectorAll('#pdays [data-day]').forEach(b => b.onclick = () => openDayDialog(trip, b.dataset.day));
-  markOpener();
-}
-
-// Quartierliste als Liste: Quartier mit Maps-Link, darunter Zeitraum und Nächte.
-function phoneStaysHtml(trip) {
-  const stays = cols(trip).quarter ? quarterStays(trip) : [];
-  return stays.length ? `<h2>Quartierliste</h2><div class="ilist">${stays.map(st => `<div class="irow"><span class="t">${quarterHtml(st.q, '', true)}
-    <small>${shortDate(st.firstNight)} - ${fullDate(addDays(st.lastNight, 1))} · ${st.nights} ${st.nights === 1 ? 'Nacht' : 'Nächte'}</small></span></div>`).join('')}</div>` : '';
-}
-
-// Startliste ‚Reiselogbücher‘: großer Titel mit Anzahl, Liste, Backup-Hinweis; rechts unten ‚plus‘.
-function renderPhoneList() {
-  searchOpen = false;
-  const today = todayISO();
-  const trips = [...db.trips].sort((a, b) => b.start.localeCompare(a.start));
-  const n = trips.length;
-  app.innerHTML = `
-    <div class="pnav" id="bar"><span class="spacer"></span><button type="button" class="round" id="homeMore" aria-label="Mehr">${ic('ellipsis')}</button></div>
-    <h1 class="ltitle">Reiselogbücher</h1>
-    <div class="lcount">${n ? `${n} Reiselogb${n === 1 ? 'uch' : 'ücher'}` : 'Noch kein Reiselogbuch angelegt.'}</div>
-    ${n ? `<div class="ilist">${trips.map(t => `<button type="button" class="irow" data-id="${t.id}">
-        <span class="t"><b>${esc(t.title)}</b><small>${fullDate(t.start)} - ${fullDate(t.end)} · ${tripState(t, today)}</small></span>${ic('chevron-right')}</button>`).join('')}</div>`
-      : '<div class="emptymain" style="margin-top:60px">Mit ‚plus‘ unten rechts ein neues Reiselogbuch anlegen.</div>'}
-    ${n && !backedUpToday() ? `<div class="bhint"><div>${lastBackupText()}</div>
-      <button type="button" id="hintBackup">${ic('save')}Backup erstellen</button></div>` : ''}
-    <div class="bbar"><button type="button" class="round" id="newTrip" aria-label="Neues Reiselogbuch">${ic('plus')}</button></div>`;
-  app.querySelector('#bar').classList.toggle('line', scrollY > 4);
-  app.querySelector('#homeMore').onclick = e => openMenu(e.currentTarget, backupMenuItems('#homeMore'));
-  app.querySelector('#newTrip').onclick = () => { setOpener('#newTrip'); openTripDialog(null); };
-  app.querySelector('#hintBackup')?.addEventListener('click', () => saveBackup('#hintBackup'));
-  // Kurz tippen öffnet; lange drücken zeigt das Kontextmenü (Einstellungen · Reiselogbuch löschen).
-  app.querySelectorAll('.irow[data-id]').forEach(b => onLongPress(b,
-    () => tripContextMenu(b, getTrip(b.dataset.id)),
-    () => { window.scrollTo(0, 0); showTrip(b.dataset.id); }));
-  held.forEach(sel => app.querySelector(sel)?.classList.add('on'));
-  markOpener();
-  if (!n && !emptyPrompted && !dlg.open) { emptyPrompted = true; openTripDialog(null); }
+  if (scrollToGap) {
+    const row = app.querySelector('tr.gap');
+    if (row) row.scrollIntoView({ block: 'center' });
+  }
 }
 
 // Treffer-Navigation der Suche: jeder markierte Begriff in der Tabelle ist ein Treffer; der aktuelle ist hellorange.
@@ -881,7 +726,6 @@ function renderEmpty() {
 
 function showTrip(id) {
   currentTripId = id;
-  phoneList = false;
   // Beim Öffnen eines Reiselogbuchs (und beim Start) immer alle Tage zeigen.
   db.settings.hideEmpty = false;
   searchTerm = '';
@@ -922,7 +766,6 @@ function lastBackupText() {
 }
 
 function renderSide() {
-  if (isPhone()) return;
   const show = sideVisible();
   const wide = isWide();
   side.hidden = !show;
@@ -949,7 +792,14 @@ function renderSide() {
     ${trips.length && !backedUpToday() ? `<div class="bhint"><div>${lastBackupText()}</div>
       <button type="button" id="hintBackup">${ic('save')}Backup erstellen</button></div>` : ''}`;
   side.querySelector('#newTrip').onclick = () => { setOpener('#newTrip'); openTripDialog(null); };
-  side.querySelector('#sideMore').onclick = e => openMenu(e.currentTarget, backupMenuItems('#sideMore'), 'left');
+  side.querySelector('#sideMore').onclick = e => openMenu(e.currentTarget, [
+    { icon: 'save', label: 'Backup erstellen', sub: lastBackupText(), disabled: !db.trips.length, act: () => saveBackup('#sideMore') },
+    { icon: 'folder-open', label: 'Backup laden', act: () => { hold('#sideMore'); importFile.click(); } },
+    'line',
+    { note: `Reiselogbuch · Version ${APP_VERSION} · erstellt am ${APP_BUILT}` },
+    { note: storagePersistent ? 'Die Daten bleiben in Safari gespeichert, solange das Reiselogbuch auf dem Home-Bildschirm nicht entfernt wird.'
+      : 'Safari kann die Daten bei Speichermangel löschen – bitte regelmäßig ein Backup erstellen.' },
+  ], 'left');
   side.querySelector('#sideHide').onclick = toggleSide;
   side.querySelector('#hintBackup')?.addEventListener('click', () => saveBackup('#hintBackup'));
   held.forEach(sel => side.querySelector(sel)?.classList.add('on'));
@@ -962,23 +812,12 @@ function renderSide() {
 }
 
 
-// Menü der Seitenleiste (iPhone: der Startliste): Backup und technische Informationen.
-let importAnchor = '#sideMore'; // Schaltfläche, von der ‚Backup laden‘ kommt
-const backupMenuItems = sel => [
-  { icon: 'save', label: 'Backup erstellen', sub: lastBackupText(), disabled: !db.trips.length, act: () => saveBackup(sel) },
-  { icon: 'folder-open', label: 'Backup laden', act: () => { importAnchor = sel; hold(sel); importFile.click(); } },
-  'line',
-  { note: `Reiselogbuch · Version ${APP_VERSION} · erstellt am ${APP_BUILT}` },
-  { note: storagePersistent ? `Die Daten bleiben in Safari gespeichert, solange das Reiselogbuch auf dem Home-Bildschirm nicht entfernt wird.`
-    : 'Safari kann die Daten bei Speichermangel löschen – bitte regelmäßig ein Backup erstellen.' },
-];
-
 // Mehr-Menü der Hauptansicht.
 function openMainMenu(anchor, trip) {
   const setHide = v => { db.settings.hideEmpty = v; save(); render(); };
   openMenu(anchor, [
-    { tick: !db.settings.hideEmpty, icon: 'list-chevrons-up-down', label: 'Alle Tage', act: () => setHide(false) },
-    { tick: db.settings.hideEmpty, icon: 'fold-vertical', label: 'Nur erfasste Tage', act: () => setHide(true) },
+    { tick: !db.settings.hideEmpty, label: 'Alle Tage', act: () => setHide(false) },
+    { tick: db.settings.hideEmpty, label: 'Nur erfasste Tage', act: () => setHide(true) },
     'sep',
     { icon: 'settings', label: 'Einstellungen', act: () => { setOpener('#mainMore'); openTripDialog(trip); } },
     { icon: 'sun-moon', label: 'Darstellung', value: APPEARANCES[db.settings.appearance],
@@ -992,7 +831,7 @@ function openMainMenu(anchor, trip) {
 function tripContextMenu(row, trip) {
   if (!trip) return;
   openMenu(row, [
-    { icon: 'settings', label: 'Einstellungen', act: () => { setOpener(`${row.closest('#side') ? '#side .side-row' : '#app .irow'}[data-id="${trip.id}"]`); openTripDialog(trip); } },
+    { icon: 'settings', label: 'Einstellungen', act: () => { setOpener(`#side .side-row[data-id="${trip.id}"]`); openTripDialog(trip); } },
     'sep',
     { icon: 'trash', label: 'Reiselogbuch löschen', red: true, act: () => { row.classList.add('on'); deleteTrip(trip, row); } },
   ], 'beside');
@@ -1006,8 +845,6 @@ async function deleteTrip(trip, anchor = app.querySelector('#mainMore')) {
   db.trips = db.trips.filter(x => x.id !== trip.id);
   save();
   showTrip(pickStartTrip()?.id);
-  // iPhone: nach dem Löschen zurück zur Startliste.
-  if (isPhone()) { phoneList = true; render(); }
 }
 
 // Teilen-Menü: Vorschau, HTML, PDF; darunter Zahl der erfassten Tage und Dateiname.
@@ -1240,7 +1077,7 @@ function openTripDialog(trip) {
 
 // Einen Tag in 2 bis 5 Schritten erfassen (je nach sichtbaren Spalten); speichert automatisch alle 10 Sekunden.
 function openDayDialog(trip, iso) {
-  setOpener(`#app [data-day="${iso}"]`); // Zeile bzw. Kasten; auch beim Blättern zum nächsten Tag
+  setOpener(`table.days tbody tr[data-day="${iso}"]`); // auch beim Blättern zum nächsten Tag
   const days = tripDays(trip);
   const idx = days.indexOf(iso);
   const isFirst = idx <= 0;
@@ -1256,7 +1093,7 @@ function openDayDialog(trip, iso) {
 
   openDialog(`
     <form method="dialog">
-      ${dlgHead(isPhone() ? `${WEEKDAYS[parseISO(iso).getUTCDay()]}, ${fullDate(iso)}` : longDayLabel(iso), { right: `<span class="grp">
+      ${dlgHead(longDayLabel(iso), { right: `<span class="grp">
         <button type="button" data-nav="-1" ${isFirst ? 'disabled' : ''} aria-label="Vortag">${ic('chevron-left')}</button>
         <button type="button" data-nav="1" ${idx >= days.length - 1 ? 'disabled' : ''} aria-label="Folgetag">${ic('chevron-right')}</button></span>` })}
       <div class="dlg-body">
@@ -1710,7 +1547,7 @@ async function saveBackup(anchor) {
   if (result === 'shared' || result === 'downloaded') {
     db.settings.lastBackup = Date.now();
     save();
-    if (isPhone()) render(); else renderSide();
+    renderSide();
   }
   const text = `${result === 'aborted' || result === 'error' ? '⚠️' : '✅'} ${RESULT_TEXT[result](file.name)}`;
   if (!dlg.querySelector('#reminder')) await inform('Backup', text);
@@ -1747,20 +1584,20 @@ function downloadFile(name, content, type) {
 
 /* ---------- Backup ---------- */
 
-importFile.addEventListener('cancel', () => release(importAnchor));
+importFile.addEventListener('cancel', () => release('#sideMore'));
 importFile.onchange = async () => {
   const file = importFile.files[0];
   importFile.value = '';
-  if (!file) return release(importAnchor);
+  if (!file) return release('#sideMore');
   try {
     const data = JSON.parse(await file.text());
     if (!Array.isArray(data.trips)) throw new Error('Kein Reiselogbuch-Backup.');
     const n = data.trips.length;
-    const yes = await confirmPop(document.querySelector(importAnchor),
-      `Backup mit ${n} Reiselogbu${n === 1 ? 'ch' : 'chern'} laden? Die aktuellen Daten auf diesem ${isPhone() ? 'iPhone' : 'iPad'} werden ersetzt.`,
+    const yes = await confirmPop(side.querySelector('#sideMore'),
+      `Backup mit ${n} Reiselogbu${n === 1 ? 'ch' : 'chern'} laden? Die aktuellen Daten auf diesem iPad werden ersetzt.`,
       { label: 'Ersetzen', icon: 'folder-open' });
-    if (!yes) return release(importAnchor);
-    release(importAnchor);
+    if (!yes) return release('#sideMore');
+    release('#sideMore');
     db = normalize(data);
     save();
     applyTheme();
@@ -1768,15 +1605,13 @@ importFile.onchange = async () => {
     showTrip(pickStartTrip()?.id);
   } catch (e) {
     await inform('Backup laden', 'Die Datei konnte nicht gelesen werden: ' + esc(e.message));
-    release(importAnchor);
+    release('#sideMore');
   }
 };
 
 /* ---------- Start ---------- */
 
 applyTheme();
-// Beim Start immer am Anfang beginnen (der Sprung zum ersten offenen Tag kommt von der App, nicht von Safari).
-if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 // Dauerhaften Speicher anfordern (einmalig, ohne Rückfrage); das Ergebnis steht im Menü der Seitenleiste.
 if (navigator.storage?.persist) {
   navigator.storage.persisted()
@@ -1790,10 +1625,8 @@ sideOverlay = !isWide();
 showTrip(pickStartTrip()?.id);
 // Wechsel quer/hoch: Seitenleiste fest oder darübergelegt; sonst nur Höhen und Breiten nachführen.
 let wasWide = isWide();
-let wasPhone = isPhone();
 window.addEventListener('resize', () => {
   placeDialogs();
-  if (isPhone() !== wasPhone) { wasPhone = isPhone(); wasWide = isWide(); sideOverlay = false; render(); return; }
   if (isWide() !== wasWide) { wasWide = isWide(); sideOverlay = false; render(); return; }
   const bar = document.getElementById('bar');
   if (bar) document.documentElement.style.setProperty('--bar-h', bar.offsetHeight + 'px');

@@ -1,7 +1,7 @@
 // HIG-Prüfskript des Reiselogbuchs: geht alle Ansichten durch und misst sie mit der HIG-Prüfung aus AppDesign
 // (AppDesign/tests/hig.mjs, Designrichtlinie allgemein Abschnitt 16).
 // Aufruf im Repo-Ordner: node tests/hig.mjs   (braucht Playwright mit Chromium; AppDesign liegt daneben)
-// Geprüft wird jede Ansicht in hell und dunkel, quer und hoch: Antippflächen, Schriftgrößen, Kontraste,
+// Geprüft wird jede Ansicht in hell und dunkel, quer und hoch – auf dem iPad und dem iPhone: Antippflächen, Schriftgrößen, Kontraste,
 // doppelte Anführungszeichen, Löschen am Ende von Menüs und ob die auslösende Schaltfläche blau bleibt.
 // Bewusste Abweichungen (Abschnitt 16) werden nicht gezählt. Ergebnis: Abweichungsliste, Exit-Code 1 bei Funden.
 import { chromium } from 'playwright';
@@ -14,8 +14,9 @@ const trips = [
   { id: 'b', title: 'Toskana', participants: 'Anna', start: '2027-05-03', end: '2027-05-17', transport: ['pkw'], days: {} },
 ];
 
-// Bewusste Abweichung (Reiselogbuch, 09.10.2026): Essen-Links in der Tabelle bleiben so eng wie der Text.
-const hig = createCheck({ skipTargets: ['table.days .ln:not(.q) a'] });
+// Bewusste Abweichung (Reiselogbuch, 09.10.2026): Essen-Links in der Tabelle (iPhone: in den Kästen) bleiben so eng
+// wie der Text – sonst trifft man beim Antippen eines Tages zu leicht einen Link.
+const hig = createCheck({ skipTargets: ['table.days .ln:not(.q) a', '.box.day .ln:not(.q) a'] });
 const { measure, note } = hig;
 
 const browser = await chromium.launch();
@@ -55,6 +56,43 @@ for (const scheme of ['light', 'dark']) for (const [w, h] of [[1180, 820], [820,
   await dialog(() => p.evaluate(() => openTripDialog(null)), 'Fenster Neues Reiselogbuch');
   await p.click('#mainMore'); await p.waitForTimeout(150); await p.locator('.menu .mi', { hasText: 'löschen' }).click(); await p.waitForTimeout(250);
   await M('Sprechblase Löschen'); await p.locator('.pop button', { hasText: 'Abbrechen' }).click(); await p.waitForTimeout(150);
+  for (const e of errors) note('Skriptfehler', e, tag);
+  await p.close();
+}
+// iPhone (AppDesign html.phone): hoch und quer, hell und dunkel.
+for (const scheme of ['light', 'dark']) for (const [w, h] of [[393, 852], [852, 393]]) {
+  const tag = `iPhone ${scheme === 'light' ? 'hell' : 'dunkel'} ${w > h ? 'quer' : 'hoch'}`;
+  const p = await browser.newPage({ viewport: { width: w, height: h }, hasTouch: true, isMobile: true, colorScheme: scheme });
+  const errors = [];
+  p.on('pageerror', e => errors.push(e.message));
+  await p.clock.setFixedTime(new Date('2026-08-27T14:32:00'));
+  await p.goto(APP);
+  await p.evaluate(t => localStorage.setItem('reiselogbuch.v1', JSON.stringify({ settings: {}, trips: t })), trips);
+  await p.reload(); await p.waitForTimeout(300);
+  const M = s => measure(p, `${s} (${tag})`);
+  const away = async () => { if (await p.locator('.layer').count()) { await p.mouse.click(4, h - 4); await p.waitForTimeout(150); } };
+  const stays = (sel, s) => hig.stays(p, sel, `${s} (${tag})`);
+  await M('Hauptansicht');
+  await p.click('#mainMore'); await p.waitForTimeout(150); await stays('#mainMore', 'Mehr-Menü'); await M('Mehr-Menü');
+  await p.locator('.menu .mi', { hasText: 'Darstellung' }).click(); await p.waitForTimeout(150); await M('Untermenü Darstellung'); await away();
+  await p.click('#shareBtn'); await p.waitForTimeout(150); await stays('#shareBtn', 'Teilen-Menü'); await M('Teilen-Menü'); await away();
+  await p.click('#search'); await p.keyboard.type('Oper'); await p.waitForTimeout(300); await M('Suche');
+  await p.click('#searchEnd'); await p.waitForTimeout(200);
+  const dialog = async (open, s, opener) => {
+    await open(); await p.waitForTimeout(350);
+    if (opener) await stays(opener, s);
+    await M(s);
+    await p.click('#dlgX'); await p.waitForTimeout(200);
+    if (await p.locator('.pop').count()) { await p.locator('.pop button').first().click(); await p.waitForTimeout(200); }
+  };
+  await dialog(async () => { await p.click('#mainMore'); await p.waitForTimeout(150); await p.locator('.menu .mi', { hasText: 'Einstellungen' }).click(); }, 'Fenster Einstellungen', '#mainMore');
+  await dialog(() => p.locator('#pdays [data-day="2026-08-24"]').click(), 'Fenster Tag', '#pdays [data-day="2026-08-24"]');
+  await dialog(async () => { await p.locator('#fazit').scrollIntoViewIfNeeded(); await p.click('#fazit'); }, 'Fenster Fazit', '#fazit');
+  await p.click('#mainMore'); await p.waitForTimeout(150); await p.locator('.menu .mi', { hasText: 'löschen' }).click(); await p.waitForTimeout(250);
+  await M('Sprechblase Löschen'); await p.locator('.pop button', { hasText: 'Abbrechen' }).click(); await p.waitForTimeout(150);
+  await p.click('#back'); await p.waitForTimeout(250); await M('Startliste');
+  await p.click('#homeMore'); await p.waitForTimeout(150); await stays('#homeMore', 'Menü Startliste'); await M('Menü Startliste'); await away();
+  await dialog(() => p.click('#newTrip'), 'Fenster Neues Reiselogbuch', '#newTrip');
   for (const e of errors) note('Skriptfehler', e, tag);
   await p.close();
 }

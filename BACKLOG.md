@@ -1,6 +1,6 @@
 # Backlog – offene Themen
 
-**Stand 10.10.2026** · Aktuelle Version: Reiselogbuch 3.0.0 · AppDesign 4.0.0
+**Stand 10.10.2026** · Aktuelle Version: Reiselogbuch 3.1.0 · AppDesign 4.1.0
 
 Hier stehen alle offenen Themen. Erledigte Punkte wandern mit Version und Datum nach unten
 in „Erledigt“. Claude erinnert zu Beginn und am Ende jeder Sitzung an die offenen Punkte
@@ -18,26 +18,25 @@ sind (oder auf Wunsch); siehe `README - Zusammenarbeit allgemein.md`, Abschnitt 
 
 ---
 
-## 0. Nächste Version 3.1.0 – gesammelt, noch nicht gebaut
+## 0. Nächste Version 3.2.0 – gesammelt, noch nicht gebaut
 
 | Nr. | Prio | Thema | Gilt | bereit seit |
 |---|---|---|---|---|
-| T-24 | 2 | Mehr-Menü: ‚Alle Tage‘ und ‚Nur erfasste Tage‘ wieder mit den ursprünglichen Icons (`list-chevrons-up-down`, `fold-vertical`); Häkchen vorne wie bisher, dann Icon und Text (Muster M301-1 bestätigt) | Reiselogbuch | 10.10.2026 |
-| T-02 | 2 | Responsive in drei Stufen: ab 1100 px wie jetzt (iPad quer) · 700–1100 px Seitenleiste darübergelegt (iPad hoch, Split View; besteht schon) · iPhone (unter 700 px breit, auch quer): Startliste ‚Reiselogbücher‘ als eigene Seite mit großem Titel und Anzahl darunter, rechts oben `ellipsis`, rechts unten runder `plus`-Knopf · Tageliste mit rundem `chevron-left` zurück (ohne Text), Kapsel [`share` \| `ellipsis`], Tage als Kästen (‚Programm‘ als Wort, sonst Emoji) · Suche unten wie Notizen, mit Anzahl ‚n gefunden‘ und rundem `x` · Tageserfassung bildschirmfüllend mit ‚Gespeichert um …‘, Wetter-Symbole 40 px · Abfragen als Sprechblase am Knopf wie auf dem iPad. Apple-Abgleich mit Notizen (iOS 26, apple-referenz/iphone/notizen); Muster T02-1 bis T02-8 bestätigt | allgemein (AppDesign) | 10.10.2026 |
+| – | – | zurzeit nichts | – | – |
 
-**2 Punkte bereit** · gebaut wird erst nach „Ja“
+**0 Punkte bereit** · gebaut wird erst nach „Ja“
 
-## 1. Auf dem iPad prüfen
+## 1. Auf iPad und iPhone prüfen
 
 | Nr. | Prio | Thema | Status |
 |---|---|---|---|
-| – | – | zurzeit nichts zu prüfen | – |
+| P-15 | 1 | Version 3.1.0 (T-02 iPhone-Ansicht, T-24 Icons im Mehr-Menü) – Prüfliste 1–12 in der Antwort zu 3.1.0 bzw. im CHANGELOG | prüfen |
 
 ## 2. Weitere Themen (in Klärung)
 
 | Nr. | Prio | Thema | Gilt | Status |
 |---|---|---|---|---|
-| T-03 | 2 | Daten zwischen iPad und iPhone abgleichen über eine Datei in iCloud Drive (kostenlos; Mac vorhanden, kein Entwicklerkonto). Geklärt 10.10.2026: abwechselnd arbeiten · gleicher Tag auf beiden Geräten geändert → neuere Änderung gilt · gelöschte Reiselogbücher werden beim Abgleich auch gelöscht · Start über ‚Backup laden‘, danach Auswahl ‚Abgleichen‘ oder ‚Ersetzen‘. Erst nach T-02 umsetzen (iPhone-Ansicht nötig); Muster folgt nach T-02 | allgemein | geklärt, wartet auf T-02 |
+| T-03 | 2 | Daten zwischen iPad und iPhone abgleichen über eine Datei in iCloud Drive (kostenlos; Mac vorhanden, kein Entwicklerkonto). Geklärt 10.10.2026: abwechselnd arbeiten · gleicher Tag auf beiden Geräten geändert → neuere Änderung gilt · gelöschte Reiselogbücher werden beim Abgleich auch gelöscht · Start über ‚Backup laden‘, danach Auswahl ‚Abgleichen‘ oder ‚Ersetzen‘. iPhone-Ansicht seit 3.1.0 vorhanden; als Nächstes Muster | allgemein | geklärt, Muster folgt |
 | T-05 | 2 | Bestehende (alte) Reiselogbücher aufbereiten und importierbar machen: Dateien (Word/PDF/Excel/HTML/Fotos) auslesen, Unklarheiten nachfragen, Vorschau zeigen, Datei erstellen; Überschneidungen prüfen. Offen: Form der Unterlagen, Anzahl, Weg (a: in aktuelles Backup einfügen · b: neue Funktion „Reiselogbuch importieren“, die hinzufügt statt ersetzt) | Reiselogbuch | offen |
 | T-06 | 3 | Ausschreibungstexte (Reiseveranstalter) in Reiselogbücher umwandeln – für erledigte **und** geplante Reisen: Titel, Zeitraum, Reisemittel; je Tag das Programm („1. Tag“ → echtes Datum, Text wie in der Ausschreibung); Quartiere mit Ort, falls genannt; übrige Felder bleiben leer | Reiselogbuch | offen |
 
@@ -53,6 +52,7 @@ sind (oder auf Wunsch); siehe `README - Zusammenarbeit allgemein.md`, Abschnitt 
 
 | Nr. | Thema | Version | Datum |
 |---|---|---|---|
+| E-23 | Reiselogbuch 3.1.0: T-02 iPhone-Ansicht (AppDesign 4.1.0), T-24 Icons bei ‚Alle Tage‘/‚Nur erfasste Tage‘ | Reiselogbuch 3.1.0 · AppDesign 4.1.0 | 10.10.2026 |
 | E-22 | Auf dem iPad geprüft und ok: P-14 Reiselogbuch 3.0.0 mit AppDesign 4.0.0 (auch offline) | Reiselogbuch 3.0.0 | 09.10.2026 |
 | E-21 | Reiselogbuch 3.0.0: T-23 gemeinsame Bausteine aus dem Design-Repo AppDesign 4.0.0 (S-01, S-02) | Reiselogbuch 3.0.0 · AppDesign 4.0.0 | 09.10.2026 |
 | E-20 | Auf dem iPad geprüft und ok: P-13 Version 2.4.0 (Menüs ohne Linien zwischen Punkten, Suchfeld ohne blauen Rahmen) | Reiselogbuch 2.4.0 | 09.10.2026 |
